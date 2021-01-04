@@ -2,3 +2,4 @@ rails/vendor
 rails/tmp
 rails/log
 rails/storage
+.postgresql-data

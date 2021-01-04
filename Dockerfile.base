@@ -25,6 +25,9 @@ RUN mkdir -p $APP_PATH && chown -R $APP_USER:$APP_USER $APP_PATH
 # Later we'll use bundler to install rails
 RUN gem install bundler
 
+# Install psql client for database access
+RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client
+
 WORKDIR $APP_PATH
 USER $APP_USER
 

@@ -8,7 +8,7 @@ build-base:
 
 # Just for poking around...
 run-base:
-	-docker-compose run --rm base
+	-docker-compose run --rm --no-deps base bash
 
 github-url:
 	@echo https://github.com/simonbaird/tiddlyhost
