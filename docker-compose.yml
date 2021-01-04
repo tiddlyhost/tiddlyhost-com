@@ -1,0 +1,14 @@
+services:
+
+  base:
+    image: base:latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+      args:
+      - USER_ID
+      - GROUP_ID
+
+    volumes:
+    - ./rails:/opt/app:Z
