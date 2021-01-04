@@ -27,4 +27,8 @@ RUN gem install bundler
 
 WORKDIR $APP_PATH
 USER $APP_USER
+
+# Writes to ~/.bundle/config
+RUN bundle config set --global path 'vendor/bundle'
+
 CMD ["/bin/bash"]
