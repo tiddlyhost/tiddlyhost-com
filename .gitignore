@@ -2,4 +2,5 @@ rails/vendor
 rails/tmp
 rails/log
 rails/storage
+rails/node_modules/
 .postgresql-data
