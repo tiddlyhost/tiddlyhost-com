@@ -4,7 +4,10 @@
   "dependencies": {
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.2.1"
+    "@rails/webpacker": "5.2.1",
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1"
   },
   "version": "0.1.0",
   "devDependencies": {

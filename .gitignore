@@ -3,4 +3,5 @@ rails/tmp
 rails/log
 rails/storage
 rails/node_modules/
+rails/public/packs/
 .postgresql-data
