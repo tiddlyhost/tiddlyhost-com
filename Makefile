@@ -4,7 +4,7 @@ _help:
 	@grep '^[^_#[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
 
 # The build args are important here, the build will fail without them
-build-base:
+build-base: cleanup
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
 
 # Brings up the web container only and runs bash in it
