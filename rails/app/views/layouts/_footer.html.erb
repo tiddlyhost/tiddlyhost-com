@@ -1,0 +1,13 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      Version: <%= App::VERSION %><br>
+      <% unless Rails.env.production? %>Env: <%= Rails.env %><br><% end %>
+    </div>
+    <div class="col-4" style="text-align:right;">
+      Tiddlyhost.com<br>
+      &copy; 2021 Simon Baird<br>
+    </div>
+  </div>
+</div>
