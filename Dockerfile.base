@@ -35,6 +35,8 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-
 WORKDIR $APP_PATH
 USER $APP_USER
 
+COPY etc/dot_bash_aliases /home/$APP_USER/.bash_aliases
+
 # Writes to ~/.bundle/config
 RUN bundle config set --global path 'vendor/bundle'
 
