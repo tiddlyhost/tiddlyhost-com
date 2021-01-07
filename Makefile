@@ -23,6 +23,17 @@ join:
 start:
 	-docker-compose up
 
+# Try to be smart about how to run the tests
+# TODO: Refactor and integrate with "shell" and "join"
+tests:
+	@if [[ -z $$(docker-compose ps --services --filter status=running | grep base ) ]]; then \
+	  echo Starting new container to run tests...; \
+	  docker-compose run --rm base bin/rails test\:all; \
+	else \
+	  echo Running tests in existing container...; \
+	  docker-compose exec base bin/rails test\:all; \
+	fi
+
 # Stop and remove containers
 cleanup:
 	docker-compose stop
