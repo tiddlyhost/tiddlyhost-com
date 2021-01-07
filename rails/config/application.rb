@@ -35,5 +35,8 @@ module App
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Support our wildcard subdomains
+    config.hosts << ".#{Settings.main_hostname}"
   end
 end
