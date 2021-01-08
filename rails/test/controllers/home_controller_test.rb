@@ -12,4 +12,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match 'todo', @response.body
   end
+
+  test "www subdomain should redirect" do
+    get home_index_url, headers: { host: "www.#{Settings.main_hostname}" }
+    assert_redirected_to(Settings.home_url)
+  end
 end

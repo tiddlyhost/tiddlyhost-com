@@ -5,9 +5,12 @@ defaults: {}
 
 development:
   main_hostname: tiddlyhost.local
+  home_url: http://tiddlyhost.local:3000/
 
 test:
   main_hostname: example.local
+  home_url: http://example.local/
 
 production:
   main_hostname: tiddlyhost.com
+  home_url: https://tiddlyhost.com/
