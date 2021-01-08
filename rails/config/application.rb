@@ -15,6 +15,10 @@ require "action_view/railtie"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
+# Our custom settings handler. We have to load it early so the
+# settings can be used while we're still starting up rails.
+require_relative '../lib/settings'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

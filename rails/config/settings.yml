@@ -1,0 +1,13 @@
+---
+# May be overridden by values in settings_local.yml
+
+defaults: {}
+
+development:
+  main_hostname: tiddlyhost.local
+
+test:
+  main_hostname: example.local
+
+production:
+  main_hostname: tiddlyhost.com
