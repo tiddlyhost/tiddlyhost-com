@@ -10,13 +10,20 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <% if user_signed_in? %>
+    <% if user_signed_in? %>
+      <ul class="navbar-nav mr-auto">
+        <%= nav_link_to "Home", '/'%>
+      </ul>
+      <ul class="navbar-nav ml-auto">
         <%= nav_link_to "Logout (#{current_user.email})", destroy_user_session_path, method: :delete %>
-      <% else %>
+      </ul>
+    <% else %>
+      <ul class="navbar-nav mr-auto">
+        <%= nav_link_to "Home", '/'%>
         <%= nav_link_to "Login", new_user_session_path %>
         <%= nav_link_to "Sign up", new_user_registration_path %>
-      <% end %>
+      </ul>
+    <% end %>
     </ul>
   </div>
 
