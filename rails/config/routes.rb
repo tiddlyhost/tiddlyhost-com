@@ -1,6 +1,6 @@
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: :registrations }
 
   #
   # For individual TiddlyWiki sites
@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   constraints(->(req) { req.subdomain.blank? || req.subdomain == 'www' }) do
     root to: 'home#index'
     get 'home/index'
+    get 'home/after_registration'
   end
 
 end
