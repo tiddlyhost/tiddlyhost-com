@@ -1,0 +1,26 @@
+services:
+
+  prod:
+    image: tiddlyhost:latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+
+    ports:
+    - "443:3000"
+
+    depends_on:
+    - db
+
+    environment:
+      RAILS_MASTER_KEY:
+
+  db:
+    image: postgres
+
+    volumes:
+    - ./.postgresql-data/data:/var/lib/postgresql/data:Z
+
+    environment:
+      POSTGRES_PASSWORD: notsecure123
