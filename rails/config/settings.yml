@@ -4,13 +4,17 @@
 defaults: {}
 
 development:
-  main_hostname: tiddlyhost.local
-  home_url: http://tiddlyhost.local:3000/
+  url_defaults:
+    :host: tiddlyhost.local
+    :port: 3000
+    :protocol: http
 
 test:
-  main_hostname: example.local
-  home_url: http://example.local/
+  url_defaults:
+    :host: example.com
+    :protocol: http
 
 production:
-  main_hostname: tiddlyhost.com
-  home_url: https://tiddlyhost.com/
+  url_defaults:
+    :host: tiddlyhost.com
+    :protocol: https

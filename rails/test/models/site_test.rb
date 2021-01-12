@@ -1,7 +1,10 @@
 require "test_helper"
 
 class SiteTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  test "url" do
+    site = sites(:mysite)
+
+    assert_equal 'http://mysite.example.com', site.url
+  end
 end

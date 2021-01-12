@@ -1,9 +1,9 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark">
 
-  <%= image_tag "logo.svg", style: "height:30px;margin-right:14px;margin-left:4px;" %>
-
-  <a class="navbar-brand" href="/"><b>Tiddlyhost</b></a>
+  <%= link_to('/', class: 'navbar-brand', title: 'Tiddlyhost') do %>
+    <%= image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;") %>
+  <% end %>
 
   <button class="navbar-toggler" type="button"
     data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -14,10 +14,11 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <% if user_signed_in? %>
       <ul class="navbar-nav mr-auto">
-        <%= nav_link_to "Home", '/'%>
+        <%= nav_link_to "Home", '/' %>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <%= nav_link_to "Logout (#{current_user.email})", destroy_user_session_path, method: :delete %>
+        <%= nav_link_to current_user.name, edit_user_registration_path, icon: 'person-fill' %>
+        <%= nav_link_to "Logout", destroy_user_session_path, method: :delete, icon: 'box-arrow-left' %>
       </ul>
     <% else %>
       <ul class="navbar-nav mr-auto">

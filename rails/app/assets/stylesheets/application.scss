@@ -1,5 +1,7 @@
 @import "bootstrap/scss/bootstrap";
 
+@import "sites";
+
 // Color (respectfully) stolen from TW...
 // Todo: Review color scheme, branding etc
 $nav_bg_color: #5778d8;
@@ -34,7 +36,31 @@ $contrast_color: #29AE4A;
 .jumbotron {
     padding: 1.5em 1.5em 2em 1.5em;
     margin-top:1em;
-    .btn-primary {
+}
+
+.btn-primary {
+    background-color: $contrast_color;
+    border-color: $contrast_color;
+
+    &:hover {
+        background-color: $contrast_color;
+        border-color: $contrast_color;
+    }
+
+    // Fixme: Seems like this doesn't work.
+    // I'm still see bootstrap blue when clicking.
+
+    &:active {
+        background-color: $contrast_color;
+        border-color: $contrast_color;
+    }
+
+    &:focus {
+        background-color: $contrast_color;
+        border-color: $contrast_color;
+    }
+
+    &:focus:active {
         background-color: $contrast_color;
         border-color: $contrast_color;
     }
@@ -52,4 +78,8 @@ footer {
     padding: 10em 1.2em 2em;
     font-size: 80%;
     opacity: 0.3;
+}
+
+h1 {
+    color: #555;
 }

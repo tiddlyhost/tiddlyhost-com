@@ -1,23 +1,30 @@
-%h1 Listing sites
+%h1 Your sites
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th User
-      %th
-      %th
-      %th
+- if @sites.empty?
+  %p Click 'Create site' below to create your first TiddlyWiki site.
 
-  %tbody
-    - @sites.each do |site|
-      %tr
-        %td= site.name
-        %td= site.user
-        %td= link_to 'Show', site
-        %td= link_to 'Edit', edit_site_path(site)
-        %td= link_to 'Destroy', site, method: :delete, data: { confirm: 'Are you sure?' }
+- else
+  %table.sites
 
-%br
+    %tbody
+      - @sites.each do |site|
+        %tr
+          %td
+            %span.minilabel Location
+            = site_long_link(site, target: '_blank')
+          %td
+            %span.minilabel Access
+            = site.is_private? ? 'Private' : 'Public'
 
-= link_to 'New Site', new_site_path
+          %td
+            %span.minilabel &nbsp;
+            = link_to(edit_site_path(site), class: 'btn btn-sm') { bi_icon('sliders') + 'Settings' }
+            = link_to("javascript:;", class: 'delete-confirm btn btn-sm') { bi_icon('trash') + 'Delete' }
+            = link_to('Cancel ', "javascript:;", class: 'delete-cancel btn btn-sm', style: 'display: none;')
+            = link_to(site, method: :delete, data: { confirm: "Are you sure you want to delete '#{site.name}'?" },
+              class: 'delete-really btn btn-danger btn-sm', style: 'display: none;') { bi_icon('trash') + 'Really delete!' }
+
+  %br
+
+%div{style: 'margin-left: 1em;' }
+  = link_to 'Create site', new_site_path, class: 'btn btn-primary'

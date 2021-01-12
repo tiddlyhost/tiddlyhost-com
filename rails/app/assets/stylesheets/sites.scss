@@ -1,3 +1,22 @@
-// Place all the styles related to the Sites controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+
+table.sites {
+    td {
+        padding: 0.5em 1.5em;
+
+        .btn {
+            margin-right: 1em;
+        }
+    }
+
+    margin-bottom: 1em;
+}
+
+.minilabel {
+    display: block;
+    text-transform: uppercase;
+    color: #bbb;
+    font-size: 60%;
+    font-weight: bold;
+    margin: 0px;
+    margin-left: -5px;
+}

@@ -1,12 +1,27 @@
-%p#notice= notice
+-#
+-# *************************************
+-# Actually this is not used currently
+-# We redirect back to the index after updates and saves
+-# Might revive it later to show some info about a site.
+-# *************************************
+-#
+-if notice.present?
+  .alert.alert-secondary= notice
+
+%h1= "Site '#{@site.name}'"
 
 %p
-  %b Name:
-  = @site.name
-%p
-  %b User:
-  = @site.user
+  Visit site:
+  =site_long_link(@site)
 
-= link_to 'Edit', edit_site_path(@site)
-\|
-= link_to 'Back', sites_path
+%p
+  Last updated:
+  = @site.updated_at
+
+%p
+  Created:
+  = @site.created_at
+
+%p= link_to 'Settings', edit_site_path(@site)
+
+%p= link_to 'Back', sites_path
