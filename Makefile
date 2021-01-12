@@ -7,6 +7,9 @@ _help:
 build-base: cleanup cert
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
 
+build-prod:
+	docker-compose -f docker-compose-prod.yml build prod
+
 rails-init:
 	docker-compose run --rm base bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
@@ -21,13 +24,25 @@ run-base:
 shell:
 	-docker-compose run --rm base bash
 
+# Same thing but use the prod container
+shell-prod:
+	-docker-compose -f docker-compose-prod.yml run --rm prod bash
+
 # Runs bash in an already running web container
 join:
 	-docker-compose exec base bash
 
-# Not sure if we really need this...
+# Same thing but use the prod container
+join-prod:
+	-docker-compose -f docker-compose-prod.yml exec prod bash
+
+# Start the dev container
 start:
 	-docker-compose up
+
+# Start the prod container locally
+start-prod:
+	-RAILS_MASTER_KEY=`cat rails/config/master.key` docker-compose -f docker-compose-prod.yml up
 
 bundle-install:
 	-docker-compose run --rm --no-deps base bash -c "bin/bundle install"
