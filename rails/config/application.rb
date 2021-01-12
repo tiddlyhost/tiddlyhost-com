@@ -36,7 +36,18 @@ module App
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.eager_load_paths << Rails.root.join("lib")
+
     # Support our wildcard subdomains
-    config.hosts << ".#{Settings.main_hostname}"
+    config.hosts << ".#{Settings.url_defaults[:host]}"
+    config.session_store :cookie_store, domain: Settings.url_defaults[:host]
+    config.action_controller.default_url_options = { host: Settings.url_defaults[:host] }
+
+    # Initially for devise emails
+    config.action_mailer.default_url_options = Settings.url_defaults
+
+    # For uploads..?
+    config.action_controller.forgery_protection_origin_check = false
+
   end
 end

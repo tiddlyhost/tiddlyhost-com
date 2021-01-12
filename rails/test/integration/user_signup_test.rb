@@ -16,7 +16,7 @@ class UserSignupTest < CapybaraIntegrationTest
     fill_in 'user[password_confirmation]', with: password
 
     # Click the sign up button and confirm an email is sent
-    assert_difference('ActionMailer::Base.deliveries.count') { click_button 'Sign up' }
+    assert_difference('ActionMailer::Base.deliveries.count') { click_button 'Create account' }
 
     # Confirm the "check email" page is shown
     assert page.has_content?('check your email for a confirmation link')
@@ -35,13 +35,13 @@ class UserSignupTest < CapybaraIntegrationTest
     click_button 'Log in'
 
     # Confirm we are logged in
-    assert has_content?("Hi there #{name}")
+    assert page.has_css?('h1', text: 'Your sites')
 
     # Logout
-    click_link "Logout (#{email})"
+    click_link "Log out"
 
     # Confirm we are logged out
-    assert has_css?(".jumbotron")
+    assert page.has_css?(".jumbotron")
 
   end
 

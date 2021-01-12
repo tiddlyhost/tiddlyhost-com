@@ -22,4 +22,28 @@ class Settings
     SETTINGS[method.to_s]
   end
 
+  def self.main_site_url
+    #
+    # Fixme, why can't I use this or something like it?
+    # For some reason it includes the current request path
+    #full_url_for(Settings.url_defaults)
+    #
+    if Settings.url_defaults[:port]
+      "%<protocol>s://%<host>s:%<port>s/" % Settings.url_defaults
+    else
+      "%<protocol>s://%<host>s/" % Settings.url_defaults
+    end
+  end
+
+  def self.tw_site_url(site_name)
+    #
+    # Fixme, need a better home for this
+    #
+    if Settings.url_defaults[:port]
+      "%<protocol>s://%<site_name>s.%<host>s:%<port>s/" % Settings.url_defaults.merge(site_name: site_name)
+    else
+      "%<protocol>s://%<site_name>s.%<host>s/" % Settings.url_defaults.merge(site_name: site_name)
+    end
+  end
+
 end

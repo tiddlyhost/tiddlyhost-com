@@ -11,8 +11,15 @@ class ActiveSupport::TestCase
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+end
 
-  # Add more helper methods to be used by all tests here...
+class ActionDispatch::IntegrationTest
+  # Particularly for sign_in and sign_out methods
+  include Devise::Test::IntegrationHelpers
+
+  setup do
+    host! Settings.url_defaults[:host]
+  end
 end
 
 class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
@@ -24,7 +31,7 @@ class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
 
   # Configure hostname used for requests
   setup do
-    Capybara.app_host = Settings.home_url
+    Capybara.app_host = ActionDispatch::Http::URL.full_url_for(Settings.url_defaults)
   end
 
   # Reset sessions and driver between tests

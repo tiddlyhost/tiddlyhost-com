@@ -1,0 +1,23 @@
+---
+bobby:
+  id: 1
+  email: bobby@tables.com
+  encrypted_password: "$2a$12$7Vo3LPYma6We0nrvr.8iiewwdiir2g1BncZreaif3juRKLUZWOPMi"
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 1
+  current_sign_in_at: <%= 2.minutes.ago %>
+  last_sign_in_at: <%= 2.hours.ago %>
+  current_sign_in_ip: 172.20.0.1
+  last_sign_in_ip: 172.20.0.1
+  confirmation_token: EKW5XSzkWEy_7a3xReMm
+  confirmed_at: <%= 48.hours.ago %>
+  confirmation_sent_at: <%= 49.hours.ago %>
+  unconfirmed_email:
+  failed_attempts: 0
+  unlock_token:
+  locked_at:
+  name: Bobby Tables
+  created_at: <%= 50.hours.ago %>
+  updated_at: <%= 50.hours.ago %>

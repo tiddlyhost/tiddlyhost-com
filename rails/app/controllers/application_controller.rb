@@ -5,8 +5,16 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def main_site_url
+    Settings.main_site_url
+  end
+
+  def default_url_options
+    Rails.application.routes.default_url_options = Settings.url_defaults
+  end
+
   def redirect_www_requests
-    redirect_to(Settings.home_url, status: 301) if request.subdomain == 'www'
+    redirect_to(Settings.url_defaults, status: 301) if request.subdomain == 'www'
   end
 
   def permit_devise_params
