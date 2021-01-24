@@ -1,0 +1,20 @@
+%h2 Resend unlock instructions
+
+=form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
+
+  .form-group
+    =render 'devise/shared/error_messages', resource: resource
+
+  .form-group
+    .form-text
+      Todo.. some explanation here..
+
+  .form-group
+    =f.label :email
+    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-3'
+
+  .form-group{style: 'margin-top: 2em;'}
+    =f.submit 'Resend unlock instructions', class: 'btn btn-primary'
+
+  .form-group{style: 'margin-left:1em;'}
+    = render 'devise/shared/links'

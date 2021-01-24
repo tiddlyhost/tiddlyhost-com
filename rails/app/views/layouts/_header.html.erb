@@ -18,12 +18,12 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <%= nav_link_to current_user.name, edit_user_registration_path, icon: 'person-fill' %>
-        <%= nav_link_to "Logout", destroy_user_session_path, method: :delete, icon: 'box-arrow-left' %>
+        <%= nav_link_to "Log out", destroy_user_session_path, method: :delete, icon: 'box-arrow-left' %>
       </ul>
     <% else %>
       <ul class="navbar-nav mr-auto">
         <%= nav_link_to "Home", '/'%>
-        <%= nav_link_to "Login", new_user_session_path %>
+        <%= nav_link_to "Log in", new_user_session_path %>
         <%= nav_link_to "Sign up", new_user_registration_path %>
       </ul>
     <% end %>

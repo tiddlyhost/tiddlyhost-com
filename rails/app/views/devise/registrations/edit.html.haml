@@ -1,0 +1,52 @@
+%h2 Update account
+
+=form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+
+  .form-group
+    =render 'devise/shared/error_messages', resource: resource
+
+  .form-group
+    =f.label :name
+    =f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+
+  .form-group
+    =f.label :email
+    =f.email_field :email, autocomplete: 'email', class: 'form-control col-sm-6'
+
+  -if devise_mapping.confirmable? && resource.pending_reconfirmation?
+    %small.form-text.text-muted
+      Currently waiting confirmation for:
+      =resource.unconfirmed_email
+
+  .form-group
+    =f.label :password, 'New password'
+    %small.text-muted (leave blank if you don't want to change it)
+    =f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    %small.form-text.text-muted= "#{ @minimum_password_length } characters minimum"
+
+  .form-group
+    =f.label :password_confirmation, 'New password confirmation'
+    =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Re-type your new password to confirm it
+
+  .form-group
+    =f.label :current_password
+    =f.password_field :current_password, autocomplete: 'current-password', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Enter your current password to confirm the changes
+
+  .form-group{style: 'margin-top: 2em;'}
+    =f.submit 'Update', class: 'btn btn-primary'
+    =link_to 'Cancel', sites_path, style: 'margin-left: 1em;'
+
+
+%h2{style: 'margin-top:4em;'} Delete account
+
+.form-group
+  .form-text{style: 'padding:1em;'}
+    =bi_icon 'exclamation-triangle', style:'color:red;', height: '2em', width: '2em'
+    %b
+      %i Proceed with caution. If you delete your account all your sites will be removed.
+
+.form-group
+  =button_to 'Delete account', registration_path(resource_name), method: :delete, class: 'btn btn-danger',
+    data: { confirm: 'Are you sure you want to delete your account?' }
