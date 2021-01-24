@@ -1,0 +1,32 @@
+%h1 Sign up
+
+=form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+
+  .form-group
+    =render 'devise/shared/error_messages', resource: resource
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Please enter your name
+
+  .form-group
+    = f.label :email
+    = f.email_field :email, autocomplete: 'email', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Enter your email address
+
+  .form-group
+    = f.label :password
+    = f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    %small.form-text.text-muted= "#{ @minimum_password_length } characters minimum"
+
+  .form-group
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Re-type your password to confirm
+
+  .form-group{style: 'margin-top: 2em;'}
+    = f.submit 'Create account', class: 'btn btn-primary'
+
+  .form-group{style: 'margin-left:1em;'}
+    = render 'devise/shared/links'
