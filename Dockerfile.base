@@ -29,8 +29,8 @@ RUN gem install bundler
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.d/yarn.list
 
-# Install psql client for database access, nodejs and yarn for webpacker
-RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn
+# Install psql client for database access, nodejs and yarn for webpacker, vim for rails credentials:edit
+RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
 
 WORKDIR $APP_PATH
 USER $APP_USER

@@ -6,4 +6,5 @@ rails/empties
 rails/node_modules/
 rails/public/packs/
 rails/public/packs-test/
+rails/config/master.key
 .postgresql-data
