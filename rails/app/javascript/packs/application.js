@@ -18,20 +18,20 @@ $(document).ready(function(){
     event.preventDefault();
   })
 
-  // We'll validate this on the server, this is just for the UI
+  // Make it so the user can't easily type invalid names.
+  // We'll validate the name on the server as well, see app/models/site.
   $('.site-name').on('keyup', function(){
     $(this).val(
       $(this).val().
-        // Only letters or - chars
+        // Remove anything that's not a letter, numeral or dash
         replace(/[^0-9a-z-]/, '').
-        // No consecutive - chars
-        replace(/[\-]{2,}/, '-').
-        // Must start with letter or number
-        replace(/^-/, '').
-        // Must end with letter or number
-        replace(/-$/, '').
-        // 63 char limit
-        substring(0, 63));
+        // Replace consecutive dashes with a single dash
+        replace(/[-]{2,}/, '-').
+        // Remove leading dashes
+        // (Don't remove trailing dashes since it makes it hard to type
+        // names with dashes. The server will invalidate them anyway.)
+        replace(/^-/, '')
+    );
   });
 
 });
