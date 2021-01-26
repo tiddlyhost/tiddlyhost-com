@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>404 Not Found</title>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
+
+  <body style="margin:2em 2.5em;">
+    <header>
+      <nav class="navbar navbar-dark" style="box-shadow: none; height: 1.8em; flex-wrap: nowrap;">
+        <%= link_to(Settings.main_site_url, class: 'navbar-brand', title: 'Tiddlyhost') do %>
+          <%= image_tag("logo.svg", style: "height:18px;opacity:80%;") %>
+          <span style="font-size: 90%; margin-left:0.25em;">Tiddlyhost</span>
+        <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <footer>
+    </footer>
+  </body>
+</html>
