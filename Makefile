@@ -26,6 +26,9 @@ start:
 bundle-install:
 	-docker-compose run --rm --no-deps base bash -c "bin/bundle install"
 
+secrets:
+	-docker-compose run --rm --no-deps base bash -c "EDITOR=vi bin/rails credentials:edit"
+
 # Try to be smart about how to run the tests
 # TODO: Refactor and integrate with "shell" and "join"
 tests:
