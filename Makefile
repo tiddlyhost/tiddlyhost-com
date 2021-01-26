@@ -23,6 +23,9 @@ join:
 start:
 	-docker-compose up
 
+bundle-install:
+	-docker-compose run --rm --no-deps base bash -c "bin/bundle install"
+
 # Try to be smart about how to run the tests
 # TODO: Refactor and integrate with "shell" and "join"
 tests:
