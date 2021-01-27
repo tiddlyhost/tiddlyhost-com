@@ -7,6 +7,12 @@ _help:
 build-base: cleanup
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
 
+rails-init:
+	docker-compose run --rm base bash -c "bundle install && \
+	  bundle exec rails webpacker:install && \
+	  bundle exec rails db:create && \
+	  bundle exec rails db:migrate"
+
 # Brings up the web container only and runs bash in it
 run-base:
 	-docker-compose run --rm --no-deps base bash

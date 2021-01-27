@@ -17,32 +17,36 @@ Rough plan (Jan 2021):
 Tiddlyhost will be somewhat based on an unfinished 2015-ish rewrite of
 tiddlyspot-rails which used devise for account management.
 
-I do want to opensource it, but will figure out how to to that later, probably
-after it's functional.
 
-Current Status
---------------
+Current Status (Feb 2021)
+-------------------------
 
-Embryonic. Very very early stages of development. May never work.
+Very early stages of development.
 
-Getting Started
----------------
+It's mostly functional on my local development environment. The next steps are
+to figure out how to host it somewhere and how to set up a wildcard SSL cert.
+
+
+Getting Started (for developers)
+--------------------------------
 
 You need to have docker and docker-compose installed on your system.
 
-Build the container image and start a bash shell inside it:
+Build the container image:
 
     make build-base
-    make shell
 
-Now run the following inside the container to install all the ruby gems and
-node modules, and create the databases. Once that's all done you can exit the
-container.
+Install all ruby gems, node modules, and initialize the databases:
+(Say no to overwriting /opt/app/config/webpack/environment.js.)
 
-    bundle install
-    rails webpacker:install
-    rails db:create
-    exit
+    make rails-init
+
+Add a TW empty file to rails/empties/tw5.html. (For best results it needs to
+be slightly modified. Todo: Explain how to get the modifications.)
+
+Run the test suite:
+
+    make tests
 
 Note that the container mounts the rails directory so you can
 edit code outside the container in ./rails.
@@ -81,3 +85,10 @@ When you're all done you can shut down like this:
 
 Note that the make tasks are mostly just wrappers for docker-compose so you
 can use docker-compose commands if you prefer. See the Makefile for details.
+
+
+License
+-------
+
+Tiddlyhost is open source software. It uses a BSD license. See
+[LICENSE.md](LICENSE.md).
