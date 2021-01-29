@@ -16,6 +16,7 @@ ARG GROUP_ID
 # Just so they aren't hard coded below
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app
+ARG CERT_PATH=/opt/certs
 
 # Use the specified id so we can read and write directories outside the container
 RUN addgroup --gid $GROUP_ID $APP_USER
@@ -32,12 +33,21 @@ RUN echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.
 # Install psql client for database access, nodejs and yarn for webpacker, vim for rails credentials:edit
 RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
 
+# Install self-signed SSL cert
+COPY --chown=$APP_USER:$APP_USER etc/certs $CERT_PATH
+
+# Install script to help start rails
+COPY --chown=$APP_USER:$APP_USER etc/start-rails.sh /bin
+
 WORKDIR $APP_PATH
 USER $APP_USER
 
+# Install some helpful bash aliases for use inside the container
 COPY etc/dot_bash_aliases /home/$APP_USER/.bash_aliases
 
-# Writes to ~/.bundle/config
+# Writes to /home/$APP_USER/.bundle/config
 RUN bundle config set --global path 'vendor/bundle'
 
+# Make it easy to connect and do things in the container
+# See docker-compose for how we start rails
 CMD ["/bin/bash"]

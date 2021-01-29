@@ -34,6 +34,10 @@ Rails.application.configure do
   config.active_storage.service = :local
   #config.active_storage.service = :amazon
 
+  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # (We'll use a self-signed cert for development.)
+  config.force_ssl = true
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
