@@ -8,6 +8,7 @@ build-base: cleanup cert
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
 
 build-prod:
+	./etc/create-build-info.sh
 	docker-compose -f docker-compose-prod.yml build prod
 
 rails-init:

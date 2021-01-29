@@ -19,6 +19,9 @@ ENV RAILS_LOG_TO_STDOUT=true
 # Ignores things listed in .dockerignore
 COPY --chown=$APP_USER:$APP_USER rails $APP_PATH
 
+# Some info about the build
+COPY --chown=$APP_USER:$APP_USER etc/build-info.txt $APP_PATH/public
+
 # It's likely all gems are there already, but there's no harm in running this again
 RUN bundle install
 
