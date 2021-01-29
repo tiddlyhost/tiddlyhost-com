@@ -8,3 +8,4 @@ rails/public/packs/
 rails/public/packs-test/
 rails/config/master.key
 .postgresql-data
+etc/certs

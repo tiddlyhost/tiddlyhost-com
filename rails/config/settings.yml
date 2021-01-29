@@ -7,7 +7,7 @@ development:
   url_defaults:
     :host: tiddlyhost.local
     :port: 3000
-    :protocol: http
+    :protocol: https
 
 test:
   url_defaults:

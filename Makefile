@@ -4,7 +4,7 @@ _help:
 	@grep '^[^_#[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
 
 # The build args are important here, the build will fail without them
-build-base: cleanup
+build-base: cleanup cert
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
 
 rails-init:
@@ -50,6 +50,19 @@ tests:
 cleanup:
 	docker-compose stop
 	docker-compose rm -f
+
+# Generate an SSL cert
+# (If the cert exists, assume the key exists too.)
+cert: etc/certs/localssl.cert
+
+etc/certs/localssl.cert:
+	@cd ./etc && ./create-local-ssl-cert.sh
+
+clear-cert:
+	@rm ./etc/certs/localssl.cert
+	@rm ./etc/certs/localssl.key
+
+redo-cert: clear-cert cert
 
 github-url:
 	@echo https://github.com/simonbaird/tiddlyhost
