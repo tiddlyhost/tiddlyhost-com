@@ -3,7 +3,7 @@ class TiddlywikiEmpty
   DEFAULT = 'tw5'
 
   def self.empty_path(empty_type=DEFAULT)
-    "empties/#{empty_type}.html"
+    "#{Rails.root}/empties/#{empty_type}.html"
   end
 
   def self.tiddler_div_helper(title, content)
@@ -18,7 +18,7 @@ class TiddlywikiEmpty
 
     {
       # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
-      "$:/UploadURL" => Settings.tw_site_url(site_name),
+      "$:/UploadURL" => Settings.subdomain_site_url(site_name),
 
       # Set this otherwise TiddlyWiki won't consider upload.js usable unless there
       # is a username and password present.
