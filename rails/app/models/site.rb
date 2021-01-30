@@ -38,7 +38,7 @@ class Site < ApplicationRecord
     }
 
   def url
-    ActionDispatch::Http::URL.full_url_for(Settings.url_defaults.merge(subdomain: name))
+    Settings.subdomain_site_url(name)
   end
 
   def is_public?

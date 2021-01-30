@@ -8,6 +8,7 @@ class SiteTest < ActiveSupport::TestCase
 
   test "url" do
     assert_equal 'http://mysite.example.com', @site.url
+    assert_equal 'http://example.com', Settings.main_site_url
   end
 
   test "name validation" do
