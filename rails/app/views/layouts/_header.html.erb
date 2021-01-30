@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark">
 
-  <%= link_to('/', class: 'navbar-brand', title: 'Tiddlyhost') do %>
+  <%= link_to(root_path, class: 'navbar-brand', title: 'Tiddlyhost') do %>
     <%= image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;") %>
   <% end %>
 
@@ -14,7 +14,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <% if user_signed_in? %>
       <ul class="navbar-nav mr-auto">
-        <%= nav_link_to "Home", '/' %>
+        <%= nav_link_to "Home", root_path %>
       </ul>
       <ul class="navbar-nav ml-auto">
         <%= nav_link_to current_user.name, edit_user_registration_path, icon: 'person-fill' %>
@@ -22,7 +22,7 @@
       </ul>
     <% else %>
       <ul class="navbar-nav mr-auto">
-        <%= nav_link_to "Home", '/'%>
+        <%= nav_link_to "Home", root_path %>
         <%= nav_link_to "Log in", new_user_session_path %>
         <%= nav_link_to "Sign up", new_user_registration_path %>
       </ul>

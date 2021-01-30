@@ -3,7 +3,7 @@ module ApplicationHelper
   def nav_link_to(title, link, opts={})
     is_active = current_page?(link) ||
       # We redirect home to /sites when user is logged in
-      (current_page?(sites_path) && link == "/")
+      (current_page?(sites_path) && link == root_path)
 
     icon = opts.delete(:icon)
 
