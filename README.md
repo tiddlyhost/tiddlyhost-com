@@ -41,8 +41,9 @@ Install all ruby gems, node modules, and initialize the databases:
 
     make rails-init
 
-Add a TW empty file to rails/empties/tw5.html. (For best results it needs to
-be slightly modified. Todo: Explain how to get the modifications.)
+Fetch an empty TW file:
+
+    make empty
 
 Run the test suite:
 

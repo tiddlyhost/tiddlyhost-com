@@ -1,7 +1,7 @@
 
 _help:
 	@echo Available tasks:
-	@grep '^[^_#[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
+	@grep '^[^_#\\$$[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
 
 # The build args are important here, the build will fail without them
 build-base: cleanup cert
@@ -50,6 +50,22 @@ bundle-install:
 
 secrets:
 	-docker-compose run --rm --no-deps base bash -c "EDITOR=vi bin/rails credentials:edit"
+
+# Currently we need the prerelease, later we'll switch to stable versions
+EMPTY_URL=https://tiddlywiki.com/prerelease/empty.html
+EMPTY_TARGET=rails/empties/tw5.html
+$(EMPTY_TARGET):
+	curl -s $(EMPTY_URL) -o $(EMPTY_TARGET)
+
+empty: $(EMPTY_TARGET) empty-version
+
+update-empty: clear-empty empty
+
+empty-version:
+	@grep '<meta name="tiddlywiki-version"' $(EMPTY_TARGET) | cut -d\" -f4
+
+clear-empty:
+	@rm -f $(EMPTY_TARGET)
 
 # Try to be smart about how to run the tests
 # TODO: Refactor and integrate with "shell" and "join"
