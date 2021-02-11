@@ -8,5 +8,6 @@ rails/public/packs/
 rails/public/packs-test/
 rails/config/master.key
 .postgresql-data
-etc/certs
+certs
 etc/build-info.txt
+etc/certbot-dns-user-credentials.yml

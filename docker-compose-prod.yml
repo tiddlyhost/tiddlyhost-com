@@ -1,7 +1,7 @@
 services:
 
   prod:
-    image: tiddlyhost:latest
+    image: sbaird/tiddlyhost:latest
 
     build:
       context: .
@@ -9,9 +9,14 @@ services:
 
     ports:
     - "443:3000"
+    - "80:3000"
 
     depends_on:
     - db
+
+    volumes:
+    - ./certs/ssl.cert:/opt/certs/ssl.cert:Z
+    - ./certs/ssl.key:/opt/certs/ssl.key:Z
 
     environment:
       RAILS_MASTER_KEY:

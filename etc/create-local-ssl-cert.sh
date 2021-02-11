@@ -25,7 +25,7 @@ openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out serv
 # Clean up
 rm server.pass.key
 rm server.csr
-mv server.key certs/localssl.key
-mv server.crt certs/localssl.cert
+mv server.key ../certs/ssl.key
+mv server.crt ../certs/ssl.cert
 
-echo Created certs/localssl.cert and certs/localssl.key
+echo Created ../certs/ssl.cert and ../certs/ssl.key

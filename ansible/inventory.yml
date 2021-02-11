@@ -1,0 +1,4 @@
+all:
+  hosts:
+    tiddlyhost.com:
+      ansible_user: fedora
