@@ -11,6 +11,10 @@ build-prod:
 	./etc/create-build-info.sh
 	docker-compose -f docker-compose-prod.yml build prod
 
+# FIXME: The auth doesn't work from make for some reason
+push-prod:
+	@echo docker push sbaird/tiddlyhost
+
 rails-init:
 	docker-compose run --rm base bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
@@ -85,16 +89,32 @@ cleanup:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-cert: etc/certs/localssl.cert
+cert: certs/ssl.cert
 
-etc/certs/localssl.cert:
+certs/ssl.cert:
 	@cd ./etc && ./create-local-ssl-cert.sh
 
 clear-cert:
-	@rm ./etc/certs/localssl.cert
-	@rm ./etc/certs/localssl.key
+	@rm ./certs/ssl.cert
+	@rm ./certs/ssl.key
 
 redo-cert: clear-cert cert
 
 github-url:
 	@echo https://github.com/simonbaird/tiddlyhost
+
+PLAY = ansible-playbook -i ansible/inventory.yml
+deploy:
+	$(PLAY) ansible/deploy.yml
+
+deploy-deps:
+	$(PLAY) -v ansible/deploy.yml --tags=deps
+
+deploy-certs:
+	$(PLAY) -v ansible/deploy.yml --tags=certs
+
+deploy-app:
+	$(PLAY) -v ansible/deploy.yml --tags=app
+
+deploy-ssh:
+	@ssh fedora@tiddlyhost.com

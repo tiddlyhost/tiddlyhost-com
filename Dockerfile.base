@@ -34,7 +34,7 @@ RUN echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.
 RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
 
 # Install self-signed SSL cert
-COPY --chown=$APP_USER:$APP_USER etc/certs $CERT_PATH
+COPY --chown=$APP_USER:$APP_USER ./certs $CERT_PATH
 
 # Install script to help start rails
 COPY --chown=$APP_USER:$APP_USER etc/start-rails.sh /bin

@@ -1,0 +1,129 @@
+
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+  - home_dir: /home/{{ ansible_user }}
+    root_home_dir: /root
+
+    certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
+    docker_compose_file: ../docker-compose-prod.yml
+
+    cert_host: tiddlyhost.com
+    letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
+    certs_dir: "{{ home_dir }}/certs"
+
+  tasks:
+
+  - name: Add repo for docker-ce
+    command:
+      cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+      creates: /etc/yum.repos.d/docker-ce.repo
+      warn: false
+    tags: deps
+
+  - name: Install docker and certbot
+    dnf:
+      state: present
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - certbot
+    tags: deps
+
+  - name: Start docker
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
+    tags: deps
+
+  - name: Pip install docker-compose and certbot-dns-route53
+    pip:
+      name:
+      - docker-compose
+      - certbot-dns-route53
+    tags: deps
+
+  - name: Create dir for certbot aws credentials
+    file:
+      path: "{{ root_home_dir }}/.aws"
+      state: directory
+    tags: certs
+
+  - name: Install AWS credentials for certbot
+    copy:
+      src: "{{ certbot_dns_credentials }}"
+      dest: "{{ root_home_dir }}/.aws/credentials"
+    tags: certs
+
+  - name: Create a cert if it doesn't exist
+    command:
+      cmd: >-
+        certbot certonly
+          -d {{ cert_host }} -d *.{{ cert_host }}
+          --dns-route53
+          -n --agree-tos -m simon.baird@gmail.com
+
+      creates: "{{ letsencrypt_dir }}/fullchain.pem"
+    tags: certs
+
+  - name: Renew certs maybe
+    command:
+      # TODO: The post-hook is untested, not sure if it will work
+      cmd: certbot renew --post-hook "docker-compose restart prod"
+    register: certbot_renew
+    tags: certs
+
+  - name: Show renew output
+    debug:
+      var: certbot_renew.stdout_lines
+    tags: certs
+
+  - name: Create dir for certs
+    file:
+      path: "{{ certs_dir }}"
+      state: directory
+    tags: certs
+
+  - name: Copy cert files to where the container looks for them
+    # TODO: It would be better to only do this if they changed
+    command:
+      cmd: cp {{ letsencrypt_dir }}/{{ item.from }} {{ certs_dir }}/{{ item.to }}
+    with_items:
+    - from: fullchain.pem
+      to: ssl.cert
+    - from: privkey.pem
+      to: ssl.key
+    tags: certs
+
+  - name: Update owner of the cert files
+    file:
+      path: "{{ certs_dir }}"
+      recurse: yes
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+    tags: certs
+
+  - name: Copy docker-compose file
+    become: no
+    copy:
+      src: "{{ docker_compose_file }}"
+      dest: "{{ home_dir }}/docker-compose.yml"
+    tags: app
+
+  - name: Pull latest images
+    # So docker-compose doesn't try to build
+    command:
+      cmd: docker-compose pull -q
+    tags: app
+
+  - name: Start our service
+    command:
+      cmd: docker-compose up --detach
+    environment:
+      # (Maybe we do need to copy up the key file)
+      RAILS_MASTER_KEY: "{{ lookup('file', '../rails/config/master.key') }}"
+    tags: app

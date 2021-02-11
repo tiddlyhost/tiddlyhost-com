@@ -13,7 +13,6 @@ USER $APP_USER
 ENV RAILS_ENV=production
 ENV APP_DATABASE_PASSWORD=notsecure123
 ENV RAILS_SERVE_STATIC_FILES=true
-ENV RAILS_LOG_TO_STDOUT=true
 
 # Copy our app into the container
 # Ignores things listed in .dockerignore
