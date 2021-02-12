@@ -7,5 +7,5 @@
   echo branch: `git rev-parse --abbrev-ref HEAD`
   # Might be useful later
   #echo tag: `git describe --tags --abbrev=0`
-  echo empty: `make empty-version`
+  echo empty: `make -s empty-version`
 ) > etc/build-info.txt
