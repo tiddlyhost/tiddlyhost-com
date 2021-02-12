@@ -2,11 +2,11 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-8">
-      Version: <%= App::VERSION %><br>
-      <% unless Rails.env.production? %>Env: <%= Rails.env %><br><% end %>
+      <%= link_to 'Report an issue', Settings.issues_url %><br>
     </div>
-    <div class="col-4" style="text-align:right;">
-      Tiddlyhost.com<br>
+    <div class="col-4" style="text-align: right;">
+      <% unless Rails.env.production? %>Env: <%= Rails.env %><br><% end %>
+      Version:<%= link_to App::VERSION, '/build-info.txt', target: '_blank' %><br>
       &copy; 2021 Simon Baird<br>
     </div>
   </div>

@@ -71,13 +71,17 @@ $contrast_color: #29AE4A;
 }
 
 main {
-    padding: 2em 1em;
+    padding: 1em 1em;
 }
 
 footer {
     padding: 10em 1.2em 2em;
     font-size: 80%;
-    opacity: 0.3;
+    opacity: 0.4;
+    a {
+        padding-left: 0.5em;
+        font-weight: bold;
+    }
 }
 
 h1 {
