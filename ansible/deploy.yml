@@ -127,3 +127,13 @@
       # (Maybe we do need to copy up the key file)
       RAILS_MASTER_KEY: "{{ lookup('file', '../rails/config/master.key') }}"
     tags: app
+
+  - name: Clean up unused docker images
+    command:
+      cmd: docker image prune -f
+    tags: app
+
+  - name: Clean up stale containers
+    command:
+      cmd: docker-compose rm
+    tags: app
