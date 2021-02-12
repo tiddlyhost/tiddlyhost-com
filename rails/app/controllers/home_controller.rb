@@ -38,6 +38,9 @@ class HomeController < ApplicationController
     render template: 'devise/registrations/after_registration'
   end
 
+  def donate
+  end
+
   private
 
   def site_visible?

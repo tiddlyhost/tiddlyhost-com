@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     root to: 'home#index'
     get 'home/index'
     get 'home/after_registration'
+    get 'donate', to: 'home#donate'
     resources :sites
   end
 
