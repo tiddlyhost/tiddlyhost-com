@@ -1,7 +1,8 @@
 ---
 # May be overridden by values in settings_local.yml
 
-defaults: {}
+defaults:
+  issues_url: https://github.com/simonbaird/tiddlyhost/issues
 
 development:
   url_defaults:
