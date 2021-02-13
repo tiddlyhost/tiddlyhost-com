@@ -15,6 +15,10 @@
     <% if user_signed_in? %>
       <ul class="navbar-nav mr-auto">
         <%= nav_link_to "Home", root_path %>
+        <% if current_user.is_admin? %>
+          <%= nav_link_to "Users", admin_users_path %>
+          <%= nav_link_to "Sites", admin_sites_path %>
+        <% end %>
       </ul>
       <ul class="navbar-nav ml-auto">
         <%= nav_link_to current_user.name, edit_user_registration_path, icon: 'person-fill' %>

@@ -22,4 +22,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
   end
 
+  def require_admin_user!
+    # Todo: A nicer 403 response
+    raise "Unauthorized!" unless current_user && current_user.is_admin?
+  end
+
 end

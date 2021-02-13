@@ -3,6 +3,11 @@ class Site < ApplicationRecord
 
   has_one_attached :tiddlywiki_file
 
+  delegate :blob, to: :tiddlywiki_file
+  delegate :byte_size, :key, :created_at, to: :blob, prefix: true
+
+  delegate :name, :email, to: :user, prefix: true
+
   validates :name,
     presence: true,
     uniqueness: true,

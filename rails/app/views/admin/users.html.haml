@@ -1,0 +1,23 @@
+
+%h1 Users
+
+%table.dataTable.display.responsive.nowrap
+  %thead
+    %tr
+      %th Id
+      %th Email
+      %th Name
+      %th Plan
+      %th Current sign in
+      %th Last sign in
+      %th Created
+  %tbody
+    -@users.each do |u|
+      %tr
+        %td= u.id
+        %td= u.email
+        %td= u.name
+        %td= u.plan.name
+        %td= nice_timestamp u.current_sign_in_at
+        %td= nice_timestamp u.last_sign_in_at
+        %td= nice_timestamp u.created_at

@@ -15,9 +15,15 @@ Rails.application.routes.draw do
   #
   constraints(->(req) { req.subdomain.blank? || req.subdomain == 'www' }) do
     root to: 'home#index'
+
     get 'home/index'
     get 'home/after_registration'
+
     get 'donate', to: 'home#donate'
+
+    get 'admin/users'
+    get 'admin/sites'
+
     resources :sites
   end
 

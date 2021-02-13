@@ -8,6 +8,8 @@ import * as ActiveStorage from "@rails/activestorage"
 
 import "bootstrap"
 
+import "datatables.net-dt"
+
 Rails.start()
 ActiveStorage.start()
 
@@ -33,5 +35,7 @@ $(document).ready(function(){
         replace(/^-/, '')
     );
   });
+
+  $('table.dataTable').DataTable();
 
 });
