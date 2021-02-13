@@ -3,6 +3,7 @@
 
 defaults:
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
+  default_plan_name: basic
 
 development:
   url_defaults:

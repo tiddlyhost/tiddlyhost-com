@@ -1,7 +1,12 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  setup do
+    @user = users(:bobby)
+  end
+
+  test "user plans" do
+    assert_equal 'basic', @user.plan.name
+  end
 end
