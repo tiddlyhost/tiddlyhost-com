@@ -1,6 +1,7 @@
 ---
 bobby:
   id: 1
+  plan_id: 1
   email: bobby@tables.com
   encrypted_password: "$2a$12$7Vo3LPYma6We0nrvr.8iiewwdiir2g1BncZreaif3juRKLUZWOPMi"
   reset_password_token:

@@ -1,0 +1,7 @@
+---
+basic:
+  id: 1
+  name: basic
+superuser:
+  id: 2
+  name: superuser
