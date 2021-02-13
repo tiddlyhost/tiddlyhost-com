@@ -6,25 +6,28 @@ About
 
 Tiddlyhost is the new new Tiddlyspot, a hosting service for TiddlyWiki.
 
-Rough plan (Jan 2021):
-* Should be 100% containerized from the start
-* Should use SSL from the start
-* Will use Rails, for better or for worse
-* Should have a serious deploy process (somehow)
-* Should support subscription billing for users (somehow)
-* Use S3 for saving Tiddlywiki files (probably)
+Unlike Tiddlyspot, Tiddlyhost features:
 
-Tiddlyhost will be somewhat based on an unfinished 2015-ish rewrite of
-tiddlyspot-rails which used devise for account management.
+* Secure SSL
+* Password recovery
+* TiddlyWiki5 support
+* Open source code
+
+For more information please see
+[FAQ](https://github.com/simonbaird/tiddlyhost/wiki/FAQ).
 
 
 Current Status (Feb 2021)
 -------------------------
 
-Very early stages of development.
+It's still in the early stages of development, but it is now functional.
 
-It's mostly functional on my local development environment. The next steps are
-to figure out how to host it somewhere and how to set up a wildcard SSL cert.
+Currently [tiddlyhost.com](https://tiddlyhost.com/) is in "development
+mode", which means it might be unstable, and you shouldn't use it for anything
+important.
+
+For more status updates see the
+[Journal](https://github.com/simonbaird/tiddlyhost/wiki/Journal).
 
 
 Getting Started (for developers)
