@@ -1,0 +1,27 @@
+
+%h1 Sites
+
+%table.dataTable.display.responsive.nowrap
+  %thead
+    %tr
+      %th Id
+      %th Name
+      %th Private?
+      %th Owner
+      %th Email
+      %th Storage key
+      %th Size (MB)
+      %th Last update
+      %th Created
+  %tbody
+    -@sites.each do |s|
+      %tr
+        %td= s.id
+        %td= site_link s
+        %td= bool_text s.is_private?
+        %td= s.user_name
+        %td= s.user_email
+        %td= s.blob_key
+        %td= as_megabytes s.blob_byte_size
+        %td= nice_timestamp s.blob_created_at
+        %td= nice_timestamp s.created_at

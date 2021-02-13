@@ -8,4 +8,17 @@ class User < ApplicationRecord
   has_many :sites, dependent: :destroy
   belongs_to :plan
   validates_presence_of :name
+
+  def has_plan?(plan_name)
+    plan.name == plan_name.to_s
+  end
+
+  def is_superuser?
+    has_plan?(:superuser)
+  end
+
+  def is_admin?
+    is_superuser?
+  end
+
 end

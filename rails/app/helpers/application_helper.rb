@@ -29,4 +29,19 @@ module ApplicationHelper
     end
   end
 
+  def bool_text(bool_val, true_text:'Y', false_text:'N')
+    bool_val ? true_text : false_text
+  end
+
+  def as_megabytes(bytes)
+    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: 2)
+  end
+
+  def nice_timestamp(timestamp)
+    return '-' if timestamp.nil?
+    content_tag :span, title: timestamp.to_s do
+      "#{time_ago_in_words(timestamp)} ago"
+    end
+  end
+
 end
