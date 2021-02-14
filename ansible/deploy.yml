@@ -5,6 +5,7 @@
 
   vars:
     certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
+    docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
 
     cert_host: tiddlyhost.com
@@ -47,6 +48,19 @@
       - certbot-dns-route53
     tags: deps
 
+  - name: Make .docker dir for root user
+    file:
+      path: "{{ root_home_dir }}/.docker"
+      state: directory
+    tags: deps
+
+  - name: Copy config.json file for docker pull credentials
+    copy:
+      src: "{{ docker_config_json }}"
+      dest: "{{ root_home_dir }}/.docker/config.json"
+      mode: "0600"
+    tags: deps
+
   - name: Create dir for certbot aws credentials
     file:
       path: "{{ root_home_dir }}/.aws"
@@ -57,6 +71,7 @@
     copy:
       src: "{{ certbot_dns_credentials }}"
       dest: "{{ root_home_dir }}/.aws/credentials"
+      mode: "0600"
     tags: certs
 
   - name: Create a cert if it doesn't exist
