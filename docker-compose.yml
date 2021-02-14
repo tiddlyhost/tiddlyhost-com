@@ -21,6 +21,11 @@ services:
 
     command: /bin/start-rails.sh
 
+    environment:
+      # Set this to "no" to use SSL locally. Beware you'll need
+      # to clear your cookies to avoid authenticity token errors.
+      START_WITHOUT_SSL: "yes"
+
   db:
     image: postgres
 
