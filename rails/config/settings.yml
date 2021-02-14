@@ -9,7 +9,7 @@ development:
   url_defaults:
     :host: tiddlyhost.local
     :port: 3000
-    :protocol: https
+    :protocol: <%= ENV['START_WITHOUT_SSL'] == 'yes' ? 'http' : 'https' %>
 
 test:
   url_defaults:

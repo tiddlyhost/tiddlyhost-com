@@ -73,7 +73,7 @@ You should now be able to start rails like this:
 
     make start
 
-Visit <https://tiddlyhost.local:3000/> in your browser and you should see a working
+Visit <http://tiddlyhost.local:3000/> in your browser and you should see a working
 application.
 
 Note that the development environment is using a self-signed SSL certificate,
