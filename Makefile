@@ -16,6 +16,7 @@ push-prod:
 	@echo docker push sbaird/tiddlyhost
 
 rails-init:
+	mkdir -p .postgresql-data
 	docker-compose run --rm base bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
 	  bundle exec rails db:create && \
@@ -82,10 +83,11 @@ tests:
 	  docker-compose exec base bin/rails test\:all; \
 	fi
 
-# Stop and remove containers
+# Stop and remove containers, clean up unused images
 cleanup:
 	docker-compose stop
 	docker-compose rm -f
+	docker image prune -f
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
@@ -95,8 +97,8 @@ certs/ssl.cert:
 	@cd ./etc && ./create-local-ssl-cert.sh
 
 clear-cert:
-	@rm ./certs/ssl.cert
-	@rm ./certs/ssl.key
+	@rm -f ./certs/ssl.cert
+	@rm -f ./certs/ssl.key
 
 redo-cert: clear-cert cert
 
