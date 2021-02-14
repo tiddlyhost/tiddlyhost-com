@@ -1,0 +1,15 @@
+
+%h1 Donations
+
+.row
+  .col-12{style: 'max-width: 38em;'}
+    %p
+      If you find Tiddlyhost useful then please consider a donation. A donation
+      will help cover hosting costs, and encourage the continued support and
+      development of Tiddlyhost.
+
+    %p
+      Click the button below to donate using
+      =link_to('PayPal', "https://www.paypal.com/", target: '_blank') + '.'
+
+    %div{style: 'padding: 1em;'}= render 'paypal_donate_button'
