@@ -1,8 +1,5 @@
 class HomeController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :todo, :after_registration, :serve_tiddlywiki, :save_tiddlywiki]
-
   before_action :find_site, only: [:serve_tiddlywiki, :save_tiddlywiki]
-
   skip_before_action :verify_authenticity_token, only: :save_tiddlywiki
 
   def index
