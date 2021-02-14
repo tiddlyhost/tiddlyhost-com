@@ -25,6 +25,9 @@ openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out serv
 # Clean up
 rm server.pass.key
 rm server.csr
+
+# Put the certs where we need them
+mkdir -p ../certs
 mv server.key ../certs/ssl.key
 mv server.crt ../certs/ssl.cert
 
