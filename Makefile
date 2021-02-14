@@ -11,9 +11,12 @@ build-prod:
 	./etc/create-build-info.sh
 	docker-compose -f docker-compose-prod.yml build prod
 
-# FIXME: The auth doesn't work from make for some reason
 push-prod:
-	@echo docker push sbaird/tiddlyhost
+	docker --config etc/docker-conf push sbaird/tiddlyhost
+
+build-deploy: tests build-prod push-prod deploy-app
+
+full-build-deploy: cleanup build-base tests build-prod push-prod deploy
 
 rails-init:
 	mkdir -p .postgresql-data
