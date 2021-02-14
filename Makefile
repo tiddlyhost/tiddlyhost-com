@@ -116,5 +116,12 @@ deploy-certs:
 deploy-app:
 	$(PLAY) -v ansible/deploy.yml --tags=app
 
+deploy-scripts:
+	$(PLAY) -v ansible/deploy.yml --tags=scripts
+
+deploy-backup:
+	mkdir -p backups
+	$(PLAY) -v ansible/backup.yml
+
 deploy-ssh:
 	@ssh fedora@tiddlyhost.com

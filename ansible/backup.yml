@@ -1,0 +1,31 @@
+
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+    local_backup_dir: ../backups
+
+  tasks:
+  - name: Make a fresh backup of the database
+    command: "{{ bin_dir }}/db-backup"
+
+  - name: Download all the files
+    # Beware it will overwrite existing files
+    # TODO: Timestamps maybe?
+    fetch:
+      src: "{{ item }}"
+      dest: "{{ local_backup_dir }}/"
+      flat: yes
+      fail_on_missing: no
+    with_items:
+    - "{{ db_dump_file }}"
+    - "{{ db_dump_file }}.1"
+    - "{{ db_dump_file }}.2"
+    - "{{ db_dump_file }}.3"
+    - "{{ db_dump_file }}.4"
+    - "{{ db_dump_file }}.5"
+    - "{{ db_dump_file }}.6"
+    - "{{ db_dump_file }}.7"
+    - "{{ db_dump_file }}.8"
+    - "{{ db_dump_file }}.9"

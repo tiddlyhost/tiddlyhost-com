@@ -11,3 +11,4 @@ rails/config/master.key
 certs
 etc/build-info.txt
 etc/certbot-dns-user-credentials.yml
+backups

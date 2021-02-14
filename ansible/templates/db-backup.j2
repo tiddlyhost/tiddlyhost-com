@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p {{ backups_dir }}
+
+# Keep a few old backups
+for i in {8..0}; do
+  [[ -f {{ db_dump_file }}.$i ]] && mv {{ db_dump_file }}.$i {{ db_dump_file }}.$((i+1))
+done
+mv {{ db_dump_file }} {{ db_dump_file }}.0
+
+# Make a new backup
+sudo docker-compose exec db bash -c \
+  'pg_dump --dbname={{ db_name }} --username={{ db_user }}' | gzip > {{ db_dump_file }}
