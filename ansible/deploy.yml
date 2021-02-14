@@ -4,15 +4,15 @@
   become_user: root
 
   vars:
-  - home_dir: /home/{{ ansible_user }}
-    root_home_dir: /root
-
     certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
     docker_compose_file: ../docker-compose-prod.yml
 
     cert_host: tiddlyhost.com
     letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
     certs_dir: "{{ home_dir }}/certs"
+
+    db_name: app_production
+    db_user: postgres
 
   tasks:
 
@@ -137,3 +137,20 @@
     command:
       cmd: docker-compose rm
     tags: app
+
+  - name: Create bin dir
+    become: no
+    file:
+      path: "{{ bin_dir }}"
+      state: directory
+    tags: scripts
+
+  - name: Copy up some scripts
+    become: no
+    template:
+      src: templates/{{ item }}.j2
+      dest: "{{ bin_dir }}/{{ item }}"
+      mode: "0755"
+    with_items:
+    - db-backup
+    tags: scripts

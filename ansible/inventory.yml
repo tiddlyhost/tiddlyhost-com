@@ -2,3 +2,10 @@ all:
   hosts:
     tiddlyhost.com:
       ansible_user: fedora
+
+  vars:
+    root_home_dir: /root
+    home_dir: /home/{{ ansible_user }}
+    bin_dir: "{{ home_dir }}/bin"
+    backups_dir: "{{ home_dir }}/backups"
+    db_dump_file: "{{ backups_dir }}/dbdump.gz"
