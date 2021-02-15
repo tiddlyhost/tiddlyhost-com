@@ -7,6 +7,7 @@ div.dataTables_wrapper div.dataTables_length select {
 }
 
 @import "sites";
+@import "hub";
 
 // Color (respectfully) stolen from TW...
 // Todo: Review color scheme, branding etc
@@ -101,4 +102,20 @@ h1 {
 
 .nowrap {
     white-space: nowrap;
+}
+
+// Recycle the .page-link bootstrap class.
+// FIXME: It doesn't work for active and inactive links.
+.pagination {
+    .previous_page,.next_page {
+        @extend .page-link;
+    }
+
+    a,em {
+        @extend .page-link;
+    }
+
+    em.current {
+        @extend .page-link
+    }
 }

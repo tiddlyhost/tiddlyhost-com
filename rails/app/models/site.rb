@@ -11,6 +11,12 @@ class Site < ApplicationRecord
 
   delegate :name, :email, to: :user, prefix: true
 
+  # Default for pagination
+  self.per_page = 15
+
+  # Private sites are not searchable even if is_searchable is set
+  scope :searchable, -> { where(is_private: false, is_searchable: true) }
+
   validates :name,
     presence: true,
     uniqueness: true,

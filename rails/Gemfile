@@ -30,6 +30,9 @@ gem 'devise'
 # For captcha and strong passwords
 gem 'devise-security'
 
+# Pagination
+gem 'will_paginate'
+
 # Why not...
 gem 'haml-rails'
 
