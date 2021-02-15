@@ -25,3 +25,15 @@
 .page_info {
     margin-bottom: 1em;
 }
+
+.site-tags {
+    line-height: 80%;
+    span {
+        border-radius: 1em;
+        background-color: #ec6;
+        color: #555;
+        font-size: 65%;
+        padding: 0.2em 0.4em;
+        margin-right:0.2em;
+    }
+}

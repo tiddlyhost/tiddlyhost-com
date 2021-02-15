@@ -16,4 +16,13 @@ module SitesHelper
 
     ].compact.join(', ')
   end
+
+  def site_tags(site)
+    safe_join(site.tag_list.map do |tag_name|
+      content_tag :span do
+        tag_name
+      end
+    end)
+  end
+
 end

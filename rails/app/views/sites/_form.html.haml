@@ -18,6 +18,11 @@
     %small.form-text.text-muted Optional.
 
   %div.form-group
+    = f.label :tag_list, 'Tags'
+    = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
+    %small.form-text.text-muted Enter a comma delimited tag list
+
+  %div.form-group
     %div.form-check
       = f.check_box :is_private, class: 'form-check-input'
       = f.label :is_private, 'Private', class: 'form-check-label'

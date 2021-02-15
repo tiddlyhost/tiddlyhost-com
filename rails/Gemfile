@@ -33,6 +33,9 @@ gem 'devise-security'
 # Pagination
 gem 'will_paginate'
 
+# https://github.com/mbleigh/acts-as-taggable-on
+gem 'acts-as-taggable-on', '~> 7.0'
+
 # Why not...
 gem 'haml-rails'
 
