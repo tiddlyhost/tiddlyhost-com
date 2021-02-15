@@ -10,14 +10,16 @@
       - @sites.each do |site|
         %tr
           %td
-            %span.minilabel Location
+            .minilabel Site
             = site_long_link(site, target: '_blank')
+            %br
+            %small.nowrap.text-truncated.text-muted{style: 'max-width:25em; display: inline-block;'}
+              = span_with_title(site.description)
           %td
-            %span.minilabel Access
-            = site.is_private? ? 'Private' : 'Public'
+            .minilabel Access
+            = site_access(site)
 
-          %td
-            %span.minilabel &nbsp;
+          %td{style: 'padding-top: 1.2em;'}
             = link_to(edit_site_path(site), class: 'btn btn-sm') { bi_icon('sliders') + 'Settings' }
             = link_to("javascript:;", class: 'delete-confirm btn btn-sm') { bi_icon('trash') + 'Delete' }
             = link_to('Cancel ', "javascript:;", class: 'delete-cancel btn btn-sm', style: 'display: none;')

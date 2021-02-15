@@ -80,10 +80,10 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_create
-    params.require(:site).permit(:name, :is_private).merge(user_id: current_user.id)
+    params.require(:site).permit(:name, :description, :is_private, :is_searchable).merge(user_id: current_user.id)
   end
 
   def site_params_for_update
-    params.require(:site).permit(:name, :is_private)
+    params.require(:site).permit(:name, :description, :is_private, :is_searchable)
   end
 end

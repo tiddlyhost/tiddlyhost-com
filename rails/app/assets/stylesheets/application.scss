@@ -93,3 +93,12 @@ footer {
 h1 {
     color: #555;
 }
+
+.text-truncated {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nowrap {
+    white-space: nowrap;
+}

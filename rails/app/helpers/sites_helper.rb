@@ -8,4 +8,12 @@ module SitesHelper
   def site_long_link(site, opts={})
     link_to URI(site.url).hostname, site.url, {target: '_blank'}.merge(opts)
   end
+
+  def site_access(site)
+    [
+      site.is_public? ? 'Public' : 'Private',
+      site.is_public? && site.is_searchable? ? 'Searchable' : nil
+
+    ].compact.join(', ')
+  end
 end

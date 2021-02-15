@@ -44,4 +44,12 @@ module ApplicationHelper
     end
   end
 
+  # For use with overflow: hidden.
+  # You can see the full text on hover.
+  def span_with_title(text)
+    content_tag :span, title: text do
+      text
+    end
+  end
+
 end
