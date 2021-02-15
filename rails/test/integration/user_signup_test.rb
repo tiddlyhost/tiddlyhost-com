@@ -3,7 +3,8 @@ require "test_helper"
 class UserSignupTest < CapybaraIntegrationTest
 
   test "user signup" do
-    name, email, password = 'Testy McTest', 'tmctest@mail.com', 'trustno1'
+    name, email, weak_password, strong_password =
+      'Testy McTest', 'tmctest@mail.com', 'trstno1', 'trUst|no1'
 
     # Visit home page and click sign up link
     visit '/'
@@ -12,8 +13,20 @@ class UserSignupTest < CapybaraIntegrationTest
     # Fill in the sign up form fields
     fill_in 'user[name]', with: name
     fill_in 'user[email]', with: email
-    fill_in 'user[password]', with: password
-    fill_in 'user[password_confirmation]', with: password
+    fill_in 'user[password]', with: weak_password
+    fill_in 'user[password_confirmation]', with: weak_password
+
+    # Submit
+    click_button 'Create account'
+
+    # Password is not strong enough...
+    assert page.has_content?('Password is too short')
+    assert page.has_content?('Password must contain at least one punctuation mark or symbol')
+    assert page.has_content?('Password must contain at least one upper-case letter')
+
+    # Try again
+    fill_in 'user[password]', with: strong_password
+    fill_in 'user[password_confirmation]', with: strong_password
 
     # Click the sign up button and confirm an email is sent
     assert_difference('ActionMailer::Base.deliveries.count') { click_button 'Create account' }
@@ -31,7 +44,7 @@ class UserSignupTest < CapybaraIntegrationTest
 
     # Login
     fill_in 'user[email]', with: email
-    fill_in 'user[password]', with: password
+    fill_in 'user[password]', with: strong_password
     click_button 'Log in'
 
     # Confirm we are logged in

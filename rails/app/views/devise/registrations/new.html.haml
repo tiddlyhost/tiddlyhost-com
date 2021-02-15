@@ -18,7 +18,7 @@
   .form-group
     = f.label :password
     = f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted= "#{ @minimum_password_length } characters minimum"
+    %small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
 
   .form-group
     = f.label :password_confirmation

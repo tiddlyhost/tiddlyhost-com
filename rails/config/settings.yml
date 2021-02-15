@@ -4,6 +4,7 @@
 defaults:
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
   default_plan_name: basic
+  minimum_password_length: 8
 
 development:
   url_defaults:
