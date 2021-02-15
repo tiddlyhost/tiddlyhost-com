@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     get 'admin/users'
     get 'admin/sites'
 
+    get 'hub', to: 'hub#index'
+
     resources :sites
   end
 

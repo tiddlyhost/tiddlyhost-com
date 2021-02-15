@@ -52,4 +52,11 @@ module ApplicationHelper
     end
   end
 
+  # Same thing but truncate in the dom
+  def span_with_title_truncated(full_text, truncate_length=100)
+    content_tag :span, title: full_text do
+      truncate(full_text, length: truncate_length, separator: ' ')
+    end
+  end
+
 end

@@ -1,0 +1,19 @@
+
+%h1 Tiddlyhost Hub
+
+.page_info.text-muted
+  = page_entries_info(@sites, model: Site)
+
+.hub
+  - @sites.each do |s|
+    .site
+      .name
+        = site_long_link s
+      .description
+        = span_with_title_truncated(s.description)
+      .owner
+        %span Owner:
+        = s.user.name
+
+.pagination
+  = will_paginate(@sites)
