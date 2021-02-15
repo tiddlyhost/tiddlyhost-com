@@ -99,6 +99,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-security (0.15.0)
+      devise (>= 4.3.0, < 5.0)
     erubi (1.10.0)
     erubis (2.7.0)
     ffi (1.14.2)
@@ -244,6 +246,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
+  devise-security
   haml-rails
   jbuilder (~> 2.7)
   pg (~> 1.1)
@@ -263,4 +266,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.2.4
+   2.2.7
