@@ -27,6 +27,9 @@ gem 'rexml'
 # Use devise for user management and authentication
 gem 'devise'
 
+# For captcha and strong passwords
+gem 'devise-security'
+
 # Why not...
 gem 'haml-rails'
 
