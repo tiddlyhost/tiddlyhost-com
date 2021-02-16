@@ -9,7 +9,7 @@
 
   %div.form-group
     = f.label :name, @site.new_record? ? 'Choose a name:' : 'Name:'
-    = f.text_field :name, class: 'form-control site-name', maxlength: 63, style: 'width: 20em; margin-left: 0.25em;'
+    = f.text_field :name, class: 'form-control', maxlength: 63, style: 'width: 20em; margin-left: 0.25em;'
     %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
   %div.form-group

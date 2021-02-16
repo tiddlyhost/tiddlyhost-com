@@ -22,7 +22,7 @@ $(document).ready(function(){
 
   // Make it so the user can't easily type invalid names.
   // We'll validate the name on the server as well, see app/models/site.
-  $('.site-name').on('keyup', function(){
+  $('#site_name').on('keyup', function(){
     $(this).val(
       $(this).val().
         // Remove anything that's not a letter, numeral or dash
