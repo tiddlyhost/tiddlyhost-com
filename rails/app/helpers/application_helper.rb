@@ -14,6 +14,15 @@ module ApplicationHelper
     end
   end
 
+  def hub_link_to(title, link, opts={})
+    is_active = current_page?(link)
+    content_tag :li, class: 'nav-item' do
+      link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
+        title
+      end
+    end
+  end
+
   def bi_icon(icon, opts={})
     return unless icon
 
