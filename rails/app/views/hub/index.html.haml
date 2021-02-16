@@ -1,8 +1,15 @@
 
-%h1 Tiddlyhost Hub
+%h1= @title
+
+%div{style: "margin-bottom: 2em;"}
+  %ul.nav.nav-tabs
+    = hub_link_to('All', '/hub')
+    - @hub_tags.each do |k, tag_info|
+      = hub_link_to(tag_info[:title], "/hub/#{k}")
 
 .page_info.text-muted
   = page_entries_info(@sites, model: Site)
+  = "tagged with #{@tag}" if @tag.present?
 
 .hub
   - @sites.each do |s|
@@ -14,6 +21,8 @@
       .owner
         %span Owner:
         = s.user.name
+      - unless s.tag_list.empty?
+        .site-tags= site_tags(s)
 
 .pagination
   = will_paginate(@sites)
