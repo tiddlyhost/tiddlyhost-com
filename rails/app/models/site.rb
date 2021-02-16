@@ -3,8 +3,11 @@ class Site < ApplicationRecord
 
   has_one_attached :tiddlywiki_file
 
-  delegate :blob, to: :tiddlywiki_file
-  delegate :byte_size, :key, :created_at, to: :blob, prefix: true
+  delegate :blob,
+    to: :tiddlywiki_file, allow_nil: Settings.nil_blobs_ok?
+
+  delegate :byte_size, :key, :created_at,
+    to: :blob, prefix: true, allow_nil: Settings.nil_blobs_ok?
 
   delegate :name, :email, to: :user, prefix: true
 

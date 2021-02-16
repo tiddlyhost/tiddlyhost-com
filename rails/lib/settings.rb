@@ -34,4 +34,8 @@ class Settings
     self.url_defaults[:protocol] == 'https'
   end
 
+  def self.nil_blobs_ok?
+    Rails.env.development?
+  end
+
 end
