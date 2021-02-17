@@ -12,4 +12,5 @@ certs
 etc/build-info.txt
 etc/certbot-dns-user-credentials.yml
 etc/docker-conf/
+etc/openrc.sh
 backups
