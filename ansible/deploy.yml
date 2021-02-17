@@ -143,6 +143,17 @@
       RAILS_MASTER_KEY: "{{ lookup('file', '../rails/config/master.key') }}"
     tags: app
 
+  - name: Apply database migrations
+    command:
+      cmd: docker-compose exec prod bash -c "bin/rails db:migrate"
+    tags: app
+    register: db_migrate
+
+  - name: Show database migration output
+    debug:
+      var: db_migrate.stdout_lines
+    tags: app
+
   - name: Clean up unused docker images
     command:
       cmd: docker image prune -f
