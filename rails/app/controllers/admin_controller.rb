@@ -7,7 +7,12 @@ class AdminController < ApplicationController
   end
 
   def sites
-    @sites = Site.all
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      @sites = Site.where(user: @user)
+    else
+      @sites = Site.all
+    end
   end
 
 end

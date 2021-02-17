@@ -1,5 +1,5 @@
 
-%h1 Users
+%h2 Users
 
 %table.dataTable.display.responsive.nowrap
   %thead
@@ -8,6 +8,7 @@
       %th Email
       %th Name
       %th Plan
+      %th Sites
       %th Current sign in
       %th Last sign in
       %th Created
@@ -18,6 +19,7 @@
         %td= u.email
         %td= u.name
         %td= u.plan.name
+        %td= link_to_user_sites(pluralize(u.sites.count, 'site'), u)
         %td= nice_timestamp u.current_sign_in_at
         %td= nice_timestamp u.last_sign_in_at
         %td= nice_timestamp u.created_at
