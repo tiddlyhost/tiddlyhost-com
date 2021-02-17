@@ -14,6 +14,15 @@ module ApplicationHelper
     end
   end
 
+  def hub_link_to(title, link, opts={})
+    is_active = current_page?(link)
+    content_tag :li, class: 'nav-item' do
+      link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
+        title
+      end
+    end
+  end
+
   def bi_icon(icon, opts={})
     return unless icon
 
@@ -41,6 +50,21 @@ module ApplicationHelper
     return '-' if timestamp.nil?
     content_tag :span, title: timestamp.to_s do
       "#{time_ago_in_words(timestamp)} ago"
+    end
+  end
+
+  # For use with overflow: hidden.
+  # You can see the full text on hover.
+  def span_with_title(text)
+    content_tag :span, title: text do
+      text
+    end
+  end
+
+  # Same thing but truncate in the dom
+  def span_with_title_truncated(full_text, truncate_length=100)
+    content_tag :span, title: full_text do
+      truncate(full_text, length: truncate_length, separator: ' ')
     end
   end
 

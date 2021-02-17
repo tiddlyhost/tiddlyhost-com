@@ -15,6 +15,7 @@
     <% if user_signed_in? %>
       <ul class="navbar-nav mr-auto">
         <%= nav_link_to "Home", root_path %>
+        <%= nav_link_to "Hub", '/hub' %>
         <% if current_user.is_admin? %>
           <%= nav_link_to "Users", admin_users_path %>
           <%= nav_link_to "Sites", admin_sites_path %>
@@ -27,6 +28,7 @@
     <% else %>
       <ul class="navbar-nav mr-auto">
         <%= nav_link_to "Home", root_path %>
+        <%= nav_link_to "Hub", '/hub' %>
         <%= nav_link_to "Log in", new_user_session_path %>
         <%= nav_link_to "Sign up", new_user_registration_path %>
       </ul>

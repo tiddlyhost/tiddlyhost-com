@@ -24,6 +24,11 @@ Rails.application.routes.draw do
     get 'admin/users'
     get 'admin/sites'
 
+    get 'hub', to: 'hub#index'
+    Settings.hub_tags.keys.each do |k|
+      get "hub/#{k}", controller: :hub
+    end
+
     resources :sites
   end
 

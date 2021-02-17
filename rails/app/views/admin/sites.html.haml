@@ -6,7 +6,9 @@
     %tr
       %th Id
       %th Name
+      %th Description
       %th Private?
+      %th Searchable?
       %th Owner
       %th Email
       %th Storage key
@@ -18,7 +20,10 @@
       %tr
         %td= s.id
         %td= site_link s
+        %td.nowrap.text-truncated{style: 'max-width: 6em;'}
+          = span_with_title(s.description)
         %td= bool_text s.is_private?
+        %td= bool_text s.is_searchable?
         %td= s.user_name
         %td= s.user_email
         %td= s.blob_key
