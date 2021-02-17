@@ -1,0 +1,46 @@
+#!/bin/bash
+# chkconfig: 2345 20 80
+# description: Tiddlyhost
+
+# Source function library
+. /etc/init.d/functions
+
+START_DIR={{ home_dir }}
+MASTER_KEY_FILE={{ secrets_dir }}/master.key
+DOCKER_COMPOSE=/usr/local/bin/docker-compose
+
+start() {
+    RAILS_MASTER_KEY=$( cat $MASTER_KEY_FILE ) $DOCKER_COMPOSE up --detach
+}
+
+stop() {
+    $DOCKER_COMPOSE down
+}
+
+cd $START_DIR
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    status)
+        $DOCKER_COMPOSE ps --services --filter status=running
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|status|restart}"
+        ;;
+
+esac
+
+exit 0
