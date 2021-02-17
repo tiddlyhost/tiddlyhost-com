@@ -7,11 +7,14 @@
     certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
     docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
+    master_key_file: ../rails/config/master.key
 
     cert_host: tiddlyhost.com
     letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
     certs_dir: "{{ home_dir }}/certs"
+    secrets_dir: "{{ home_dir }}/secrets"
 
+    service_name: thost
     db_name: app_production
     db_user: postgres
 
@@ -24,7 +27,7 @@
       warn: false
     tags: deps
 
-  - name: Install docker and certbot
+  - name: Install docker, certbot and chkconfig
     dnf:
       state: present
       name:
@@ -32,9 +35,10 @@
       - docker-ce-cli
       - containerd.io
       - certbot
+      - chkconfig
     tags: deps
 
-  - name: Start docker
+  - name: Start docker service
     systemd:
       name: docker
       state: started
@@ -135,12 +139,33 @@
       cmd: docker-compose pull -q
     tags: app
 
-  - name: Start our service
-    command:
-      cmd: docker-compose up --detach
-    environment:
-      # (Maybe we do need to copy up the key file)
-      RAILS_MASTER_KEY: "{{ lookup('file', '../rails/config/master.key') }}"
+  - name: Create dir for secrets
+    become: no
+    file:
+      path: "{{ secrets_dir }}"
+      state: directory
+    tags: app
+
+  - name: Copy master key file
+    become: no
+    copy:
+      src: "{{ master_key_file }}"
+      dest: "{{ secrets_dir }}/master.key"
+      mode: "0400"
+    tags: app
+
+  - name: Copy init script
+    template:
+      src: templates/{{ service_name }}.j2
+      dest: /etc/init.d/{{ service_name }}
+      mode: "0755"
+    tags: app
+
+  - name: Start/restart service and ensure it's enabled
+    systemd:
+      name: "{{ service_name }}"
+      state: restarted
+      enabled: yes
     tags: app
 
   - name: Apply database migrations
