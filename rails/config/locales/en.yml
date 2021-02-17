@@ -31,3 +31,12 @@
 
 en:
   hello: "Hello world"
+
+  # This is a little annoying...
+  will_paginate:
+    models:
+      site:
+        zero:  sites
+        one:   site
+        few:   sites
+        other: sites

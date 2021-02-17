@@ -1,0 +1,39 @@
+
+.hub {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    .site {
+        vertical-align: top;
+        display: inline-block;
+        width: 16em;
+        margin: 1em;
+        .description {
+            font-size: 90%;
+            margin-left: 0.5em;
+        }
+        .owner {
+            font-size: 80%;
+            margin-left: 0.5em;
+            color: #555;
+            span {
+                color: #999;
+            }
+        }
+    }
+}
+
+.page_info {
+    margin-bottom: 1em;
+}
+
+.site-tags {
+    line-height: 80%;
+    span {
+        border-radius: 1em;
+        background-color: #ec6;
+        color: #555;
+        font-size: 65%;
+        padding: 0.2em 0.4em;
+        margin-right:0.2em;
+    }
+}

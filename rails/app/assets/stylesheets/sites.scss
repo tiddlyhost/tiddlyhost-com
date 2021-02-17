@@ -2,6 +2,7 @@
 table.sites {
     td {
         padding: 0.5em 1.5em;
+        vertical-align: top;
 
         .btn {
             margin-right: 1em;
@@ -12,7 +13,6 @@ table.sites {
 }
 
 .minilabel {
-    display: block;
     text-transform: uppercase;
     color: #bbb;
     font-size: 60%;

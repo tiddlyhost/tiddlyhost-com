@@ -36,6 +36,12 @@ $(document).ready(function(){
     );
   });
 
+  // If site is set to private, automatically make it unsearchable
+  // If site is set to searchable, automatically make it public
+  $('#site_is_private'   ).on('change', function(){ if ($(this).prop('checked')) { $('#site_is_searchable').prop('checked', false); } });
+  $('#site_is_searchable').on('change', function(){ if ($(this).prop('checked')) { $('#site_is_private'   ).prop('checked', false); } });
+
+  // Initialize dataTable tables
   $('table.dataTable').DataTable();
 
 });

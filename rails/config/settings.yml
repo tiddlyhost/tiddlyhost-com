@@ -6,6 +6,14 @@ defaults:
   default_plan_name: basic
   minimum_password_length: 8
 
+  hub_tags:
+    twplugins:
+      :title: TiddlyWiki Plugin Hub
+      :tag: TiddlyWikiPlugin
+    twdocs:
+      :title: TiddlyWiki Docs Hub
+      :tag: TiddlyWikiDoc
+
 development:
   url_defaults:
     :host: tiddlyhost.local
