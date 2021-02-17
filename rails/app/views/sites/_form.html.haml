@@ -8,19 +8,14 @@
           %li= message
 
   %div.form-group
-    = f.label :name, @site.new_record? ? 'Choose a name:' : 'Name:'
+    = f.label :name, @site.new_record? ? 'Choose a name' : 'Name'
     = f.text_field :name, class: 'form-control', maxlength: 63, style: 'width: 20em; margin-left: 0.25em;'
     %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
   %div.form-group
     = f.label :description
     = f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'
-    %small.form-text.text-muted Optional.
-
-  %div.form-group
-    = f.label :tag_list, 'Tags'
-    = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
-    %small.form-text.text-muted Enter a comma delimited tag list
+    %small.form-text.text-muted Optional. A description of the site.
 
   %div.form-group
     %div.form-check
@@ -33,6 +28,11 @@
       = f.check_box :is_searchable, class: 'form-check-input'
       = f.label :is_searchable, 'Searchable', class: 'form-check-label'
     %small.form-text.text-muted Searchable sites will be visible and discoverable in the Tiddlyhost Hub.
+
+  %div.form-group
+    = f.label :tag_list, 'Tags'
+    = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
+    %small.form-text.text-muted Optional. A comma delimited list of tags. Tags will be visible in Tiddlyhost Hub.
 
   %div.form-group{style: 'margin-top: 2em;'}
     = f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'

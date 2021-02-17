@@ -1,22 +1,39 @@
 
 table.sites {
+    margin-bottom: 1.5em;
+
     td {
-        padding: 0.5em 1.5em;
+        padding: 0.5em 2.5em 1em 0.5em;
         vertical-align: top;
 
+        .description {
+            margin-left: 0.5em;
+            font-size: 75%;
+            max-width: 24em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: #555;
+        }
+
+        .site-tags {
+            margin-left: 0.3em;
+            font-size: 90%;
+        }
+
+        .site-access {
+            font-size: 90%;
+        }
+
         .btn {
+            margin-top: -6px;
             margin-right: 1em;
         }
-    }
 
-    margin-bottom: 1em;
+    }
 }
 
-.minilabel {
-    text-transform: uppercase;
-    color: #bbb;
-    font-size: 60%;
-    font-weight: bold;
-    margin: 0px;
-    margin-left: -5px;
+.create-button {
+    margin-left: 1em;
 }

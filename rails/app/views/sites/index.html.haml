@@ -6,29 +6,30 @@
 - else
   %table.sites
 
+    %thead
+      %th Site
+      %th Access
+      %th Options
+
     %tbody
       - @sites.each do |site|
         %tr
           %td
-            .minilabel Site
-            = site_long_link(site, target: '_blank')
-            %br
-            %small.nowrap.text-truncated.text-muted{style: 'max-width:25em; display: inline-block;'}
-              = span_with_title(site.description)
-            .site-tags= site_tags(site)
+            .sitelink= site_long_link(site)
+            - if site.description.present?
+              .description= span_with_title(site.description)
+            - unless site.tag_list.empty?
+              .site-tags= site_tags(site)
 
           %td
-            .minilabel Access
-            = site_access(site)
+            .site-access= site_access(site)
 
-          %td{style: 'padding-top: 1.2em;'}
+          %td
             = link_to(edit_site_path(site), class: 'btn btn-sm') { bi_icon('sliders') + 'Settings' }
             = link_to("javascript:;", class: 'delete-confirm btn btn-sm') { bi_icon('trash') + 'Delete' }
             = link_to('Cancel ', "javascript:;", class: 'delete-cancel btn btn-sm', style: 'display: none;')
             = link_to(site, method: :delete, data: { confirm: "Are you sure you want to delete '#{site.name}'?" },
               class: 'delete-really btn btn-danger btn-sm', style: 'display: none;') { bi_icon('trash') + 'Really delete!' }
 
-  %br
-
-%div{style: 'margin-left: 1em;' }
+.create-button
   = link_to 'Create site', new_site_path, class: 'btn btn-primary'
