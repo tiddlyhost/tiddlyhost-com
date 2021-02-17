@@ -130,3 +130,10 @@ deploy-backup:
 
 deploy-ssh:
 	@ssh fedora@tiddlyhost.com
+
+#
+# For credentials:
+#   source etc/openrc.sh
+#
+openstack-info:
+	openstack server show thost
