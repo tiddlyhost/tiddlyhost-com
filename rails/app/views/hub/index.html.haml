@@ -26,6 +26,8 @@
       .owner
         %span Owner:
         = s.user.name
+        %span{style: 'margin-left: 0.5em;'} Views:
+        = s.view_count
       - unless s.tag_list.empty?
         .site-tags= clickable_site_tags(s)
 

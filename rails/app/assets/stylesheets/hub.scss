@@ -8,7 +8,7 @@
         margin: 0em 1em 1.5em 1em;
         .description {
             margin-left: 0.5em;
-            font-size: 75%;
+            font-size: 85%;
             display: -webkit-box;
             -webkit-line-clamp: 2; /* number of lines to show */
             -webkit-box-orient: vertical;
@@ -21,6 +21,7 @@
             color: #555;
             span {
                 color: #999;
+                font-size: 90%;
             }
         }
         .site-tags {

@@ -7,6 +7,13 @@ class TiddlywikiController < ApplicationController
 
   def serve
     return not_found unless site_visible?
+
+    # Don't waste time on head requests
+    return render html: '' if request.head?
+
+    # Don't count your own views
+    @site.increment!(:view_count) unless user_owns_site?
+
     render html: @site.tiddlywiki_file.download.html_safe
   end
 
