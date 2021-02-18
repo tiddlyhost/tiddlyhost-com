@@ -25,6 +25,7 @@
             .site-access= site_access(site)
 
           %td
+            = site_download_link(site, class: 'btn btn-sm') { bi_icon('download') + 'Download' }
             = link_to(edit_site_path(site), class: 'btn btn-sm') { bi_icon('sliders') + 'Settings' }
             = link_to("javascript:;", class: 'delete-confirm btn btn-sm') { bi_icon('trash') + 'Delete' }
             = link_to('Cancel ', "javascript:;", class: 'delete-cancel btn btn-sm', style: 'display: none;')

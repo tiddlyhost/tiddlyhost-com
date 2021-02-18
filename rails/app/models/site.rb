@@ -57,6 +57,10 @@ class Site < ApplicationRecord
     Settings.subdomain_site_url(name)
   end
 
+  def download_url
+    "#{url}/download"
+  end
+
   def is_public?
     !is_private?
   end
