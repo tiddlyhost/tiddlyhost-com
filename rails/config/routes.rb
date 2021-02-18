@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     Settings.hub_tags.keys.each do |k|
       get "hub/#{k}", controller: :hub
     end
+    get "hub/tag/:tag", controller: :hub, action: :tag
 
     resources :sites
   end

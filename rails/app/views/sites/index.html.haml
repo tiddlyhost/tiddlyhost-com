@@ -19,7 +19,7 @@
             - if site.description.present?
               .description= span_with_title(site.description)
             - unless site.tag_list.empty?
-              .site-tags= site_tags(site)
+              .site-tags= clickable_site_tags(site)
 
           %td
             .site-access= site_access(site)

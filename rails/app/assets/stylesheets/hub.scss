@@ -1,12 +1,11 @@
 
 .hub {
-    margin-top: 1em;
     margin-bottom: 2em;
     .site {
         vertical-align: top;
         display: inline-block;
         width: 16em;
-        margin: 1em;
+        margin: 0em 1em 1.5em 1em;
         .description {
             margin-left: 0.5em;
             font-size: 75%;
@@ -37,7 +36,7 @@
 
 .site-tags {
     line-height: 80%;
-    span {
+    span, a {
         border-radius: 1em;
         background-color: #fd6;
         color: #841;

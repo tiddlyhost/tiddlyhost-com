@@ -1,11 +1,16 @@
 
 %h1= @title
 
+%p.text-muted{style: 'font-size: 95%'}
+  = @tag_description
+
 %div{style: "margin-bottom: 2em;"}
   %ul.nav.nav-tabs
     = hub_link_to('All', '/hub')
     - @hub_tags.each do |k, tag_info|
       = hub_link_to(tag_info[:title], "/hub/#{k}")
+    - if @extra_tab
+      = hub_link_to(@title, "/hub/tag/#{@tag}")
 
 .page_info.text-muted
   = page_entries_info(@sites, model: Site)
@@ -22,7 +27,7 @@
         %span Owner:
         = s.user.name
       - unless s.tag_list.empty?
-        .site-tags= site_tags(s)
+        .site-tags= clickable_site_tags(s)
 
 .pagination
   = will_paginate(@sites)
