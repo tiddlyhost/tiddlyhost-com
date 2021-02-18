@@ -2,11 +2,21 @@
 module SitesHelper
 
   def site_link(site, opts={})
-    link_to site.name, site.url, {target: '_blank'}.merge(opts)
+    link_to site.url, {target: '_blank'}.merge(opts) do
+      site.name
+    end
   end
 
   def site_long_link(site, opts={})
-    link_to URI(site.url).hostname, site.url, {target: '_blank'}.merge(opts)
+    link_to site.url, {target: '_blank'}.merge(opts) do
+      URI(site.url).hostname
+    end
+  end
+
+  def site_download_link(site, opts={})
+    link_to site.download_url, opts do
+      yield
+    end
   end
 
   def site_access(site)

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   #
   constraints(->(req) { req.subdomain.present? && req.subdomain != 'www' }) do
     get '/', to: 'home#serve_tiddlywiki'
+    get '/download', to: 'home#download_tiddlywiki'
+
     post '/', to: 'home#save_tiddlywiki'
   end
 

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :find_site, only: [:serve_tiddlywiki, :save_tiddlywiki]
+  before_action :find_site, only: [:serve_tiddlywiki, :download_tiddlywiki, :save_tiddlywiki]
   skip_before_action :verify_authenticity_token, only: :save_tiddlywiki
 
   def index
@@ -11,6 +11,14 @@ class HomeController < ApplicationController
   def serve_tiddlywiki
     if site_visible?
       render html: @site.tiddlywiki_file.download.html_safe, layout: nil
+    else
+      render :not_found, status: 404, layout: 'simple'
+    end
+  end
+
+  def download_tiddlywiki
+    if site_visible?
+      send_data @site.tiddlywiki_file.download, type: 'text/html;charset=utf-8', filename: "#{@site.name}.html"
     else
       render :not_found, status: 404, layout: 'simple'
     end
