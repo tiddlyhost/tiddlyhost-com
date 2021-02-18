@@ -9,6 +9,7 @@
     %thead
       %th Site
       %th Access
+      %th Views
       %th Options
 
     %tbody
@@ -23,6 +24,9 @@
 
           %td
             .site-access= site_access(site)
+
+          %td
+            .views= site.view_count
 
           %td
             = site_download_link(site, class: 'btn btn-sm') { bi_icon('download') + 'Download' }
