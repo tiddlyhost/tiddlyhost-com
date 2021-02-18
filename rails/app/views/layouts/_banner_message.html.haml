@@ -1,0 +1,4 @@
+.alert.alert-warning.banner-message
+  - if icon = Settings.banner_message[:icon]
+    = bi_icon icon, style: 'margin-right: 0px;'
+  = Settings.banner_message[:html].html_safe
