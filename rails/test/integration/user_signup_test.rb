@@ -21,7 +21,6 @@ class UserSignupTest < CapybaraIntegrationTest
 
     # Password is not strong enough...
     assert page.has_content?('Password is too short')
-    assert page.has_content?('Password must contain at least one punctuation mark or symbol')
     assert page.has_content?('Password must contain at least one upper-case letter')
 
     # Try again
