@@ -14,6 +14,13 @@ defaults:
       :title: TiddlyWiki Docs Hub
       :tag: TiddlyWikiDoc
 
+  banner_message:
+    :icon: exclamation-triangle
+    :html: |
+      Beware, Tiddlyhost is in the early stages of development and may be
+      unstable. If you experience problems or have a feature suggestion, please create an
+      issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
+
 development:
   url_defaults:
     :host: tiddlyhost.local
