@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   # For individual TiddlyWiki sites
   #
   constraints(->(req) { req.subdomain.present? && req.subdomain != 'www' }) do
-    get '/', to: 'home#serve_tiddlywiki'
-    get '/download', to: 'home#download_tiddlywiki'
+    get '/', to: 'tiddlywiki#serve'
+    get '/download', to: 'tiddlywiki#download'
 
-    post '/', to: 'home#save_tiddlywiki'
+    post '/', to: 'tiddlywiki#save'
   end
 
   #
