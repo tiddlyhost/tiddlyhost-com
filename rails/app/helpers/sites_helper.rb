@@ -25,4 +25,18 @@ module SitesHelper
     end)
   end
 
+  def tag_url(tag_name)
+    if hub_action = Settings.hub_tags_lookup[tag_name]
+      "/hub/#{hub_action}"
+    else
+      "/hub/tag/#{tag_name}"
+    end
+  end
+
+  def clickable_site_tags(site)
+    safe_join(site.tag_list.map do |tag_name|
+      link_to tag_name, tag_url(tag_name)
+    end)
+  end
+
 end
