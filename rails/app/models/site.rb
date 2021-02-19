@@ -53,6 +53,10 @@ class Site < ApplicationRecord
       message: "'%{value}' is reserved. Please choose a different site name.",
     }
 
+  def html_content
+    @_html_content ||= tiddlywiki_file.download
+  end
+
   def url
     Settings.subdomain_site_url(name)
   end
