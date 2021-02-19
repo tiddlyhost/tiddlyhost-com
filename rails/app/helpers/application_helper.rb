@@ -48,6 +48,16 @@ module ApplicationHelper
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: 2)
   end
 
+  def datatable_sort_by(order_value, text_value=nil)
+    content_tag :td, 'data-order' => order_value.to_i do
+      (text_value || order_value).to_s
+    end
+  end
+
+  def datatable_timestamp(timestamp)
+    datatable_sort_by(timestamp.to_i, nice_timestamp(timestamp))
+  end
+
   def nice_timestamp(timestamp)
     return '-' if timestamp.nil?
     content_tag :span, title: timestamp.to_s do

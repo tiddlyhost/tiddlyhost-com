@@ -42,6 +42,10 @@ $(document).ready(function(){
   $('#site_is_searchable').on('change', function(){ if ($(this).prop('checked')) { $('#site_is_private'   ).prop('checked', false); } });
 
   // Initialize dataTable tables
-  $('table.dataTable').DataTable();
+  $('.dataTable').each(function(){
+    $(this).dataTable({
+      'order': [[$(this).data('sort-col'), 'desc']]
+    });
+  });
 
 });
