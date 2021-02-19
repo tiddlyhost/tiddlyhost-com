@@ -1,7 +1,7 @@
 
 %h2= @title
 
-%table.dataTable.display.responsive.nowrap{'data-sort-col' => @sort_col}
+%table.dataTable.display.responsive.nowrap
   %thead
     %tr
       %th Id
@@ -9,7 +9,7 @@
       %th Email
       %th Plan
       %th Sites
-      %th Current sign in
+      %th.default-sort Current sign in
       %th Last sign in
       %th Created
   %tbody

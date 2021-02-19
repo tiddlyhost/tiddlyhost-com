@@ -2,8 +2,15 @@
 @import "datatables.net-dt/css/jquery.dataTables";
 
 div.dataTables_wrapper div.dataTables_length select {
-  // The default is 'width: auto' and it comes out too narrow for some reason
-  width: 4em;
+    // The default is 'width: auto' and it comes out too narrow for some reason
+    width: 4em;
+}
+
+// Fix some image paths
+table.dataTable thead {
+    .sorting      { background-image: image-url("datatables.net-dt/images/sort_both.png"); }
+    .sorting_asc  { background-image: image-url("datatables.net-dt/images/sort_asc.png" ); }
+    .sorting_desc { background-image: image-url("datatables.net-dt/images/sort_desc.png"); }
 }
 
 @import "sites";
