@@ -1,7 +1,7 @@
 
 %h2= @title
 
-%table.dataTable.display.responsive.nowrap{'data-sort-col' => @sort_col}
+%table.dataTable.display.responsive.nowrap
   %thead
     %tr
       %th Id
@@ -16,7 +16,7 @@
       %th Storage key
       %th Size (MB)
       %th Last access
-      %th Last update
+      %th.default-sort Last update
       %th Created
   %tbody
     -@sites.each do |s|

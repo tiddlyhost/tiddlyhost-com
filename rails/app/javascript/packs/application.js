@@ -43,8 +43,15 @@ $(document).ready(function(){
 
   // Initialize dataTable tables
   $('.dataTable').each(function(){
+
+    // Choose default sort column
+    var sortCol = 0;
+    $(this).find('th').each(function(i){
+      if ($(this).hasClass('default-sort')) { sortCol = i; }
+    });
+
     $(this).dataTable({
-      'order': [[$(this).data('sort-col'), 'desc']]
+      'order': [[sortCol, 'desc']]
     });
   });
 
