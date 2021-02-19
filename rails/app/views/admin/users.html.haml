@@ -1,12 +1,12 @@
 
-%h2 Users
+%h2= @title
 
-%table.dataTable.display.responsive.nowrap
+%table.dataTable.display.responsive.nowrap{'data-sort-col' => @sort_col}
   %thead
     %tr
       %th Id
-      %th Email
       %th Name
+      %th Email
       %th Plan
       %th Sites
       %th Current sign in
@@ -15,11 +15,11 @@
   %tbody
     -@users.each do |u|
       %tr
-        %td= u.id
-        %td= u.email
+        =datatable_sort_by(u.id)
         %td= u.name
+        %td= u.email
         %td= u.plan.name
-        %td= link_to_user_sites(pluralize(u.sites.count, 'site'), u)
-        %td= nice_timestamp u.current_sign_in_at
-        %td= nice_timestamp u.last_sign_in_at
-        %td= nice_timestamp u.created_at
+        =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u))
+        =datatable_timestamp(u.current_sign_in_at)
+        =datatable_timestamp(u.last_sign_in_at)
+        =datatable_timestamp(u.created_at)
