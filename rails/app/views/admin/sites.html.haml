@@ -9,12 +9,14 @@
       %th Description
       %th Private?
       %th Searchable?
+      %th Views
       - unless @user
         %th Owner
         %th Email
       %th Storage key
       %th Size (MB)
-      %th Updated
+      %th Last access
+      %th Last update
       %th Created
   %tbody
     -@sites.each do |s|
@@ -26,10 +28,12 @@
           = span_with_title(s.description)
         %td= bool_text s.is_private?
         %td= bool_text s.is_searchable?
+        =datatable_sort_by(s.view_count)
         - unless @user
           %td= link_to_user_sites(s.user_name, s.user)
           %td= link_to_user_sites(s.user_email, s.user)
         %td= s.blob_key
         =datatable_sort_by(s.blob_byte_size, as_megabytes(s.blob_byte_size))
+        =datatable_timestamp(s.accessed_at)
         =datatable_timestamp(s.blob_created_at)
         =datatable_timestamp(s.created_at)

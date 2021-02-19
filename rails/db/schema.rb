@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_130754) do
+ActiveRecord::Schema.define(version: 2021_02_19_140429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_130754) do
     t.string "description"
     t.boolean "is_searchable", default: false
     t.integer "view_count", default: 0
+    t.datetime "accessed_at"
     t.index ["name"], name: "index_sites_on_name", unique: true
     t.index ["user_id"], name: "index_sites_on_user_id"
   end
