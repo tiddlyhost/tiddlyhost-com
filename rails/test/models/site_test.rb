@@ -51,4 +51,23 @@ class SiteTest < ActiveSupport::TestCase
     end
 
   end
+
+  test "view counts and timestamps" do
+    orig_updated_at = @site.updated_at.to_i
+    orig_accessed_at = @site.accessed_at.to_i
+    orig_view_count = @site.view_count
+
+    @site.touch_accessed_at
+    # The accessed_at field is touched
+    assert_operator orig_accessed_at, :<, @site.accessed_at.to_i
+    # The updated_at field is not
+    assert_equal orig_updated_at, @site.updated_at.to_i
+
+    @site.increment_view_count
+    # The counter was incremented
+    assert_equal orig_view_count + 1, @site.reload.view_count
+    # The updated_at field is untouched
+    assert_equal orig_updated_at, @site.updated_at.to_i
+  end
+
 end

@@ -53,6 +53,16 @@ class Site < ApplicationRecord
       message: "'%{value}' is reserved. Please choose a different site name.",
     }
 
+  def increment_view_count
+    # Using update_column to avoid automatically touching updated_at
+    update_column(:view_count, view_count + 1)
+  end
+
+  def touch_accessed_at
+    # Using update_column to avoid automatically touching updated_at
+    update_column(:accessed_at, Time.now)
+  end
+
   def html_content
     @_html_content ||= tiddlywiki_file.download
   end

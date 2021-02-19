@@ -11,20 +11,24 @@ class TiddlywikiController < ApplicationController
     # Don't waste time on head requests
     return render html: '' if request.head?
 
-    # Don't count your own views
-    @site.increment!(:view_count) unless user_owns_site?
+    update_view_count_and_access_timestamp
 
     render html: @site.html_content.html_safe
   end
 
   def favicon
     return not_found unless site_visible?
+
     send_file local_asset_path(@site.favicon_asset_name),
       type: 'image/vnd.microsoft.icon', disposition: 'inline'
   end
 
   def download
     return not_found unless site_downloadable?
+
+    # Downloads count as a view
+    update_view_count_and_access_timestamp
+
     send_data @site.html_content,
       type: 'text/html; charset=utf-8', filename: "#{@site.name}.html"
   end
@@ -45,6 +49,14 @@ class TiddlywikiController < ApplicationController
   end
 
   private
+
+  def update_view_count_and_access_timestamp
+    # Don't count views by site owner
+    @site.increment_view_count unless user_owns_site?
+
+    # ..but always touch the timestamp
+    @site.touch_accessed_at
+  end
 
   def not_found
     render :not_found, status: 404, layout: 'simple'
