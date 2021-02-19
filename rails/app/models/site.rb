@@ -65,6 +65,10 @@ class Site < ApplicationRecord
     "#{url}/download"
   end
 
+  def favicon_asset_name
+    'favicon_green.ico'
+  end
+
   def is_public?
     !is_private?
   end

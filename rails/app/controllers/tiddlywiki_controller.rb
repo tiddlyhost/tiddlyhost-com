@@ -17,6 +17,12 @@ class TiddlywikiController < ApplicationController
     render html: @site.html_content.html_safe
   end
 
+  def favicon
+    return not_found unless site_visible?
+    send_file local_asset_path(@site.favicon_asset_name),
+      type: 'image/vnd.microsoft.icon', disposition: 'inline'
+  end
+
   def download
     return not_found unless site_downloadable?
     send_data @site.html_content,
