@@ -27,4 +27,16 @@ class ApplicationController < ActionController::Base
     raise "Unauthorized!" unless current_user && current_user.is_admin?
   end
 
+  # Used for serving custom favicons
+  def local_asset_path(asset_name)
+    manifest = Rails.application.assets_manifest
+    if asset_file = manifest.assets[asset_name]
+      # For production with compiled assets
+      File.join(manifest.directory, asset_file)
+    else
+      # For development
+      Rails.application.assets[asset_name].filename
+    end
+  end
+
 end
