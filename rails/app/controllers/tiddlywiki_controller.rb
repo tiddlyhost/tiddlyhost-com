@@ -14,12 +14,12 @@ class TiddlywikiController < ApplicationController
     # Don't count your own views
     @site.increment!(:view_count) unless user_owns_site?
 
-    render html: @site.tiddlywiki_file.download.html_safe
+    render html: @site.html_content.html_safe
   end
 
   def download
     return not_found unless site_downloadable?
-    send_data @site.tiddlywiki_file.download,
+    send_data @site.html_content,
       type: 'text/html; charset=utf-8', filename: "#{@site.name}.html"
   end
 
