@@ -1,5 +1,18 @@
 module HubHelper
 
+  def hub_link_to(title, link, opts={})
+    is_active = current_page?(link)
+    content_tag :li, class: 'nav-item' do
+      link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
+        title
+      end
+    end
+  end
+
+  def hub_tag_link_to(tag_name)
+    hub_link_to(bi_icon(:tag) + tag_name, "/hub/tag/#{tag_name}")
+  end
+
   def sort_url(new_sort)
     params.permit(:sort, :search).merge(sort: new_sort)
   end
