@@ -6,15 +6,16 @@ defaults:
   default_plan_name: basic
   minimum_password_length: 8
 
-  hub_tags:
-    twplugins:
-      :title: TiddlyWiki Plugin Hub
-      :tag: TiddlyWikiPlugin
-      :description: Sites containing useful plugins created by the TiddlyWiki community.
-    twdocs:
-      :title: TiddlyWiki Docs Hub
-      :tag: TiddlyWikiDoc
-      :description: Sites container documentation, tutorials, and other informational resources related to TiddlyWiki.
+  # Let's turn these off for now and see what tags appear organically
+  #hub_tags:
+  #  twplugins:
+  #    :title: TiddlyWiki Plugin Hub
+  #    :tag: TiddlyWikiPlugin
+  #    :description: Sites containing useful plugins created by the TiddlyWiki community.
+  #  twdocs:
+  #    :title: TiddlyWiki Docs Hub
+  #    :tag: TiddlyWikiDoc
+  #    :description: Sites container documentation, tutorials, and other informational resources related to TiddlyWiki.
 
   banner_message:
     :icon: exclamation-triangle

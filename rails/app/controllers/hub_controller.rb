@@ -7,13 +7,15 @@ class HubController < ApplicationController
   def index
   end
 
+  def tag
+  end
+
+  # (Unused currently)
   def twplugins
   end
 
+  # (Unused currently)
   def twdocs
-  end
-
-  def tag
   end
 
   private
@@ -29,7 +31,9 @@ class HubController < ApplicationController
 
   def prepare_tags
     @hub_tags = Settings.hub_tags
+    @tag_tabs = ActsAsTaggableOn::Tag.most_used(4).map(&:name)
 
+    # (Unused currently since there are no hub_tags)
     if @hub_tags.keys.include?(action_name)
       tag_info = @hub_tags[action_name]
       @tag = tag_info[:tag]
@@ -38,9 +42,8 @@ class HubController < ApplicationController
 
     elsif params[:tag]
       @tag = params[:tag]
-      @extra_tab = true
-      # Beware these are html unsafe
-      @title = "Tag '#{@tag}'"
+      # Beware that @tag is html unsafe
+      @tag_tabs = @tag_tabs.prepend(@tag).uniq
       @tag_description = "Searchable sites tagged with '#{@tag}'."
 
     else
