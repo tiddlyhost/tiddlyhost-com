@@ -1,7 +1,8 @@
 class HubController < ApplicationController
-  before_action :prepare_sites
-
-  # TODO: Searching and sorting
+  before_action :prepare_sorting,
+    :prepare_searching,
+    :prepare_tags,
+    :prepare_sites_and_render
 
   def index
   end
@@ -17,7 +18,16 @@ class HubController < ApplicationController
 
   private
 
-  def prepare_sites
+  def prepare_sites_and_render
+    @sites = Site.searchable.order(@sort_by[:field])
+    @sites = @sites.tagged_with(@tag) if @tag.present?
+    @sites = @sites.search_for(@search) if @search.present?
+    @sites = @sites.paginate(page: params[:page])
+
+    render action: :index
+  end
+
+  def prepare_tags
     @hub_tags = Settings.hub_tags
 
     if @hub_tags.keys.include?(action_name)
@@ -37,12 +47,25 @@ class HubController < ApplicationController
       @title = "Tiddlyhost Hub"
       @tag_description = "If you mark your site as 'Searchable' it will be listed here."
     end
+  end
 
-    @sites = Site.searchable
-    @sites = @sites.tagged_with(@tag) if @tag
-    @sites = @sites.paginate(page: params[:page])
+  def prepare_searching
+    @search = params[:search]
+  end
 
-    render action: :index
+  def prepare_sorting
+    @sort_options = {
+      'views' => {
+        name: 'view count',
+        field: 'view_count desc',
+      },
+      'name' => {
+        name: 'name',
+        field: 'name asc',
+      },
+    }
+
+    @sort_by = @sort_options[params[:sort]] || @sort_options['views']
   end
 
 end

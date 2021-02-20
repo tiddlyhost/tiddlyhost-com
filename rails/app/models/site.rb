@@ -19,6 +19,12 @@ class Site < ApplicationRecord
   # Private sites are not searchable even if is_searchable is set
   scope :searchable, -> { where(is_private: false, is_searchable: true) }
 
+  scope :search_for, ->(search_text) {
+    where("name LIKE CONCAT('%',?,'%')", search_text).or(
+      where("description ILIKE CONCAT('%',?,'%')", search_text))
+        # TODO: search tags also
+  }
+
   validates :name,
     presence: true,
     uniqueness: true,

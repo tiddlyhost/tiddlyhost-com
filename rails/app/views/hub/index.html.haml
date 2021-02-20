@@ -15,6 +15,23 @@
 .page_info.text-muted
   = page_entries_info(@sites, model: Site)
   = "tagged with #{@tag}" if @tag.present?
+  = "matching '#{@search}'" if @search.present?
+
+  %span.sort-by
+    Sort by:
+    =link_to(@sort_by[:name], "#", class: 'dropdown-toggle',
+      role: 'button', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+    .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
+      - @sort_options.each do |key, sort_option|
+        = link_to sort_option[:name], sort_url(key), class: 'dropdown-item'
+
+  %span.search
+    Search:
+    %form{method: 'GET', style: 'display: inline;'}
+      %input{name: 'search', value: @search}
+      %button.btn.btn-sm= bi_icon(:search)
+      - if @search.present?
+        = link_to 'Clear', clear_search_url
 
 .hub
   - @sites.each do |s|
