@@ -31,7 +31,7 @@ class HubController < ApplicationController
 
   def prepare_tags
     @hub_tags = Settings.hub_tags
-    @tag_tabs = ActsAsTaggableOn::Tag.most_used(4).map(&:name)
+    @tag_tabs = Site.tags_for_searchable_sites.limit(4).pluck(:name)
 
     # (Unused currently since there are no hub_tags)
     if @hub_tags.keys.include?(action_name)

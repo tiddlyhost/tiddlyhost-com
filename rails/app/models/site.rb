@@ -25,6 +25,13 @@ class Site < ApplicationRecord
         # TODO: search tags also
   }
 
+  def self.tags_for_searchable_sites
+    tags = ActsAsTaggableOn::Tagging.where(
+      taggable_id: Site.searchable.pluck(:id), taggable_type: 'Site')
+
+    ActsAsTaggableOn::Tag.where(id: tags.pluck(:tag_id)).order('taggings_count desc');
+  end
+
   validates :name,
     presence: true,
     uniqueness: true,
