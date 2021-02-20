@@ -1,6 +1,7 @@
 
 .hub {
     margin-bottom: 2em;
+
     .site {
         vertical-align: top;
         display: inline-block;
@@ -15,6 +16,7 @@
             overflow: hidden;
             color: #555;
         }
+
         .owner {
             font-size: 80%;
             margin-left: 0.5em;
@@ -24,6 +26,7 @@
                 font-size: 90%;
             }
         }
+
         .site-tags {
             margin-left: 0.4em;
             font-size: 90%;
@@ -32,11 +35,52 @@
 }
 
 .page_info {
-    margin-bottom: 1em;
+    margin-bottom: 2em;
+    font-size: 80%;
+
+    .sort-by {
+        margin-left: 2em;
+
+        .dropdown-toggle {
+            color: #6c757d;
+        }
+
+        .dropdown-menu {
+            font-size: 95%;
+
+            .dropdown-item {
+                padding: 0.5em 2em;
+            }
+        }
+    }
+
+    .search {
+        margin-left: 2em;
+
+        input {
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+
+        button {
+            font-size: 80%;
+            margin-left: 0px;
+            padding-left: 0px;
+            margin-right: 0px;
+            padding-right: 0px;
+            color: #6c757d;
+        }
+
+        a {
+            font-size: 80%;
+            color: #6c757d;
+        }
+    }
 }
 
 .site-tags {
     line-height: 80%;
+
     span, a {
         border-radius: 1em;
         background-color: #fd6;
