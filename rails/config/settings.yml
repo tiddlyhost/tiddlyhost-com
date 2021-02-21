@@ -17,12 +17,12 @@ defaults:
   #    :tag: TiddlyWikiDoc
   #    :description: Sites container documentation, tutorials, and other informational resources related to TiddlyWiki.
 
-  banner_message:
-    :icon: exclamation-triangle
-    :html: |
-      Beware, Tiddlyhost is in the early stages of development and may be
-      unstable. If you experience problems or have a feature suggestion, please create an
-      issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
+  #banner_message:
+  #  :icon: exclamation-triangle
+  #  :html: |
+  #    Beware, Tiddlyhost is in the early stages of development and may be
+  #    unstable. If you experience problems or have a feature suggestion, please create an
+  #    issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
 
 development:
   url_defaults:
