@@ -1,1 +1,1 @@
-App::VERSION = '0.0.2'
+App::VERSION = '0.0.3'
