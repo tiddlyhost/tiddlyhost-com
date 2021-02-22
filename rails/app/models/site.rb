@@ -77,7 +77,10 @@ class Site < ApplicationRecord
   end
 
   def html_content
-    @_html_content ||= tiddlywiki_file.download
+    @_html_content ||= begin
+      raw_html = tiddlywiki_file.download
+      ThFile.new(raw_html).apply_tiddlyhost_mods(name).to_html
+    end
   end
 
   def url
