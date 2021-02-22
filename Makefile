@@ -108,25 +108,26 @@ redo-cert: clear-cert cert
 github-url:
 	@echo https://github.com/simonbaird/tiddlyhost
 
-PLAY = ansible-playbook -i ansible/inventory.yml
+PLAY = ansible-playbook -i ansible/inventory.yml $(V)
 deploy:
 	$(PLAY) ansible/deploy.yml
 
 deploy-deps:
-	$(PLAY) -v ansible/deploy.yml --tags=deps
+	$(PLAY) ansible/deploy.yml --tags=deps
 
 deploy-certs:
-	$(PLAY) -v ansible/deploy.yml --tags=certs
+	$(PLAY) ansible/deploy.yml --tags=certs
 
 deploy-app:
-	$(PLAY) -v ansible/deploy.yml --tags=app
+	$(PLAY) ansible/deploy.yml --tags=app
 
 deploy-scripts:
-	$(PLAY) -v ansible/deploy.yml --tags=scripts
+	$(PLAY) ansible/deploy.yml --tags=scripts
 
 deploy-backup:
 	mkdir -p backups
 	$(PLAY) -v ansible/backup.yml
+	ls -l backups
 
 deploy-ssh:
 	@ssh fedora@tiddlyhost.com
