@@ -19,6 +19,28 @@ class User < ApplicationRecord
   belongs_to :plan
   validates_presence_of :name
 
+  validates :username,
+    uniqueness: {
+      case_sensitive: false,
+    },
+    length: {
+      minimum: 3,
+      maximum: 30,
+      allow_blank: true,
+    },
+    format: {
+      # Must be upper- or lowercase letters, numerals, and dashes
+      # Must not have more than one consecutive dash
+      # Must not start or end with a dash
+      # (See also app/javascript/packs/application.js)
+      without: / [^A-Za-z0-9-] | -- | ^- | -$ /x,
+      message: "'%{value}' is not allowed. Please choose a different username.",
+    }
+
+  def username_or_name
+    username.presence || name
+  end
+
   def has_plan?(plan_name)
     plan.name == plan_name.to_s
   end

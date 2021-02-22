@@ -6,14 +6,19 @@
     =render 'devise/shared/error_messages', resource: resource
 
   .form-group
+    = f.label :email
+    = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Enter your email address
+
+  .form-group
     = f.label :name
-    = f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    = f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
     %small.form-text.text-muted Please enter your name
 
   .form-group
-    = f.label :email
-    = f.email_field :email, autocomplete: 'email', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Enter your email address
+    = f.label :username
+    = f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Optional. Choose a unique username between 3 and 30 characters long.
 
   .form-group
     = f.label :password

@@ -1,14 +1,28 @@
 
-%h1= @title || bi_icon(:tag) + @tag
+%h1
+  - if @tag.present?
+    = bi_icon('tag') + @tag
+  - elsif @user.present?
+    - if @user.use_gravatar?
+      = gravatar_image(@user, size: 35) + @user.name
+    - else
+      = bi_icon('person-fill') + @user.name
+  - else
+    Tiddlyhost Hub
 
 %p.text-muted{style: 'font-size: 95%'}
-  = @tag_description
+  - if @tag.present?
+    Sites tagged with
+    %b= @tag + '.'
+  - elsif @user.present?
+    Sites created by Tiddlyhost user
+    %b= @user.username + '.'
+  - else
+    If you mark your site as 'Searchable' it will be listed here.
 
 %div{style: "margin-bottom: 2em;"}
   %ul.nav.nav-tabs
     = hub_link_to('All sites', '/hub')
-    - @hub_tags.each do |k, tag_info|
-      = hub_link_to(tag_info[:title], "/hub/#{k}")
     - @tag_tabs.each do |tag|
       = hub_tag_link_to(tag)
 
@@ -35,15 +49,21 @@
 
 .hub
   - @sites.each do |s|
-    .site
+    .site{id: s.name}
       .name
         = site_long_link s
       .description
         = span_with_title_truncated(s.description)
       .owner
-        %span Owner:
-        = gravatar_image(s.user, size: 16) if s.user.use_gravatar?
-        = s.user.name
+        - if s.user.use_gravatar?
+          = gravatar_image(s.user, size: 14) if s.user.use_gravatar?
+        - else
+          = bi_icon('person-fill', style: 'margin-right:-3px;')
+        - if s.user.username.present?
+          %span{title: s.user.name}
+          = link_to s.user.username, "/hub/user/#{s.user.username}"
+        - else
+          = s.user.name
         %span{style: 'margin-left: 0.5em;'} Views:
         = s.view_count
       - unless s.tag_list.empty?

@@ -36,11 +36,7 @@ module SitesHelper
   end
 
   def tag_url(tag_name)
-    if hub_action = Settings.hub_tags_lookup[tag_name]
-      "/hub/#{hub_action}"
-    else
-      "/hub/tag/#{tag_name}"
-    end
+    "/hub/tag/#{tag_name}"
   end
 
   def clickable_site_tags(site)

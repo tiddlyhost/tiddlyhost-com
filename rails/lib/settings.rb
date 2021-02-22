@@ -38,12 +38,4 @@ class Settings
     Rails.env.development?
   end
 
-  def self.hub_tags
-    SETTINGS['hub_tags'] || {}
-  end
-
-  def self.hub_tags_lookup
-    @@_hub_tags_lookup ||= Hash[Settings.hub_tags.map{ |k,t| [t[:tag], k] }]
-  end
-
 end
