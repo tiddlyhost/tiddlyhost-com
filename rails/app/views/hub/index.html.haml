@@ -42,6 +42,7 @@
         = span_with_title_truncated(s.description)
       .owner
         %span Owner:
+        = gravatar_image(s.user, size: 16) if s.user.use_gravatar?
         = s.user.name
         %span{style: 'margin-left: 0.5em;'} Views:
         = s.view_count
