@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile.prod
 
+    restart: always
+
     ports:
     - "443:3333"
     - "80:3333"
@@ -23,6 +25,8 @@ services:
 
   db:
     image: postgres
+
+    restart: always
 
     volumes:
     - ./.postgresql-data/data:/var/lib/postgresql/data:Z
