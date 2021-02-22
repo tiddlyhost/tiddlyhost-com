@@ -31,6 +31,16 @@ module ApplicationHelper
     end
   end
 
+  def gravatar_url(email)
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+  end
+
+  def gravatar_image(user, opts={})
+    opts[:size] ||= 80
+    opts[:class] ||= 'gravatar'
+    image_tag(gravatar_url(user.email), opts)
+  end
+
   def bool_text(bool_val, true_text:'Y', false_text:'N')
     bool_val ? true_text : false_text
   end
