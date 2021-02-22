@@ -1,4 +1,3 @@
-require 'tiddlywiki_empty'
 
 class SitesController < ApplicationController
   before_action :authenticate_user!
@@ -30,7 +29,7 @@ class SitesController < ApplicationController
 
     tiddlywiki_file = {
       # These are the params used by active storage
-      io: StringIO.new(TiddlywikiEmpty.modified_empty(site_params_for_create[:name])),
+      io: StringIO.new(ThFile.empty_html),
       filename: 'index.html',
       content_type: 'text/html',
     }
