@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
   end
 
   def permit_devise_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :use_gravatar])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :username])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :username, :use_gravatar])
   end
 
   def require_admin_user!

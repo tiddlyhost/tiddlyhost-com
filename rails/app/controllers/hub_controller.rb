@@ -1,62 +1,28 @@
 class HubController < ApplicationController
-  before_action :prepare_sorting,
-    :prepare_searching,
-    :prepare_tags,
-    :prepare_sites_and_render
 
   def index
+    render_hub
   end
 
   def tag
+    @tag = params[:tag]
+    render_hub
   end
 
-  # (Unused currently)
-  def twplugins
-  end
-
-  # (Unused currently)
-  def twdocs
+  def user
+    if params[:username].present? && user = User.find_by_username(params[:username])
+      @user = user
+      render_hub
+    else
+      # TODO: 404 page here maybe
+      redirect_to '/hub'
+    end
   end
 
   private
 
-  def prepare_sites_and_render
-    @sites = Site.searchable.order(@sort_by[:field])
-    @sites = @sites.tagged_with(@tag) if @tag.present?
-    @sites = @sites.search_for(@search) if @search.present?
-    @sites = @sites.paginate(page: params[:page])
-
-    render action: :index
-  end
-
-  def prepare_tags
-    @hub_tags = Settings.hub_tags
-    @tag_tabs = Site.tags_for_searchable_sites.limit(4).pluck(:name)
-
-    # (Unused currently since there are no hub_tags)
-    if @hub_tags.keys.include?(action_name)
-      tag_info = @hub_tags[action_name]
-      @tag = tag_info[:tag]
-      @title = tag_info[:title]
-      @tag_description = tag_info[:description]
-
-    elsif params[:tag]
-      @tag = params[:tag]
-      # Beware that @tag is html unsafe
-      @tag_tabs = @tag_tabs.prepend(@tag).uniq
-      @tag_description = "Searchable sites tagged with '#{@tag}'."
-
-    else
-      @title = "Tiddlyhost Hub"
-      @tag_description = "If you mark your site as 'Searchable' it will be listed here."
-    end
-  end
-
-  def prepare_searching
-    @search = params[:search]
-  end
-
-  def prepare_sorting
+  def render_hub
+    # Prepare sort options
     @sort_options = {
       'views' => {
         name: 'view count',
@@ -69,6 +35,31 @@ class HubController < ApplicationController
     }
 
     @sort_by = @sort_options[params[:sort]] || @sort_options['views']
+
+    # Prepare search
+    @search = params[:search]
+
+    # Prepare tag tabs
+    @tag_tabs = Site.tags_for_searchable_sites.limit(4).pluck(:name)
+    @tag_tabs = @tag_tabs.prepend(@tag).uniq if @tag.present?
+
+    # Apply sorting
+    @sites = Site.searchable.order(@sort_by[:field])
+
+    # Apply tag filtering
+    @sites = @sites.tagged_with(@tag) if @tag.present?
+
+    # Apply user filtering
+    @sites = @sites.where(user_id: @user.id) if @user.present?
+
+    # Apply search filtering
+    @sites = @sites.search_for(@search) if @search.present?
+
+    # Paginate
+    @sites = @sites.paginate(page: params[:page])
+
+    # Render
+    render action: :index
   end
 
 end

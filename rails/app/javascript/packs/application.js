@@ -20,21 +20,35 @@ $(document).ready(function(){
     event.preventDefault();
   })
 
-  // Make it so the user can't easily type invalid names.
-  // We'll validate the name on the server as well, see app/models/site.
-  $('#site_name').on('keyup', function(){
-    $(this).val(
-      $(this).val().
-        // Remove anything that's not a letter, numeral or dash
-        replace(/[^0-9a-z-]/, '').
-        // Replace consecutive dashes with a single dash
-        replace(/[-]{2,}/, '-').
-        // Remove leading dashes
-        // (Don't remove trailing dashes since it makes it hard to type
-        // names with dashes. The server will invalidate them anyway.)
-        replace(/^-/, '')
+  var limitChars = function() {
+    var inputField = $(this);
+
+    if (inputField.attr('id') == 'site_name') {
+      // Allow lowercase letters, numerals and dashes
+      var notAllowed = /[^0-9a-z-]/;
+    }
+    else { // id == 'user_username"
+      // Same thing but also allow uppercase
+      var notAllowed = /[^0-9a-zA-Z-]/;
+    }
+
+    var currentVal = inputField.val();
+    inputField.val(currentVal.
+      // Remove any disallowed chars
+      replace(notAllowed, '').
+      // Replace consecutive dashes with a single dash
+      replace(/[-]{2,}/, '-').
+      // Remove leading dashes
+      // (Don't remove trailing dashes since it makes it hard to type
+      // names with dashes. The server will invalidate them anyway.)
+      replace(/^-/, '')
     );
-  });
+  };
+
+  // Make it so the user can't easily type invalid site names or usernames.
+  // We'll validate server-side as well, see User and Site model validations.
+  $('input#site_name').on('keyup', limitChars);
+  $('input#user_username').on('keyup', limitChars);
 
   // If site is set to private, automatically make it unsearchable
   // If site is set to searchable, automatically make it public

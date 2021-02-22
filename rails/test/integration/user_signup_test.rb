@@ -3,8 +3,8 @@ require "test_helper"
 class UserSignupTest < CapybaraIntegrationTest
 
   test "user signup" do
-    name, email, weak_password, strong_password =
-      'Testy McTest', 'tmctest@mail.com', 'trstno1', 'trUst|no1'
+    name, email, username, weak_password, strong_password =
+      'Testy McTest', 'tmctest@mail.com', 'tmt', 'trstno1', 'trUst|no1'
 
     # Visit home page and click sign up link
     visit '/'
@@ -13,6 +13,7 @@ class UserSignupTest < CapybaraIntegrationTest
     # Fill in the sign up form fields
     fill_in 'user[name]', with: name
     fill_in 'user[email]', with: email
+    fill_in 'user[username]', with: username
     fill_in 'user[password]', with: weak_password
     fill_in 'user[password_confirmation]', with: weak_password
 

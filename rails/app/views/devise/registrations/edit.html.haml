@@ -6,17 +6,24 @@
     =render 'devise/shared/error_messages', resource: resource
 
   .form-group
-    =f.label :name
-    =f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-
-  .form-group
     =f.label :email
-    =f.email_field :email, autocomplete: 'email', class: 'form-control col-sm-6'
+    =f.email_field :email, autocomplete: true, autocomplete: 'email', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Your email address
 
   -if devise_mapping.confirmable? && resource.pending_reconfirmation?
     %small.form-text.text-muted
       Currently waiting confirmation for:
       =resource.unconfirmed_email
+
+  .form-group
+    =f.label :name
+    =f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Your name
+
+  .form-group
+    = f.label :username
+    = f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    %small.form-text.text-muted Unique username (optional)
 
   .form-group
     =gravatar_image(resource)

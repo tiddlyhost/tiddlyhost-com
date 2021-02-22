@@ -23,7 +23,7 @@ module ApplicationHelper
       class: ["bi"].append(opts.delete(:class)).compact,
       height: "1.2em",
       width: "1.4em",
-      style: "margin-top:-3px;margin-right:4px;#{opts.delete(:style)}")
+      style: "margin-top:-3px;margin-right:3px;#{opts.delete(:style)}")
 
     content_tag(:svg, opts) do
       content_tag(:use, nil, "xlink:href" =>
