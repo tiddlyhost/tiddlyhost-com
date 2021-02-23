@@ -6,7 +6,9 @@
     %tr
       %th Id
       %th Name
+      %th Username
       %th Email
+      %th Gravatar?
       %th Plan
       %th Sites
       %th.default-sort Current sign in
@@ -17,7 +19,9 @@
       %tr
         =datatable_sort_by(u.id)
         %td= u.name
+        %td= u.username
         %td= u.email
+        %td= bool_text(u.use_gravatar?)
         %td= u.plan.name
         =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u))
         =datatable_timestamp(u.current_sign_in_at)
