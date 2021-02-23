@@ -4,6 +4,12 @@
   %p Click 'Create site' below to create your first TiddlyWiki site.
 
 - else
+  - if current_user.has_hub_sites? && current_user.has_username?
+    %div{style: 'margin-left:1em;margin-bottom:1em;'}
+      %small.text-muted
+        = link_to(("View in Tiddlyhost Hub" + bi_icon('arrow-right-short')).html_safe,
+          "/hub/user/#{current_user.username}", target: '_blank')
+
   %table.sites
 
     %thead

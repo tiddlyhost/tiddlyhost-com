@@ -45,6 +45,14 @@ class User < ApplicationRecord
     plan.name == plan_name.to_s
   end
 
+  def has_username?
+    username.present?
+  end
+
+  def has_hub_sites?
+    sites.searchable.any?
+  end
+
   def is_superuser?
     has_plan?(:superuser)
   end

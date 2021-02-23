@@ -59,7 +59,7 @@
           = gravatar_image(s.user, size: 14) if s.user.use_gravatar?
         - else
           = bi_icon('person-fill', style: 'margin-right:-3px;')
-        - if s.user.username.present?
+        - if s.user.has_username?
           %span{title: s.user.name}
           = link_to s.user.username, "/hub/user/#{s.user.username}"
         - else
