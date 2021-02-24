@@ -21,7 +21,7 @@
         %td= u.name
         %td= u.username
         %td= u.email
-        %td= bool_text(u.use_gravatar?)
+        %td= link_to(bool_text(u.use_gravatar?), gravatar_url(u.email), target: '_blank')
         %td= u.plan.name
         =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u))
         =datatable_timestamp(u.current_sign_in_at)
