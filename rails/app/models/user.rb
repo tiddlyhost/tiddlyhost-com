@@ -61,4 +61,10 @@ class User < ApplicationRecord
     is_superuser?
   end
 
+  # The default is set in config/initializers/devise
+  def timeout_in
+    return 12.hours if is_admin?
+    super
+  end
+
 end
