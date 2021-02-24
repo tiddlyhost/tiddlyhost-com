@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_action :require_admin_user!
 
   def users
-    @users = User.all
+    @users = User.without_plan(:superuser)
     @title = "Users"
   end
 
