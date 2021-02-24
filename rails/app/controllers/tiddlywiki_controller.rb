@@ -3,7 +3,7 @@ class TiddlywikiController < ApplicationController
   layout false
 
   before_action :find_site
-  skip_before_action :verify_authenticity_token, only: :save
+  skip_before_action :verify_authenticity_token, only: [:save, :options]
 
   def serve
     return not_found unless site_visible?
@@ -14,6 +14,12 @@ class TiddlywikiController < ApplicationController
     update_view_count_and_access_timestamp
 
     render html: @site.html_content.html_safe
+  end
+
+  # TiddlyWiki does an OPTIONS request to query the server capabilities
+  # and check if the put saver could be used. Just return a 404 with no body.
+  def options
+    head 404
   end
 
   def favicon

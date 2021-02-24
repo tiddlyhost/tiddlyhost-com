@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   #
   constraints(->(req) { req.subdomain.present? && req.subdomain != 'www' }) do
     get '/', to: 'tiddlywiki#serve'
+    options '/', to: 'tiddlywiki#options'
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
 
