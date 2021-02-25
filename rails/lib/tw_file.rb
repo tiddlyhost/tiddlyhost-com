@@ -11,6 +11,10 @@ class TwFile
   end
 
   def write_tiddlers(tiddlers)
+    # For encryped TiddlyWikis div#storeArea doesn't exist.
+    # Bail out quietly otherwise we'll throw errors.
+    return self unless store.present?
+
     tiddlers.each do |title, content|
       insert_or_replace(title, content)
     end
