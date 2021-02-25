@@ -1,0 +1,12 @@
+.row
+  .label
+    = title
+    -if local_assigns[:note]
+      %br
+      .small
+        = note
+  .data
+    = count
+  -if local_assigns[:total].present?
+    .data
+      = nice_percentage(count, total)

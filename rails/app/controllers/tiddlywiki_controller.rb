@@ -87,10 +87,6 @@ class TiddlywikiController < ApplicationController
     user_signed_in? && current_user == @site.user
   end
 
-  def user_is_admin?
-    user_signed_in? && current_user.is_admin?
-  end
-
   def find_site
     site_name = request.subdomain
     @site = Site.find_by_name(site_name)

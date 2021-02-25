@@ -65,7 +65,8 @@ $(document).ready(function(){
     });
 
     $(this).dataTable({
-      'order': [[sortCol, 'desc']]
+      'order': [[sortCol, 'desc']],
+      'pageLength': 10
     });
   });
 

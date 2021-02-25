@@ -1,12 +1,7 @@
 module HubHelper
 
   def hub_link_to(title, link, opts={})
-    is_active = current_page?(link)
-    content_tag :li, class: 'nav-item' do
-      link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
-        title
-      end
-    end
+    tab_link_to(title, link, opts)
   end
 
   def hub_tag_link_to(tag_name)

@@ -22,9 +22,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :username, :use_gravatar])
   end
 
+  def user_is_admin?
+    user_signed_in? && current_user.is_admin?
+  end
+  helper_method :user_is_admin?
+
   def require_admin_user!
     # Todo: A nicer 403 response
-    raise "Unauthorized!" unless current_user && current_user.is_admin?
+    raise "Unauthorized!" unless user_is_admin?
   end
 
   # Used for serving custom favicons
