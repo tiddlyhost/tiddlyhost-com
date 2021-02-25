@@ -1,0 +1,40 @@
+
+div.dataTables_wrapper {
+    font-size: 80%;
+
+    div.dataTables_length select {
+        // The default is 'width: auto' and it comes out too narrow for some reason
+        width: 4em;
+    }
+}
+
+table.dataTable {
+    // Fix some image paths
+    thead {
+        .sorting      { background-image: image-url("datatables.net-dt/images/sort_both.png"); }
+        .sorting_asc  { background-image: image-url("datatables.net-dt/images/sort_asc.png" ); }
+        .sorting_desc { background-image: image-url("datatables.net-dt/images/sort_desc.png"); }
+    }
+}
+
+// Need this for the @extends below
+@import "bootstrap/scss/bootstrap-grid";
+
+.stats {
+    margin-left: 1em;
+    .row {
+        margin-bottom: 0.5em;
+        .label {
+            @extend .col-2;
+            font-weight: bold;
+            color: #888;
+            font-size: 75%;
+            padding-top: 0.2em;
+        }
+
+        .data {
+            @extend .col-1;
+        }
+    }
+
+}

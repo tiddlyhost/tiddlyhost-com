@@ -16,8 +16,14 @@ class Site < ApplicationRecord
   # Default for pagination
   self.per_page = 15
 
+  scope :private_sites, -> { where(is_private: true) }
+  scope :public_sites, -> { where(is_private: false) }
+  scope :public_non_searchable, -> { where(is_private: false, is_searchable: false) }
   # Private sites are not searchable even if is_searchable is set
   scope :searchable, -> { where(is_private: false, is_searchable: true) }
+
+  # The timestamps can be a few milliseconds apart, so that's why we need the interval
+  scope :never_updated, -> { where("age(updated_at, created_at) < interval '0.5 second'") }
 
   scope :search_for, ->(search_text) {
     where("name LIKE CONCAT('%',?,'%')", search_text).or(

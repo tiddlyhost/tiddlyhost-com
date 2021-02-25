@@ -5,13 +5,24 @@ module ApplicationHelper
       # We redirect home to /sites when user is logged in
       (current_page?(sites_path) && link == root_path) ||
       # Highlight Hub link for all Hub pages
-      (controller_name == 'hub' && link == '/hub')
+      (controller_name == 'hub' && link == '/hub') ||
+      # Highlight Admin link for all Admin pages
+      (controller_name == 'admin' && link == '/admin')
 
     icon = opts.delete(:icon)
 
     content_tag :li, class: 'nav-item' do
       link_to link, opts.merge(class: "flex-column nav-link#{' active' if is_active}") do
         safe_join([bi_icon(icon), title].compact)
+      end
+    end
+  end
+
+  def tab_link_to(title, link, opts={})
+    is_active = current_page?(link)
+    content_tag :li, class: 'nav-item' do
+      link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
+        title
       end
     end
   end
@@ -79,6 +90,10 @@ module ApplicationHelper
     content_tag :span, title: full_text do
       truncate(full_text, length: truncate_length, separator: ' ')
     end
+  end
+
+  def nice_percentage(number, total, opts={})
+     number_to_percentage(100 * number / total, opts.reverse_merge(precision: 1))
   end
 
 end

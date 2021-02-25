@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
     get 'donate', to: 'home#donate'
 
+    get 'admin', to: 'admin#index'
     get 'admin/users'
     get 'admin/sites'
 

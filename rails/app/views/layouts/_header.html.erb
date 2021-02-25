@@ -18,9 +18,8 @@
         <%= nav_link_to "Hub", '/hub' %>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <% if current_user.is_admin? %>
-          <%= nav_link_to "Sites", admin_sites_path %>
-          <%= nav_link_to "Users", admin_users_path %>
+        <% if user_is_admin? %>
+          <%= nav_link_to "Admin", admin_path %>
         <% end %>
         <%= nav_link_to current_user.username_or_name, edit_user_registration_path, icon: 'person-fill' %>
         <%= nav_link_to "Log out", destroy_user_session_path, method: :delete, icon: 'box-arrow-left' %>

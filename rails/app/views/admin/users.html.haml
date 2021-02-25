@@ -1,6 +1,8 @@
 
 %h2= @title
 
+=render 'tabs'
+
 %table.dataTable.display.responsive.nowrap
   %thead
     %tr
@@ -10,6 +12,7 @@
       %th Email
       %th Gravatar?
       %th Plan
+      %th Logins
       %th Sites
       %th.default-sort Current sign in
       %th Last sign in
@@ -23,6 +26,7 @@
         %td= u.email
         %td= link_to(bool_text(u.use_gravatar?), gravatar_url(u.email), target: '_blank')
         %td= u.plan.name
+        %td= u.sign_in_count
         =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u))
         =datatable_timestamp(u.current_sign_in_at)
         =datatable_timestamp(u.last_sign_in_at)
