@@ -110,12 +110,18 @@ h1 {
 .site-tags {
     line-height: 80%;
 
-    span, a {
-        border-radius: 1em;
-        background-color: #fd6;
-        color: #841;
+    a {
+        background-color: #fea;
+        color: #974;
         font-size: 65%;
-        padding: 0.2em 0.4em;
-        margin-right:0.2em;
+        padding: 0.1em 0.3em;
+        margin-right:0.4em;
+
+        &:hover {
+            text-decoration: none;
+            background-color: #fd6;
+            color: #841;
+        }
     }
+
 }
