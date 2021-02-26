@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>404 Not Found</title>
+    <title><%= @title || "#{@status_code} #{@status_message}" %></title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
 
-  <body style="margin:2em 2.5em;">
+  <body class="simple-layout">
     <header>
-      <nav class="navbar navbar-dark" style="box-shadow: none; height: 1.8em; flex-wrap: nowrap;">
+      <nav class="navbar navbar-dark">
         <%= link_to(Settings.main_site_url, class: 'navbar-brand', title: 'Tiddlyhost') do %>
-          <%= image_tag("logo.svg", style: "height:18px;opacity:80%;") %>
-          <span style="font-size: 90%; margin-left:0.25em;">Tiddlyhost</span>
+          <%= image_tag("logo.svg") %>
+          <span>Tiddlyhost</span>
         <% end %>
       </nav>
     </header>
@@ -21,5 +21,6 @@
 
     <footer>
     </footer>
+
   </body>
 </html>
