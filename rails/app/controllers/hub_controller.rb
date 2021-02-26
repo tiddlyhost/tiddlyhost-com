@@ -41,7 +41,7 @@ class HubController < ApplicationController
 
     # Prepare tag tabs
     @tag_tabs = Site.tags_for_searchable_sites.limit(4).pluck(:name)
-    @tag_tabs = @tag_tabs.prepend(@tag).uniq if @tag.present?
+    @tag_tabs = @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
 
     # Apply sorting
     @sites = Site.searchable.order(@sort_by[:field])
