@@ -2,7 +2,10 @@
 class TwFile
 
   def initialize(html_content)
-    @doc = Nokogiri::HTML(html_content)
+    @doc = Nokogiri::HTML(html_content) do |config|
+      config.options |= Nokogiri::XML::ParseOptions::HUGE
+    end
+
     @store = @doc.at_xpath("/html/body/div[@id='storeArea']")
   end
 
