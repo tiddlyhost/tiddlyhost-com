@@ -124,3 +124,36 @@ h1 {
         @extend .page-link
     }
 }
+
+body.simple-layout {
+    margin: 2em 2.5em;
+
+    header {
+        nav {
+            box-shadow: none;
+            height: 1.8em;
+            flex-wrap: nowrap;
+            margin-bottom: 0.5em;
+        }
+
+        img {
+            height: 18px;
+            opacity: 80%;
+        }
+
+        span {
+            font-size: 90%;
+            margin-left:0.25em;
+        }
+    }
+
+    main {
+        h1 {
+            margin-bottom: 0.5em;
+        }
+
+        .big {
+            font-size: 130%;
+        }
+    }
+}

@@ -6,7 +6,7 @@ class TiddlywikiController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:save, :options]
 
   def serve
-    return not_found unless site_visible?
+    return site_not_available unless site_visible?
 
     # Don't waste time on head requests
     return render html: '' if request.head?
@@ -23,14 +23,16 @@ class TiddlywikiController < ApplicationController
   end
 
   def favicon
-    return not_found unless site_visible?
+    # It probably doesn't matter much about the favicon, but
+    # let's make its availability the same as the site
+    return site_not_available unless site_visible?
 
     send_file local_asset_path(@site.favicon_asset_name),
       type: 'image/vnd.microsoft.icon', disposition: 'inline'
   end
 
   def download
-    return not_found unless site_downloadable?
+    return site_not_available unless site_downloadable?
 
     # Downloads count as a view
     update_view_count_and_access_timestamp
@@ -67,12 +69,29 @@ class TiddlywikiController < ApplicationController
     @site.touch_accessed_at
   end
 
-  def not_found
-    render :not_found, status: 404, layout: 'simple'
+  def site_not_available
+    @status_code, @status_message = site_not_available_status
+
+    # Send an empty body for favicon and download actions
+    return head @status_code if action_name != "serve"
+
+    # When serving the site, send the "not available" page
+    render :site_not_available, status: @status_code, layout: 'simple'
+  end
+
+  def site_not_available_status
+    # Site doesn't exist
+    return [404, 'Not Found'] unless site_exists?
+
+    # User signed in, site unavailable
+    return [403, 'Unauthorized'] if user_signed_in?
+
+    # User not signed in, site unavailable
+    [401, 'Forbidden']
   end
 
   def site_visible?
-    @site.present? && (@site.is_public? || user_owns_site?)
+    site_exists? && (site_public? || user_owns_site?)
   end
 
   def site_downloadable?
@@ -80,11 +99,19 @@ class TiddlywikiController < ApplicationController
   end
 
   def site_saveable?
-    @site.present? && user_owns_site?
+    site_exists? && user_owns_site?
   end
 
   def user_owns_site?
     user_signed_in? && current_user == @site.user
+  end
+
+  def site_exists?
+    @site.present?
+  end
+
+  def site_public?
+    @site.is_public?
   end
 
   def find_site

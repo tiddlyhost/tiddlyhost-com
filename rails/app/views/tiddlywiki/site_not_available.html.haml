@@ -1,0 +1,23 @@
+%h1= @title || "#{@status_code} #{@status_message}"
+
+- case @status_code when 401
+  %p.big
+    You don't have permission to view this site!
+  %p
+    If this is your site then login at
+    = link_to 'Tiddlyhost', Settings.main_site_url
+    to access it.
+
+- when 403
+  %p.big
+    You don't have permission to view this site!
+  %p
+    This private site can be viewed only by its owner.
+
+- else # 404
+  %p.big
+    This site doesn't exist!
+  %p
+    = user_signed_in? ? "Visit" : "Sign up at"
+    = link_to 'Tiddlyhost', Settings.main_site_url
+    if you want to create it.
