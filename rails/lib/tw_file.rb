@@ -7,17 +7,40 @@ class TwFile
     end
 
     @store = @doc.at_xpath("/html/body/div[@id='storeArea']")
+    @encryptedStore = @doc.at_xpath("/html/body/pre[@id='encryptedStoreArea']")
   end
 
   def self.from_file(file_name)
     self.new(File.read(file_name))
   end
 
-  def write_tiddlers(tiddlers)
-    # For encryped TiddlyWikis div#storeArea doesn't exist.
-    # Bail out quietly otherwise we'll throw errors.
-    return self unless store.present?
+  # We can't be certain, but we can sanity check a few things to
+  # confirm that it at least looks like a legitimate TiddlyWiki
+  def looks_valid?
+    get_meta('application-name') == 'TiddlyWiki' &&
+      # One or the other but not both...
+      (@store.present? ^ @encryptedStore.present?)
+  end
 
+  def get_meta(name)
+    @doc.at_xpath("/html/head/meta[@name='#{name}']/@content").try(:to_s)
+  end
+
+  def tiddlywiki_version
+    get_meta('tiddlywiki-version')
+  end
+
+  def encrypted?
+    @encryptedStore.present?
+  end
+
+  def to_html
+    doc.to_html
+  end
+
+  # ** Methods from here down are useless for encrypted TiddlyWikis **
+
+  def write_tiddlers(tiddlers)
     tiddlers.each do |title, content|
       insert_or_replace(title, content)
     end
@@ -27,11 +50,7 @@ class TwFile
   end
 
   def tiddler_content(title)
-    tiddler(title).try(:content)
-  end
-
-  def to_html
-    doc.to_html
+    tiddler(title).try(:at_xpath, 'pre').try(:content)
   end
 
   private
@@ -39,6 +58,8 @@ class TwFile
   attr_reader :doc, :store
 
   def insert_or_replace(title, content)
+    return if encrypted?
+
     tiddler_div = create_tiddler_div(title, content)
 
     if existing_tiddler = tiddler(title)
@@ -49,6 +70,8 @@ class TwFile
   end
 
   def tiddler(title)
+    return if encrypted?
+
     tiddler_divs = store.xpath("div[@title='#{title}']")
     raise 'Multiple tiddlers found!' if tiddler_divs.length > 1
     tiddler_divs.first
