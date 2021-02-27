@@ -82,11 +82,16 @@ class Site < ApplicationRecord
     update_column(:accessed_at, Time.now)
   end
 
+  def th_file
+    @_th_file ||= ThFile.new(tiddlywiki_file.download)
+  end
+
+  def looks_valid?
+    th_file.looks_valid?
+  end
+
   def html_content
-    @_html_content ||= begin
-      raw_html = tiddlywiki_file.download
-      ThFile.new(raw_html).apply_tiddlyhost_mods(name).to_html
-    end
+    th_file.apply_tiddlyhost_mods(name).to_html
   end
 
   def url

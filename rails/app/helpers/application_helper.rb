@@ -96,4 +96,10 @@ module ApplicationHelper
      number_to_percentage(100 * number / total, opts.reverse_merge(precision: 1))
   end
 
+  def support_mail_to(opts={})
+    mail_to(Settings.support_email,
+      opts.delete(:link_title) || Settings.support_email_name,
+      opts.reverse_merge(target: '_blank'))
+  end
+
 end

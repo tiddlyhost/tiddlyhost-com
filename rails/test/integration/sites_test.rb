@@ -26,6 +26,13 @@ class SitesTest < CapybaraIntegrationTest
     expected_url = "http://bar.example.com"
     assert_selector %{td a[href="#{expected_url}"]}
 
+    # Sanity check the new site
+    site = Site.last
+    assert_equal 'bar', site.name
+    assert site.is_public?
+    refute site.is_searchable?
+    assert site.looks_valid?
+
     # Visit the site and confirm it looks like a TiddlyWiki
     click_on "bar.example.com"
     assert_is_tiddlywiki
@@ -62,6 +69,7 @@ class SitesTest < CapybaraIntegrationTest
     # * ..which would be easier if sites(:mysite).tiddlywiki_file.download
     #   returned something, stubbed or otherwise.
     # * Test coverage for saving a site.
+    # * Test coverage for saving a site with invalid content.
   end
 
   test "non-existent sites" do

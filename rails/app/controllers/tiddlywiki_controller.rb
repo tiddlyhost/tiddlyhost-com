@@ -8,6 +8,9 @@ class TiddlywikiController < ApplicationController
   def serve
     return site_not_available unless site_visible?
 
+    # Don't serve a file if it doesn't resemble a valid TiddlyWiki
+    return site_not_valid unless site_valid?
+
     # Don't waste time on head requests
     return render html: '' if request.head?
 
@@ -69,6 +72,11 @@ class TiddlywikiController < ApplicationController
     @site.touch_accessed_at
   end
 
+  def site_not_valid
+    @status_code, @status_message = [418, 'Invalid TiddlyWiki']
+    render :site_not_available, status: @status_code, layout: 'simple'
+  end
+
   def site_not_available
     @status_code, @status_message = site_not_available_status
 
@@ -112,6 +120,11 @@ class TiddlywikiController < ApplicationController
 
   def site_public?
     @site.is_public?
+  end
+
+  def site_valid?
+    # Beware this requires downloading the site's content
+    @site.looks_valid?
   end
 
   def find_site
