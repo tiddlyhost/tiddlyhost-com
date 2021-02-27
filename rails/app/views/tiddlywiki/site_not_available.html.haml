@@ -14,6 +14,15 @@
   %p
     This private site can be viewed only by its owner.
 
+- when 418
+  %p.big
+    This site does not appear to be a valid TiddlyWiki.
+  %p
+    Something has gone wrong. Please
+    = link_to('report an issue', Settings.create_issue_url, target: '_blank')
+    or send an email to
+    = support_mail_to(subject: "Site '#{@site.name}' is being classified as invalid", body: "Please take a look!") + '.'
+
 - else # 404
   %p.big
     This site doesn't exist!

@@ -3,6 +3,9 @@
 
 defaults:
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
+  create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
+  support_email: tiddlyhost@gmail.com
+  support_email_name: Tiddlyhost Support
   default_plan_name: basic
   minimum_password_length: 8
 
