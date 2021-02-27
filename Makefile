@@ -124,12 +124,18 @@ deploy-app:
 deploy-scripts:
 	$(PLAY) ansible/deploy.yml --tags=scripts
 
-deploy-backup:
+db-backup:
 	mkdir -p backups
 	$(PLAY) -v ansible/backup.yml
 	ls -l backups
 
-deploy-ssh:
+#
+# Assume you have suitable credentials available
+#
+s3-backup:
+	aws s3 sync s3://$(BUCKET_NAME) ./s3-backup
+
+prod-ssh:
 	@ssh fedora@tiddlyhost.com
 
 #
