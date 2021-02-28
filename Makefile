@@ -3,20 +3,11 @@ _help:
 	@echo Available tasks:
 	@grep '^[^_#\\$$[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
 
+#----------------------------------------------------------
+
 # The build args are important here, the build will fail without them
 build-base: cleanup cert
 	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
-
-build-prod:
-	./etc/create-build-info.sh
-	docker-compose -f docker-compose-prod.yml build prod
-
-push-prod:
-	docker --config etc/docker-conf push sbaird/tiddlyhost
-
-build-deploy: tests build-prod push-prod deploy-app
-
-full-build-deploy: cleanup build-base tests build-prod push-prod deploy
 
 rails-init:
 	mkdir -p .postgresql-data
@@ -37,13 +28,22 @@ shell:
 shell-prod:
 	-docker-compose -f docker-compose-prod.yml run --rm prod bash
 
+DCC=-docker-compose exec base bash -c
+DCC_PROD=-docker-compose -f docker-compose-prod.yml exec prod bash -c
+
 # Runs bash in an already running web container
 join:
-	-docker-compose exec base bash
+	$(DCC) bash
+
+sandbox:
+	$(DCC) 'bin/rails console --sandbox'
+
+console:
+	$(DCC) 'bin/rails console'
 
 # Same thing but use the prod container
 join-prod:
-	-docker-compose -f docker-compose-prod.yml exec prod bash
+	$(DCC_PROD) bash
 
 # Start the dev container
 start:
@@ -58,22 +58,6 @@ bundle-install:
 
 secrets:
 	-docker-compose run --rm --no-deps base bash -c "EDITOR=vi bin/rails credentials:edit"
-
-# Currently we need the prerelease, later we'll switch to stable versions
-EMPTY_URL=https://tiddlywiki.com/prerelease/empty.html
-EMPTY_TARGET=rails/empties/tw5.html
-$(EMPTY_TARGET):
-	curl -s $(EMPTY_URL) -o $(EMPTY_TARGET)
-
-empty: $(EMPTY_TARGET) empty-version
-
-update-empty: clear-empty empty
-
-empty-version:
-	@grep '<meta name="tiddlywiki-version"' $(EMPTY_TARGET) | cut -d\" -f4
-
-clear-empty:
-	@rm -f $(EMPTY_TARGET)
 
 # Try to be smart about how to run the tests
 # TODO: Refactor and integrate with "shell" and "join"
@@ -92,6 +76,26 @@ cleanup:
 	docker-compose rm -f
 	docker image prune -f
 
+#----------------------------------------------------------
+
+# Currently we need the prerelease, later we'll switch to stable versions
+EMPTY_URL=https://tiddlywiki.com/prerelease/empty.html
+EMPTY_TARGET=rails/empties/tw5.html
+$(EMPTY_TARGET):
+	curl -s $(EMPTY_URL) -o $(EMPTY_TARGET)
+
+empty: $(EMPTY_TARGET) empty-version
+
+update-empty: clear-empty empty
+
+empty-version:
+	@grep '<meta name="tiddlywiki-version"' $(EMPTY_TARGET) | cut -d\" -f4
+
+clear-empty:
+	@rm -f $(EMPTY_TARGET)
+
+#----------------------------------------------------------
+
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
 cert: certs/ssl.cert
@@ -105,12 +109,24 @@ clear-cert:
 
 redo-cert: clear-cert cert
 
-github-url:
-	@echo https://github.com/simonbaird/tiddlyhost
+#----------------------------------------------------------
+
+build-prod:
+	./etc/create-build-info.sh
+	docker-compose -f docker-compose-prod.yml build prod
+
+push-prod:
+	docker --config etc/docker-conf push sbaird/tiddlyhost
+
+build-push:          tests build-prod push-prod
+full-build-deploy:   cleanup build-base build-push full-deploy
+build-deploy:        build-push deploy-app
+fast-build-deploy:   build-push fast-upgrade
+faster-build-deploy: build-push faster-upgrade
 
 PLAY = ansible-playbook -i ansible/inventory.yml $(V)
 
-deploy:
+full-deploy:
 	$(PLAY) ansible/deploy.yml
 
 deploy-deps:
@@ -136,18 +152,15 @@ db-backup:
 	$(PLAY) -v ansible/backup.yml
 	ls -l backups
 
-#
-# Assume you have suitable credentials available
-#
-s3-backup:
-	aws s3 sync s3://$(BUCKET_NAME) ./s3-backup
-
 prod-ssh:
 	@ssh fedora@tiddlyhost.com
 
-#
-# For credentials:
-#   source etc/openrc.sh
-#
+#----------------------------------------------------------
+
+# Assume you have suitable credentials available
+s3-backup:
+	aws s3 sync s3://$(BUCKET_NAME) ./s3-backup
+
+# For credentials: source etc/openrc.sh
 openstack-info:
 	openstack server show thost
