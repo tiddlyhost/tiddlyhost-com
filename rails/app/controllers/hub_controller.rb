@@ -39,18 +39,27 @@ class HubController < ApplicationController
     # Prepare search
     @search = params[:search]
 
-    # Prepare tag tabs
+    # Prepare tag tabs. Show four popular tags in the tab bar.
+    # (It's not the best UX for tag based site discovery, but good enough for now.)
     @tag_tabs = Site.tags_for_searchable_sites.limit(4).pluck(:name)
+
+    # If there's a particular tag selected, show that in the tab bar also
     @tag_tabs = @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
 
+    # Start with all 'searchable' sites
+    @sites = Site.searchable
+
+    # Exclude brand new sites since they're probably just a blank empty file
+    @sites = @sites.updated_at_least_once
+
     # Apply sorting
-    @sites = Site.searchable.order(@sort_by[:field])
+    @sites = @sites.order(@sort_by[:field])
 
     # Apply tag filtering
     @sites = @sites.tagged_with(@tag) if @tag.present?
 
     # Apply user filtering
-    @sites = @sites.where(user_id: @user.id) if @user.present?
+    @sites = @sites.owned_by(@user) if @user.present?
 
     # Apply search filtering
     @sites = @sites.search_for(@search) if @search.present?
