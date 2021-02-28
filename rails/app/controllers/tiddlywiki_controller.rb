@@ -8,11 +8,11 @@ class TiddlywikiController < ApplicationController
   def serve
     return site_not_available unless site_visible?
 
+    # Don't waste time on head requests
+    return head 200 if request.head?
+
     # Don't serve a file if it doesn't resemble a valid TiddlyWiki
     return site_not_valid unless site_valid?
-
-    # Don't waste time on head requests
-    return render html: '' if request.head?
 
     update_view_count_and_access_timestamp
 
