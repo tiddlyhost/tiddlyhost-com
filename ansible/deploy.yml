@@ -27,7 +27,7 @@
       warn: false
     tags: deps
 
-  - name: Install docker, certbot and chkconfig
+  - name: Install docker, certbot, chkconfig, make
     dnf:
       state: present
       name:
@@ -36,6 +36,7 @@
       - containerd.io
       - certbot
       - chkconfig
+      - make
     tags: deps
 
   - name: Start docker service
@@ -156,7 +157,7 @@
 
   - name: Copy init script
     template:
-      src: templates/{{ service_name }}.j2
+      src: templates/etc/init.d/{{ service_name }}.j2
       dest: /etc/init.d/{{ service_name }}
       mode: "0755"
     tags: app
@@ -196,12 +197,13 @@
       state: directory
     tags: scripts
 
-  - name: Copy up some scripts
+  - name: Copy up a Makefile and some scripts
     become: no
     template:
       src: templates/{{ item }}.j2
-      dest: "{{ bin_dir }}/{{ item }}"
+      dest: "{{ home_dir }}/{{ item }}"
       mode: "0755"
     with_items:
-    - db-backup
+    - Makefile
+    - bin/db-backup
     tags: scripts
