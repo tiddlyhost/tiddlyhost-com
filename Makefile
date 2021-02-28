@@ -109,6 +109,7 @@ github-url:
 	@echo https://github.com/simonbaird/tiddlyhost
 
 PLAY = ansible-playbook -i ansible/inventory.yml $(V)
+
 deploy:
 	$(PLAY) ansible/deploy.yml
 
@@ -123,6 +124,12 @@ deploy-app:
 
 deploy-scripts:
 	$(PLAY) ansible/deploy.yml --tags=scripts
+
+fast-upgrade:
+	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
+
+faster-upgrade:
+	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 db-backup:
 	mkdir -p backups

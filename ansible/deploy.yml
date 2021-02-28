@@ -25,7 +25,8 @@
       cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
       creates: /etc/yum.repos.d/docker-ce.repo
       warn: false
-    tags: deps
+    tags:
+    - deps
 
   - name: Install docker, certbot, chkconfig, make
     dnf:
@@ -37,47 +38,54 @@
       - certbot
       - chkconfig
       - make
-    tags: deps
+    tags:
+    - deps
 
   - name: Start docker service
     systemd:
       name: docker
       state: started
       enabled: yes
-    tags: deps
+    tags:
+    - deps
 
   - name: Pip install docker-compose and certbot-dns-route53
     pip:
       name:
       - docker-compose
       - certbot-dns-route53
-    tags: deps
+    tags:
+    - deps
 
   - name: Make .docker dir for root user
     file:
       path: "{{ root_home_dir }}/.docker"
       state: directory
-    tags: deps
+    tags:
+    - deps
 
   - name: Copy config.json file for docker pull credentials
     copy:
       src: "{{ docker_config_json }}"
       dest: "{{ root_home_dir }}/.docker/config.json"
       mode: "0600"
-    tags: deps
+    tags:
+    - deps
 
   - name: Create dir for certbot aws credentials
     file:
       path: "{{ root_home_dir }}/.aws"
       state: directory
-    tags: certs
+    tags:
+    - certs
 
   - name: Install AWS credentials for certbot
     copy:
       src: "{{ certbot_dns_credentials }}"
       dest: "{{ root_home_dir }}/.aws/credentials"
       mode: "0600"
-    tags: certs
+    tags:
+    - certs
 
   - name: Create a cert if it doesn't exist
     command:
@@ -88,25 +96,29 @@
           -n --agree-tos -m simon.baird@gmail.com
 
       creates: "{{ letsencrypt_dir }}/fullchain.pem"
-    tags: certs
+    tags:
+    - certs
 
   - name: Renew certs maybe
     command:
       # TODO: The post-hook is untested, not sure if it will work
       cmd: certbot renew --post-hook "docker-compose restart prod"
     register: certbot_renew
-    tags: certs
+    tags:
+    - certs
 
   - name: Show renew output
     debug:
       var: certbot_renew.stdout_lines
-    tags: certs
+    tags:
+    - certs
 
   - name: Create dir for certs
     file:
       path: "{{ certs_dir }}"
       state: directory
-    tags: certs
+    tags:
+    - certs
 
   - name: Copy cert files to where the container looks for them
     # TODO: It would be better to only do this if they changed
@@ -117,7 +129,8 @@
       to: ssl.cert
     - from: privkey.pem
       to: ssl.key
-    tags: certs
+    tags:
+    - certs
 
   - name: Update owner of the cert files
     file:
@@ -125,27 +138,32 @@
       recurse: yes
       owner: "{{ ansible_user }}"
       group: "{{ ansible_user }}"
-    tags: certs
+    tags:
+    - certs
 
   - name: Copy docker-compose file
     become: no
     copy:
       src: "{{ docker_compose_file }}"
       dest: "{{ home_dir }}/docker-compose.yml"
-    tags: app
+    tags:
+    - app
 
   - name: Pull latest images
     # So docker-compose doesn't try to build
     command:
       cmd: docker-compose pull -q
-    tags: app
+    tags:
+    - app
+    - fast-upgrade
 
   - name: Create dir for secrets
     become: no
     file:
       path: "{{ secrets_dir }}"
       state: directory
-    tags: app
+    tags:
+    - app
 
   - name: Copy master key file
     become: no
@@ -153,49 +171,61 @@
       src: "{{ master_key_file }}"
       dest: "{{ secrets_dir }}/master.key"
       mode: "0400"
-    tags: app
+    tags:
+    - app
 
   - name: Copy init script
     template:
       src: templates/etc/init.d/{{ service_name }}.j2
       dest: /etc/init.d/{{ service_name }}
       mode: "0755"
-    tags: app
+    tags:
+    - app
 
-  - name: Start/restart service and ensure it's enabled
+  - name: Start/restart service
     systemd:
       name: "{{ service_name }}"
       state: restarted
-      enabled: yes
-    tags: app
+    tags:
+    - app
+    - fast-upgrade
 
   - name: Apply database migrations
     command:
       cmd: docker-compose exec prod bash -c "bin/rails db:migrate"
-    tags: app
     register: db_migrate
+    tags:
+    - app
+    - fast-upgrade
+    - migration
 
   - name: Show database migration output
     debug:
       var: db_migrate.stdout_lines
-    tags: app
+    tags:
+    - app
+    - fast-upgrade
+    - migration
 
   - name: Clean up unused docker images
     command:
       cmd: docker image prune -f
-    tags: app
+    tags:
+    - app
 
   - name: Clean up stale containers
     command:
       cmd: docker-compose rm
-    tags: app
+    tags:
+    - app
 
   - name: Create bin dir
     become: no
     file:
       path: "{{ bin_dir }}"
       state: directory
-    tags: scripts
+    tags:
+    - scripts
 
   - name: Copy up a Makefile and some scripts
     become: no
@@ -206,4 +236,5 @@
     with_items:
     - Makefile
     - bin/db-backup
-    tags: scripts
+    tags:
+    - scripts
