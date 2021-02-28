@@ -18,12 +18,18 @@ class Site < ApplicationRecord
 
   scope :private_sites, -> { where(is_private: true) }
   scope :public_sites, -> { where(is_private: false) }
+
   scope :public_non_searchable, -> { where(is_private: false, is_searchable: false) }
+
   # Private sites are not searchable even if is_searchable is set
   scope :searchable, -> { where(is_private: false, is_searchable: true) }
 
   # The timestamps can be a few milliseconds apart, so that's why we need the interval
-  scope :never_updated, -> { where("age(updated_at, created_at) < interval '0.5 second'") }
+  # Todo: blob_created_at would be a more useful timestamp to use here than updated_at.
+  scope :never_updated,         -> { where("AGE(sites.updated_at, sites.created_at) <= INTERVAL '0.5 SECOND'") }
+  scope :updated_at_least_once, -> { where("AGE(sites.updated_at, sites.created_at) >  INTERVAL '0.5 SECOND'") }
+
+  scope :owned_by, ->(user) { where(user_id: user.id) }
 
   scope :search_for, ->(search_text) {
     where("name LIKE CONCAT('%',?,'%')", search_text).or(
