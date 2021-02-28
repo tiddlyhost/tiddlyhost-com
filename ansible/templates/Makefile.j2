@@ -1,0 +1,28 @@
+
+DC=-sudo docker-compose
+DCC=$(DC) exec prod bash -c
+
+_help:
+	@echo Available tasks:
+	@grep '^[^_#\\$$[:space:]][^=/[:space:]]*:' Makefile | cut -d: -f1 | xargs -n1 echo ' make'
+
+shell:
+	$(DCC) bash
+
+sandbox:
+	$(DCC) 'bin/rails console --sandbox'
+
+console:
+	$(DCC) 'bin/rails console'
+
+log:
+	$(DCC) 'cat log/production.log'
+
+logf:
+	$(DCC) 'tail -f log/production.log'
+
+dlog:
+	$(DC) logs
+
+dlogf:
+	$(DC) logs -f
