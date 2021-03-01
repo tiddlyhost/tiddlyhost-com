@@ -26,3 +26,15 @@ dlog:
 
 dlogf:
 	$(DC) logs -f
+
+status:
+	sudo service thost status
+
+restart:
+	sudo service thost restart
+
+stop:
+	sudo service thost stop
+
+start:
+	sudo service thost start
