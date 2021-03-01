@@ -149,19 +149,28 @@ fast-upgrade:
 faster-upgrade:
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
-db-backup:
-	mkdir -p backups
-	$(PLAY) -v ansible/backup.yml
-	ls -l backups
-
 prod-ssh:
 	@ssh fedora@tiddlyhost.com
 
 #----------------------------------------------------------
 
+TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
+
+db-backup:
+	mkdir -p backups/db/$(TIMESTAMP)
+	$(PLAY) -v ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP)
+	du -h backups
+
 # Assume you have suitable credentials available
 s3-backup:
-	aws s3 sync s3://$(BUCKET_NAME) ./s3-backup
+	aws s3 sync s3://$(BUCKET_NAME) ./backups/s3/$(TIMESTAMP)
+	cd ./backups/s3/$(TIMESTAMP) && gzip -v *
+	du -h backups
+
+show-backups:
+	@du -h backups
+
+#----------------------------------------------------------
 
 # For credentials: source etc/openrc.sh
 openstack-info:
