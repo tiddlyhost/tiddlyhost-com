@@ -179,6 +179,14 @@
       src: templates/etc/init.d/{{ service_name }}.j2
       dest: /etc/init.d/{{ service_name }}
       mode: "0755"
+    register: init_script
+    tags:
+    - app
+
+  - name: Run systemctl daemon-reload if required
+    command:
+      cmd: systemctl daemon-reload
+    when: init_script.changed
     tags:
     - app
 
