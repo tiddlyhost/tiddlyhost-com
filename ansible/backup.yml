@@ -9,6 +9,8 @@
 
   tasks:
   - name: Make a fresh backup of the database
+    # There should be regular backups triggered by cron,
+    # but let's do an additional backup right now.
     command: "{{ bin_dir }}/db-backup"
 
   - name: Download all the files
