@@ -9,3 +9,5 @@
   echo tag: `git describe --tags --abbrev=0`
   echo empty: `make -s empty-version`
 ) > etc/build-info.txt
+
+cp etc/build-info.txt rails/public/

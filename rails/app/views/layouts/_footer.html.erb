@@ -7,7 +7,7 @@
     </div>
     <div class="col-4" style="text-align: right;">
       <% unless Rails.env.production? %>Env: <%= Rails.env %><br><% end %>
-      Version:<%= link_to App::VERSION, '/build-info.txt', target: '_blank' %><br>
+      Version:<%= link_to App::VERSION, '/build-info' %><br>
       &copy; 2021 Simon Baird<br>
     </div>
   </div>

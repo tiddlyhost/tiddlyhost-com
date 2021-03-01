@@ -35,6 +35,10 @@ table.dataTable {
         .data {
             @extend .col-1;
         }
+
+        .data-wide {
+            @extend .col-10;
+        }
     }
 
 }

@@ -1,0 +1,15 @@
+
+%h1 Build Info
+
+.stats
+  - @build_info.each do |key, val|
+    - next if key == 'sha'
+    .row
+      .label= key.titleize
+      .data-wide
+        - case key when 'commit'
+          = link_to(val + " (#{@build_info['sha'][0..6]})", "https://github.com/simonbaird/tiddlyhost/commit/#{@build_info['sha']}", target: '_blank')
+        - when 'branch'
+          = link_to(val, "https://github.com/simonbaird/tiddlyhost/tree/#{val}", target: '_blank')
+        - else
+          = val

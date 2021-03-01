@@ -13,4 +13,8 @@ class HomeController < ApplicationController
   def donate
   end
 
+  def build_info
+    @build_info = YAML.load(File.read(Rails.root.join('public', 'build-info.txt')))
+  end
+
 end

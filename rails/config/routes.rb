@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get 'home/after_registration'
 
     get 'donate', to: 'home#donate'
+    get 'build-info', to: 'home#build_info'
 
     get 'admin', to: 'admin#index'
     get 'admin/users'
