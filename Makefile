@@ -111,8 +111,10 @@ redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
-build-prod:
+build-info:
 	./etc/create-build-info.sh
+
+build-prod: build-info
 	docker-compose -f docker-compose-prod.yml build prod
 
 push-prod:
