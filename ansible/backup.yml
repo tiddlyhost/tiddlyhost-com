@@ -4,7 +4,8 @@
   become_user: root
 
   vars:
-    local_backup_dir: ../backups
+    local_backup_dir: ../backups/db
+    local_backup_subdir: .
 
   tasks:
   - name: Make a fresh backup of the database
@@ -12,10 +13,9 @@
 
   - name: Download all the files
     # Beware it will overwrite existing files
-    # TODO: Timestamps maybe?
     fetch:
       src: "{{ item }}"
-      dest: "{{ local_backup_dir }}/"
+      dest: "{{ local_backup_dir }}/{{ local_backup_subdir }}/"
       flat: yes
       fail_on_missing: no
     with_items:
