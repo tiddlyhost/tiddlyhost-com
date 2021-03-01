@@ -29,4 +29,9 @@ class ThFile < TwFile
     })
   end
 
+  def get_site_name
+    # (It would be nice if there was a better way to do this.)
+    tiddler_content('$:/UploadURL').match(%r{//([a-z-]+)\.}).try(:[], 1)
+  end
+
 end

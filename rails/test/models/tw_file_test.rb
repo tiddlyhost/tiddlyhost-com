@@ -30,6 +30,8 @@ class TwFileTest < ActiveSupport::TestCase
       }.each do |tiddler_name, expected_content|
         assert_equal expected_content, tw.tiddler_content(tiddler_name)
       end
+
+      assert_equal 'coolsite', tw.get_site_name
     end
   end
 
