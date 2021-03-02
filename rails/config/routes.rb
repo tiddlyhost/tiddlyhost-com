@@ -37,4 +37,11 @@ Rails.application.routes.draw do
     resources :sites
   end
 
+  #
+  # Error pages
+  #
+  get '/404', to: "home#error_404"
+  get '/422', to: "home#error_422"
+  get '/500', to: "home#error_500"
+
 end
