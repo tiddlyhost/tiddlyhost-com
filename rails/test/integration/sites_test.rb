@@ -88,6 +88,30 @@ class SitesTest < CapybaraIntegrationTest
     assert_selector 'main p', text: "Sign up at Tiddlyhost"
   end
 
+  test "error pages" do
+    # Not testing the error handling here, just that the pages render
+    [
+      404,
+      422,
+      500,
+
+    ].each do |error_code|
+      [
+        # On the main site
+        "/#{error_code}",
+        # Also on TiddlyWiki site
+        "#{sites(:mysite).url}/#{error_code}",
+
+      ].each do |url|
+        visit url
+        assert_equal error_code, page.status_code
+        # Confirm the expected view and layout is used
+        assert_selector '.navbar .navbar-brand span', text: 'Tiddlyhost'
+        assert_selector 'h1', text: "#{error_code}"
+      end
+    end
+  end
+
   test "updating site settings" do
     visit sites_url
     click_on "Settings", match: :first

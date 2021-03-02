@@ -49,5 +49,8 @@ module App
     # For uploads..?
     config.action_controller.forgery_protection_origin_check = false
 
+    # Use routes for error pages instead of the default
+    # static pages in 'public'
+    config.exceptions_app = self.routes
   end
 end
