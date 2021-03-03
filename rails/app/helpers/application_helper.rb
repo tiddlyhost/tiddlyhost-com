@@ -102,4 +102,8 @@ module ApplicationHelper
       opts.reverse_merge(target: '_blank'))
   end
 
+  def github_tree_url(branch_or_sha)
+    "https://github.com/simonbaird/tiddlyhost/tree/#{branch_or_sha}"
+  end
+
 end
