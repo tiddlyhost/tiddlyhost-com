@@ -8,8 +8,9 @@
       .label= key.titleize
       .data-wide
         - case key when 'commit'
-          = link_to(val + " (#{@build_info['sha'][0..6]})", "https://github.com/simonbaird/tiddlyhost/commit/#{@build_info['sha']}", target: '_blank')
+          = link_to(val + " (#{@build_info['sha'][0..6]})",
+            github_tree_url(@build_info['sha']), target: '_blank')
         - when 'branch'
-          = link_to(val, "https://github.com/simonbaird/tiddlyhost/tree/#{val}", target: '_blank')
+          = link_to(val, github_tree_url(val), target: '_blank')
         - else
           = val
