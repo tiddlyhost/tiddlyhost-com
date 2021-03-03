@@ -14,7 +14,9 @@ class HomeController < ApplicationController
   end
 
   def build_info
-    @build_info = YAML.load(File.read(Rails.root.join('public', 'build-info.txt')))
+    @build_info = {
+      'version' => App::VERSION,
+    }.merge(read_build_info)
   end
 
   def error_404
@@ -35,6 +37,11 @@ class HomeController < ApplicationController
     @status_code = status_code
     @status_message = status_message
     render :error_page, status: status_code, layout: 'simple'
+  end
+
+  def read_build_info
+    build_info_file = Rails.root.join('public', 'build-info.txt')
+    YAML.load(File.read(build_info_file))
   end
 
 end
