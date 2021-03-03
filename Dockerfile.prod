@@ -14,6 +14,9 @@ ENV RAILS_ENV=production
 ENV APP_DATABASE_PASSWORD=notsecure123
 ENV RAILS_SERVE_STATIC_FILES=true
 
+ARG APP_VERSION_BUILD
+ENV APP_VERSION_BUILD=$APP_VERSION_BUILD
+
 # Copy our app into the container
 # Ignores things listed in .dockerignore
 COPY --chown=$APP_USER:$APP_USER rails $APP_PATH

@@ -115,7 +115,7 @@ build-info:
 	./etc/create-build-info.sh
 
 build-prod: build-info
-	docker-compose -f docker-compose-prod.yml build prod
+	docker-compose -f docker-compose-prod.yml build --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) prod
 
 push-prod:
 	docker --config etc/docker-conf push sbaird/tiddlyhost
