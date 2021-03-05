@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_220346) do
+ActiveRecord::Schema.define(version: 2021_03_06_155527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(version: 2021_02_22_220346) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "empties", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.string "description"
+    t.boolean "enabled"
+  end
+
   create_table "plans", force: :cascade do |t|
     t.string "name"
   end
@@ -57,6 +64,8 @@ ActiveRecord::Schema.define(version: 2021_02_22_220346) do
     t.boolean "is_searchable", default: false
     t.integer "view_count", default: 0
     t.datetime "accessed_at"
+    t.bigint "empty_id"
+    t.index ["empty_id"], name: "index_sites_on_empty_id"
     t.index ["name"], name: "index_sites_on_name", unique: true
     t.index ["user_id"], name: "index_sites_on_user_id"
   end
@@ -121,6 +130,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_220346) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "sites", "empties"
   add_foreign_key "sites", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "users", "plans"

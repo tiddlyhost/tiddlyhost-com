@@ -12,6 +12,20 @@
     = f.text_field :name, class: 'form-control', maxlength: 63, style: 'width: 20em; margin-left: 0.25em;'
     %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
+  - if @site.new_record?
+    %div.form-group.advanced
+      %small
+        = link_to 'Advanced options', '#', onclick: "$('.advanced').toggle(); return false;"
+    %div.form-group.advanced{style: 'display: none;'}
+      = f.label :empty_id, 'TiddlyWiki version'
+      = f.select :empty_id,
+        options_from_collection_for_select(@empties_for_select, :id, :title, @default_empty),
+        class: 'form-control form-control-sm', style: 'width: 20em';
+      %small.form-text.text-muted
+        'TiddlyWiki', also known as 'TiddlyWiki5', is the recommended choice.
+        %br
+        'Classic' is the old version of TiddlyWiki that hasn't been updated much since 2011.
+
   %div.form-group
     = f.label :description
     = f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'

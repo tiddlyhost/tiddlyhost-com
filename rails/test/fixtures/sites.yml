@@ -3,6 +3,7 @@ mysite:
   id: 1
   name: mysite
   user_id: 1
+  empty_id: 1
   view_count: 1
   is_private: 0
   is_searchable: 1

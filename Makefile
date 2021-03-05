@@ -87,7 +87,7 @@ clear-empties:
 	@rm -rf $(EMPTY_DIR)/*.html
 
 empty-versions:
-	@$(DCC) 'bin/rails runner "puts ThFile.empty_versions.to_yaml"' \
+	@$(DCC) 'bin/rails runner "puts Empty.versions.to_yaml"' \
 	  | grep -v 'Spring preloader' | grep -v '\-\-\-'
 
 #----------------------------------------------------------
