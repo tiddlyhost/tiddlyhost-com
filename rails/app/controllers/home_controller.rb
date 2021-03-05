@@ -16,6 +16,7 @@ class HomeController < ApplicationController
   def build_info
     @build_info = {
       'version' => App::VERSION,
+      'empties' => ThFile.empty_versions,
     }.merge(read_build_info)
   end
 

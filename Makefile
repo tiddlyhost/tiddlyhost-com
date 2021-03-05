@@ -74,21 +74,21 @@ cleanup:
 
 #----------------------------------------------------------
 
-# Currently we need the prerelease, later we'll switch to stable versions
-EMPTY_URL=https://tiddlywiki.com/prerelease/empty.html
-EMPTY_TARGET=rails/empties/tw5.html
-$(EMPTY_TARGET):
-	curl -s $(EMPTY_URL) -o $(EMPTY_TARGET)
+EMPTY_DIR=rails/tw_content/empties
 
-empty: $(EMPTY_TARGET) empty-version
+download-empties:
+	@mkdir -p $(EMPTY_DIR)
+	@$(PLAY) -v ansible/fetch_empties.yml
+	@$(MAKE) -s empty-versions
 
-update-empty: clear-empty empty
+refresh-empties: empty-versions clear-empties download-empties
 
-empty-version:
-	@grep '<meta name="tiddlywiki-version"' $(EMPTY_TARGET) | cut -d\" -f4
+clear-empties:
+	@rm -rf $(EMPTY_DIR)/*.html
 
-clear-empty:
-	@rm -f $(EMPTY_TARGET)
+empty-versions:
+	@$(DCC) 'bin/rails runner "puts ThFile.empty_versions.to_yaml"' \
+	  | grep -v 'Spring preloader' | grep -v '\-\-\-'
 
 #----------------------------------------------------------
 

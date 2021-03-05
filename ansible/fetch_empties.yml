@@ -1,0 +1,24 @@
+
+- hosts: localhost
+  connection: local
+  become: no
+
+  vars:
+    empties_list:
+    - name: tw5
+      # Later we'll use stable versions but for now we need a prerelease so
+      # that https://github.com/Jermolene/TiddlyWiki5/pull/5455 is included.
+      url: https://tiddlywiki.com/prerelease/empty.html
+
+    - name: classic
+      url: https://classic.tiddlywiki.com/empty.html
+
+    empties_dir: ../rails/tw_content/empties
+
+  tasks:
+  - name: Download empties
+    get_url:
+      url: "{{ item.url }}"
+      dest: "{{ empties_dir }}/{{ item.name }}.html"
+      mode: '0444'
+    with_items: "{{ empties_list }}"

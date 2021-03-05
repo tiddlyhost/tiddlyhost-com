@@ -2,12 +2,25 @@
 class ThFile < TwFile
 
   DEFAULT = 'tw5'
+
+  def self.empty_dir
+    File.expand_path("#{__dir__}/../tw_content/empties")
+  end
+
   def self.empty_path(empty_type=DEFAULT)
-    "#{Rails.root}/empties/#{empty_type}.html"
+    "#{empty_dir}/#{empty_type}.html"
   end
 
   def self.empty_html(empty_type=DEFAULT)
     File.read(empty_path(empty_type))
+  end
+
+  def self.available_empties
+    Dir.glob("#{empty_dir}/*.html").map{ |f| File.basename(f, '.html') }
+  end
+
+  def self.empty_versions
+    Hash[ available_empties.map{ |e| [e, ThFile.from_empty(e).tiddlywiki_version] } ]
   end
 
   def self.from_empty(empty_type=DEFAULT)
