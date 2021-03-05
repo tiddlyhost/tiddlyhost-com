@@ -1,17 +1,20 @@
 
 class ThFile < TwFile
 
-  DEFAULT = 'tw5'
-
+  #
+  # Note: Some of this is duplicated now in app/models/empty.rb
+  # but let's leave it alone for now. It is used (only?) when
+  # running `make empty-versions`
+  #
   def self.empty_dir
     File.expand_path("#{__dir__}/../tw_content/empties")
   end
 
-  def self.empty_path(empty_type=DEFAULT)
+  def self.empty_path(empty_type)
     "#{empty_dir}/#{empty_type}.html"
   end
 
-  def self.empty_html(empty_type=DEFAULT)
+  def self.empty_html(empty_type)
     File.read(empty_path(empty_type))
   end
 
@@ -27,15 +30,7 @@ class ThFile < TwFile
     ERB.new(File.read(plugin_path(plugin_name)))
   end
 
-  def self.available_empties
-    Dir.glob("#{empty_dir}/*.html").map{ |f| File.basename(f, '.html') }
-  end
-
-  def self.empty_versions
-    Hash[ available_empties.map{ |e| [e, ThFile.from_empty(e).tiddlywiki_version] } ]
-  end
-
-  def self.from_empty(empty_type=DEFAULT)
+  def self.from_empty(empty_type)
     from_file(empty_path(empty_type))
   end
 

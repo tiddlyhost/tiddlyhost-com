@@ -5,6 +5,11 @@ class Site < ApplicationRecord
 
   has_one_attached :tiddlywiki_file
 
+  # The empty used when the site was created.
+  # (It might not reflect what the site is now since the
+  # user may have uploaded a different type of TiddlyWiki.)
+  belongs_to :empty
+
   delegate :blob,
     to: :tiddlywiki_file, allow_nil: Settings.nil_blobs_ok?
 

@@ -2,6 +2,7 @@
 class SitesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_site, only: [:show, :edit, :update, :destroy]
+  before_action :set_empties_list, only: [:new, :create]
 
   # GET /sites
   # GET /sites.json
@@ -26,10 +27,11 @@ class SitesController < ApplicationController
   # POST /sites
   # POST /sites.json
   def create
+    @empty = Empty.find(params[:site][:empty_id])
 
     tiddlywiki_file = {
       # These are the params used by active storage
-      io: StringIO.new(ThFile.empty_html),
+      io: StringIO.new(@empty.html),
       filename: 'index.html',
       content_type: 'text/html',
     }
@@ -78,8 +80,13 @@ class SitesController < ApplicationController
     redirect_to sites_url notice: 'Site not found' unless @site
   end
 
+  def set_empties_list
+    @empties_for_select = Empty.empties_for_select
+    @default_empty = Empty.default_empty
+  end
+
   def site_params_for_create
-    params.require(:site).permit(:name, :description, :is_private, :is_searchable, :tag_list).merge(user_id: current_user.id)
+    params.require(:site).permit(:name, :description, :empty_id, :is_private, :is_searchable, :tag_list).merge(user_id: current_user.id)
   end
 
   def site_params_for_update
