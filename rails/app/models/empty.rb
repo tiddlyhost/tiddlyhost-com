@@ -21,6 +21,10 @@ class Empty < ApplicationRecord
     th_file.to_html
   end
 
+  def long_title
+    "#{title} (#{th_file.tiddlywiki_version})"
+  end
+
   # Returns a hash of names and versions
   def self.versions
     Hash[ enabled.map{ |e| [e.name, e.th_file.tiddlywiki_version] } ]

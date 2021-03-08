@@ -16,7 +16,9 @@
       %th Site
       %th Access
       %th Views
-      %th Options
+      %th Size
+      %th Last updated
+      %th
 
     %tbody
       - @sites.each do |site|
@@ -35,12 +37,25 @@
             .views= site.view_count
 
           %td
-            = site_download_link(site, class: 'btn btn-sm') { bi_icon('download') + 'Download' }
-            = link_to(edit_site_path(site), class: 'btn btn-sm') { bi_icon('sliders') + 'Settings' }
-            = link_to("javascript:;", class: 'delete-confirm btn btn-sm') { bi_icon('trash') + 'Delete' }
-            = link_to('Cancel ', "javascript:;", class: 'delete-cancel btn btn-sm', style: 'display: none;')
-            = link_to(site, method: :delete, data: { confirm: "Are you sure you want to delete '#{site.name}'?" },
-              class: 'delete-really btn btn-danger btn-sm', style: 'display: none;') { bi_icon('trash') + 'Really delete!' }
+            =as_megabytes(site.blob_byte_size)
+            MB
+
+          %td
+            =nice_timestamp(site.blob_created_at)
+
+          %td
+            .btn-group
+              %button.btn.btn-secondary.btn-sm.dropdown-toggle{"type"=>"button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false"}
+                =bi_icon('gear-fill', style: 'color: white; margin-right: 0px;')
+                Actions
+              .dropdown-menu
+                =site_download_link(site, class: 'dropdown-item') { bi_icon('download') + 'Download' }
+                .dropdown-divider
+                =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Change settings' }
+                =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
+                .dropdown-divider
+                =link_to(site, method: :delete, class: 'dropdown-item',
+                  data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
 
 .create-button
   = link_to 'Create site', new_site_path, class: 'btn btn-primary'

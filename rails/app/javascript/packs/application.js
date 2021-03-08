@@ -15,11 +15,6 @@ ActiveStorage.start()
 
 $(document).ready(function(){
 
-  $('.delete-confirm, .delete-cancel').on('click', function(event){
-    $(this).closest('td').find('.delete-confirm, .delete-really, .delete-cancel').toggle();
-    event.preventDefault();
-  })
-
   var limitChars = function() {
     var inputField = $(this);
 
@@ -54,6 +49,12 @@ $(document).ready(function(){
   // If site is set to searchable, automatically make it public
   $('#site_is_private'   ).on('change', function(){ if ($(this).prop('checked')) { $('#site_is_searchable').prop('checked', false); } });
   $('#site_is_searchable').on('change', function(){ if ($(this).prop('checked')) { $('#site_is_private'   ).prop('checked', false); } });
+
+  // Upload form UI tweaks
+  $('#site_tiddlywiki_file').on('change', function(){
+    var fileName = $(this).get(0).files.item(0).name;
+    $('#upload-submit').prop('value', 'Upload file \"' + fileName + '\"').show();
+  });
 
   // Initialize dataTable tables
   $('.dataTable').each(function(){
