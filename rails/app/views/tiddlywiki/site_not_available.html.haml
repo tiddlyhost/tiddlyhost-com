@@ -1,32 +1,32 @@
 %h1= @title || "#{@status_code} #{@status_message}"
 
-- case @status_code when 401
+-case @status_code when 401
   %p.big
     You don't have permission to view this site!
   %p
     If this is your site then login at
-    = link_to 'Tiddlyhost', Settings.main_site_url
+    =link_to 'Tiddlyhost', Settings.main_site_url
     to access it.
 
-- when 403
+-when 403
   %p.big
     You don't have permission to view this site!
   %p
     This private site can be viewed only by its owner.
 
-- when 418
+-when 418
   %p.big
     This site does not appear to be a valid TiddlyWiki.
   %p
     Something has gone wrong. Please
-    = link_to('report an issue', Settings.create_issue_url, target: '_blank')
+    =link_to('report an issue', Settings.create_issue_url, target: '_blank')
     or send an email to
-    = support_mail_to(subject: "Site '#{@site.name}' is being classified as invalid", body: "Please take a look!") + '.'
+    =support_mail_to(subject: "Site '#{@site.name}' is being classified as invalid", body: "Please take a look!") + '.'
 
-- else # 404
+-else # 404
   %p.big
     This site doesn't exist!
   %p
-    = user_signed_in? ? "Visit" : "Sign up at"
-    = link_to 'Tiddlyhost', Settings.main_site_url
+    =user_signed_in? ? "Visit" : "Sign up at"
+    =link_to 'Tiddlyhost', Settings.main_site_url
     if you want to create it.

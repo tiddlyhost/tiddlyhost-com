@@ -13,7 +13,7 @@
       %th Private?
       %th Searchable?
       %th Views
-      - unless @user
+      -unless @user
         %th Owner
         %th Email
       %th Storage key
@@ -26,14 +26,14 @@
       %tr
         =datatable_sort_by(s.id)
         %td
-          = s.is_private? ? s.name : site_link(s)
+          =s.is_private? ? s.name : site_link(s)
         =datatable_sort_by(s.empty.name)
         %td.nowrap.text-truncated{style: 'max-width: 6em;'}
-          = span_with_title(s.description)
+          =span_with_title(s.description)
         %td= bool_text s.is_private?
         %td= bool_text s.is_searchable?
         =datatable_sort_by(s.view_count)
-        - unless @user
+        -unless @user
           %td= link_to_user_sites(s.user_name, s.user)
           %td= link_to_user_sites(s.user_email, s.user)
         %td= s.blob_key
