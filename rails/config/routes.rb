@@ -34,7 +34,12 @@ Rails.application.routes.draw do
     get "hub/tag/:tag", controller: :hub, action: :tag
     get "hub/user/:username", controller: :hub, action: :user
 
-    resources :sites
+    resources :sites do
+      member do
+        get :upload_form
+        patch :upload
+      end
+    end
   end
 
   #

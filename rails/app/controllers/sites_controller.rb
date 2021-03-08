@@ -1,13 +1,13 @@
 
 class SitesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_site, only: [:show, :edit, :update, :destroy]
+  before_action :set_site, only: [:show, :edit, :update, :upload_form, :upload, :destroy]
   before_action :set_empties_list, only: [:new, :create]
 
   # GET /sites
   # GET /sites.json
   def index
-    @sites = current_user.sites
+    @sites = current_user.sites.order('updated_at desc')
   end
 
   # GET /sites/1
@@ -22,6 +22,10 @@ class SitesController < ApplicationController
 
   # GET /sites/1/edit
   def edit
+  end
+
+  # GET /sites/1/upload_form
+  def upload_form
   end
 
   # POST /sites
@@ -43,6 +47,9 @@ class SitesController < ApplicationController
         format.html { redirect_to sites_url }
         # format.json { render :show, status: :created, location: @site }
       else
+        # Make sure the version select is shown if it needs to be
+        @show_advanced = @site.empty_id != Empty.default_empty.id
+
         format.html { render :new }
         # format.json { render json: @site.errors, status: :unprocessable_entity }
       end
@@ -55,6 +62,21 @@ class SitesController < ApplicationController
     respond_to do |format|
       if @site.update(site_params_for_update)
         format.html { redirect_to sites_url, notice: 'Site was successfully updated.' }
+        # format.json { render :show, status: :ok, location: @site }
+      else
+        format.html { render :edit }
+        # format.json { render json: @site.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /sites/1/upload
+  # PATCH/PUT /sites/1/upload.json
+  def upload
+    # (Could consider combining this with update, but for now it's separate)
+    respond_to do |format|
+      if @site.update(site_params_for_upload)
+        format.html { redirect_to sites_url, notice: 'Upload to site was successfully completed.' }
         # format.json { render :show, status: :ok, location: @site }
       else
         format.html { render :edit }
@@ -91,5 +113,9 @@ class SitesController < ApplicationController
 
   def site_params_for_update
     params.require(:site).permit(:name, :description, :is_private, :is_searchable, :tag_list)
+  end
+
+  def site_params_for_upload
+    params.require(:site).permit(:tiddlywiki_file)
   end
 end

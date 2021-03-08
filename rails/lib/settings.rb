@@ -35,7 +35,7 @@ class Settings
   end
 
   def self.nil_blobs_ok?
-    Rails.env.development?
+    Rails.env.development? || Rails.env.test?
   end
 
 end
