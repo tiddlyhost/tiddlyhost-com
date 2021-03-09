@@ -3,13 +3,11 @@ class Empty < ApplicationRecord
 
   scope :enabled, ->{ where(enabled: true) }
 
-  DEFAULT = 'tw5'
-
-  def self.default_empty
-    find_by_name(DEFAULT)
+  def self.default
+    find_by_name(Settings.default_empty_name)
   end
 
-  def self.empties_for_select
+  def self.for_select
     enabled.order(:id)
   end
 

@@ -8,6 +8,7 @@ defaults:
   support_email: tiddlyhost@gmail.com
   support_email_name: Tiddlyhost Support
   default_plan_name: basic
+  default_empty_name: tw5
   minimum_password_length: 8
 
   #banner_message:
