@@ -106,8 +106,12 @@ module ApplicationHelper
       opts.reverse_merge(target: '_blank'))
   end
 
-  def github_tree_url(branch_or_sha)
-    "https://github.com/simonbaird/tiddlyhost/tree/#{branch_or_sha}"
+  def github_history_url(branch_or_sha)
+    "#{Settings.github_url}/commits/#{branch_or_sha}"
+  end
+
+  def github_history_link_to(title, sha, opts={})
+    link_to(title, github_history_url(sha), {target: '_blank'}.reverse_merge(opts))
   end
 
 end

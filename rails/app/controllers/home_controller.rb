@@ -18,6 +18,9 @@ class HomeController < ApplicationController
       'version' => App::VERSION,
       'empties' => Empty.versions,
     }.merge(read_build_info)
+
+    @sha = @build_info['sha']
+    @short_sha = @sha[0...9]
   end
 
   def error_404
