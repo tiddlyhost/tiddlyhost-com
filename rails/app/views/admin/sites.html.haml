@@ -27,7 +27,7 @@
         =datatable_sort_by(s.id)
         %td
           =s.is_private? ? s.name : site_link(s)
-        =datatable_sort_by(s.empty.name)
+        =datatable_sort_by(s.empty_id, s.empty.name)
         %td.nowrap.text-truncated{style: 'max-width: 6em;'}
           =span_with_title(s.description)
         %td= bool_text s.is_private?
