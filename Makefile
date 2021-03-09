@@ -171,3 +171,32 @@ show-backups:
 # For credentials: source etc/openrc.sh
 openstack-info:
 	openstack server show thost
+
+#----------------------------------------------------------
+
+/tmp/Simon\ Baird.png:
+	@curl -s -o '$@' \
+	  https://www.gravatar.com/avatar/bfaba91f41f0c01aba1ef0751458b537
+
+gource-image: /tmp/Simon\ Baird.png
+
+pretty-colors: gource-image
+	@gource \
+	  --user-image-dir /tmp \
+	  --seconds-per-day 0.3 \
+	  --key \
+	  --title 'Tiddlyhost Development' \
+	  --fullscreen \
+	  --frameless \
+	  --auto-skip-seconds 0.3 \
+	  --elasticity 0.1 \
+	  --font-scale 5 \
+	  --font-size 6 \
+	  --dir-font-size 5 \
+	  --user-font-size 5 \
+	  --file-font-size 20 \
+	  --bloom-multiplier 0.2 \
+	  --bloom-intensity 0.2 \
+	  --filename-colour 555555 \
+	  --dir-colour 555555 \
+	  ;
