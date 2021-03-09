@@ -3,17 +3,18 @@
 
 .stats
   -@build_info.each do |key, val|
-    -next if key == 'sha'
+    -next if key == 'tag'
     .row
       .label= key.titleize
       .data-wide
         -case when key == 'commit'
-          -# Special link for commit
-          =link_to(val + " (#{@build_info['sha'][0..6]})",
-            github_tree_url(@build_info['sha']), target: '_blank')
+          =github_history_link_to("#{val} (#{@short_sha})", @sha)
 
-        -when key == 'branch' || key == 'tag'
-          =link_to(val, github_tree_url(val), target: '_blank')
+        -when key == 'branch'
+          =github_history_link_to(val, @sha)
+
+        -when key == 'sha'
+          =@short_sha
 
         -when val.is_a?(Hash)
           %table

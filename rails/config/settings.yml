@@ -2,6 +2,7 @@
 # May be overridden by values in settings_local.yml
 
 defaults:
+  github_url: https://github.com/simonbaird/tiddlyhost
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
   create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
   support_email: tiddlyhost@gmail.com
