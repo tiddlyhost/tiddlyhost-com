@@ -36,7 +36,7 @@ module SitesHelper
   end
 
   def tag_url(tag_name)
-    "/hub/tag/#{tag_name}"
+    "/hub/tag/#{ERB::Util.url_encode(tag_name)}"
   end
 
   def clickable_site_tags(site)
