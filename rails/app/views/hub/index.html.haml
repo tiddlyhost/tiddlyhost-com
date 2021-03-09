@@ -1,73 +1,73 @@
 
 %h1
-  - if @tag.present?
-    = bi_icon('tag') + @tag
-  - elsif @user.present?
-    - if @user.use_gravatar?
-      = gravatar_image(@user, size: 35) + @user.name
-    - else
-      = bi_icon('person-fill') + @user.name
-  - else
+  -if @tag.present?
+    =bi_icon('tag') + @tag
+  -elsif @user.present?
+    -if @user.use_gravatar?
+      =gravatar_image(@user, size: 35) + @user.name
+    -else
+      =bi_icon('person-fill') + @user.name
+  -else
     Tiddlyhost Hub
 
 %p.text-muted{style: 'font-size: 95%'}
-  - if @tag.present?
+  -if @tag.present?
     Sites tagged with
     %b= @tag + '.'
-  - elsif @user.present?
+  -elsif @user.present?
     Sites created by Tiddlyhost user
     %b= @user.username + '.'
-  - else
+  -else
     If you mark your site as 'Searchable' it will be listed here.
 
 %div{style: "margin-bottom: 2em;"}
   %ul.nav.nav-tabs
-    = hub_link_to('All sites', '/hub')
-    - @tag_tabs.each do |tag|
-      = hub_tag_link_to(tag)
+    =hub_link_to('All sites', '/hub')
+    -@tag_tabs.each do |tag|
+      =hub_tag_link_to(tag)
 
 .page_info.text-muted
-  = page_entries_info(@sites, model: Site)
-  = "tagged with #{@tag}" if @tag.present?
-  = "matching '#{@search}'" if @search.present?
+  =page_entries_info(@sites, model: Site)
+  ="tagged with #{@tag}" if @tag.present?
+  ="matching '#{@search}'" if @search.present?
 
   %span.sort-by
     Sort by:
     =link_to(@sort_by[:name], "#", class: 'dropdown-toggle',
       role: 'button', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
     .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
-      - @sort_options.each do |key, sort_option|
-        = link_to sort_option[:name], sort_url(key), class: 'dropdown-item'
+      -@sort_options.each do |key, sort_option|
+        =link_to sort_option[:name], sort_url(key), class: 'dropdown-item'
 
   %span.search
     Search:
     %form{method: 'GET', style: 'display: inline;'}
       %input{name: 'search', value: @search}
       %button.btn.btn-sm= bi_icon(:search)
-      - if @search.present?
-        = link_to 'Clear', clear_search_url
+      -if @search.present?
+        =link_to 'Clear', clear_search_url
 
 .hub
-  - @sites.each do |s|
+  -@sites.each do |s|
     .site{id: s.name}
       .name
-        = site_long_link s
+        =site_long_link s
       .description
-        = span_with_title_truncated(s.description)
+        =span_with_title_truncated(s.description)
       .owner
-        - if s.user.use_gravatar?
-          = gravatar_image(s.user, size: 14) if s.user.use_gravatar?
-        - else
-          = bi_icon('person-fill', style: 'margin-right:-3px;')
-        - if s.user.has_username?
+        -if s.user.use_gravatar?
+          =gravatar_image(s.user, size: 14) if s.user.use_gravatar?
+        -else
+          =bi_icon('person-fill', style: 'margin-right:-3px;')
+        -if s.user.has_username?
           %span{title: s.user.name}
-          = link_to s.user.username, "/hub/user/#{s.user.username}"
-        - else
-          = s.user.name
+          =link_to s.user.username, "/hub/user/#{s.user.username}"
+        -else
+          =s.user.name
         %span{style: 'margin-left: 0.5em;'} Views:
-        = s.view_count
-      - unless s.tag_list.empty?
+        =s.view_count
+      -unless s.tag_list.empty?
         .site-tags= clickable_site_tags(s)
 
 .pagination
-  = will_paginate(@sites)
+  =will_paginate(@sites)

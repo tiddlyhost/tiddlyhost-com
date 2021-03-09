@@ -44,9 +44,9 @@ Install all ruby gems, node modules, and initialize the databases:
 
     make rails-init
 
-Fetch an empty TW file:
+Fetch TiddlyWiki empty files:
 
-    make empty
+    make download-empties
 
 Run the test suite:
 

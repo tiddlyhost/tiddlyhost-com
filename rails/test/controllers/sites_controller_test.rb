@@ -18,7 +18,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create site" do
     assert_difference('Site.count') do
-      post sites_url, params: { site: { name: 'foo', is_private: "0" } }
+      post sites_url, params: { site: { name: 'foo', is_private: "0", empty_id: 1 } }
     end
 
     assert_redirected_to sites_url

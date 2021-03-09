@@ -1,0 +1,14 @@
+---
+tw5:
+  id: 1
+  name: tw5
+  title: TiddlyWiki
+  description: The current, modern version of TiddlyWiki, sometimes known as TiddlyWiki5.
+  enabled: true
+classic:
+  id: 2
+  name: classic
+  title: TiddlyWiki Classic
+  description: "'Classic' is the original, old version of TiddlyWiki that hasn't been
+    updated much since 2011."
+  enabled: true

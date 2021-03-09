@@ -2,15 +2,25 @@
 %h1 Build Info
 
 .stats
-  - @build_info.each do |key, val|
-    - next if key == 'sha'
+  -@build_info.each do |key, val|
+    -next if key == 'sha'
     .row
       .label= key.titleize
       .data-wide
-        - case key when 'commit'
-          = link_to(val + " (#{@build_info['sha'][0..6]})",
+        -case when key == 'commit'
+          -# Special link for commit
+          =link_to(val + " (#{@build_info['sha'][0..6]})",
             github_tree_url(@build_info['sha']), target: '_blank')
-        - when 'branch'
-          = link_to(val, github_tree_url(val), target: '_blank')
-        - else
-          = val
+
+        -when key == 'branch' || key == 'tag'
+          =link_to(val, github_tree_url(val), target: '_blank')
+
+        -when val.is_a?(Hash)
+          %table
+            -val.each do |hash_key, hash_val|
+              %tr
+                %td{style: 'padding-right: 1em;'}= "#{hash_key}:"
+                %td= hash_val
+
+        -else
+          =val

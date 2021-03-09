@@ -2,7 +2,7 @@ rails/vendor
 rails/tmp
 rails/log
 rails/storage
-rails/empties
+rails/tw_content/empties
 rails/node_modules/
 rails/public/packs/
 rails/public/packs-test/

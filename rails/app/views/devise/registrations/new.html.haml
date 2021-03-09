@@ -6,32 +6,32 @@
     =render 'devise/shared/error_messages', resource: resource
 
   .form-group
-    = f.label :email
-    = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-6'
+    =f.label :email
+    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-6'
     %small.form-text.text-muted Enter your email address
 
   .form-group
-    = f.label :name
-    = f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    =f.label :name
+    =f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
     %small.form-text.text-muted Please enter your name
 
   .form-group
-    = f.label :username
-    = f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
+    =f.label :username
+    =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
     %small.form-text.text-muted Optional. Choose a unique username between 3 and 30 characters long.
 
   .form-group
-    = f.label :password
-    = f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    =f.label :password
+    =f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
     %small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
 
   .form-group
-    = f.label :password_confirmation
-    = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
+    =f.label :password_confirmation
+    =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
     %small.form-text.text-muted Re-type your password to confirm
 
   .form-group{style: 'margin-top: 2em;'}
-    = f.submit 'Create account', class: 'btn btn-primary'
+    =f.submit 'Create account', class: 'btn btn-primary'
 
   .form-group{style: 'margin-left:1em;'}
-    = render 'devise/shared/links'
+    =render 'devise/shared/links'

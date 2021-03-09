@@ -114,7 +114,7 @@ class SitesTest < CapybaraIntegrationTest
 
   test "updating site settings" do
     visit sites_url
-    click_on "Settings", match: :first
+    click_on "Change settings", match: :first
 
     fill_in "Name", with: "foo"
     click_on "Update"
@@ -122,6 +122,13 @@ class SitesTest < CapybaraIntegrationTest
     # Back to the sites index after update
     assert_current_path '/sites'
     assert_selector "a", text: "foo.example.com"
+  end
+
+  test "uploading a site" do
+    visit sites_url
+    click_on "Upload", match: :first
+    assert_equal 200, page.status_code
+    # TODO: Test uploading
   end
 
   def assert_is_tiddlywiki
