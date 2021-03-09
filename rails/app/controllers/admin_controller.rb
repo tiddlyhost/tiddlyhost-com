@@ -6,6 +6,7 @@ class AdminController < ApplicationController
     @title = 'Stats'
 
     @view_count = Site.sum(:view_count)
+    @total_site_bytes = ActiveStorage::Blob.sum(:byte_size)
 
     @user_count = User.count
     @never_signed_in_users = User.where(sign_in_count: 0).count
