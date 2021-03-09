@@ -64,9 +64,9 @@ module ApplicationHelper
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: 2)
   end
 
-  def datatable_sort_by(order_value, text_value=nil)
-    content_tag :td, 'data-order' => order_value.to_i do
-      (text_value || order_value).to_s
+  def datatable_sort_by(sort_by_int, text_value=nil)
+    content_tag :td, 'data-order' => sort_by_int.to_i do
+      (text_value || sort_by_int).to_s
     end
   end
 
