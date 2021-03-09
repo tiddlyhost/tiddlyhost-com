@@ -5,6 +5,7 @@
 
 .stats
   =render 'stat_row', title: 'Total site views', count: @view_count, note: "Counts only non-owner views of public sites"
+  =render 'stat_row', title: 'Total site size', count: "#{as_megabytes(@total_site_bytes)} MB"
   %hr
   =render 'stat_row', title: 'Total users', count: @user_count
   =render 'stat_row', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
@@ -14,5 +15,5 @@
   =render 'stat_row', title: 'Never updated sites', count: @never_updated_sites, total: @site_count
   =render 'stat_row', title: 'Private sites', count: @private_count, total: @site_count
   =render 'stat_row', title: 'Public sites', count: @public_count, total: @site_count
-  =render 'stat_row', title: 'Public non-searchable sites', count: @public_non_searchable_count, total: @site_count, note: "Sites that are public but not listed in the hub"
-  =render 'stat_row', title: 'Searchable sites', count: @searchable_count, total: @site_count, note: "Sites listed in the hub"
+  =render 'stat_row', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
+  =render 'stat_row', title: 'Hub sites', count: @searchable_count, total: @site_count
