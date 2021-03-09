@@ -27,8 +27,13 @@ table.sites {
         }
 
         .btn {
-            margin-top: -6px;
-            margin-right: 1em;
+            // Slightly smaller "Actions" menu button
+            line-height: 1.2em;
+        }
+
+        .btn-secondary {
+            // Slightly less dark (I'm lazy)
+            opacity: 0.8;
         }
 
     }
@@ -36,4 +41,27 @@ table.sites {
 
 .create-button {
     margin-left: 1em;
+}
+
+.upload-form {
+    p {
+        // For the warning about replacing your site entirely
+        margin-top: 1.5em;
+        font-size: 90%;
+    }
+
+    .warning {
+        color: #d86f57;
+        font-weight: bold;
+    }
+
+    form {
+        margin-top: 1em;
+        display: inline-block;
+    }
+
+    label {
+        // Try to make it line up neatly
+        margin-top: 8px;
+    }
 }

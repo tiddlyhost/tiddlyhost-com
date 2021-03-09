@@ -42,6 +42,10 @@ module ApplicationHelper
     end
   end
 
+  def display_none_when(condition)
+    "display: #{ condition ? 'none' : 'block' };"
+  end
+
   def gravatar_url(email)
     "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
   end

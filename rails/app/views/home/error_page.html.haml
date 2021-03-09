@@ -1,23 +1,23 @@
 %h1= "#{@status_code} #{@status_message}"
 
-- if @status_code == 404
+-if @status_code == 404
   %p.big
     The page you were looking for doesn't exist!
   %p
     You may have mistyped the address or the page may have moved.
 
-- else
-  - if @status_code == 422
+-else
+  -if @status_code == 422
     -# Maybe we don't need this one...
     %p.big
       Tiddlyhost was unable to process your request!
 
-  - else # @status_code == 500
+  -else # @status_code == 500
     %p.big
       An unexpected server error occurred!
 
   %p
     Please
-    = link_to('report an issue', Settings.create_issue_url, target: '_blank')
+    =link_to('report an issue', Settings.create_issue_url, target: '_blank')
     or send an email with some details about what happened to
-    = support_mail_to(subject: "An #{@status_message} error occurred at Tiddlyhost") + '.'
+    =support_mail_to(subject: "An #{@status_message} error occurred at Tiddlyhost") + '.'
