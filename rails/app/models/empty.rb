@@ -1,11 +1,8 @@
 
 class Empty < ApplicationRecord
+  include WithDefault
 
   scope :enabled, ->{ where(enabled: true) }
-
-  def self.default
-    find_by_name(Settings.default_empty_name)
-  end
 
   def self.for_select
     enabled.order(:id)
