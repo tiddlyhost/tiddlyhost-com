@@ -8,6 +8,8 @@ class SitesController < ApplicationController
   # GET /sites.json
   def index
     @sites = current_user.sites.order('updated_at desc')
+    @site_count = @sites.count
+    @total_storage_bytes = current_user.total_storage_bytes
   end
 
   # GET /sites/1

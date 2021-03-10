@@ -61,7 +61,7 @@
           =bi_icon('person-fill', style: 'margin-right:-3px;')
         -if s.user.has_username?
           %span{title: s.user.name}
-          =link_to s.user.username, "/hub/user/#{s.user.username}"
+            =link_to s.user.username, hub_user_url(s.user.username)
         -else
           =s.user.name
         %span{style: 'margin-left: 0.5em;'} Views:

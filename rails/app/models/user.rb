@@ -44,6 +44,19 @@ class User < ApplicationRecord
   scope :with_plan,    ->(*plan_names) { where(    plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
   scope :without_plan, ->(*plan_names) { where.not(plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
 
+  # Not sure if we could use an assocation here or at least some clever joins, but this seems to work okay
+  def site_attachments
+    ActiveStorage::Attachment.where(record_id: sites.pluck(:id), record_type: 'Site')
+  end
+
+  def site_blobs
+    ActiveStorage::Blob.where(id: site_attachments.pluck(:blob_id))
+  end
+
+  def total_storage_bytes
+    site_blobs.sum(:byte_size)
+  end
+
   def has_plan?(plan_name)
     plan.name == plan_name.to_s
   end
