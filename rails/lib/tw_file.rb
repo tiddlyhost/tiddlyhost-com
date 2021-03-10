@@ -145,10 +145,13 @@ class TwFile
     div = new_node('div')
     pre = div.add_child(new_node('pre'))
     div['title'] = title
-    div['tags'] = data[:tags] if data[:tags]
-    div['modifier'] = data[:modifier] if data[:modifier]
-    div['creator'] = data[:creator] if data[:creator]
-    pre.content = data[:content] || ''
+    pre.content = data.delete(:content) || ''
+
+    # For attributes like tags, modifier, etc
+    data.each do |attr_name, attr_value|
+      div[attr_name.to_s] = attr_value
+    end
+
     div
   end
 
