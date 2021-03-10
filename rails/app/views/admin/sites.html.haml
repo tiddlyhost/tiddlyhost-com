@@ -13,6 +13,7 @@
       %th Private?
       %th Searchable?
       %th Views
+      %th Accesses
       -unless @user
         %th Owner
         %th Email
@@ -39,6 +40,7 @@
         %td= bool_text s.is_private?
         %td= bool_text s.is_searchable?
         =datatable_sort_by(s.view_count)
+        =datatable_sort_by(s.access_count)
         -unless @user
           %td= link_to_user_sites(s.user_name, s.user)
           %td= link_to_user_sites(s.user_email, s.user)

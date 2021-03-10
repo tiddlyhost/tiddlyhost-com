@@ -56,6 +56,7 @@ class SiteTest < ActiveSupport::TestCase
     orig_updated_at = @site.updated_at.to_i
     orig_accessed_at = @site.accessed_at.to_i
     orig_view_count = @site.view_count
+    orig_access_count = @site.access_count
 
     @site.touch_accessed_at
     # The accessed_at field is touched
@@ -64,8 +65,10 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal orig_updated_at, @site.updated_at.to_i
 
     @site.increment_view_count
-    # The counter was incremented
+    @site.increment_access_count
+    # The counters were incremented
     assert_equal orig_view_count + 1, @site.reload.view_count
+    assert_equal orig_access_count + 1, @site.reload.access_count
     # The updated_at field is untouched
     assert_equal orig_updated_at, @site.updated_at.to_i
   end

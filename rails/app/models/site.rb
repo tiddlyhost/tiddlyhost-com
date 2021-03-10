@@ -88,6 +88,11 @@ class Site < ApplicationRecord
     update_column(:view_count, view_count + 1)
   end
 
+  def increment_access_count
+    # Using update_column to avoid automatically touching updated_at
+    update_column(:access_count, access_count + 1)
+  end
+
   def touch_accessed_at
     # Using update_column to avoid automatically touching updated_at
     update_column(:accessed_at, Time.now)

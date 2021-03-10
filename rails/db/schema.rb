@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_06_155527) do
+ActiveRecord::Schema.define(version: 2021_03_10_065945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_03_06_155527) do
     t.integer "view_count", default: 0
     t.datetime "accessed_at"
     t.bigint "empty_id"
+    t.integer "access_count", default: 0
     t.index ["empty_id"], name: "index_sites_on_empty_id"
     t.index ["name"], name: "index_sites_on_name", unique: true
     t.index ["user_id"], name: "index_sites_on_user_id"
