@@ -36,13 +36,17 @@ module SitesHelper
     end)
   end
 
-  def tag_url(tag_name)
+  def hub_tag_url(tag_name)
     "/hub/tag/#{ERB::Util.url_encode(tag_name)}"
+  end
+
+  def hub_user_url(username)
+    "/hub/user/#{ERB::Util.url_encode(username)}"
   end
 
   def clickable_site_tags(site)
     safe_join(site.tag_list.map do |tag_name|
-      link_to tag_name, tag_url(tag_name)
+      link_to tag_name, hub_tag_url(tag_name)
     end)
   end
 

@@ -5,10 +5,15 @@
 
 -else
   -if current_user.has_hub_sites? && current_user.has_username?
-    %div{style: 'margin-left:1em;margin-bottom:1em;'}
-      %small.text-muted
-        =link_to(("View in Tiddlyhost Hub" + bi_icon('arrow-right-short')).html_safe,
-          "/hub/user/#{current_user.username}", target: '_blank')
+    .hub-link
+      =link_to(hub_user_url(current_user.username)) do
+        View in Tiddlyhost Hub
+        =bi_icon('arrow-right-short')
+
+  .summary-info
+    =pluralize(@site_count, 'site') + ","
+    =as_megabytes(@total_storage_bytes)
+    MB storage used.
 
   %table.sites
 
