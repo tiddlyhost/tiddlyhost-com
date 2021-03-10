@@ -48,7 +48,7 @@ class SitesController < ApplicationController
         # format.json { render :show, status: :created, location: @site }
       else
         # Make sure the version select is shown if it needs to be
-        @show_advanced = @site.empty_id != Empty.default.id
+        @show_advanced = @site.empty_id != @default_empty.id
 
         format.html { render :new }
         # format.json { render json: @site.errors, status: :unprocessable_entity }
