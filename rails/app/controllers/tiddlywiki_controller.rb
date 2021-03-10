@@ -99,7 +99,7 @@ class TiddlywikiController < ApplicationController
   end
 
   def site_visible?
-    site_exists? && (site_public? || user_owns_site?)
+    site_exists? && (site_public? || user_owns_site? || user_is_admin?)
   end
 
   def site_downloadable?

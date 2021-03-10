@@ -2,8 +2,9 @@
 module SitesHelper
 
   def site_link(site, opts={})
+    link_title = opts.delete(:link_title)
     link_to site.url, {target: '_blank'}.merge(opts) do
-      site.name
+      link_title || site.name
     end
   end
 
