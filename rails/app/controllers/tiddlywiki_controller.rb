@@ -62,13 +62,16 @@ class TiddlywikiController < ApplicationController
   private
 
   def update_view_count_and_access_timestamp
-    # Don't count admin user clicks
-    return if user_is_admin?
+    # Don't count admin clicks on other users' sites
+    return if user_is_admin? && !user_owns_site?
 
     # Don't count views by site owner
     @site.increment_view_count unless user_owns_site?
 
-    # ..but always touch the timestamp
+    # Do count accesses by owner (or anyone else)
+    @site.increment_access_count
+
+    # Always touch the timestamp
     @site.touch_accessed_at
   end
 
