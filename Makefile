@@ -6,10 +6,18 @@ _help:
 
 #----------------------------------------------------------
 
+# On Mac my user's main group id is too low and I get this:
+#   addgroup: The GID `20' is already in use.
+# Fix it by setting a higher group id, e.g.:
+#   GROUP_ID=501 make build-base
+# The number shouldn't matter too much.
+USER_ID ?= $(shell id -u)
+GROUP_ID ?= $(shell id -g)
+
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base: cleanup cert
-	docker-compose build --build-arg USER_ID=$$(id -u) --build-arg GROUP_ID=$$(id -g) base
+	docker-compose build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) base
 
 # Set up your environment right after git clone
 rails-init:
