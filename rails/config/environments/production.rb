@@ -66,10 +66,10 @@ Rails.application.configure do
   # Configure email sending
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    user_name: Rails.application.credentials.dig(:smtp_settings, :user_name),
-    password: Rails.application.credentials.dig(:smtp_settings, :password),
-    domain: Rails.application.credentials.dig(:smtp_settings, :domain) || 'gmail.com',
-    address: Rails.application.credentials.dig(:smtp_settings, :address) || 'smtp.gmail.com',
+    user_name: Settings.secrets(:smtp_settings, :user_name),
+    password: Settings.secrets(:smtp_settings, :password),
+    domain: Settings.secrets(:smtp_settings, :domain) || 'gmail.com',
+    address: Settings.secrets(:smtp_settings, :address) || 'smtp.gmail.com',
     port: 587,
     authentication: 'plain',
     enable_starttls_auto: true,

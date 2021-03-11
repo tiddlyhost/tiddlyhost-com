@@ -22,6 +22,10 @@ class Settings
     SETTINGS[method.to_s]
   end
 
+  def self.secrets(*dig_args)
+    Rails.application.credentials.dig(*dig_args)
+  end
+
   def self.main_site_url
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults)
   end

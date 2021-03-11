@@ -8,16 +8,16 @@ local:
 
 amazon:
   service: S3
-  access_key_id: <%= Rails.application.credentials.dig(:amazon_s3, :aws_server_public_key) %>
-  secret_access_key: <%= Rails.application.credentials.dig(:amazon_s3, :aws_server_secret_key) %>
-  region: <%= Rails.application.credentials.dig(:amazon_s3, :region) %>
-  bucket: <%= Rails.application.credentials.dig(:amazon_s3, :bucket_name) %>
+  access_key_id: <%= Settings.secrets(:amazon_s3, :aws_server_public_key) %>
+  secret_access_key: <%= Settings.secrets(:amazon_s3, :aws_server_secret_key) %>
+  region: <%= Settings.secrets(:amazon_s3, :region) %>
+  bucket: <%= Settings.secrets(:amazon_s3, :bucket_name) %>
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
+#   access_key_id: <%= Settings.secrets(:aws, :access_key_id) %>
+#   secret_access_key: <%= Settings.secrets(:aws, :secret_access_key) %>
 #   region: us-east-1
 #   bucket: your_own_bucket
 
@@ -32,7 +32,7 @@ amazon:
 # microsoft:
 #   service: AzureStorage
 #   storage_account_name: your_account_name
-#   storage_access_key: <%= Rails.application.credentials.dig(:azure_storage, :storage_access_key) %>
+#   storage_access_key: <%= Settings.secrets(:azure_storage, :storage_access_key) %>
 #   container: your_container_name
 
 # mirror:
