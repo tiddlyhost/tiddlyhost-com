@@ -33,7 +33,7 @@ class SitesController < ApplicationController
   # POST /sites
   # POST /sites.json
   def create
-    @empty = Empty.find(params[:site][:empty_id])
+    @empty = Empty.find(site_params_for_create[:empty_id])
 
     tiddlywiki_file = {
       # These are the params used by active storage
