@@ -38,10 +38,17 @@ module App
 
     config.eager_load_paths << Rails.root.join("lib")
 
-    # Support our wildcard subdomains
-    config.hosts << ".#{Settings.url_defaults[:host]}"
-    config.session_store :cookie_store, domain: Settings.url_defaults[:host]
-    config.action_controller.default_url_options = { host: Settings.url_defaults[:host] }
+    # For tiddlyhost and its wildcard subdomains
+    config.hosts << Settings.main_site_host << ".#{Settings.main_site_host}"
+
+    # For tiddlyspot and its wildcard subdomains
+    config.hosts << Settings.tiddlyspot_host << ".#{Settings.tiddlyspot_host}" \
+      if Settings.tiddlyspot_host.present?
+
+    # (`domain: :all` might be useful here later maybe)
+    config.session_store :cookie_store, domain: Settings.main_site_host
+
+    config.action_controller.default_url_options = { host: Settings.main_site_host }
 
     # Initially for devise emails
     config.action_mailer.default_url_options = Settings.url_defaults

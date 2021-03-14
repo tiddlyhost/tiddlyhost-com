@@ -4,6 +4,7 @@
 defaults:
   github_url: https://github.com/simonbaird/tiddlyhost
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
+  faq_url: https://github.com/simonbaird/tiddlyhost/wiki/FAQ
   create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
   support_email: tiddlyhost@gmail.com
   support_email_name: Tiddlyhost Support
@@ -23,12 +24,18 @@ development:
     :host: tiddlyhost.local
     :protocol: https
 
+  tiddlyspot_host: tiddlyspot.local
+
 test:
   url_defaults:
     :host: example.com
     :protocol: http
 
+  tiddlyspot_host: tiddlyspot-example.com
+
 production:
   url_defaults:
     :host: tiddlyhost.com
     :protocol: https
+
+  tiddlyspot_host: tiddlyspot.com

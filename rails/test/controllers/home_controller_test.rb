@@ -1,6 +1,7 @@
 require "test_helper"
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
+
   test "should get index" do
     get '/'
     assert_response :success
@@ -8,8 +9,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "www subdomain should redirect" do
-    get home_index_url, headers: { host: "www.#{Settings.url_defaults[:host]}" }
-    assert_redirected_to(Settings.url_defaults)
+    host! "www.#{Settings.main_site_host}"
+    get '/'
+    assert_redirected_to Settings.url_defaults
   end
 
   # See also test/integration/sites_test.rb
