@@ -9,28 +9,41 @@
 ssl_certificate /etc/nginx/certs/ssl.cert;
 ssl_certificate_key /etc/nginx/certs/ssl.key;
 
+#
+# Always use SSL for tiddlyhost
+#
 server {
   listen 80;
-  server_name ${TH_HOST};
+  server_name ${TH_HOST} *.${TH_HOST};
 
-  # Ensure we always use SSL for tiddlyhost
   return 301 https://$host$request_uri;
 }
 
-# Coming soon...
-#server {
-#  listen 80;
-#  server_name ${TS_HOST};
 #
-#  # For Tiddlyspot we still use port 80
-#  location / {
-#    proxy_pass http://base:3333;
-#  }
-#}
+# For tiddlyspot both HTTP and SSL requests are proxied to the rails app.
+# Continue to allow port 80 since (I think) site names with dots won't match the cert.
+#
+server {
+  listen 80;
+  listen 443 ssl;
+  server_name ${TS_HOST} *.${TS_HOST};
 
+  location / {
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+    proxy_pass http://${APP_HOST}:3333;
+  }
+}
+
+#
+# All tiddlyhost requests are proxied to the rails app
+#
 server {
   listen 443 ssl;
-  server_name ${TH_HOST};
+  server_name ${TH_HOST} *.${TH_HOST};
 
   # Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
   # Using 0 here means unlimited, but I'm thinking some kind of limit

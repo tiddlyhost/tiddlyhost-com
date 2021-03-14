@@ -1,0 +1,14 @@
+%html
+  %head
+    %style{type: 'text/css'}
+      body { margin: 5em auto; width:70%; font-family: sans-serif; }
+      p { padding-bottom: 1em; }
+
+    =favicon_link_tag asset_path('favicon-tiddlyspot.ico')
+
+  %body
+    %p
+      =link_to Settings.tiddlyspot_url do
+        =image_tag 'tiddlyspot-banner-logo.png', title: 'Tiddlyspot'
+
+    =yield

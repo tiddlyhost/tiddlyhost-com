@@ -1,11 +1,27 @@
 
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: :registrations }
 
   #
-  # For individual TiddlyWiki sites
+  # Devise for user signups and authentication
+  # (but exclude it for Tiddlyspot routes)
   #
-  constraints(->(req) { req.subdomain.present? && req.subdomain != 'www' }) do
+  constraints(->(req) {
+    req.domain != Settings.tiddlyspot_host
+  }) do
+
+    devise_for :users, controllers: {
+      registrations: :registrations,
+    }
+
+  end
+
+  #
+  # Individual sites on tiddlyhost.com
+  #
+  constraints(->(req) {
+    req.domain == Settings.main_site_host && req.subdomain.present? && req.subdomain != 'www'
+  }) do
+
     get '/', to: 'tiddlywiki#serve'
     options '/', to: 'tiddlywiki#options'
     get '/favicon.ico', to: 'tiddlywiki#favicon'
@@ -15,9 +31,12 @@ Rails.application.routes.draw do
   end
 
   #
-  # For the 'main' site
+  # The primary site at tiddlyhost.com
   #
-  constraints(->(req) { req.subdomain.blank? || req.subdomain == 'www' }) do
+  constraints(->(req) {
+    req.domain == Settings.main_site_host && (req.subdomain.blank? || req.subdomain == 'www')
+  }) do
+
     root to: 'home#index'
 
     get 'home/index'
@@ -40,6 +59,35 @@ Rails.application.routes.draw do
         patch :upload
       end
     end
+  end
+
+  if Settings.tiddlyspot_host.present?
+    #
+    # Individual sites on tiddlyspot.com
+    #
+    constraints(->(req) {
+      req.domain == Settings.tiddlyspot_host && req.subdomain.present? && req.subdomain != 'www'
+    }) do
+
+      get '/', to: 'tiddlyspot#serve'
+      options '/', to: 'tiddlyspot#options'
+      get '/favicon.ico', to: 'tiddlyspot#favicon'
+      get '/download', to: 'tiddlyspot#download'
+
+      # These are read only for now, no saving
+    end
+
+    #
+    # Main tiddlyspot.com home page (such as it is)
+    #
+    constraints(->(req) {
+      req.domain == Settings.tiddlyspot_host && (req.subdomain.blank? || req.subdomain == 'www')
+    }) do
+
+      get '/', to: 'tiddlyspot#home'
+
+    end
+
   end
 
   #
