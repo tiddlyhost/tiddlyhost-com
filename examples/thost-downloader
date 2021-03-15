@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# Bash script showing how to use curl to download a private site.
+#
+# Example usage:
+#   ./thost-downloader yoursite youremail@example.com yourpassword
+#
+# To avoid including your password in scripts, you could do something like
+# this for example:
+#   echo yourpassword > ~/.thostpass
+#   chmod 600 ~/.thostpass
+#
+# Then:
+#   ./thost-downloader yoursite youremail@example.com $(cat ~/.thostpass)
+#
+# Note that you don't need this for a public site. You can just do:
+#   curl -s https://$SITE.tiddlyhost.com/download -o $SITE.html
+#
+
+show_usage() {
+  echo Usage:
+  echo "  $0 <sitename> <email> <password>"
+  exit 1
+}
+
+SITE=$1
+EMAIL=$2
+PASSWD=$3
+
+DOWNLOAD_DIR=.
+
+[[ -z "$SITE" ]] && show_usage
+[[ -z "$EMAIL" ]] && show_usage
+[[ -z "$PASSWD" ]] && show_usage
+
+SIGN_IN=https://tiddlyhost.com/users/sign_in
+COOKIES=$(mktemp)
+CURL="curl -s --cookie-jar $COOKIES --cookie $COOKIES"
+
+# Read authenticity_token
+TOKEN=$( $CURL $SIGN_IN | grep '"csrf-token"' | cut -d'"' -f4 )
+
+# Log in
+$CURL -X POST $SIGN_IN \
+  -d "authenticity_token=$TOKEN" \
+  -d "user[email]=$EMAIL" \
+  -d "user[password]=$PASSWD" \
+  > /dev/null
+
+# Check we logged in okay and we have permission
+OK=$( $CURL -I "https://$SITE.tiddlyhost.com/download" | head -1 | grep '200 OK' )
+[[ -z "$OK" ]] && echo "Download failed." && exit 1
+
+# Download the site
+$CURL "https://$SITE.tiddlyhost.com/download" -o $DOWNLOAD_DIR/$SITE.html
+
+# Clean up
+rm $COOKIES
