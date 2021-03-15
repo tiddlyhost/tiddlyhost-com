@@ -23,7 +23,7 @@
   .form-group
     =f.label :username
     =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Unique username (optional)
+    %small.form-text.text-muted Unique username (optional). Will be clickable in the Tiddlyhost Hub.
 
   .form-group
     =gravatar_image(resource)
