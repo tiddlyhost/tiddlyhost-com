@@ -1,0 +1,58 @@
+#
+# The following vars should be replaced by envsubst.
+#
+#  TH_HOST=${TH_HOST}
+#  TS_HOST=${TS_HOST}
+#  APP_HOST=${APP_HOST}
+#
+
+ssl_certificate /etc/nginx/certs/ssl.cert;
+ssl_certificate_key /etc/nginx/certs/ssl.key;
+
+server {
+  listen 80;
+  server_name ${TH_HOST};
+
+  # Ensure we always use SSL for tiddlyhost
+  return 301 https://$host$request_uri;
+}
+
+# Coming soon...
+#server {
+#  listen 80;
+#  server_name ${TS_HOST};
+#
+#  # For Tiddlyspot we still use port 80
+#  location / {
+#    proxy_pass http://base:3333;
+#  }
+#}
+
+server {
+  listen 443 ssl;
+  server_name ${TH_HOST};
+
+  # Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
+  # Using 0 here means unlimited, but I'm thinking some kind of limit
+  # is probably a good idea. 200m seems large enough. A new site is 2m.
+  client_max_body_size 200m;
+
+  location / {
+    # Rails needs to know the real host
+    # since Tiddlyhost does domain based routing
+    proxy_set_header Host $host;
+
+    # Something to help Devise not be confused about http vs https..?
+    proxy_set_header X-Forwarded-Proto https;
+
+    # Devise record IP addresses for logins so let it know the real IP address.
+    proxy_set_header X-Real-IP $remote_addr;
+
+    # Not sure..?
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+
+    # Pass requests to the Rails app
+    proxy_pass http://${APP_HOST}:3333;
+  }
+}

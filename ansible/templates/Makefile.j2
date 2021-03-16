@@ -15,6 +15,12 @@ sandbox:
 console:
 	$(DCC) 'bin/rails console'
 
+webshell:
+	$(DC) exec web bash
+
+dbshell:
+	$(DC) exec db bash
+
 log:
 	$(DCC) 'cat log/production.log'
 
