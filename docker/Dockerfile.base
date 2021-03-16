@@ -37,13 +37,13 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-
 COPY --chown=$APP_USER:$APP_USER ./certs $CERT_PATH
 
 # Install script to help start rails
-COPY --chown=$APP_USER:$APP_USER etc/start-rails.sh /bin
+COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin
 
 WORKDIR $APP_PATH
 USER $APP_USER
 
 # Install some helpful bash aliases for use inside the container
-COPY etc/dot_bash_aliases /home/$APP_USER/.bash_aliases
+COPY ./docker/dot_bash_aliases /home/$APP_USER/.bash_aliases
 
 # Writes to /home/$APP_USER/.bundle/config
 RUN bundle config set --global path 'vendor/bundle'

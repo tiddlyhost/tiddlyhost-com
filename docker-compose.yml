@@ -5,7 +5,7 @@ services:
 
     build:
       context: .
-      dockerfile: Dockerfile.base
+      dockerfile: docker/Dockerfile.base
       args:
       - USER_ID
       - GROUP_ID
