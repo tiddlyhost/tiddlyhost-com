@@ -34,8 +34,8 @@ Rails.application.configure do
   config.active_storage.service = :local
   #config.active_storage.service = :amazon
 
-  # By default SSL is off in development but you can enable it.
-  config.force_ssl = Settings.force_ssl
+  # Nginx will handle SSL
+  config.force_ssl = false
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

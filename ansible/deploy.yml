@@ -8,10 +8,12 @@
     docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
     master_key_file: ../rails/config/master.key
+    nginx_conf_file: ../docker/nginx-conf-prod/app.conf
 
     cert_host: tiddlyhost.com
     letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
     certs_dir: "{{ home_dir }}/certs"
+    nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
     secrets_dir: "{{ home_dir }}/secrets"
 
     service_name: thost
@@ -165,6 +167,23 @@
     tags:
     - app
     - fast-upgrade
+
+  - name: Create nginx conf dir
+    become: no
+    file:
+      path: "{{ nginx_conf_dir }}"
+      state: directory
+    tags:
+    - app
+
+  - name: Copy nginx config
+    become: no
+    copy:
+      src: "{{ nginx_conf_file }}"
+      dest: "{{ nginx_conf_dir }}/app.conf"
+      mode: "0600"
+    tags:
+    - app
 
   - name: Create dir for secrets
     become: no

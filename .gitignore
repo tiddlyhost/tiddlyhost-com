@@ -10,6 +10,8 @@ rails/public/build-info.txt
 rails/config/master.key
 .postgresql-data
 certs
+docker/nginx-conf-local
+docker/nginx-conf-prod
 etc/certbot-dns-user-credentials.yml
 etc/docker-conf/
 etc/openrc.sh

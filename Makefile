@@ -27,6 +27,20 @@ rails-init:
 	  bundle exec rails db:create && \
 	  bundle exec rails db:migrate"
 
+# Create two nginx config files from the template
+%/app.conf: docker/nginx-app-conf.template
+	@mkdir -p $*
+	@echo Creating $@
+	@bin/create-nginx-conf.sh $< $@
+
+nginx-conf-prod: docker/nginx-conf-prod/app.conf
+nginx-conf-local: docker/nginx-conf-local/app.conf
+nginx-conf: nginx-conf-local nginx-conf-prod
+
+nginx-conf-clear:
+	rm -rf docker/nginx-conf-prod docker/nginx-conf-local
+nginx-conf-refresh: nginx-conf-clear nginx-conf
+
 # Brings up the web container only and runs bash in it
 run-base:
 	-docker-compose run --rm --no-deps base bash
@@ -49,7 +63,7 @@ console:
 	$(DCC) 'bin/rails console'
 
 # Start Tiddlyhost locally
-start:
+start: nginx-conf-local
 	-docker-compose up
 
 # Run bundle-install
@@ -71,7 +85,7 @@ shell-prod:
 join-prod:
 	-docker-compose -f docker-compose-prod.yml exec prod bash -c bash
 
-start-prod:
+start-prod: nginx-conf-prod
 	-RAILS_MASTER_KEY=`cat rails/config/master.key` docker-compose -f docker-compose-prod.yml up
 
 # Stop and remove containers, clean up unused images
@@ -133,7 +147,7 @@ faster-build-deploy: build-push faster-upgrade
 
 PLAY = ansible-playbook -i ansible/inventory.yml $(V)
 
-full-deploy:
+full-deploy: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml
 
 deploy-deps:
@@ -142,16 +156,16 @@ deploy-deps:
 deploy-certs:
 	$(PLAY) ansible/deploy.yml --tags=certs
 
-deploy-app:
-	$(PLAY) ansible/deploy.yml --tags=app
-
 deploy-scripts:
 	$(PLAY) ansible/deploy.yml --tags=scripts
 
-fast-upgrade:
+deploy-app: nginx-conf-prod
+	$(PLAY) ansible/deploy.yml --tags=app
+
+fast-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
-faster-upgrade:
+faster-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 prod-ssh:

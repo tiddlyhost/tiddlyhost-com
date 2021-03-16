@@ -1,7 +1,22 @@
 services:
+  web:
+    image: nginx
+    depends_on:
+    - base
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./certs:/etc/nginx/certs:Z
+    - ./docker/nginx-conf-local:/etc/nginx/conf.d:Z
 
   base:
     image: base:latest
+    depends_on:
+    - db
+    volumes:
+    - ./rails:/opt/app:Z
+    command: /bin/start-rails.sh
 
     build:
       context: .
@@ -10,27 +25,9 @@ services:
       - USER_ID
       - GROUP_ID
 
-    volumes:
-    - ./rails:/opt/app:Z
-
-    ports:
-    - "3333:3333"
-
-    depends_on:
-    - db
-
-    command: /bin/start-rails.sh
-
-    environment:
-      # Set this to "no" to use SSL locally. Beware you'll need
-      # to clear your cookies to avoid authenticity token errors.
-      START_WITHOUT_SSL: "yes"
-
   db:
     image: postgres
-
-    volumes:
-    - ./.postgresql-data/data:/var/lib/postgresql/data:Z
-
     environment:
       POSTGRES_PASSWORD: notsecure123
+    volumes:
+    - ./.postgresql-data/data:/var/lib/postgresql/data:Z
