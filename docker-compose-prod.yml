@@ -5,7 +5,7 @@ services:
 
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: docker/Dockerfile.prod
 
     restart: always
 

@@ -102,21 +102,22 @@ empty-versions:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-cert: certs/ssl.cert
+CERTS_DIR=certs
+cert: $(CERTS_DIR)/ssl.cert
 
-certs/ssl.cert:
-	@cd ./etc && ./create-local-ssl-cert.sh
+$(CERTS_DIR)/ssl.cert:
+	@bin/create-local-ssl-cert.sh $(CERTS_DIR)
 
 clear-cert:
-	@rm -f ./certs/ssl.cert
-	@rm -f ./certs/ssl.key
+	@rm -f $(CERTS_DIR)/ssl.cert
+	@rm -f $(CERTS_DIR)/ssl.key
 
 redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
 build-info:
-	./etc/create-build-info.sh
+	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info
 	docker-compose -f docker-compose-prod.yml build --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) prod
