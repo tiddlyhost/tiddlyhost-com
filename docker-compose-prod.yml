@@ -29,4 +29,4 @@ services:
     environment:
       POSTGRES_PASSWORD: notsecure123
     volumes:
-    - ./.postgresql-data/data:/var/lib/postgresql/data:Z
+    - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z

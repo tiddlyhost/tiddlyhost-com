@@ -21,7 +21,7 @@ build-base: cleanup cert
 
 # Set up your environment right after git clone
 rails-init:
-	mkdir -p .postgresql-data
+	mkdir -p docker/postgresql-data
 	docker-compose run --rm base bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
 	  bundle exec rails db:create && \

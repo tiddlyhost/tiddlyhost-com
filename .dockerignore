@@ -1,4 +1,4 @@
-.postgresql-data
+docker/postgresql-data
 rails/tmp/*
 rails/log/*
 rails/storage/*
