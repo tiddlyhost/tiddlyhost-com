@@ -7,6 +7,9 @@
 #
 set -e
 
+
+TARGET_DIR=$1
+
 echo Creating self-signed SSL cert...
 
 # Create a private key
@@ -27,8 +30,8 @@ rm server.pass.key
 rm server.csr
 
 # Put the certs where we need them
-mkdir -p ../certs
-mv server.key ../certs/ssl.key
-mv server.crt ../certs/ssl.cert
+mkdir -p $TARGET_DIR
+mv server.key $TARGET_DIR/ssl.key
+mv server.crt $TARGET_DIR/ssl.cert
 
-echo Created ../certs/ssl.cert and ../certs/ssl.key
+echo Created $TARGET_DIR/ssl.cert and $TARGET_DIR/ssl.key
