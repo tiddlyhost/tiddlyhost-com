@@ -1,35 +1,32 @@
 services:
+  web:
+    image: nginx
+    restart: always
+    depends_on:
+    - prod
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./docker/certs:/etc/nginx/certs:Z
+    - ./docker/nginx-conf-prod:/etc/nginx/conf.d:Z
 
   prod:
     image: sbaird/tiddlyhost:latest
-
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-
     restart: always
-
-    ports:
-    - "443:3333"
-    - "80:3333"
-
     depends_on:
     - db
-
-    volumes:
-    - ./certs/ssl.cert:/opt/certs/ssl.cert:Z
-    - ./certs/ssl.key:/opt/certs/ssl.key:Z
-
     environment:
       RAILS_MASTER_KEY:
 
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.prod
+
   db:
     image: postgres
-
     restart: always
-
-    volumes:
-    - ./.postgresql-data/data:/var/lib/postgresql/data:Z
-
     environment:
       POSTGRES_PASSWORD: notsecure123
+    volumes:
+    - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z

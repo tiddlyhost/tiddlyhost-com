@@ -21,11 +21,25 @@ build-base: cleanup cert
 
 # Set up your environment right after git clone
 rails-init:
-	mkdir -p .postgresql-data
+	mkdir -p docker/postgresql-data
 	docker-compose run --rm base bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
 	  bundle exec rails db:create && \
 	  bundle exec rails db:migrate"
+
+# Create two nginx config files from the template
+%/app.conf: docker/nginx-app-conf.template
+	@mkdir -p $*
+	@echo Creating $@
+	@bin/create-nginx-conf.sh $< $@
+
+nginx-conf-prod: docker/nginx-conf-prod/app.conf
+nginx-conf-local: docker/nginx-conf-local/app.conf
+nginx-conf: nginx-conf-local nginx-conf-prod
+
+nginx-conf-clear:
+	rm -rf docker/nginx-conf-prod docker/nginx-conf-local
+nginx-conf-refresh: nginx-conf-clear nginx-conf
 
 # Brings up the web container only and runs bash in it
 run-base:
@@ -49,7 +63,7 @@ console:
 	$(DCC) 'bin/rails console'
 
 # Start Tiddlyhost locally
-start:
+start: nginx-conf-local
 	-docker-compose up
 
 # Run bundle-install
@@ -71,7 +85,7 @@ shell-prod:
 join-prod:
 	-docker-compose -f docker-compose-prod.yml exec prod bash -c bash
 
-start-prod:
+start-prod: nginx-conf-prod
 	-RAILS_MASTER_KEY=`cat rails/config/master.key` docker-compose -f docker-compose-prod.yml up
 
 # Stop and remove containers, clean up unused images
@@ -102,21 +116,22 @@ empty-versions:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-cert: certs/ssl.cert
+CERTS_DIR=docker/certs
+cert: $(CERTS_DIR)/ssl.cert
 
-certs/ssl.cert:
-	@cd ./etc && ./create-local-ssl-cert.sh
+$(CERTS_DIR)/ssl.cert:
+	@bin/create-local-ssl-cert.sh $(CERTS_DIR)
 
 clear-cert:
-	@rm -f ./certs/ssl.cert
-	@rm -f ./certs/ssl.key
+	@rm -f $(CERTS_DIR)/ssl.cert
+	@rm -f $(CERTS_DIR)/ssl.key
 
 redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
 build-info:
-	./etc/create-build-info.sh
+	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info
 	docker-compose -f docker-compose-prod.yml build --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) prod
@@ -132,7 +147,7 @@ faster-build-deploy: build-push faster-upgrade
 
 PLAY = ansible-playbook -i ansible/inventory.yml $(V)
 
-full-deploy:
+full-deploy: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml
 
 deploy-deps:
@@ -141,16 +156,16 @@ deploy-deps:
 deploy-certs:
 	$(PLAY) ansible/deploy.yml --tags=certs
 
-deploy-app:
-	$(PLAY) ansible/deploy.yml --tags=app
-
 deploy-scripts:
 	$(PLAY) ansible/deploy.yml --tags=scripts
 
-fast-upgrade:
+deploy-app: nginx-conf-prod
+	$(PLAY) ansible/deploy.yml --tags=app
+
+fast-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
-faster-upgrade:
+faster-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 prod-ssh:
