@@ -116,7 +116,7 @@ empty-versions:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-CERTS_DIR=certs
+CERTS_DIR=docker/certs
 cert: $(CERTS_DIR)/ssl.cert
 
 $(CERTS_DIR)/ssl.cert:
