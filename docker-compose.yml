@@ -7,7 +7,7 @@ services:
     - "80:80"
     - "443:443"
     volumes:
-    - ./certs:/etc/nginx/certs:Z
+    - ./docker/certs:/etc/nginx/certs:Z
     - ./docker/nginx-conf-local:/etc/nginx/conf.d:Z
 
   base:

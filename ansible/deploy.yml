@@ -12,7 +12,7 @@
 
     cert_host: tiddlyhost.com
     letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
-    certs_dir: "{{ home_dir }}/certs"
+    certs_dir: "{{ home_dir }}/docker/certs"
     nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
     secrets_dir: "{{ home_dir }}/secrets"
 

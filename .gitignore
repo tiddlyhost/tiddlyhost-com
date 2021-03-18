@@ -8,7 +8,7 @@ rails/public/packs/
 rails/public/packs-test/
 rails/public/build-info.txt
 rails/config/master.key
-certs
+docker/certs
 docker/nginx-conf-local
 docker/nginx-conf-prod
 docker/postgresql-data
