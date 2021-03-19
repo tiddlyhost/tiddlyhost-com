@@ -113,6 +113,18 @@ class SitesTest < CapybaraIntegrationTest
         # Confirm the expected view and layout is used
         assert_selector '.navbar .navbar-brand span', text: 'Tiddlyhost'
         assert_selector 'h1', text: "#{error_code}"
+
+        visit "#{url}.txt"
+        assert_equal error_code, page.status_code
+        assert_match /^#{error_code} /, page.body
+
+        visit "#{url}.json"
+        assert_equal error_code, page.status_code
+        assert_match /^#{error_code} /, JSON.load(page.body)['error']
+
+        visit "#{url}.blah"
+        assert_equal error_code, page.status_code
+        assert_equal "", page.body
       end
     end
   end
