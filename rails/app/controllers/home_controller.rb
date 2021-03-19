@@ -38,9 +38,26 @@ class HomeController < ApplicationController
   private
 
   def render_error_page(status_code, status_message)
-    @status_code = status_code
-    @status_message = status_message
-    render :error_page, status: status_code, layout: 'simple'
+    respond_to do |format|
+      format.html do
+        @status_code = status_code
+        @status_message = status_message
+        render :error_page, status: status_code, layout: 'simple'
+      end
+
+      format.text do
+        render plain: "#{status_code} #{status_message}", status: status_code
+      end
+
+      format.json do
+        render json: { error: "#{status_code} #{status_message}" }, status: status_code
+      end
+
+      format.all do
+        head status_code
+      end
+
+    end
   end
 
   def read_build_info
