@@ -8,18 +8,16 @@
     %tr
       %th Id
       %th Name
-      %th Empty
-      %th Description
+      %th Exists?
       %th Private?
-      %th Searchable?
-      %th Views
       %th Accesses
+      %th Saves
       -unless @user
         %th Owner
       %th Storage key
       %th Size (MB)
-      %th Last access
-      %th.default-sort Last update
+      %th.default-sort Last access
+      %th Last update
       %th Created
   %tbody
     -@sites.each do |s|
@@ -31,19 +29,22 @@
             -# click as a reminder that this is a private site
             =s.name
             =site_link(s, link_title: '!')
-          -else
+          -elsif s.exists?
             =site_link(s)
-        =datatable_sort_by(s.empty_id, s.empty.name)
-        %td.nowrap.text-truncated{style: 'max-width: 6em;'}
-          =span_with_title(s.description)
+          -else
+            =s.name
+            =site_link(s, link_title: '&times;'.html_safe)
+        %td= bool_text s.exists?
         %td= bool_text s.is_private?
-        %td= bool_text s.is_searchable?
-        =datatable_sort_by(s.view_count)
         =datatable_sort_by(s.access_count)
+        =datatable_sort_by(s.save_count)
         -unless @user
-          %td= link_to_user_sites(s.user_email, s.user)
+          %td= link_to_user_sites(s.user_email, s.user) if s.user
         %td= s.blob_key
-        =datatable_sort_by(s.blob_byte_size, as_megabytes(s.blob_byte_size))
+        -if s.blob.present?
+          =datatable_sort_by(s.blob_byte_size, as_megabytes(s.blob_byte_size))
+        -else
+          =datatable_sort_by(0, '-')
         =datatable_timestamp(s.accessed_at)
         =datatable_timestamp(s.blob_created_at)
         =datatable_timestamp(s.created_at)
