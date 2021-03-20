@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     get 'admin', to: 'admin#index'
     get 'admin/users'
     get 'admin/sites'
+    get 'admin/tspot_sites'
 
     get 'hub', to: 'hub#index'
     get "hub/tag/:tag", controller: :hub, action: :tag

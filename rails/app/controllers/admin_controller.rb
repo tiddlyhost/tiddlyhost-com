@@ -37,4 +37,15 @@ class AdminController < ApplicationController
     end
   end
 
+  def tspot_sites
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      @sites = TspotSite.where(user: @user)
+      @title = "#{@user.name} #{"'#{@user.username}'" if @user.has_username?} <#{@user.email}> Tiddlyspot sites"
+    else
+      @sites = TspotSite.all
+      @title = "Tiddlyspot Sites"
+    end
+  end
+
 end
