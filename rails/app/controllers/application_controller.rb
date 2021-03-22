@@ -5,6 +5,16 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def send_favicon(favicon_asset)
+    send_file(local_asset_path(favicon_asset),
+      type: 'image/vnd.microsoft.icon', disposition: 'inline')
+  end
+
+  def download_html_content(html_content, file_name)
+    send_data html_content,
+      type: 'text/html; charset=utf-8', filename: "#{file_name}.html"
+  end
+
   def main_site_url
     Settings.main_site_url
   end
