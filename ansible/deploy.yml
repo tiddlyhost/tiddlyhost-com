@@ -11,6 +11,7 @@
     nginx_conf_file: ../docker/nginx-conf-prod/app.conf
 
     cert_host: tiddlyhost.com
+    extra_cert_host: tiddlyspot.com
     letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
     certs_dir: "{{ home_dir }}/docker/certs"
     nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
@@ -103,6 +104,7 @@
       cmd: >-
         certbot certonly
           -d {{ cert_host }} -d *.{{ cert_host }}
+          -d {{ extra_cert_host }} -d *.{{ extra_cert_host }}
           --dns-route53
           -n --agree-tos -m simon.baird@gmail.com
 
