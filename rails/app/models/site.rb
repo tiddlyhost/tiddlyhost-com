@@ -119,7 +119,7 @@ class Site < ApplicationRecord
   end
 
   def favicon_asset_name
-    'favicon_green.ico'
+    'favicon-green.ico'
   end
 
   def is_public?

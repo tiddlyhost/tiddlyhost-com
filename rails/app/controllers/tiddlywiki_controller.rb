@@ -30,8 +30,7 @@ class TiddlywikiController < ApplicationController
     # let's make its availability the same as the site
     return site_not_available unless site_visible?
 
-    send_file local_asset_path(@site.favicon_asset_name),
-      type: 'image/vnd.microsoft.icon', disposition: 'inline'
+    send_favicon(@site.favicon_asset_name)
   end
 
   def download
@@ -40,8 +39,7 @@ class TiddlywikiController < ApplicationController
     # Downloads count as a view
     update_view_count_and_access_timestamp
 
-    send_data @site.html_content,
-      type: 'text/html; charset=utf-8', filename: "#{@site.name}.html"
+    download_html_content(@site.html_content, @site.name)
   end
 
   def save
