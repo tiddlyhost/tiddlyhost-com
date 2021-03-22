@@ -46,6 +46,10 @@ class Settings
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults.merge(subdomain: site_name))
   end
 
+  def self.tiddlyspot_site_url(site_name)
+    ActionDispatch::Http::URL.full_url_for(tiddlyspot_url_defaults.merge(subdomain: site_name))
+  end
+
   def self.force_ssl
     self.url_defaults[:protocol] == 'https'
   end
