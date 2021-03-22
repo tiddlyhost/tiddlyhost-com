@@ -1,7 +1,7 @@
 class Site < ApplicationRecord
-  include WithAccessCount
-
   acts_as_taggable_on :tags
+
+  include WithAccessCount
 
   belongs_to :user
 
