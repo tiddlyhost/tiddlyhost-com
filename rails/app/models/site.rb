@@ -1,4 +1,6 @@
 class Site < ApplicationRecord
+  include WithAccessCount
+
   acts_as_taggable_on :tags
 
   belongs_to :user
@@ -83,19 +85,10 @@ class Site < ApplicationRecord
       message: "'%{value}' is reserved. Please choose a different site name.",
     }
 
+  # See also app/models/concerns/with_access_count
   def increment_view_count
     # Using update_column to avoid automatically touching updated_at
     update_column(:view_count, view_count + 1)
-  end
-
-  def increment_access_count
-    # Using update_column to avoid automatically touching updated_at
-    update_column(:access_count, access_count + 1)
-  end
-
-  def touch_accessed_at
-    # Using update_column to avoid automatically touching updated_at
-    update_column(:accessed_at, Time.now)
   end
 
   def th_file
