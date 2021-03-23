@@ -6,6 +6,15 @@
   %p
     You may have mistyped the address or the page may have moved.
 
+-elsif @status_code == 401
+  %p.big
+    ="Authentication required#{@site ? " for #{@site.name}." : "!"}"
+
+  %p
+    This server could not verify that you are authorized to access the document requested.
+    Either you supplied the wrong credentials, or your browser doesn't understand how to
+    provide the required credentials.
+
 -else
   -if @status_code == 422
     -# Maybe we don't need this one...

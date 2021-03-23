@@ -74,7 +74,8 @@ Rails.application.routes.draw do
       get '/favicon.ico', to: 'tiddlyspot#favicon'
       get '/download', to: 'tiddlyspot#download'
 
-      # These are read only for now, no saving
+      post '/store.cgi', to: 'tiddlyspot#save'
+      post '/store.php', to: 'tiddlyspot#save'
     end
 
     #
