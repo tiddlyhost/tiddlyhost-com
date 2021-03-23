@@ -94,6 +94,10 @@ cleanup:
 	docker-compose rm -f
 	docker image prune -f
 
+# Use this when you sign up a new user
+signup-link:
+	@$(DCC) 'cat log/development.log | grep "Confirm my account" | tail -1 | cut -d\" -f2'
+
 #----------------------------------------------------------
 
 EMPTY_DIR=rails/tw_content/empties
