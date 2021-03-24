@@ -42,8 +42,8 @@ $(document).ready(function(){
 
   // Make it so the user can't easily type invalid site names or usernames.
   // We'll validate server-side as well, see User and Site model validations.
-  $('input#site_name').on('keyup', limitChars);
-  $('input#user_username').on('keyup', limitChars);
+  $('form.new_site input#site_name').on('keyup', limitChars);
+  $('form.edit_user input#user_username').on('keyup', limitChars);
 
   // If site is set to private, automatically make it unsearchable
   // If site is set to searchable, automatically make it public

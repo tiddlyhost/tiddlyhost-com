@@ -63,8 +63,11 @@
                 Actions
               .dropdown-menu
                 =site_download_link(site, class: 'dropdown-item') { bi_icon('download') + 'Download' }
-                -unless is_tspot
-                  .dropdown-divider
+                .dropdown-divider
+                -if is_tspot
+                  =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
+                    data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
+                -else
                   =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Change settings' }
                   =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
                   .dropdown-divider
@@ -73,3 +76,5 @@
 
 .create-button
   =link_to 'Create site', new_site_path, class: 'btn btn-primary'
+  -if Settings.tiddlyspot_host.present?
+    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-light'

@@ -60,6 +60,22 @@ Rails.application.routes.draw do
         patch :upload
       end
     end
+
+    if Settings.tiddlyspot_host.present?
+
+      resources :tspot_sites, only: [:index] do
+        collection do
+          get :claim_form
+          post :claim
+        end
+
+        member do
+          post :disown
+        end
+      end
+
+    end
+
   end
 
   if Settings.tiddlyspot_host.present?

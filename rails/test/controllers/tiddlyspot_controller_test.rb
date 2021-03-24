@@ -1,5 +1,4 @@
 require "test_helper"
-require 'minitest/mock'
 
 class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
@@ -20,10 +19,10 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   def mocked_site(name, exists=true)
     host! "#{name}.#{Settings.tiddlyspot_host}"
 
-    mock = Minitest::Mock.new
-
-    mock.expect(:exists?, exists)
-    mock.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc') if exists
+    mock = mock_helper do |m|
+      m.expect(:exists?, exists)
+      m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc') if exists
+    end
 
     yield mock if block_given?
 

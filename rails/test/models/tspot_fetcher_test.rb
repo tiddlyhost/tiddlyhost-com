@@ -1,5 +1,4 @@
-
-require 'minitest/mock'
+require "test_helper"
 
 class TspotFetcherTest < ActiveSupport::TestCase
 

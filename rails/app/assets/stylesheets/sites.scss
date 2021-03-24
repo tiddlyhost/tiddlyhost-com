@@ -67,6 +67,10 @@ table.sites {
 
 .create-button {
     margin-left: 1em;
+    a {
+        margin-right: 1em;
+    }
+
 }
 
 .upload-form {
@@ -90,4 +94,42 @@ table.sites {
         // Try to make it line up neatly
         margin-top: 8px;
     }
+}
+
+.claim-tiddlyspot {
+    padding: 2em;
+    border: 1px solid #eee;
+    box-shadow: 0px 0px 4px #eee;
+    background-color: #fafafa;
+    margin: 0.2em 1em 1em 1em;
+    float: left;
+    border-radius: 0.25rem;
+    td {
+        padding: 0.5em 0px;
+
+        input[type=text],
+        input[type=password] {
+            width: 15em;
+        }
+
+    }
+    .big {
+        font-size: 110%;
+    }
+
+    label {
+        padding-top: 0.5em;
+        color: #888;
+        margin-right: 0.5em;
+    }
+
+    input[type=submit] {
+        margin-right: 1em;
+        width: 6em;
+    }
+
+}
+
+.clear-left {
+    clear: left;
 }
