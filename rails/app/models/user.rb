@@ -15,9 +15,14 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable,
          :secure_validatable, email_validation: false
 
-  has_many :sites, dependent: :destroy
   belongs_to :plan
   validates_presence_of :name
+
+  has_many :sites, dependent: :destroy
+  has_many :tspot_sites, dependent: :nullify
+  def all_sites
+    sites + tspot_sites
+  end
 
   validates :username,
     uniqueness: {
