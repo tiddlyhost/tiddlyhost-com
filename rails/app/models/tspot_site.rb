@@ -91,6 +91,14 @@ class TspotSite < ApplicationRecord
     Settings.tiddlyspot_site_url(name)
   end
 
+  def download_url
+    "#{url}/download"
+  end
+
+  def favicon_asset_name
+    'favicon-tiddlyspot.ico'
+  end
+
   def is_public?
     !is_private?
   end

@@ -7,7 +7,7 @@ class SitesController < ApplicationController
   # GET /sites
   # GET /sites.json
   def index
-    @sites = current_user.sites.order('updated_at desc')
+    @sites = current_user.all_sites.sort_by(&:updated_at).reverse
     @site_count = @sites.count
     @total_storage_bytes = current_user.total_storage_bytes
   end
