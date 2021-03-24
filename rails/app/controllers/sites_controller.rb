@@ -101,7 +101,7 @@ class SitesController < ApplicationController
 
   def set_site
     @site = current_user.sites.find(params[:id])
-    redirect_to sites_url notice: 'Site not found' unless @site
+    redirect_to sites_url, notice: 'Site not found' unless @site
   end
 
   def set_empties_list

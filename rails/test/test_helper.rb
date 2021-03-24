@@ -4,6 +4,7 @@ require "rails/test_help"
 
 require 'capybara/rails'
 require 'capybara/minitest'
+require 'minitest/mock'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -20,6 +21,13 @@ class ActionDispatch::IntegrationTest
   setup do
     host! Settings.url_defaults[:host]
   end
+
+  def mock_helper
+    mock = Minitest::Mock.new
+    yield mock if block_given?
+    mock
+  end
+
 end
 
 class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
@@ -39,4 +47,5 @@ class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
     Capybara.reset_sessions!
     Capybara.use_default_driver
   end
+
 end

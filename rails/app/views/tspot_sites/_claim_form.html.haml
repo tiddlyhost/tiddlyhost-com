@@ -1,0 +1,19 @@
+.claim-tiddlyspot
+  =form_with url: '/tspot_sites/claim' do |f|
+    %table
+      %tr
+        %td= f.label :site_name, "Site name:"
+        %td= f.text_field :site_name, value: @site_name, class: 'form-control'
+        %td.big .tiddlyspot.com
+      %tr
+        %td= f.label :password, "Site password:"
+        %td= f.password_field :password, value: @password, class: 'form-control'
+        %td
+      %tr
+        %td
+        %td
+          =f.submit 'Claim', class: 'btn btn-primary'
+          =link_to 'Cancel', sites_path
+        %td
+
+.clear-left
