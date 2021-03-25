@@ -1,0 +1,9 @@
+---
+mysite:
+  id: 1
+  name: mysite
+  exists: 1
+  is_private: 0
+  # Password here is abc123
+  htpasswd: mysite:my0UeDUGdY7xE
+  user_id:

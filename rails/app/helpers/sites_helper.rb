@@ -10,7 +10,13 @@ module SitesHelper
 
   def site_long_link(site, opts={})
     link_to site.url, {target: '_blank'}.merge(opts) do
-      URI(site.url).hostname
+      (yield if block_given?).to_s + URI(site.url).hostname
+    end
+  end
+
+  def site_pretty_link(site)
+    site_long_link(site) do
+      image_tag(asset_path(site.favicon_asset_name))
     end
   end
 

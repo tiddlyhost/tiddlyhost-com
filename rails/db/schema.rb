@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_10_065945) do
+ActiveRecord::Schema.define(version: 2021_03_20_155909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,23 @@ ActiveRecord::Schema.define(version: 2021_03_10_065945) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "tspot_sites", force: :cascade do |t|
+    t.string "name"
+    t.boolean "exists"
+    t.boolean "is_private"
+    t.boolean "is_searchable"
+    t.string "htpasswd"
+    t.string "description"
+    t.datetime "accessed_at"
+    t.integer "access_count", default: 0
+    t.integer "save_count", default: 0
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tspot_sites_on_name", unique: true
+    t.index ["user_id"], name: "index_tspot_sites_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -134,5 +151,6 @@ ActiveRecord::Schema.define(version: 2021_03_10_065945) do
   add_foreign_key "sites", "empties"
   add_foreign_key "sites", "users"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "tspot_sites", "users"
   add_foreign_key "users", "plans"
 end

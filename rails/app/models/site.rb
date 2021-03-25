@@ -1,7 +1,7 @@
 class Site < ApplicationRecord
-  include WithAccessCount
-
   acts_as_taggable_on :tags
+
+  include WithAccessCount
 
   belongs_to :user
 
@@ -84,12 +84,6 @@ class Site < ApplicationRecord
       ],
       message: "'%{value}' is reserved. Please choose a different site name.",
     }
-
-  # See also app/models/concerns/with_access_count
-  def increment_view_count
-    # Using update_column to avoid automatically touching updated_at
-    update_column(:view_count, view_count + 1)
-  end
 
   def th_file
     @_th_file ||= ThFile.new(tiddlywiki_file.download)
