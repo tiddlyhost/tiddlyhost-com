@@ -6,7 +6,9 @@ About
 
 Tiddlyhost is the new new Tiddlyspot, a hosting service for TiddlyWiki.
 
-Unlike Tiddlyspot, Tiddlyhost features:
+It aims to be the easiest and best way to use TiddlyWiki online.
+
+Unlike the original Tiddlyspot, Tiddlyhost features:
 
 * Secure SSL
 * Password recovery
@@ -17,81 +19,136 @@ For more information please see
 [FAQ](https://github.com/simonbaird/tiddlyhost/wiki/FAQ).
 
 
-Current Status (Feb 2021)
--------------------------
+Current Status
+--------------
 
-It's still in the early stages of development, but it is now functional.
+Tiddlyhost is in active development.
 
-Currently [tiddlyhost.com](https://tiddlyhost.com/) is in "development
-mode", which means it might be unstable, and you shouldn't use it for anything
-important.
-
-For more status updates see the
+For status updates see the
 [Journal](https://github.com/simonbaird/tiddlyhost/wiki/Journal).
 
 
 Getting Started (for developers)
 --------------------------------
 
-You need to have docker and docker-compose installed on your system.
+### Prepare environment
 
-Build the container image:
+You need to have
+[docker](https://docs.docker.com/get-docker/),
+[docker-compose](https://docs.docker.com/compose/install/), and
+[ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+installed on your system, (though you can do without ansible, see details
+below).
+
+Check out the code:
+
+    git clone git@github.com:simonbaird/tiddlyhost.git
+    cd tiddlyhost
+
+Because you can't decrypt the rails credentials file, remove it. A new one
+will be created automatically by rails along with a new rails master key.
+
+    rm rails/config/credentials.yml.enc
+
+### Build the development container and set up rails
+
+Build the container image used for development:
 
     make build-base
 
 Install all ruby gems, node modules, and initialize the databases:
-(Say no to overwriting /opt/app/config/webpack/environment.js.)
+
+(It will ask you if you want to overwrite
+/opt/app/config/webpack/environment.js. Say no.)
 
     make rails-init
 
-Fetch TiddlyWiki empty files:
+Fetch TiddlyWiki empty files with ansible:
 
     make download-empties
 
-Run the test suite:
+(Alternatively you can run `bin/fetch-empties.sh` to do that without using
+ansible.)
+
+Run the test suite. Hopefully it's all passing:
 
     make tests
-
-Note that the container mounts the rails directory so you can
-edit code outside the container in ./rails.
 
 Tiddlyhost uses wildcard subdomains. To simulate this for local development,
 add some entries to your /etc/hosts:
 
     127.0.0.1 tiddlyhost.local
-    127.0.0.1 www.tiddlyhost.local
-    127.0.0.1 foo.tiddlyhost.local
-    127.0.0.1 bar.tiddlyhost.local
-    127.0.0.1 baz.tiddlyhost.local
-    127.0.0.1 quux.tiddlyhost.local
     127.0.0.1 aaa.tiddlyhost.local
     127.0.0.1 bbb.tiddlyhost.local
-    127.0.0.1 foo-bar.tiddlyhost.local
-    127.0.0.1 simon.tiddlyhost.local
+    127.0.0.1 foo.tiddlyhost.local
+    127.0.0.1 bar.tiddlyhost.local
 
 You should now be able to start rails like this:
 
+(It runs in the foreground, so I suggest you do this in a second terminal
+window.)
+
     make start
 
-Visit <http://tiddlyhost.local:3333/> in your browser and you should see a working
-application.
+Visit <https://tiddlyhost.local/> in your browser and you should see a working
+web application.
 
 Note that the development environment is using a self-signed SSL certificate,
 so you will need to accept the warnings about insecure connections.
+
+### Create an account and create a site
+
+Click "Sign up" and enter some details. A fake email address is fine.
+
+Find the email confirmation link by running this:
+
+    make signup-link
+
+Click that link and then you should be able to sign in.
+
+Click "Create Site" to create a site. Note that you need to use a site name
+that matches something that you added to your /etc/hosts file, aaa or bbb for
+example.
+
+Click on the site to open it. Accept the certificate warnings again. Click the
+save button and confirm your site was able to be saved.
+
+To give your local user admin permissions, do the following:
+
+    make console
+    User.first.update(plan_id: 2)
+    exit
+
+Now reload the Tiddlyhost page in your browser and you should see the "Admin"
+link.
+
+Create other sites or other local accounts as required.
+
+### Other useful commands
+
+Note that the container mounts the rails directory, so the code can be edited
+there outside the container while rails is running inside the container.
 
 You can shell into the running container in another terminal like this:
 
     make join
 
-From there you can run the rails console, rake tasks, tests, etc, inside the
+From there you can access the rails console, run tests, etc, inside the
 container.
 
-When you're all done you can shut down like this:
+You can hit Ctrl-C in the terminal where you ran `make start` to shut
+it down.
+
+You can also shut down and clean up like this:
 
     make cleanup
 
 Note that the make tasks are mostly just wrappers for docker-compose so you
-can use docker-compose commands if you prefer. See the Makefile for details.
+can use your own docker-compose commands directly if you prefer. See the
+Makefile for details.
+
+Run `make` by itself to see a full list of make commands. Read the Makefile to
+learn more about what they do.
 
 
 License
