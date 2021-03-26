@@ -19,6 +19,9 @@ require "rails/test_unit/railtie"
 # settings can be used while we're still starting up rails.
 require_relative '../lib/settings'
 
+# Our custom logger
+require_relative '../lib/logger_with_domain'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -59,5 +62,9 @@ module App
     # Use routes for error pages instead of the default
     # static pages in 'public'
     config.exceptions_app = self.routes
+
+    # See lib/logger_with_domain.rb
+    config.middleware.insert_before(Rails::Rack::Logger, LoggerWithDomain)
+    config.middleware.delete(Rails::Rack::Logger)
   end
 end
