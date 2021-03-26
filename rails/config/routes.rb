@@ -51,8 +51,8 @@ Rails.application.routes.draw do
     get 'admin/tspot_sites'
 
     get 'hub', to: 'hub#index'
-    get "hub/tag/:tag", controller: :hub, action: :tag
-    get "hub/user/:username", controller: :hub, action: :user
+    get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }
+    get "hub/user/:username", to: 'hub#user'
 
     resources :sites do
       member do
