@@ -8,7 +8,11 @@
     docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
     master_key_file: ../rails/config/master.key
-    nginx_conf_file: ../docker/nginx-conf-prod/app.conf
+    nginx_conf_src_dir: ../docker/nginx-conf-prod/
+    nginx_conf_files:
+    - app.conf
+    - commonconf
+    - proxyconf
 
     cert_host: tiddlyhost.com
     extra_cert_host: tiddlyspot.com
@@ -115,7 +119,7 @@
   - name: Renew certs maybe
     command:
       # TODO: The post-hook is untested, not sure if it will work
-      cmd: certbot renew --post-hook "docker-compose restart prod"
+      cmd: certbot renew --post-hook "docker-compose restart web"
     register: certbot_renew
     tags:
     - certs
@@ -135,6 +139,7 @@
 
   - name: Copy cert files to where the container looks for them
     # TODO: It would be better to only do this if they changed
+    # ..or just mount them where they are instead of copying them
     command:
       cmd: cp {{ letsencrypt_dir }}/{{ item.from }} {{ certs_dir }}/{{ item.to }}
     with_items:
@@ -181,9 +186,10 @@
   - name: Copy nginx config
     become: no
     copy:
-      src: "{{ nginx_conf_file }}"
-      dest: "{{ nginx_conf_dir }}/app.conf"
+      src: "{{ nginx_conf_src_dir }}/{{ item }}"
+      dest: "{{ nginx_conf_dir }}/{{ item }}"
       mode: "0600"
+    with_items: "{{ nginx_conf_files }}"
     tags:
     - app
 

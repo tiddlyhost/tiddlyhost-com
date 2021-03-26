@@ -27,19 +27,27 @@ rails-init:
 	  bundle exec rails db:create && \
 	  bundle exec rails db:migrate"
 
-# Create two nginx config files from the template
-%/app.conf: docker/nginx-app-conf.template
-	@mkdir -p $*
-	@echo Creating $@
+#----------------------------------------------------------
+
+# Create two sets of nginx config files from templates
+# (Todo: Figure out how to combine the two rules into one..)
+#
+docker/nginx-conf-prod/%: docker/nginx-%
 	@bin/create-nginx-conf.sh $< $@
 
-nginx-conf-prod: docker/nginx-conf-prod/app.conf
-nginx-conf-local: docker/nginx-conf-local/app.conf
+docker/nginx-conf-local/%: docker/nginx-%
+	@bin/create-nginx-conf.sh $< $@
+
+nginx-conf-prod:  docker/nginx-conf-prod/app.conf  docker/nginx-conf-prod/commonconf  docker/nginx-conf-prod/proxyconf
+nginx-conf-local: docker/nginx-conf-local/app.conf docker/nginx-conf-local/commonconf docker/nginx-conf-local/proxyconf
 nginx-conf: nginx-conf-local nginx-conf-prod
 
 nginx-conf-clear:
 	rm -rf docker/nginx-conf-prod docker/nginx-conf-local
+
 nginx-conf-refresh: nginx-conf-clear nginx-conf
+
+#----------------------------------------------------------
 
 # Brings up the web container only and runs bash in it
 run-base:

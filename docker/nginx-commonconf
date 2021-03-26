@@ -1,0 +1,16 @@
+#
+# A few common requests that we don't want to pass through to rails
+#
+location /ads.txt      { return 404; }
+location /robots.txt   { return 404; }
+location /wp-login.php { return 404; }
+location /wp-admin     { return 404; }
+location /index.xml    { return 404; }
+location /_ts/         { return 404; }
+
+#
+# Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
+# Using 0 here means unlimited, but I'm thinking some kind of limit
+# is probably a good idea. 200m seems large enough. A new site is 2m.
+#
+client_max_body_size 200m;

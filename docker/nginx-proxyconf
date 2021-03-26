@@ -1,0 +1,18 @@
+#
+# Our rails application cares about all this so make
+# sure it knows the real request details
+#
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Real-IP $remote_addr;
+
+#
+# Not sure what these do...
+#
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_redirect off;
+
+#
+# Proxy all requests through to rails
+#
+proxy_pass http://${APP_HOST}:3333;
