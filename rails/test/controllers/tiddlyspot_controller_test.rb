@@ -43,6 +43,16 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
+  test "viewing a public site with index.html" do
+    mock = mocked_site('coolsite') do |m|
+      m.expect(:is_private?, false)
+      m.expect(:html_file, 'some site html')
+    end
+
+    with_mocked_site(mock) { get '/index.html' }
+    assert_success('some site html', mock)
+  end
+
   test "downloading a public site" do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)

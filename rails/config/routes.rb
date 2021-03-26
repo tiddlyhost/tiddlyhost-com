@@ -87,6 +87,7 @@ Rails.application.routes.draw do
     }) do
 
       get '/', to: 'tiddlyspot#serve'
+      get '/index.html', to: 'tiddlyspot#serve'
       options '/', to: 'tiddlyspot#options'
       get '/favicon.ico', to: 'tiddlyspot#favicon'
       get '/download', to: 'tiddlyspot#download'
