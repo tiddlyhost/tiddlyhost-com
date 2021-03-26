@@ -34,6 +34,10 @@ class Settings
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults)
   end
 
+  def self.tiddlyspot_enabled?
+    Rails.env.test? || Settings.secrets(:dreamobjects).present?
+  end
+
   def self.tiddlyspot_url_defaults
     Settings.url_defaults.merge(host: Settings.tiddlyspot_host, protocol: 'http')
   end

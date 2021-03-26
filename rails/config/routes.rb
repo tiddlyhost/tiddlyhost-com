@@ -61,7 +61,7 @@ Rails.application.routes.draw do
       end
     end
 
-    if Settings.tiddlyspot_host.present?
+    if Settings.tiddlyspot_enabled?
 
       resources :tspot_sites, only: [:index] do
         collection do
@@ -78,7 +78,7 @@ Rails.application.routes.draw do
 
   end
 
-  if Settings.tiddlyspot_host.present?
+  if Settings.tiddlyspot_enabled?
     #
     # Individual sites on tiddlyspot.com
     #
