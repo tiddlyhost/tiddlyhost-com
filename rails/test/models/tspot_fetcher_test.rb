@@ -4,9 +4,6 @@ class TspotFetcherTest < ActiveSupport::TestCase
 
   setup do
     @fetcher = TspotFetcher.new('somesite')
-    def @fetcher.fetch_key(key);
-      raise "No fetches in tests!"
-    end
   end
 
   test "site key" do

@@ -4,14 +4,18 @@ require 'aws-sdk-s3'
 class TspotFetcher
 
   def initialize(site_name, secrets=nil)
-    secrets ||= Settings.secrets(:dreamobjects)
     @name = site_name
-    @bucket_name = secrets[:bucket_name]
-    @s3_client = Aws::S3::Client.new(
-      endpoint: secrets[:endpoint_url],
-      region: secrets[:region],
-      access_key_id: secrets[:aws_server_public_key],
-      secret_access_key: secrets[:aws_server_secret_key])
+
+    # No need for a real S3 client in test suite
+    unless Rails.env.test?
+      secrets ||= Settings.secrets(:dreamobjects)
+      @bucket_name = secrets[:bucket_name]
+      @s3_client = Aws::S3::Client.new(
+        endpoint: secrets[:endpoint_url],
+        region: secrets[:region],
+        access_key_id: secrets[:aws_server_public_key],
+        secret_access_key: secrets[:aws_server_secret_key])
+    end
   end
 
   attr_reader :name
