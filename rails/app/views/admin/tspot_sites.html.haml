@@ -1,6 +1,11 @@
 
 %h2= @title
 
+-if @user
+  .link
+    =link_to_user_sites(pluralize(@user.sites.count, 'site'), @user, action: :sites)
+    =bi_icon('arrow-right-short', style: 'margin-left: -5px;')
+
 =render 'tabs'
 
 %table.dataTable.display.responsive.nowrap
@@ -39,7 +44,7 @@
         =datatable_sort_by(s.access_count)
         =datatable_sort_by(s.save_count)
         -unless @user
-          %td= link_to_user_sites(s.user_email, s.user) if s.user
+          %td= link_to_user_sites(s.user_username||s.user_email, s.user) if s.user
         %td= s.blob_key
         -if s.blob.present?
           =datatable_sort_by(s.blob_byte_size, as_megabytes(s.blob_byte_size))

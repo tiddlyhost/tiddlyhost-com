@@ -1,27 +1,26 @@
 
 %h1 Build Info
 
-.stats
+%table.table
   -@build_info.each do |key, val|
     -next if key == 'tag'
-    .row
-      .label= key.titleize
-      .data-wide
+    %tr
+      %td.label= key.titleize
+      %td
         -case when key == 'commit'
           =github_history_link_to("#{val} (#{@short_sha})", @sha)
 
         -when key == 'branch'
-          =github_history_link_to(val, @sha)
+          =github_history_link_to(val, val)
 
         -when key == 'sha'
           =@short_sha
 
         -when val.is_a?(Hash)
-          %table
-            -val.each do |hash_key, hash_val|
-              %tr
-                %td{style: 'padding-right: 1em;'}= "#{hash_key}:"
-                %td= hash_val
+          -val.each do |hash_key, hash_val|
+            %div
+              %div{style: 'display: inline-block; width: 5em; padding-right: 1em;'}= "#{hash_key}:"
+              =hash_val
 
         -else
           =val

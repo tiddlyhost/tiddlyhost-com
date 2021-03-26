@@ -4,16 +4,18 @@
 =render 'tabs'
 
 .stats
-  =render 'stat_row', title: 'Total site views', count: @view_count, note: "Counts only non-owner views of public sites"
-  =render 'stat_row', title: 'Total site size', count: "#{as_megabytes(@total_site_bytes)} MB"
-  %hr
-  =render 'stat_row', title: 'Total users', count: @user_count
-  =render 'stat_row', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
-  =render 'stat_row', title: 'Signed in once users', count: @signed_in_once_users, total: @user_count
-  %hr
-  =render 'stat_row', title: 'Total sites', count: @site_count
-  =render 'stat_row', title: 'Never updated sites', count: @never_updated_sites, total: @site_count
-  =render 'stat_row', title: 'Private sites', count: @private_count, total: @site_count
-  =render 'stat_row', title: 'Public sites', count: @public_count, total: @site_count
-  =render 'stat_row', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
-  =render 'stat_row', title: 'Hub sites', count: @searchable_count, total: @site_count
+  =render 'stat_card', title: 'Users',   count: @user_count, big: true
+  =render 'stat_card', title: 'Sites',   count: @site_count, big: true
+  =render 'stat_card', title: 'Tspots',  count: @tspot_site_count, big: true
+  =render 'stat_card', title: 'Storage', count: "#{as_megabytes(@total_site_bytes, precision: 0)} MB", big: true
+  %br
+  =render 'stat_card', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
+  =render 'stat_card', title: 'Signed in once users',  count: @signed_in_once_users, total: @user_count
+  =render 'stat_card', title: 'Never updated sites',  count: @never_updated_sites, total: @site_count
+  =render 'stat_card', title: 'Private sites',        count: @private_count, total: @site_count
+  =render 'stat_card', title: 'Public sites',         count: @public_count, total: @site_count
+  =render 'stat_card', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
+  =render 'stat_card', title: 'Hub sites',            count: @searchable_count, total: @site_count
+  =render 'stat_card', title: 'Owned tspots',         count: @owned_tspot_site_count, total: @tspot_site_count
+  =render 'stat_card', title: 'Phantom tspots',       count: @notexist_tspot_site_count, total: @notexist_tspot_site_count + @tspot_site_count
+  =render 'stat_card', title: 'Saved tspots',         count: @tspot_sites_with_storage, total: @tspot_site_count

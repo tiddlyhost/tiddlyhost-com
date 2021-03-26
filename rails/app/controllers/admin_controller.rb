@@ -6,6 +6,7 @@ class AdminController < ApplicationController
     @title = 'Stats'
 
     @view_count = Site.sum(:view_count)
+    @tspot_view_count = TspotSite.sum(:access_count)
     @total_site_bytes = ActiveStorage::Blob.sum(:byte_size)
 
     @user_count = User.count
@@ -19,10 +20,15 @@ class AdminController < ApplicationController
     @public_non_searchable_count = Site.public_non_searchable.count
     @searchable_count = Site.searchable.count
 
+    @tspot_site_count = TspotSite.where(exists: true).count
+    @notexist_tspot_site_count = TspotSite.where(exists: false).count
+    @owned_tspot_site_count = TspotSite.where("user_id IS NOT NULL").count
+    @tspot_sites_with_storage = TspotSite.joins(:tiddlywiki_file_attachment).count
+
   end
 
   def users
-    @users = User.without_plan(:superuser)
+    @users = User.all
     @title = "Users"
   end
 
@@ -30,7 +36,7 @@ class AdminController < ApplicationController
     if params[:user_id]
       @user = User.find(params[:user_id])
       @sites = Site.where(user: @user)
-      @title = "#{@user.name} #{"'#{@user.username}'" if @user.has_username?} <#{@user.email}> sites"
+      @title = "#{@user.username||@user.email}'s sites"
     else
       @sites = Site.all
       @title = "Sites"
@@ -41,7 +47,7 @@ class AdminController < ApplicationController
     if params[:user_id]
       @user = User.find(params[:user_id])
       @sites = TspotSite.where(user: @user)
-      @title = "#{@user.name} #{"'#{@user.username}'" if @user.has_username?} <#{@user.email}> Tiddlyspot sites"
+      @title = "#{@user.username||@user.email}'s Tspot sites"
     else
       @sites = TspotSite.all
       @title = "Tiddlyspot Sites"

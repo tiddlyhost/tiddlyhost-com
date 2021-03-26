@@ -1,6 +1,11 @@
 
 %h2= @title
 
+-if @user
+  .link
+    =link_to_user_sites(pluralize(@user.tspot_sites.count, 'tspot site'), @user, action: :tspot_sites)
+    =bi_icon('arrow-right-short', style: 'margin-left: -5px;')
+
 =render 'tabs'
 
 %table.dataTable.display.responsive.nowrap
@@ -41,7 +46,7 @@
         =datatable_sort_by(s.view_count)
         =datatable_sort_by(s.access_count)
         -unless @user
-          %td= link_to_user_sites(s.user_email, s.user)
+          %td= link_to_user_sites(s.user_username||s.user_email, s.user)
         %td= s.blob_key
         =datatable_sort_by(s.blob_byte_size, as_megabytes(s.blob_byte_size))
         =datatable_timestamp(s.accessed_at)

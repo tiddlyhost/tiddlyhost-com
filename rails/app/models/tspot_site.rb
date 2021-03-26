@@ -6,7 +6,7 @@ class TspotSite < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  delegate :name, :email,
+  delegate :name, :email, :username,
     to: :user, prefix: true, allow_nil: true
 
   # When the site is saved we'll write a tiddlywiki file to

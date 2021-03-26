@@ -60,8 +60,8 @@ module ApplicationHelper
     bool_val ? true_text : false_text
   end
 
-  def as_megabytes(bytes)
-    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: 2)
+  def as_megabytes(bytes, precision: 2)
+    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
   end
 
   def datatable_sort_by(sort_by_int, text_value=nil)

@@ -14,6 +14,7 @@
       %th Plan
       %th Logins
       %th Sites
+      %th Tspot Sites
       %th.default-sort Current sign in
       %th Last sign in
       %th Created
@@ -27,7 +28,8 @@
         %td= link_to(bool_text(u.use_gravatar?), gravatar_url(u.email), target: '_blank')
         %td= u.plan.name
         %td= u.sign_in_count
-        =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u))
+        =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.sites.count, 'site'), u, action: :sites))
+        =datatable_sort_by(u.sites.count, link_to_user_sites(pluralize(u.tspot_sites.count, 'site'), u, action: :tspot_sites))
         =datatable_timestamp(u.current_sign_in_at)
         =datatable_timestamp(u.last_sign_in_at)
         =datatable_timestamp(u.created_at)

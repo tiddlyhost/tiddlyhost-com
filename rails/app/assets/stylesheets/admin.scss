@@ -17,27 +17,55 @@ table.dataTable {
     }
 }
 
+.link {
+    margin: 1em;
+    font-size: 80%;
+}
+
 // Need this for the @extends below
 @import "bootstrap/scss/bootstrap-grid";
 
 .stats {
-    margin-left: 1em;
-    .row {
-        margin-bottom: 0.5em;
-        .label {
-            @extend .col-2;
-            font-weight: bold;
-            color: #888;
-            font-size: 75%;
-            padding-top: 0.2em;
+    margin-left: 1rem;
+    .card {
+        min-width: 7rem;
+        display: inline-block;
+        .card-body {
+            .big {
+                font-size: 120%;
+                display: inline;
+            }
+            .medium {
+                font-size: 90%;
+                display: inline;
+                margin-left: 0.8rem;
+            }
+            .label {
+                font-size: 75%;
+                color: #555;
+                margin-top: -0.6em;
+                color: #888;
+                padding-left: 0.2em;
+            }
+            padding: 0.8rem 0.5rem 0.7rem 1.2rem;
         }
 
-        .data {
-            @extend .col-1;
-        }
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+    }
 
-        .data-wide {
-            @extend .col-10;
+    .card.big {
+        min-width: 5rem;
+        .card-body {
+            .big {
+                font-size: 220%;
+            }
+            .label {
+                margin-top: -1.2em;
+                padding-left: 0.5em;
+                font-weight: bold;
+                color: #999;
+            }
         }
     }
 

@@ -18,7 +18,7 @@ class Site < ApplicationRecord
   delegate :byte_size, :key, :created_at,
     to: :blob, prefix: true, allow_nil: Settings.nil_blobs_ok?
 
-  delegate :name, :email, to: :user, prefix: true
+  delegate :name, :email, :username, to: :user, prefix: true
 
   # Default for pagination
   self.per_page = 15
