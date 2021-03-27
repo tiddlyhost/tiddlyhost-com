@@ -108,6 +108,9 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
     with_mocked_site(mock) { get '/' }
     assert_404(mock)
+
+    # Access was counted
+    assert_equal 1, TspotSite.find_by_name('notexist').access_count
   end
 
   # Skip testing downloads with auth. I'm pretty sure they'll

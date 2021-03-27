@@ -53,7 +53,11 @@ class TiddlyspotController < ApplicationController
   def find_site
     site_name = request.subdomain
     @site = TspotSite.find_or_create(site_name)
-    return render :site_not_found, status: 404 unless @site.exists?
+    if @site.doesnt_exist?
+      # Let's record accesses to phantom sites
+      update_access_count_and_timestamp
+      return render :site_not_found, status: 404
+    end
   end
 
   def auth_required?
