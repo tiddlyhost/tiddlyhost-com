@@ -11,9 +11,9 @@ div.dataTables_wrapper {
 table.dataTable {
     // Fix some image paths
     thead {
-        .sorting      { background-image: image-url("datatables.net-dt/images/sort_both.png"); }
-        .sorting_asc  { background-image: image-url("datatables.net-dt/images/sort_asc.png" ); }
-        .sorting_desc { background-image: image-url("datatables.net-dt/images/sort_desc.png"); }
+        .sorting      { background-image: image-url("datatables.net-dt/images/sort_both.png") ! important; }
+        .sorting_asc  { background-image: image-url("datatables.net-dt/images/sort_asc.png" ) ! important; }
+        .sorting_desc { background-image: image-url("datatables.net-dt/images/sort_desc.png") ! important; }
     }
 }
 
