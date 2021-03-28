@@ -16,8 +16,11 @@
 
     cert_host: tiddlyhost.com
     extra_cert_host: tiddlyspot.com
-    letsencrypt_dir: /etc/letsencrypt/live/{{ cert_host }}
-    certs_dir: "{{ home_dir }}/docker/certs"
+    certbot_dir_config: "{{ home_dir }}/docker/letsencrypt"
+    certbot_dir_work: "{{ home_dir }}/.certbot/work"
+    certbot_dir_logs: "{{ home_dir }}/.certbot/logs"
+    certbot_dir_live: "{{ certbot_dir_config }}/live/{{ cert_host }}"
+
     nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
     secrets_dir: "{{ home_dir }}/secrets"
 
@@ -89,37 +92,34 @@
     - deps
 
   - name: Create dir for certbot aws credentials
+    become: no
     file:
-      path: "{{ root_home_dir }}/.aws"
+      path: "{{ home_dir }}/.aws"
       state: directory
     tags:
     - certs
 
   - name: Install AWS credentials for certbot
+    become: no
     copy:
       src: "{{ certbot_dns_credentials }}"
-      dest: "{{ root_home_dir }}/.aws/credentials"
+      dest: "{{ home_dir }}/.aws/credentials"
       mode: "0600"
     tags:
     - certs
 
   - name: Create a cert if it doesn't exist
+    become: no
     command:
-      cmd: >-
-        certbot certonly
-          -d {{ cert_host }} -d *.{{ cert_host }}
-          -d {{ extra_cert_host }} -d *.{{ extra_cert_host }}
-          --dns-route53
-          -n --agree-tos -m simon.baird@gmail.com
-
-      creates: "{{ letsencrypt_dir }}/fullchain.pem"
+      cmd: "{{ home_dir }}/bin/certbot-create"
+      creates: "{{ certbot_dir_live }}/fullchain.pem"
     tags:
     - certs
 
   - name: Renew certs maybe
+    become: no
     command:
-      # TODO: The post-hook is untested, not sure if it will work
-      cmd: certbot renew --post-hook "docker-compose restart web"
+      cmd: "{{ home_dir }}/bin/certbot-renew"
     register: certbot_renew
     tags:
     - certs
@@ -127,35 +127,6 @@
   - name: Show renew output
     debug:
       var: certbot_renew.stdout_lines
-    tags:
-    - certs
-
-  - name: Create dir for certs
-    file:
-      path: "{{ certs_dir }}"
-      state: directory
-    tags:
-    - certs
-
-  - name: Copy cert files to where the container looks for them
-    # TODO: It would be better to only do this if they changed
-    # ..or just mount them where they are instead of copying them
-    command:
-      cmd: cp {{ letsencrypt_dir }}/{{ item.from }} {{ certs_dir }}/{{ item.to }}
-    with_items:
-    - from: fullchain.pem
-      to: ssl.cert
-    - from: privkey.pem
-      to: ssl.key
-    tags:
-    - certs
-
-  - name: Update owner of the cert files
-    file:
-      path: "{{ certs_dir }}"
-      recurse: yes
-      owner: "{{ ansible_user }}"
-      group: "{{ ansible_user }}"
     tags:
     - certs
 
@@ -279,6 +250,8 @@
       mode: "0755"
     with_items:
     - Makefile
+    - bin/certbot-create
+    - bin/certbot-renew
     - bin/db-backup
     tags:
     - scripts

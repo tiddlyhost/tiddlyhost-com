@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# TODO: The post-hook is untested, not sure if it will work
+
+certbot renew \
+  --config-dir {{ certbot_dir_config }} \
+  --work-dir {{ certbot_dir_work }} \
+  --logs-dir {{ certbot_dir_logs }} \
+  --post-hook "sudo docker-compose restart web"

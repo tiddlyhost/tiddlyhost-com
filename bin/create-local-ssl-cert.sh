@@ -30,8 +30,9 @@ rm server.pass.key
 rm server.csr
 
 # Put the certs where we need them
+# Use the file names that match the certs created by letsencrypt in prod
 mkdir -p $TARGET_DIR
-mv server.key $TARGET_DIR/ssl.key
-mv server.crt $TARGET_DIR/ssl.cert
+mv server.key $TARGET_DIR/privkey.pem
+mv server.crt $TARGET_DIR/fullchain.pem
 
-echo Created $TARGET_DIR/ssl.cert and $TARGET_DIR/ssl.key
+echo Created $TARGET_DIR/privkey.pem and $TARGET_DIR/fullchain.pem
