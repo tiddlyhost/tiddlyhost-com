@@ -106,6 +106,10 @@ cleanup:
 signup-link:
 	@$(DCC) 'cat log/development.log | grep "Confirm my account" | tail -1 | cut -d\" -f2'
 
+# Use this when you click "Forgot password"
+forgot-link:
+	@$(DCC) 'cat log/development.log | grep "Change my password" | tail -1 | cut -d\" -f2'
+
 #----------------------------------------------------------
 
 EMPTY_DIR=rails/tw_content/empties
