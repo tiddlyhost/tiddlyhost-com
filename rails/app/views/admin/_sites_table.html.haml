@@ -1,0 +1,38 @@
+
+%thead
+  %tr
+    %th= sort_link 'Id', :asc
+    %th= sort_link 'Name', :asc
+    %th= sort_link 'Empty'
+    %th= sort_link 'Description', :asc
+    %th= sort_link 'Private?'
+    %th= sort_link 'Searchable?'
+    %th= sort_link 'Views'
+    %th= sort_link 'Accesses'
+    -unless @user
+      %th= sort_link 'Owner'
+    %th= 'Storage key'
+    %th= sort_link 'Size (MB)'
+    %th= sort_link 'Last access'
+    %th= sort_link 'Last update'
+    %th= sort_link 'Created'
+
+%tbody
+  -@records.each do |site|
+    %tr
+      %td= site.id
+      %td= admin_site_link site
+      %td= site.empty.name
+      %td.nowrap.text-truncated{style: 'max-width: 8em;'}
+        =span_with_title site.description
+      %td= bool_text site.is_private?
+      %td= bool_text site.is_searchable?
+      %td= site.view_count
+      %td= site.access_count
+      -unless @user
+        %td= link_to_user_sites(site.user.username_or_email, site.user)
+      %td= site.blob_key
+      %td= as_megabytes site.blob_byte_size
+      %td= nice_timestamp site.accessed_at
+      %td= nice_timestamp site.blob_created_at
+      %td= nice_timestamp site.created_at

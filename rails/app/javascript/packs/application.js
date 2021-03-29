@@ -8,8 +8,6 @@ import * as ActiveStorage from "@rails/activestorage"
 
 import "bootstrap"
 
-import "datatables.net-dt"
-
 Rails.start()
 ActiveStorage.start()
 
@@ -54,21 +52,6 @@ $(document).ready(function(){
   $('#site_tiddlywiki_file').on('change', function(){
     var fileName = $(this).get(0).files.item(0).name;
     $('#upload-submit').prop('value', 'Upload file \"' + fileName + '\"').show();
-  });
-
-  // Initialize dataTable tables
-  $('.dataTable').each(function(){
-
-    // Choose default sort column
-    var sortCol = 0;
-    $(this).find('th').each(function(i){
-      if ($(this).hasClass('default-sort')) { sortCol = i; }
-    });
-
-    $(this).dataTable({
-      'order': [[sortCol, 'desc']],
-      'pageLength': 10
-    });
   });
 
 });

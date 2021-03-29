@@ -1,30 +1,4 @@
 
-div.dataTables_wrapper {
-    font-size: 80%;
-
-    div.dataTables_length select {
-        // The default is 'width: auto' and it comes out too narrow for some reason
-        width: 4em;
-    }
-}
-
-table.dataTable {
-    // Fix some image paths
-    thead {
-        .sorting      { background-image: image-url("datatables.net-dt/images/sort_both.png") ! important; }
-        .sorting_asc  { background-image: image-url("datatables.net-dt/images/sort_asc.png" ) ! important; }
-        .sorting_desc { background-image: image-url("datatables.net-dt/images/sort_desc.png") ! important; }
-    }
-}
-
-.link {
-    margin: 1em;
-    font-size: 80%;
-}
-
-// Need this for the @extends below
-@import "bootstrap/scss/bootstrap-grid";
-
 .stats {
     margin-left: 1rem;
     .card {
@@ -69,4 +43,80 @@ table.dataTable {
         }
     }
 
+}
+
+.user-links {
+    a {
+        margin: 0.7em;
+        font-size: 80%;
+    }
+    margin-bottom: 1.5em;
+}
+
+.table.admin {
+    th,td {
+        font-size: 80%;
+        white-space: nowrap;
+    }
+
+    th {
+        font-size: 80%;
+        border-bottom: 1px solid black;
+        border-top-style: none;
+        white-space: nowrap;
+        color: #666;
+
+        a {
+            color: #666;
+            &.asc, &.desc { color: #444; }
+
+            @mixin up   { content: "↑"; color: #666; padding-left: 1px; font-size: 90%; }
+            @mixin down { content: "↓"; color: #666; padding-left: 1px; font-size: 90%; }
+            @mixin both { content: "⇵"; color: #ddd; font-size: 80%; }
+
+            &:after {
+                display: inline-block;
+                width: 10px;
+                &:hover { text-decoration: none ! important; }
+            }
+
+            &:after            { @include both; }
+            &:hover:after      { @include down; }
+            &.desc:after       { @include up; }
+            &.desc:hover:after { @include down; }
+            &.asc:after        { @include down; }
+            &.asc:hover:after  { @include up; }
+        }
+    }
+
+    td {
+        padding-right: 1em;
+    }
+
+    border-bottom: 1px solid black;
+}
+
+.admin-paginate {
+    font-size: 70%;
+    float: right;
+
+    .pagination {
+        a, span, em {
+            border-style: none;
+            color: black;
+        }
+        em.current {
+            background-color: #e9ecef;
+        }
+        .gap {
+            line-height: 220%;
+        }
+        margin-bottom: 1em;
+    }
+}
+
+.admin-page-info {
+    font-size: 75%;
+    padding-top: 0.5em;
+    padding-bottom: 1em;
 }

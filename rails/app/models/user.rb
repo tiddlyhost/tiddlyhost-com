@@ -46,6 +46,10 @@ class User < ApplicationRecord
     username.presence || name
   end
 
+  def username_or_email
+    username.presence || email
+  end
+
   scope :with_plan,    ->(*plan_names) { where(    plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
   scope :without_plan, ->(*plan_names) { where.not(plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
 

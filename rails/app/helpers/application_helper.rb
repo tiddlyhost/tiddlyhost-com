@@ -61,17 +61,8 @@ module ApplicationHelper
   end
 
   def as_megabytes(bytes, precision: 2)
+    return '-' if bytes.nil?
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
-  end
-
-  def datatable_sort_by(sort_by_int, text_value=nil)
-    content_tag :td, 'data-order' => sort_by_int.to_i do
-      (text_value || sort_by_int).to_s
-    end
-  end
-
-  def datatable_timestamp(timestamp)
-    datatable_sort_by(timestamp.to_i, nice_timestamp(timestamp))
   end
 
   def nice_timestamp(timestamp)

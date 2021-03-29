@@ -21,7 +21,7 @@ class TspotSitesController < ApplicationController
 
     @site = TspotSite.find_or_create(@site_name)
 
-    if @site.doesnt_exist?
+    if !@site.exists?
       @message = "'#{@site_name}' does not exist on Tiddlyspot"
 
     elsif @site.user.present?

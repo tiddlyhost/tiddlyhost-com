@@ -1,0 +1,19 @@
+
+%h2= @title
+
+-if @user
+  .user-links
+    =link_to_user(@user.name, @user)
+    =link_to_user_sites_with_count(@user, :sites)
+    =link_to_user_sites_with_count(@user, :tspot_sites)
+
+=render 'tabs'
+
+.admin-paginate= will_paginate(@records)
+.admin-page-info= pagination_info(@records)
+
+%table.admin.table.table-sm.table-striped
+  =render "#{action_name}_table"
+
+.admin-paginate= will_paginate(@records)
+.admin-page-info= pagination_info(@records)

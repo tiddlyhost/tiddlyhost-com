@@ -1,3 +1,4 @@
+
 class AdminController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin_user!
@@ -27,31 +28,82 @@ class AdminController < ApplicationController
 
   end
 
+  SORT_OPTIONS = {
+    accesses: 'access_count',
+    created: 'created_at',
+    currentsignin: 'current_sign_in_at',
+    description: "NULLIF(sites.description, '')",
+    email: 'email',
+    empty: 'empties.name',
+    exists: 'exists',
+    gravatar: 'use_gravatar',
+    id: 'id',
+    lastaccess: 'accessed_at',
+    lastsignin: 'last_sign_in_at',
+    lastupdate: 'active_storage_blobs.created_at',
+    logins: 'sign_in_count',
+    name: 'name',
+    owner: 'COALESCE(users.username, users.email)',
+    plan: 'plans.name',
+    private: 'is_private',
+    saves: 'save_count',
+    searchable: 'is_searchable',
+    sites: 'COUNT(sites.id)',
+    sizemb: 'active_storage_blobs.byte_size',
+    tspotsites: 'COUNT(tspot_sites.id)',
+    username: "NULLIF(username, '')",
+    views: 'view_count',
+  }.freeze
+
+  NULL_ALWAYS_LAST = %w[
+    username
+    description
+    owner
+  ]
+
   def users
-    @users = User.all
-    @title = "Users"
+    render_records User.left_joins(:sites, :tspot_sites).group(:id)
   end
 
   def sites
-    if params[:user_id]
-      @user = User.find(params[:user_id])
-      @sites = Site.where(user: @user)
-      @title = "#{@user.username||@user.email}'s sites"
-    else
-      @sites = Site.all
-      @title = "Sites"
-    end
+    render_records Site.left_joins(
+      :user, :empty, :tiddlywiki_file_attachment, tiddlywiki_file_attachment: :blob)
   end
 
   def tspot_sites
-    if params[:user_id]
-      @user = User.find(params[:user_id])
-      @sites = TspotSite.where(user: @user)
-      @title = "#{@user.username||@user.email}'s Tspot sites"
-    else
-      @sites = TspotSite.all
-      @title = "Tiddlyspot Sites"
+    render_records TspotSite.left_joins(
+      :user, :tiddlywiki_file_attachment, tiddlywiki_file_attachment: :blob)
+  end
+
+  private
+
+  def render_records(records)
+    @title = action_name.titleize
+    @records = records
+
+    # Filter by user
+    if @user = User.find_by_id(params[:user_id])
+      if action_name == 'users'
+        @records = @records.where(id: @user.id)
+        @title = "#{@user.username_or_email}'s Details"
+      else
+        @records = @records.where(user: @user)
+        @title = "#{@user.username_or_email}'s #{@title}"
+      end
     end
+
+    # Sorting
+    @sort_by = (params[:sort_by] || 'created_desc').sub(/_asc$/, '')
+    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
+    @is_desc = @sort_by.sub!(/_desc$/, '')
+    sort_field = SORT_OPTIONS[@sort_by.to_sym]
+    desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
+    @records = @records.order(Arel.sql("#{sort_field} #{desc_sql}")) if sort_field
+
+    # Pagination
+    @records = @records.paginate(page: params[:page], per_page: 15)
+
+    render action: :paginated_records
   end
 
 end

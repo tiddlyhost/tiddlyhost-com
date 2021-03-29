@@ -103,8 +103,4 @@ class TspotSite < ApplicationRecord
     !is_private?
   end
 
-  def doesnt_exist?
-    !exists?
-  end
-
 end

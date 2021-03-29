@@ -117,4 +117,8 @@ class Site < ApplicationRecord
     !is_private?
   end
 
+  def exists?
+    true
+  end
+
 end
