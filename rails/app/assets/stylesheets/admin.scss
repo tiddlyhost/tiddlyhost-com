@@ -120,3 +120,17 @@
     padding-top: 0.5em;
     padding-bottom: 1em;
 }
+
+.admin-filter {
+    margin-left: 1em;
+    font-size: 70%;
+    margin-bottom: 1em;
+    opacity: 60%;
+    .group {
+        margin-right: 1.5em;
+        display: inline-block;
+        label {
+            margin-right: 0.5em;
+        }
+    }
+}

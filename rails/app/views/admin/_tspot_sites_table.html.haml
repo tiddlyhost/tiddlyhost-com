@@ -1,33 +1,51 @@
 
 %thead
   %tr
-    %th= sort_link 'Id', :asc
-    %th= sort_link 'Name', :asc
-    %th= sort_link 'Exists?'
-    %th= sort_link 'Private?'
-    %th= sort_link 'Accesses'
-    %th= sort_link 'Saves'
-    -unless @user
-      %th= sort_link 'Owner', :asc
-    %th= 'Storage key'
-    %th= sort_link 'Size (MB)'
-    %th= sort_link 'Last access'
-    %th= sort_link 'Last update'
-    %th= sort_link 'Created'
+    -if params[:exists] == '0'
+      %th= sort_link 'Id', :asc
+      %th= sort_link 'Name', :asc
+      %th= sort_link 'Accesses'
+      %th= sort_link 'Last access'
+      %th= sort_link 'Created'
+
+    -else
+      %th= sort_link 'Id', :asc
+      %th= sort_link 'Name', :asc
+      -unless params[:exists]
+        %th= sort_link 'Exists?'
+      %th= sort_link 'Private?'
+      %th= sort_link 'Accesses'
+      %th= sort_link 'Saves'
+      -unless @user
+        %th= sort_link 'Owner', :asc
+      %th= 'Storage key'
+      %th= sort_link 'Size (MB)'
+      %th= sort_link 'Last access'
+      %th= sort_link 'Last update'
+      %th= sort_link 'Created'
 
 %tbody
   -@records.each do |site|
     %tr
-      %td= site.id
-      %td= admin_site_link site
-      %td= bool_text site.exists?
-      %td= bool_text site.is_private?
-      %td= site.access_count
-      %td= site.save_count
-      -unless @user
-        %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
-      %td= site.blob_key
-      %td= as_megabytes site.blob_byte_size
-      %td= nice_timestamp site.accessed_at
-      %td= nice_timestamp site.blob_created_at
-      %td= nice_timestamp site.created_at
+      -if params[:exists] == '0'
+        %td= site.id
+        %td= admin_site_link site
+        %td= site.access_count
+        %td= nice_timestamp site.accessed_at
+        %td= nice_timestamp site.created_at
+
+      -else
+        %td= site.id
+        %td= admin_site_link site
+        -unless params[:exists]
+          %td= bool_text site.exists?
+        %td= bool_text site.is_private?
+        %td= site.access_count
+        %td= site.save_count
+        -unless @user
+          %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
+        %td= site.blob_key
+        %td= as_megabytes site.blob_byte_size
+        %td= nice_timestamp site.accessed_at
+        %td= nice_timestamp site.blob_created_at
+        %td= nice_timestamp site.created_at

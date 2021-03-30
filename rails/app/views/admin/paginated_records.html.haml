@@ -9,6 +9,9 @@
 
 =render 'tabs'
 
+.admin-filter
+  =render "#{action_name}_filter"
+
 .admin-paginate= will_paginate(@records)
 .admin-page-info= pagination_info(@records)
 

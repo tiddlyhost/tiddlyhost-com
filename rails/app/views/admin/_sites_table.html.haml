@@ -5,8 +5,10 @@
     %th= sort_link 'Name', :asc
     %th= sort_link 'Empty'
     %th= sort_link 'Description', :asc
-    %th= sort_link 'Private?'
-    %th= sort_link 'Searchable?'
+    -unless params[:private]
+      %th= sort_link 'Private?'
+    -unless params[:hub]
+      %th= sort_link 'Searchable?'
     %th= sort_link 'Views'
     %th= sort_link 'Accesses'
     -unless @user
@@ -25,8 +27,10 @@
       %td= site.empty.name
       %td.nowrap.text-truncated{style: 'max-width: 8em;'}
         =span_with_title site.description
-      %td= bool_text site.is_private?
-      %td= bool_text site.is_searchable?
+      -unless params[:private]
+        %td= bool_text site.is_private?
+      -unless params[:hub]
+        %td= bool_text site.is_searchable?
       %td= site.view_count
       %td= site.access_count
       -unless @user

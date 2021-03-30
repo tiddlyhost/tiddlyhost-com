@@ -61,6 +61,16 @@ class AdminController < ApplicationController
     owner
   ]
 
+  FILTER_PARAMS = %i[
+    sort
+    user
+    exists
+    owned
+    saved
+    private
+    hub
+  ]
+
   def users
     render_records User.left_joins(:sites, :tspot_sites).group(:id)
   end
@@ -82,7 +92,7 @@ class AdminController < ApplicationController
     @records = records
 
     # Filter by user
-    if @user = User.find_by_id(params[:user_id])
+    if @user = User.find_by_id(params[:user])
       if action_name == 'users'
         @records = @records.where(id: @user.id)
         @title = "#{@user.username_or_email}'s Details"
@@ -92,8 +102,24 @@ class AdminController < ApplicationController
       end
     end
 
+    # Filtering
+    @records = @records.where(exists: true) if params[:exists] == '1'
+    @records = @records.where(exists: false) if params[:exists] == '0'
+
+    @records = @records.where.not(user_id: nil) if params[:owned] == '1'
+    @records = @records.where(user_id: nil) if params[:owned] == '0'
+
+    @records = @records.where.not(save_count: 0) if params[:saved] == '1'
+    @records = @records.where(save_count: 0) if params[:saved] == '0'
+
+    @records = @records.where(is_private: true) if params[:private] == '1'
+    @records = @records.where(is_private: false) if params[:private] == '0'
+
+    @records = @records.where(is_searchable: true) if params[:hub] == '1'
+    @records = @records.where(is_searchable: false) if params[:hub] == '0'
+
     # Sorting
-    @sort_by = (params[:sort_by] || 'created_desc').sub(/_asc$/, '')
+    @sort_by = (params[:sort] || 'created_desc').sub(/_asc$/, '')
     null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     @is_desc = @sort_by.sub!(/_desc$/, '')
     sort_field = SORT_OPTIONS[@sort_by.to_sym]

@@ -4,7 +4,7 @@ module AdminHelper
   def link_to_user_sites(text, user, opts={})
     link_to(text, { controller: :admin,
       action: opts.delete(:action) || action_name,
-      user_id: user.id }, opts)
+      user: user.id }, opts)
   end
 
   def link_to_user_sites_with_count(user, sites_type)
@@ -13,7 +13,7 @@ module AdminHelper
   end
 
   def link_to_user(text, user, opts={})
-    link_to(text, { controller: :admin, action: :users, user_id: user.id }, opts)
+    link_to(text, { controller: :admin, action: :users, user: user.id }, opts)
   end
 
   def pagination_info(records)
@@ -44,8 +44,18 @@ module AdminHelper
       klass = nil
     end
 
-    link_to(params.permit(:controller, :action, :user_id).merge(sort_by: new_sort_by), class: klass) do
+    link_to(params.permit(AdminController::FILTER_PARAMS).merge(sort: new_sort_by), class: klass) do
       link_title
+    end
+  end
+
+  # A radio button that acts like a link
+  def filter_radio_link(title, key, value=nil)
+    url = params.permit(AdminController::FILTER_PARAMS)
+    url.merge!(key => value)
+    content_tag :label do
+      radio_button_tag(key, value, params[key] == value, onclick:
+        "window.location.href = '#{url_for(url)}'") + ' ' + title
     end
   end
 
