@@ -31,6 +31,7 @@ class AdminController < ApplicationController
   SORT_OPTIONS = {
     accesses: 'access_count',
     created: 'created_at',
+    createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',
     description: "NULLIF(sites.description, '')",
     email: 'email',

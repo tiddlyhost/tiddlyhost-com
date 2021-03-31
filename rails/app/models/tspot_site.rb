@@ -47,13 +47,13 @@ class TspotSite < ApplicationRecord
     end
   end
 
-  def self.find_or_create(site_name)
+  def self.find_or_create(site_name, ip_address=nil)
     # If we have a record for it already then return it,
     # otherwise create a new one
-    find_by_name(site_name) || create_new(site_name)
+    find_by_name(site_name) || create_new(site_name, ip_address)
   end
 
-  def self.create_new(site_name)
+  def self.create_new(site_name, ip_address=nil)
     fetched_site = TspotFetcher.new(site_name)
     if fetched_site.exists?
       new_site = TspotSite.create({
@@ -61,6 +61,7 @@ class TspotSite < ApplicationRecord
         exists: true,
         is_private: fetched_site.is_private?,
         htpasswd: fetched_site.htpasswd_file,
+        created_ip: ip_address.to_s,
       })
       # Could consider creating the tiddlywiki_file
       # attachment here, but for now let's leave the
@@ -73,6 +74,7 @@ class TspotSite < ApplicationRecord
       new_site = TspotSite.create({
         name: site_name,
         exists: false,
+        created_ip: ip_address.to_s,
       })
 
     end

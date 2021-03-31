@@ -52,7 +52,7 @@ class TiddlyspotController < ApplicationController
 
   def find_site
     site_name = request.subdomain
-    @site = TspotSite.find_or_create(site_name)
+    @site = TspotSite.find_or_create(site_name, request.ip)
     if !@site.exists?
       # Let's record accesses to phantom sites
       update_access_count_and_timestamp
