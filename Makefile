@@ -16,7 +16,7 @@ GROUP_ID ?= $(shell id -g)
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
-build-base: cleanup cert
+build-base: cleanup
 	docker-compose build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) base
 
 # Set up your environment right after git clone
@@ -71,7 +71,7 @@ console:
 	$(DCC) 'bin/rails console'
 
 # Start Tiddlyhost locally
-start: nginx-conf-local
+start: nginx-conf-local cert
 	-docker-compose up
 
 # Run bundle-install
@@ -133,14 +133,14 @@ empty-versions:
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
 CERTS_DIR=docker/certs
-cert: $(CERTS_DIR)/ssl.cert
+cert: $(CERTS_DIR)/fullchain.pem
 
-$(CERTS_DIR)/ssl.cert:
+$(CERTS_DIR)/fullchain.pem:
 	@bin/create-local-ssl-cert.sh $(CERTS_DIR)
 
 clear-cert:
-	@rm -f $(CERTS_DIR)/ssl.cert
-	@rm -f $(CERTS_DIR)/ssl.key
+	@rm -f $(CERTS_DIR)/privkey.pem
+	@rm -f $(CERTS_DIR)/fullchain.pem
 
 redo-cert: clear-cert cert
 
