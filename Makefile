@@ -70,8 +70,13 @@ sandbox:
 console:
 	$(DCC) 'bin/rails console'
 
+docker/log:
+	mkdir -p docker/log
+
+app-log: docker/log
+
 # Start Tiddlyhost locally
-start: nginx-conf-local cert
+start: nginx-conf-local cert app-log
 	-docker-compose up
 
 # Run bundle-install

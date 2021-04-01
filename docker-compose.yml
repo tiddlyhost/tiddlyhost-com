@@ -16,6 +16,7 @@ services:
     - db
     volumes:
     - ./rails:/opt/app:Z
+    - ./docker/log:/var/log/app:Z
     command: /bin/start-rails.sh
 
     build:

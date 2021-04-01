@@ -58,4 +58,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def th_log(msg)
+    ThostLogger.thost_logger.info(msg, request)
+  end
+
 end

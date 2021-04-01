@@ -12,6 +12,7 @@ docker/certs
 docker/nginx-conf-local
 docker/nginx-conf-prod
 docker/postgresql-data
+docker/log
 etc/certbot-dns-user-credentials.yml
 etc/docker-conf/
 etc/openrc.sh

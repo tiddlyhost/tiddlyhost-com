@@ -21,6 +21,7 @@
     certbot_dir_logs: "{{ home_dir }}/.certbot/logs"
     certbot_dir_live: "{{ certbot_dir_config }}/live/{{ cert_host }}"
 
+    thost_log_dir: "{{ home_dir }}/docker/log"
     nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
     secrets_dir: "{{ home_dir }}/secrets"
 
@@ -145,6 +146,14 @@
     tags:
     - app
     - fast-upgrade
+
+  - name: Create dir for logs
+    become: no
+    file:
+      path: "{{ thost_log_dir }}"
+      state: directory
+    tags:
+    - app
 
   - name: Create nginx conf dir
     become: no

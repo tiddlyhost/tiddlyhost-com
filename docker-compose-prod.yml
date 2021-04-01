@@ -19,6 +19,9 @@ services:
     environment:
       RAILS_MASTER_KEY:
 
+    volumes:
+    - ./docker/log:/var/log/app:Z
+
     build:
       context: .
       dockerfile: docker/Dockerfile.prod
