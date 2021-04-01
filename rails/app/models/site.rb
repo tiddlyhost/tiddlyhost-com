@@ -97,6 +97,10 @@ class Site < ApplicationRecord
     th_file.apply_tiddlyhost_mods(name).to_html
   end
 
+  def download_content
+    th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
+  end
+
   def url
     Settings.subdomain_site_url(name)
   end

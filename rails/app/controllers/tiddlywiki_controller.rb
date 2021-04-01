@@ -39,7 +39,7 @@ class TiddlywikiController < ApplicationController
     # Downloads count as a view
     update_view_count_and_access_timestamp
 
-    download_html_content(@site.html_content, @site.name)
+    download_html_content(@site.download_content, @site.name)
   end
 
   def save

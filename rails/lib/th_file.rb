@@ -34,11 +34,21 @@ class ThFile < TwFile
     from_file(empty_path(empty_type))
   end
 
-  def apply_tiddlyhost_mods(site_name)
+  def apply_tiddlyhost_mods(site_name, for_download: false)
     if is_tw5?
+
+      upload_url = if for_download
+        # Clear $:/UploadURL so the save button in the downloaded file will not try
+        # to use upload.js. It should use another save method, probably download to file.
+        ""
+      else
+        # The url for uploads is the same as the site url
+        Settings.subdomain_site_url(site_name)
+      end
+
       write_tiddlers({
         # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
-        '$:/UploadURL' => Settings.subdomain_site_url(site_name),
+        '$:/UploadURL' => upload_url,
 
         # Set this otherwise TiddlyWiki won't consider upload.js usable unless there
         # is a username and password present.

@@ -39,6 +39,20 @@ class TwFileTest < ActiveSupport::TestCase
 
       assert_equal 'coolsite', tw.get_site_name
     end
+
+    ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite', for_download: true).tap do |tw|
+      {
+        '$:/UploadURL' => '',
+        '$:/UploadWithUrlOnly' => 'yes',
+        '$:/config/AutoSave' => 'no',
+
+      }.each do |tiddler_name, expected_content|
+        assert_equal expected_content, tw.tiddler_content(tiddler_name)
+      end
+
+      # We can't get the name without $:/UploadURL...
+      assert_nil tw.get_site_name
+    end
   end
 
   test "tiddlyhost mods for classic" do
