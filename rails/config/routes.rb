@@ -63,7 +63,7 @@ Rails.application.routes.draw do
 
     if Settings.tiddlyspot_enabled?
 
-      resources :tspot_sites, only: [:index] do
+      resources :tspot_sites do
         collection do
           get :claim_form
           post :claim

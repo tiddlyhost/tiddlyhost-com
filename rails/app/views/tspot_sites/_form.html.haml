@@ -1,0 +1,34 @@
+=form_for @site do |f|
+
+  -if @site.errors.any?
+    .alert.alert-danger
+      %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
+      %ul
+        -@site.errors.full_messages.each do |message|
+          %li= message
+
+  %div.form-group
+    =f.label :description
+    =f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'
+    %small.form-text.text-muted Optional. A description of the site.
+
+  %div.form-group
+    %div.form-check
+      =f.check_box :is_private, class: 'form-check-input'
+      =f.label :is_private, 'Private', class: 'form-check-label'
+    %small.form-text.text-muted Private sites are visible to you only. Non-private sites are visible to anyone.
+
+  %div.form-group
+    %div.form-check
+      =f.check_box :is_searchable, class: 'form-check-input'
+      =f.label :is_searchable, 'Searchable', class: 'form-check-label'
+    %small.form-text.text-muted Searchable sites will be visible and discoverable in the Tiddlyhost Hub.
+
+  %div.form-group
+    =f.label :tag_list, 'Tags'
+    =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
+    %small.form-text.text-muted Optional. A comma delimited list of tags. Tags will be visible in Tiddlyhost Hub.
+
+  %div.form-group{style: 'margin-top: 2em;'}
+    =f.submit 'Update', class: 'btn btn-primary'
+    =link_to 'Cancel', sites_path, style: 'margin-left: 1em;'
