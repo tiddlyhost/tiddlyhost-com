@@ -20,9 +20,6 @@ class Site < ApplicationRecord
 
   delegate :name, :email, :username, to: :user, prefix: true
 
-  # Default for pagination
-  self.per_page = 15
-
   scope :private_sites, -> { where(is_private: true) }
   scope :public_sites, -> { where(is_private: false) }
 
@@ -43,13 +40,6 @@ class Site < ApplicationRecord
       where("description ILIKE CONCAT('%',?,'%')", search_text))
         # TODO: search tags also
   }
-
-  def self.tags_for_searchable_sites
-    tags = ActsAsTaggableOn::Tagging.where(
-      taggable_id: Site.searchable.pluck(:id), taggable_type: 'Site')
-
-    ActsAsTaggableOn::Tag.where(id: tags.pluck(:tag_id)).order('taggings_count desc');
-  end
 
   validates :name,
     presence: true,

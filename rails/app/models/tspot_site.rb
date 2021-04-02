@@ -23,6 +23,12 @@ class TspotSite < ApplicationRecord
   delegate :byte_size, :key, :created_at,
     to: :blob, prefix: true, allow_nil: true
 
+  # Private sites are not searchable even if is_searchable is set
+  scope :searchable, -> { where(is_private: false, is_searchable: true) }
+
+  # Some duck typing for hub rendering
+  alias_attribute :view_count, :access_count
+
   # The TspotFetcher class knows how to fetch a site from the
   # dreamhost bucket. It can also determine if the site is public
   # or private, and can fetch the htpasswd file for auth checks.
