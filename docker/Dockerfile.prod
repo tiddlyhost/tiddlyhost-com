@@ -21,16 +21,14 @@ ENV APP_VERSION_BUILD=$APP_VERSION_BUILD
 # Ignores things listed in .dockerignore
 COPY --chown=$APP_USER:$APP_USER rails $APP_PATH
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
 # It's likely all gems are there already, but there's no harm in running this again
 RUN bundle install
 
 # Build static assets
 RUN bin/rails assets:precompile
-
-# We need the master key to run the above rails command, but
-# now let's remove it so it's not left in the container.
-# At runtime it will be provided in an environment variable.
-RUN rm $APP_PATH/config/master.key
 
 # Start rails
 CMD /bin/start-rails.sh

@@ -87,6 +87,9 @@ bundle-install:
 secrets:
 	-docker-compose run --rm --no-deps base bash -c "EDITOR=vi bin/rails credentials:edit"
 
+dump-secrets:
+	-@docker-compose run --rm --no-deps base bash -c "EDITOR=cat bin/rails credentials:edit" | head -n -1
+
 # Run test suite
 tests:
 	$(DCC) 'bin/rails test:all'
@@ -155,7 +158,10 @@ build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info
-	docker-compose -f docker-compose-prod.yml build --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) prod
+	docker-compose -f docker-compose-prod.yml build \
+	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
+	  --build-arg RAILS_MASTER_KEY=$$( cat rails/config/master.key ) \
+	  prod
 
 push-prod:
 	docker --config etc/docker-conf push sbaird/tiddlyhost
