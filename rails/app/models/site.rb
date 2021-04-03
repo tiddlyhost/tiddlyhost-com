@@ -1,32 +1,10 @@
 class Site < ApplicationRecord
-  acts_as_taggable_on :tags
-
-  include WithAccessCount
-
-  belongs_to :user
-
-  has_one_attached :tiddlywiki_file
+  include SiteCommon
 
   # The empty used when the site was created.
   # (It might not reflect what the site is now since the
   # user may have uploaded a different type of TiddlyWiki.)
   belongs_to :empty
-
-  delegate :blob,
-    to: :tiddlywiki_file, allow_nil: Settings.nil_blobs_ok?
-
-  delegate :byte_size, :key, :created_at,
-    to: :blob, prefix: true, allow_nil: Settings.nil_blobs_ok?
-
-  delegate :name, :email, :username, to: :user, prefix: true
-
-  scope :private_sites, -> { where(is_private: true) }
-  scope :public_sites, -> { where(is_private: false) }
-
-  scope :public_non_searchable, -> { where(is_private: false, is_searchable: false) }
-
-  # Private sites are not searchable even if is_searchable is set
-  scope :searchable, -> { where(is_private: false, is_searchable: true) }
 
   # The timestamps can be a few milliseconds apart, so that's why we need the interval
   # Todo: blob_created_at would be a more useful timestamp to use here than updated_at.
@@ -34,14 +12,6 @@ class Site < ApplicationRecord
   scope :updated_at_least_once, -> { where("AGE(sites.updated_at, sites.created_at) >  INTERVAL '0.5 SECOND'") }
 
   scope :for_hub, -> { searchable.updated_at_least_once }
-
-  scope :owned_by, ->(user) { where(user_id: user.id) }
-
-  scope :search_for, ->(search_text) {
-    where("name LIKE CONCAT('%',?,'%')", search_text).or(
-      where("description ILIKE CONCAT('%',?,'%')", search_text))
-        # TODO: search tags also
-  }
 
   validates :name,
     presence: true,
@@ -97,16 +67,8 @@ class Site < ApplicationRecord
     Settings.subdomain_site_url(name)
   end
 
-  def download_url
-    "#{url}/download"
-  end
-
   def favicon_asset_name
     'favicon-green.ico'
-  end
-
-  def is_public?
-    !is_private?
   end
 
   def exists?
