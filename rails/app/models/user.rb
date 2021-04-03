@@ -53,6 +53,11 @@ class User < ApplicationRecord
   scope :with_plan,    ->(*plan_names) { where(    plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
   scope :without_plan, ->(*plan_names) { where.not(plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
 
+  scope :search_for, ->(search_text) {
+    where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
+    or(where("#{table_name}.username ILIKE CONCAT('%',?,'%')", search_text)).
+    or(where("#{table_name}.email ILIKE CONCAT('%',?,'%')", search_text)) }
+
   # Not sure if we could use an assocation here or at least some clever joins, but this seems to work okay
   def site_attachments
     ActiveStorage::Attachment.where(record_id: sites.pluck(:id), record_type: 'Site')

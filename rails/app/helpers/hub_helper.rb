@@ -8,12 +8,4 @@ module HubHelper
     hub_link_to(bi_icon(:tag) + tag_name, hub_tag_url(tag_name))
   end
 
-  def sort_url(new_sort)
-    params.permit(:sort, :search).merge(sort: new_sort)
-  end
-
-  def clear_search_url
-    params.permit(:sort, :search).merge(search: nil)
-  end
-
 end

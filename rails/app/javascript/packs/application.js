@@ -54,4 +54,13 @@ $(document).ready(function(){
     $('#upload-submit').prop('value', 'Upload file \"' + fileName + '\"').show();
   });
 
+
+  // Trick to set cursor position to the end of the text in the search box
+  $("#search_box").each(function(){
+    var search_box = $(this);
+    var orig_text = search_box.val();
+    search_box.val('');
+    search_box.val(orig_text);
+  })
+
 });

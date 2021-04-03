@@ -20,6 +20,11 @@ class HubController < ApplicationController
     end
   end
 
+  FILTER_PARAMS = %i[
+    sort
+    search
+  ]
+
   private
 
   def render_hub

@@ -39,13 +39,7 @@
       -@sort_options.each do |key, sort_option|
         =link_to sort_option[:name], sort_url(key), class: 'dropdown-item'
 
-  %span.search
-    Search:
-    %form{method: 'GET', style: 'display: inline;'}
-      %input{name: 'search', value: @search}
-      %button.btn.btn-sm= bi_icon(:search)
-      -if @search.present?
-        =link_to 'Clear', clear_search_url
+  =render 'shared/search_box'
 
 .hub
   -@sites.each do |s|

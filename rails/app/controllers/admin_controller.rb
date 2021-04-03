@@ -64,6 +64,7 @@ class AdminController < ApplicationController
 
   FILTER_PARAMS = %i[
     sort
+    search
     user
     exists
     owned
@@ -118,6 +119,9 @@ class AdminController < ApplicationController
 
     @records = @records.where(is_searchable: true) if params[:hub] == '1'
     @records = @records.where(is_searchable: false) if params[:hub] == '0'
+
+    @search = params[:search]
+    @records = @records.search_for(@search) if @search.present?
 
     # Sorting
     @sort_by = (params[:sort] || 'created_desc').sub(/_asc$/, '')

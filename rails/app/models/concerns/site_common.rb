@@ -35,10 +35,8 @@ module SiteCommon
     scope :owned_by, ->(user) { where(user_id: user.id) }
 
     scope :search_for, ->(search_text) {
-      where("name LIKE CONCAT('%',?,'%')", search_text).or(
-        where("description ILIKE CONCAT('%',?,'%')", search_text))
-          # TODO: search tags also
-    }
+      where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
+      or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
   end
 
   def download_url

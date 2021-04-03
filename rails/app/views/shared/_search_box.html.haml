@@ -1,0 +1,9 @@
+%span.search
+  Search:
+  %form{method: 'GET', style: 'display: inline;'}
+    =hidden_filter_params
+    %input{name: 'search', value: @search, autofocus: true, id: 'search_box', autofocus: true}
+    %button.btn.btn-sm
+      =bi_icon(:search)
+    -if @search.present?
+      =link_to 'Clear', clear_search_url

@@ -11,7 +11,9 @@
 =render 'tabs'
 
 .admin-filter
+  .group Filter:
   =render "#{action_name}_filter"
+  =render 'shared/search_box'
 
 .admin-paginate= will_paginate(@records)
 .admin-page-info= pagination_info(@records)
