@@ -45,11 +45,6 @@ Check out the code:
     git clone git@github.com:simonbaird/tiddlyhost.git
     cd tiddlyhost
 
-Because you can't decrypt the rails credentials file, remove it. A new one
-will be created automatically by rails along with a new rails master key.
-
-    rm rails/config/credentials.yml.enc
-
 ### Build the development container and set up rails
 
 Build the container image used for development:
