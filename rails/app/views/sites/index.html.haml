@@ -4,11 +4,9 @@
   %p Click 'Create site' below to create your first TiddlyWiki site.
 
 -else
-  -if current_user.has_hub_sites? && current_user.has_username?
+  -if current_user.has_hub_link?
     .hub-link
-      =link_to(hub_user_url(current_user.username)) do
-        View in Tiddlyhost Hub
-        =bi_icon('arrow-right-short')
+      =link_to_user_hub_with_count(current_user)
 
   .summary-info
     =pluralize(@site_count, 'site') + ","

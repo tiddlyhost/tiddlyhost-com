@@ -25,6 +25,7 @@ class TspotSite < ApplicationRecord
 
   # Private sites are not searchable even if is_searchable is set
   scope :searchable, -> { where(is_private: false, is_searchable: true) }
+  scope :for_hub, -> { searchable }
 
   # Some duck typing for hub rendering
   alias_attribute :view_count, :access_count

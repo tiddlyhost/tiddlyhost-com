@@ -6,6 +6,7 @@
     =link_to_user(@user.name, @user)
     =link_to_user_sites_with_count(@user, :sites)
     =link_to_user_sites_with_count(@user, :tspot_sites)
+    =link_to_user_hub_with_count(@user) if @user.has_hub_link?
 
 =render 'tabs'
 

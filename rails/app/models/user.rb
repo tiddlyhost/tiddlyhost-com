@@ -74,8 +74,16 @@ class User < ApplicationRecord
     username.present?
   end
 
+  def hub_sites_count
+    sites.for_hub.count + tspot_sites.for_hub.count
+  end
+
   def has_hub_sites?
-    sites.searchable.any?
+    hub_sites_count > 0
+  end
+
+  def has_hub_link?
+    has_hub_sites? && has_username?
   end
 
   def is_superuser?

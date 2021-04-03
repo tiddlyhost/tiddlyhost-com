@@ -33,6 +33,8 @@ class Site < ApplicationRecord
   scope :never_updated,         -> { where("AGE(sites.updated_at, sites.created_at) <= INTERVAL '0.5 SECOND'") }
   scope :updated_at_least_once, -> { where("AGE(sites.updated_at, sites.created_at) >  INTERVAL '0.5 SECOND'") }
 
+  scope :for_hub, -> { searchable.updated_at_least_once }
+
   scope :owned_by, ->(user) { where(user_id: user.id) }
 
   scope :search_for, ->(search_text) {

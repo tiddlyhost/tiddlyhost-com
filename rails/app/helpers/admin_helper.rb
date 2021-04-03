@@ -12,6 +12,14 @@ module AdminHelper
       sites_type.to_s.singularize.titleize.downcase), user, action: sites_type)
   end
 
+  def link_to_user_hub_with_count(user)
+    return unless user.has_username?
+    link_to(hub_user_url(user.username), target: '_blank') do
+      safe_join([pluralize(user.hub_sites_count, 'hub site'),
+      bi_icon('arrow-right-short')])
+    end
+  end
+
   def link_to_user(text, user, opts={})
     link_to(text, { controller: :admin, action: :users, user: user.id }, opts)
   end
