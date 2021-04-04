@@ -19,6 +19,24 @@ class TiddlywikiController < ApplicationController
     render html: @site.html_content.html_safe
   end
 
+  def json_content
+    return site_not_available unless site_visible?
+
+    include_system = params[:include_system] == '1'
+    skinny = params[:skinny] == '1'
+    title = params[:title]
+    pretty = params[:pretty] == '1'
+
+    json_data = @site.json_data(include_system: include_system, skinny: skinny)
+
+    json_data = json_data.select { |d| Array.wrap(title).include?(d['title']) } if title.present?
+
+    # I guess...
+    update_view_count_and_access_timestamp
+
+    render json: pretty ? JSON.pretty_generate(json_data) : json_data.to_json
+  end
+
   # TiddlyWiki does an OPTIONS request to query the server capabilities
   # and check if the put saver could be used. Just return a 404 with no body.
   def options

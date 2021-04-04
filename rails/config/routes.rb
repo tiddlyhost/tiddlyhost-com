@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   }) do
 
     get '/', to: 'tiddlywiki#serve'
+    get '/tiddlers.json', to: 'tiddlywiki#json_content'
     options '/', to: 'tiddlywiki#options'
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'

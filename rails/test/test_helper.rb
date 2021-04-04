@@ -28,6 +28,18 @@ class ActionDispatch::IntegrationTest
     mock
   end
 
+  def new_site_helper(name:, user: User.first, tiddlers: {})
+    empty = Empty.default
+
+    tiddlywiki_file = {
+      io: StringIO.new(empty.th_file.write_tiddlers(tiddlers).to_html),
+      filename: 'index.html',
+      content_type: 'text/html',
+    }
+
+    Site.create!(name: name, tiddlywiki_file: tiddlywiki_file, empty_id: empty.id, user_id: user.id)
+  end
+
 end
 
 class CapybaraIntegrationTest < ActionDispatch::IntegrationTest

@@ -104,6 +104,22 @@ class TwFile
     tiddler_content(title, true)
   end
 
+  def tiddler_to_data(tiddler_div, skinny=false)
+    # Node#to_a gives a list of attribute/value pairs
+    data = Hash[tiddler_div.to_a]
+    # The tiddler text is inside the pre tag
+    data = data.merge('text' => tiddler_div.at_xpath('pre').content) unless skinny
+    data
+  end
+
+  def tiddlers_data(include_system: false, skinny: false)
+    return [] if encrypted?
+
+    store.xpath('div').map do |t|
+      tiddler_to_data(t, skinny) if include_system || !t.attr('title').start_with?('$:/')
+    end.compact
+  end
+
   private
 
   attr_reader :doc, :store, :encrypted_store, :shadow_store

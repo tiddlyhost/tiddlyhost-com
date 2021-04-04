@@ -51,10 +51,21 @@ class SitesTest < CapybaraIntegrationTest
     assert_is_401
     assert_selector 'main p', text: "If this is your site"
 
+    # Tiddler json is not available
+    visit "#{expected_url}/tiddlers.json"
+    assert_equal 401, page.status_code
+    assert_equal "", page.body
+
     # ..unless we sign in again
     sign_in @bobby
     visit expected_url
     assert_is_tiddlywiki
+
+    # Tiddler json is available now
+    # Todo: Create a controller test for most of this stuff
+    visit "#{expected_url}/tiddlers.json?include_system=1"
+    assert_equal 200, page.status_code
+    assert_equal '$:/themes/tiddlywiki/vanilla', JSON.load(page.body).last['title']
 
     # Sign in as a different user
     # Site is still not available but the response is different

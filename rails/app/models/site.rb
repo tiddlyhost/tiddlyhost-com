@@ -59,6 +59,10 @@ class Site < ApplicationRecord
     th_file.apply_tiddlyhost_mods(name).to_html
   end
 
+  def json_data(opts={})
+    th_file.tiddlers_data(**opts)
+  end
+
   def download_content
     th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
   end
