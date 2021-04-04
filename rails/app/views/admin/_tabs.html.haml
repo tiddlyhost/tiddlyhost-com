@@ -4,4 +4,5 @@
     =tab_link_to('Stats', action: :index)
     =tab_link_to('Users', action: :users)
     =tab_link_to('Sites', action: :sites)
-    =tab_link_to('Tspot Sites', action: :tspot_sites)
+    -if Settings.tiddlyspot_enabled?
+      =tab_link_to('Tspot Sites', action: :tspot_sites)

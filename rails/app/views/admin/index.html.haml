@@ -6,7 +6,8 @@
 .stats
   =render 'stat_card', title: 'Users',   count: @user_count, big: true
   =render 'stat_card', title: 'Sites',   count: @site_count, big: true
-  =render 'stat_card', title: 'Tspots',  count: @tspot_site_count, big: true
+  -if Settings.tiddlyspot_enabled?
+    =render 'stat_card', title: 'Tspots', count: @tspot_site_count, big: true
   =render 'stat_card', title: 'Storage', count: "#{as_megabytes(@total_site_bytes, precision: 0)} MB", big: true
   %br
   =render 'stat_card', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
@@ -16,6 +17,7 @@
   =render 'stat_card', title: 'Public sites',         count: @public_count, total: @site_count
   =render 'stat_card', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
   =render 'stat_card', title: 'Hub sites',            count: @searchable_count, total: @site_count
-  =render 'stat_card', title: 'Owned tspots',         count: @owned_tspot_site_count, total: @tspot_site_count
-  =render 'stat_card', title: 'Phantom tspots',       count: @notexist_tspot_site_count, total: @notexist_tspot_site_count + @tspot_site_count
-  =render 'stat_card', title: 'Saved tspots',         count: @tspot_sites_with_storage, total: @tspot_site_count
+  -if Settings.tiddlyspot_enabled?
+    =render 'stat_card', title: 'Owned tspots',   count: @owned_tspot_site_count, total: @tspot_site_count
+    =render 'stat_card', title: 'Phantom tspots', count: @notexist_tspot_site_count, total: @notexist_tspot_site_count + @tspot_site_count
+    =render 'stat_card', title: 'Saved tspots',   count: @tspot_sites_with_storage, total: @tspot_site_count
