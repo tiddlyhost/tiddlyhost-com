@@ -88,7 +88,7 @@ module ApplicationHelper
   end
 
   def nice_percentage(number, total, opts={})
-     number_to_percentage(100 * number / total, opts.reverse_merge(precision: 1))
+    number_to_percentage(100 * number / total, opts.reverse_merge(precision: 1))
   end
 
   def support_mail_to(opts={})
