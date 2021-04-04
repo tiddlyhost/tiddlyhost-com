@@ -22,12 +22,10 @@ Rails.application.routes.draw do
     req.domain == Settings.main_site_host && req.subdomain.present? && req.subdomain != 'www'
   }) do
 
-    get '/', to: 'tiddlywiki#serve'
+    match '/', to: 'tiddlywiki#serve', via: [:get, :options]
+    match '/tiddlers.json', to: 'tiddlywiki#json_content', via: [:get, :options]
+    match '/text/:title.tid', to: 'tiddlywiki#tid_content', via: [:get, :options]
 
-    get '/tiddlers.json', to: 'tiddlywiki#json_content'
-    get '/text/:title.tid', to: 'tiddlywiki#tid_content'
-
-    options '/', to: 'tiddlywiki#options'
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
 

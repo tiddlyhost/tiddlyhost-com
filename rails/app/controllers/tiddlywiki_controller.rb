@@ -3,13 +3,23 @@ class TiddlywikiController < ApplicationController
   layout false
 
   before_action :find_site
-  skip_before_action :verify_authenticity_token, only: [:save, :options]
+
+  # TiddlyWiki can't provide the token for saving so we need to skip it
+  skip_before_action :verify_authenticity_token, only: :save
+
+  # Rails wants a token for options requests, which TiddlyWiki similarly can't provide
+  skip_before_action :verify_authenticity_token,
+    only: [:serve, :json_content, :tid_content],
+    if: -> { request.options? }
+
+  # For now CORS is supported for only these two requests
+  before_action :cors_headers, only: [:json_content, :tid_content]
 
   def serve
     return site_not_available unless site_visible?
 
-    # Don't waste time on head requests
-    return head 200 if request.head?
+    # Avoid site download for head or options requests
+    return head 200 if request.head? || request.options?
 
     # Don't serve a file if it doesn't resemble a valid TiddlyWiki
     return site_not_valid unless site_valid?
@@ -21,6 +31,9 @@ class TiddlywikiController < ApplicationController
 
   def json_content
     return site_not_available unless site_visible?
+
+    # Return empty body for options request with CORS headers
+    return head 200 if request.options?
 
     include_system = params[:include_system] == '1'
     skinny = params[:skinny] == '1'
@@ -46,14 +59,11 @@ class TiddlywikiController < ApplicationController
     # If we get nil, assume the tiddler doesn't exist
     return head 404 unless tiddler_data
 
+    # Return empty body for options request with CORS headers
+    return head 200 if request.options?
+
     # Otherwise render it in .tid format
     render plain: tiddler_data_to_tid_text(tiddler_data)
-  end
-
-  # TiddlyWiki does an OPTIONS request to query the server capabilities
-  # and check if the put saver could be used. Just return a 404 with no body.
-  def options
-    head 404
   end
 
   def favicon
@@ -171,6 +181,13 @@ class TiddlywikiController < ApplicationController
       tiddler_data['text'],
       "\n",
     ].flatten.join
+  end
+
+  # So browsers are permitted to do fetches from different domains
+  def cors_headers
+    response.set_header 'Access-Control-Allow-Origin', '*'
+    response.set_header 'Access-Control-Request-Method', 'GET'
+    response.set_header 'Access-Control-Allow-Headers', 'X-Requested-With'
   end
 
 end
