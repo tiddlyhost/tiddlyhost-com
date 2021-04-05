@@ -26,6 +26,10 @@ class AdminController < ApplicationController
     @owned_tspot_site_count = TspotSite.where("user_id IS NOT NULL").count
     @tspot_sites_with_storage = TspotSite.joins(:tiddlywiki_file_attachment).count
 
+    # See also fixup-scripts/clean-attachment-dupes.rb
+    @dupe_attachments = ActiveStorage::Attachment.
+      group(:record_type, :record_id).count.select{ |k, c| c > 1 }.count
+
   end
 
   SORT_OPTIONS = {

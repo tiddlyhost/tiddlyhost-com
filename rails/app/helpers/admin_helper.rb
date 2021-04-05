@@ -73,6 +73,8 @@ module AdminHelper
       '#ffe'
     when /tspots/
       '#efe'
+    when /dupe/
+      '#fff6f2'
     when /sites/
       '#eef8ff'
     end
