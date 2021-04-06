@@ -21,7 +21,7 @@ module AdminHelper
   end
 
   def link_to_user(text, user, opts={})
-    link_to(text, { controller: :admin, action: :users, user: user.id }, opts)
+    link_to(text||'', { controller: :admin, action: :users, user: user.id }, opts)
   end
 
   def pagination_info(records)
