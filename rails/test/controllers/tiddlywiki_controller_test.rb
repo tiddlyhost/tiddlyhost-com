@@ -45,4 +45,36 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal titles, JSON.load(response.body).map{|v| v['title']} if titles
   end
 
+  test "text/:title.tid" do
+    [
+      url: '/text/Foo.tid',
+      tid: <<-EOT.strip_heredoc()
+        title: Foo
+
+        Bar
+        EOT
+
+    ].each do |query|
+      assert_expected_tid(**query)
+    end
+  end
+
+  def assert_expected_tid(url:, tid:)
+    host! "foo.#{Settings.main_site_host}"
+    get url
+    assert_response :success
+    assert_equal tid, response.body
+  end
+
+  test "text/:title.tid for non-existent tiddler" do
+    assert_tid_not_found('/text/Bananas.tid')
+  end
+
+  def assert_tid_not_found(url)
+    host! "foo.#{Settings.main_site_host}"
+    get url
+    assert_response :not_found
+    assert_equal '', response.body
+  end
+
 end

@@ -96,8 +96,13 @@ class TwFile
     write_tiddlers(tiddlers, true)
   end
 
+  def tiddler_data(title, shadow=false)
+    tiddler_div = tiddler(title, shadow)
+    tiddler_to_data(tiddler_div)
+  end
+
   def tiddler_content(title, shadow=false)
-    tiddler(title, shadow).try(:at_xpath, 'pre').try(:content)
+    tiddler_data(title, shadow).try(:[], 'text')
   end
 
   def shadow_tiddler_content(title)
@@ -105,6 +110,7 @@ class TwFile
   end
 
   def tiddler_to_data(tiddler_div, skinny=false)
+    return unless tiddler_div
     # Node#to_a gives a list of attribute/value pairs
     data = Hash[tiddler_div.to_a]
     # The tiddler text is inside the pre tag

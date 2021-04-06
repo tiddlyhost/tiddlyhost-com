@@ -37,6 +37,19 @@ class TiddlywikiController < ApplicationController
     render json: pretty ? JSON.pretty_generate(json_data) : json_data.to_json
   end
 
+  def tid_content
+    return site_not_available unless site_visible?
+
+    title = params[:title]
+    tiddler_data = @site.tiddler_data(title)
+
+    # If we get nil, assume the tiddler doesn't exist
+    return head 404 unless tiddler_data
+
+    # Otherwise render it in .tid format
+    render plain: tiddler_data_to_tid_text(tiddler_data)
+  end
+
   # TiddlyWiki does an OPTIONS request to query the server capabilities
   # and check if the put saver could be used. Just return a 404 with no body.
   def options
@@ -149,6 +162,15 @@ class TiddlywikiController < ApplicationController
   def find_site
     site_name = request.subdomain
     @site = Site.find_by_name(site_name)
+  end
+
+  def tiddler_data_to_tid_text(tiddler_data)
+    [
+      tiddler_data.except('text').sort_by{ |k, v| k}.map{ |k, v| "#{k}: #{v}\n" },
+      "\n",
+      tiddler_data['text'],
+      "\n",
+    ].flatten.join
   end
 
 end

@@ -63,6 +63,12 @@ class Site < ApplicationRecord
     th_file.tiddlers_data(**opts)
   end
 
+  def tiddler_data(tiddler_name)
+    blob_cache(:tiddler_data, tiddler_name) do
+      th_file.tiddler_data(tiddler_name)
+    end
+  end
+
   def download_content
     th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
   end

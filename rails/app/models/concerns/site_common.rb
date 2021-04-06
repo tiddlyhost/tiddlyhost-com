@@ -51,8 +51,8 @@ module SiteCommon
   # when the site is saved, i.e. exactly when it needs to.
   # Takes a block that runs on a cache miss.
   #
-  def blob_cache(cache_type, &blk)
-    blob_content_cache_key = [blob.cache_key, cache_type]
+  def blob_cache(cache_type, tiddler_name=nil, &blk)
+    blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
     Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
   end
 
