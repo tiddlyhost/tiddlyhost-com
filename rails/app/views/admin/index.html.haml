@@ -10,8 +10,10 @@
     =render 'stat_card', title: 'Tspots', count: @tspot_site_count, big: true
   =render 'stat_card', title: 'Storage', count: "#{as_megabytes(@total_site_bytes, precision: 0)} MB", big: true
   %br
-  =render 'stat_card', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
+  =render 'stat_card', title: 'Active weekly',         count: @active_weekly, total: @user_count
+  =render 'stat_card', title: 'Active monthly',        count: @active_monthly, total: @user_count
   =render 'stat_card', title: 'Signed in once users',  count: @signed_in_once_users, total: @user_count
+  =render 'stat_card', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
   =render 'stat_card', title: 'Never updated sites',  count: @never_updated_sites, total: @site_count
   =render 'stat_card', title: 'Private sites',        count: @private_count, total: @site_count
   =render 'stat_card', title: 'Public sites',         count: @public_count, total: @site_count

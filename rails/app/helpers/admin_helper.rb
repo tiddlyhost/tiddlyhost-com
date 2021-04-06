@@ -69,7 +69,7 @@ module AdminHelper
 
   def card_color(title)
     case title.downcase
-    when /users/
+    when /users/, /active/
       '#ffe'
     when /tspots/
       '#efe'

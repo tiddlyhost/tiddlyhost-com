@@ -14,6 +14,9 @@ class AdminController < ApplicationController
     @never_signed_in_users = User.where(sign_in_count: 0).count
     @signed_in_once_users = User.where(sign_in_count: 1).count
 
+    @active_weekly = User.where('last_sign_in_at > ?', 1.week.ago).count
+    @active_monthly = User.where('last_sign_in_at > ?', 1.month.ago).count
+
     @site_count = Site.count
     @never_updated_sites = Site.never_updated.count
     @private_count = Site.private_sites.count
