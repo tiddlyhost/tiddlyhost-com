@@ -21,6 +21,9 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# For memcached
+gem 'dalli'
+
 # Added manually to fix error running tests...?
 gem 'rexml'
 

@@ -48,7 +48,7 @@ class Site < ApplicationRecord
     }
 
   def th_file
-    @_th_file ||= ThFile.new(tiddlywiki_file.download)
+    @_th_file ||= ThFile.new(file_download)
   end
 
   def looks_valid?

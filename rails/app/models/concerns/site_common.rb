@@ -39,6 +39,30 @@ module SiteCommon
       or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
   end
 
+  # Used by Site records and TspotSite records that have been saved.
+  def file_download
+    blob_cache(:file_download) do
+      tiddlywiki_file.download
+    end
+  end
+
+  # When a site is saved it gets a brand new blob. So if we use the blob's
+  # cache key then any cache related to the site's content will become stale
+  # when the site is saved, i.e. exactly when it needs to.
+  # Takes a block that runs on a cache miss.
+  #
+  def blob_cache(cache_type, &blk)
+    blob_content_cache_key = [blob.cache_key, cache_type]
+    Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+  end
+
+  # Currently only used by TspotSite but define it here anyway.
+  # Takes a block that runs on a cache miss.
+  def site_cache(cache_type, &blk)
+    site_content_cache_key = [cache_key, cache_type]
+    Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+  end
+
   def download_url
     "#{url}/download"
   end

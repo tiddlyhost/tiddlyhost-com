@@ -16,6 +16,7 @@ services:
     restart: always
     depends_on:
     - db
+    - cache
     environment:
       RAILS_MASTER_KEY:
 
@@ -25,6 +26,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.prod
+
+  cache:
+    image: memcached
 
   db:
     image: postgres

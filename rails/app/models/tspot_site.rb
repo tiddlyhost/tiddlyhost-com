@@ -21,10 +21,18 @@ class TspotSite < ApplicationRecord
     if tiddlywiki_file.blob
       # This will exist only if the site was ever updated
       # post-tiddlyhost. Use it if we have it.
-      tiddlywiki_file.download
+      # (This is defined in site_common.rb)
+      file_download
     else
       # The original pre-tiddlyhost content is availble here.
       # Treat this as read-only.
+      fetched_html
+    end
+  end
+
+  def fetched_html
+    site_cache(:fetched_html) do
+      logger.info "  TspotSite fetch for #{name}"
       fetcher.html_file
     end
   end
