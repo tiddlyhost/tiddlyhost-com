@@ -1,12 +1,16 @@
 #
 # A few common requests that we don't want to pass through to rails
 #
-location /ads.txt      { return 404; }
-location /robots.txt   { return 404; }
-location /wp-login.php { return 404; }
-location /wp-admin     { return 404; }
-location /index.xml    { return 404; }
-location /_ts/         { return 404; }
+location = /ads.txt { return 404; }
+location = /robots.txt { return 404; }
+
+location ~ \.php(?:$|\?) { return 404; }
+
+location /_ts_ { return 404; }
+location /_ts/ { return 404; }
+location /_sites/ { return 404; }
+
+location = /index.xml { return 404; }
 
 #
 # Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
