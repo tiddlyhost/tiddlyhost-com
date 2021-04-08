@@ -1,6 +1,7 @@
 services:
   web:
     image: nginx
+    container_name: th_web
     depends_on:
     - base
     ports:
@@ -12,6 +13,7 @@ services:
 
   base:
     image: base:latest
+    container_name: th_app
     depends_on:
     - db
     - cache
@@ -29,9 +31,11 @@ services:
 
   cache:
     image: memcached
+    container_name: th_cache
 
   db:
     image: postgres
+    container_name: th_db
     environment:
       POSTGRES_PASSWORD: notsecure123
     volumes:

@@ -1,6 +1,7 @@
 services:
   web:
     image: nginx
+    container_name: th_web
     restart: always
     depends_on:
     - prod
@@ -13,6 +14,7 @@ services:
 
   prod:
     image: sbaird/tiddlyhost:latest
+    container_name: th_app
     restart: always
     depends_on:
     - db
@@ -29,9 +31,11 @@ services:
 
   cache:
     image: memcached
+    container_name: th_cache
 
   db:
     image: postgres
+    container_name: th_db
     restart: always
     environment:
       POSTGRES_PASSWORD: notsecure123
