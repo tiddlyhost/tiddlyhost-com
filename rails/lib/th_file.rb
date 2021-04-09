@@ -62,7 +62,7 @@ class ThFile < TwFile
         # using a 5.1.24 TiddlyWiki prerelease.
         '$:/config/OfficialPluginLibrary' => {
           url: 'https://tiddlywiki.com/library/v5.1.23/index.html',
-          content: '{{$:/language/OfficialPluginLibrary/Hint}}',
+          text: '{{$:/language/OfficialPluginLibrary/Hint}}',
           caption: '{{$:/language/OfficialPluginLibrary}}',
           tags: '$:/tags/PluginLibrary',
         },
@@ -77,7 +77,7 @@ class ThFile < TwFile
 
       write_tiddlers({
         'ThostUploadPlugin' => {
-          content: plugin_content(:thost_upload_plugin, site_name: site_name, site_url: site_url),
+          text: plugin_content(:thost_upload_plugin, site_name: site_name, site_url: site_url),
           tags: 'systemConfig',
           modifier: 'TiddlyHost',
         }
@@ -88,7 +88,7 @@ class ThFile < TwFile
       # (I'm using camel case intentionally here despite the usual spelling of Tiddlyhost.)
       write_shadow_tiddlers({
         'TiddlyHost' => {
-          content: "[[Tiddlyhost|#{Settings.main_site_url}]] is a hosting service for ~TiddlyWiki.",
+          text: "[[Tiddlyhost|#{Settings.main_site_url}]] is a hosting service for ~TiddlyWiki.",
           modifier: 'TiddlyHost',
         }
       })

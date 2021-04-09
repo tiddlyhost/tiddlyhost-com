@@ -166,12 +166,12 @@ class TwFile
   # better than I do how to do the escaping.
   #
   def create_tiddler_div(title, data)
-    data = { content: data } if data.is_a?(String)
+    data = { text: data } if data.is_a?(String)
 
     div = new_node('div')
     pre = div.add_child(new_node('pre'))
     div['title'] = title
-    pre.content = data.delete(:content) || ''
+    pre.content = data.delete(:text) || ''
 
     # For attributes like tags, modifier, etc
     data.each do |attr_name, attr_value|
