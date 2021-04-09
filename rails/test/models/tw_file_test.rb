@@ -1,22 +1,8 @@
 
 class TwFileTest < ActiveSupport::TestCase
 
-  MINIMAL_VALID = %{
-    <html><head><meta name="application-name" content="TiddlyWiki">
-    <meta name="tiddlywiki-version" content="5.1.24-prerelease"></head>
-    <body><div id="storeArea"></div></body></html>}.freeze
-
-  MINIMAL_ENCRYPTED = %{
-    <html><head><meta name="application-name" content="TiddlyWiki">
-    <meta name="tiddlywiki-version" content="5.1.24-prerelease"></head>
-    <body><pre id="encryptedStoreArea"></pre></body></html>}.freeze
-
-  CLASSIC_VALID = %{
-    <html><head><script id="versionArea">title: "TiddlyWiki", major: 2, minor: 9, revision: 2</script>
-    </head><body><div id="storeArea"></div></body></html>}.freeze
-
   test "adding a tiddler" do
-    tw = TwFile.new(MINIMAL_VALID)
+    tw = TwFile.new(minimal_html(:tw5))
     tw.write_tiddlers({'foo' => 'bar'})
 
     assert_match '<div id="storeArea"><div title="foo"><pre>bar</pre></div></div>', tw.to_html
@@ -73,20 +59,15 @@ class TwFileTest < ActiveSupport::TestCase
   end
 
   test "tiddlyhost mods do nothing for an encrypted tiddlywiki" do
-    tw = ThFile.new(MINIMAL_ENCRYPTED)
+    tw = ThFile.new(minimal_html(:encrypted))
     original_html = tw.to_html
     assert_equal original_html, tw.apply_tiddlyhost_mods('foo').to_html
   end
 
   test "tiddlywiki validation" do
     # Valid files
-    [
-      MINIMAL_VALID,
-      MINIMAL_ENCRYPTED,
-      CLASSIC_VALID,
-
-    ].each do |content|
-      tw_file = TwFile.new(content)
+    %w[ tw5 encrypted classic ].each do |type|
+      tw_file = TwFile.new(minimal_html(type))
       assert tw_file.looks_valid?
 
       # Some extra sanity checks
@@ -106,18 +87,22 @@ class TwFileTest < ActiveSupport::TestCase
 
     ].each do |match, replace, skip_classic|
       [
-        MINIMAL_VALID,
-        MINIMAL_ENCRYPTED,
-        (CLASSIC_VALID unless skip_classic),
+        :tw5,
+        :encrypted,
+        (:classic unless skip_classic),
 
-      ].compact.each do |content|
-        refute TwFile.new(content.sub(match, replace)).looks_valid?
+      ].compact.each do |type|
+        refute TwFile.new(minimal_html(type).sub(match, replace)).looks_valid?
       end
     end
 
     # Garbage data
     refute TwFile.new(File.read("#{Rails.root}/app/assets/images/favicon.ico")).looks_valid?
 
+  end
+
+  def minimal_html(type)
+    File.read("test/data/minimal_#{type}.html")
   end
 
 end
