@@ -83,9 +83,9 @@ class TwFile
 
   # ** Methods from here down are useless for encrypted TiddlyWikis **
 
-  def write_tiddlers(tiddlers, shadow=false)
+  def write_tiddlers(tiddlers, shadow: false)
     tiddlers.each do |title, data|
-      insert_or_replace(title, data, shadow)
+      insert_or_replace(title, data, shadow: shadow)
     end
 
     # For chaining method calls
@@ -93,20 +93,20 @@ class TwFile
   end
 
   def write_shadow_tiddlers(tiddlers)
-    write_tiddlers(tiddlers, true)
+    write_tiddlers(tiddlers, shadow: true)
   end
 
-  def tiddler_data(title, shadow=false)
-    tiddler_div = tiddler(title, shadow)
+  def tiddler_data(title, shadow: false)
+    tiddler_div = tiddler(title, shadow: shadow)
     tiddler_to_data(tiddler_div)
   end
 
-  def tiddler_content(title, shadow=false)
-    tiddler_data(title, shadow).try(:[], 'text')
+  def tiddler_content(title, shadow: false)
+    tiddler_data(title, shadow: shadow).try(:[], 'text')
   end
 
   def shadow_tiddler_content(title)
-    tiddler_content(title, true)
+    tiddler_content(title, shadow: true)
   end
 
   def tiddler_to_data(tiddler_div, skinny=false)
@@ -130,29 +130,33 @@ class TwFile
 
   attr_reader :doc, :store, :encrypted_store, :shadow_store
 
-  def insert_or_replace(title, data, shadow)
+  def insert_or_replace(title, data, shadow: false)
     return if encrypted?
 
     tiddler_div = create_tiddler_div(title, data)
 
-    if existing_tiddler = tiddler(title, shadow)
+    if existing_tiddler = tiddler(title, shadow: shadow)
       existing_tiddler.replace(tiddler_div)
     else
-      (shadow ? shadow_store : store) << tiddler_div
+      choose_store(shadow: shadow) << tiddler_div
     end
   end
 
-  def tiddler(title, shadow=false)
+  def tiddler(title, shadow: false)
     return if encrypted?
 
     # TODO: See how this works for titles with quotes in them
-    tiddler_divs = (shadow ? shadow_store : store).xpath("div[@title='#{title}']")
+    tiddler_divs = choose_store(shadow: shadow).xpath("div[@title='#{title}']")
     raise 'Multiple tiddlers found!' if tiddler_divs.length > 1
     tiddler_divs.first
   end
 
+  def choose_store(shadow: false)
+    shadow ? shadow_store : store
+  end
+
   def shadow_tiddler(title)
-    tiddler(title, true)
+    tiddler(title, shadow: true)
   end
 
   # We can return a string like this and it works fine:
