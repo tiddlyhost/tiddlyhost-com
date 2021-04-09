@@ -208,6 +208,7 @@ bidix.initOption = function(name,value) {
   }
 };
 
+if (!config.optionsDesc) config.optionsDesc = {};
 merge(config.optionsDesc, {
   txtThostSiteName: "Site name for uploads to Tiddlyhost.com",
 });

@@ -2,18 +2,33 @@
 class TwFile
 
   module TiddlerDiv
-    def self.from_fields(fields, tw_doc)
+    def self.from_fields(fields, tw_doc, old_format: false)
       fields.stringify_keys!
       text = fields.delete('text')
+
+      # Old format uses tiddler attribute instead of title
+      if old_format
+        fields['tiddler'] = fields.delete('title')
+        # And requires modified and created attrs
+        ts = '20210409183317'
+        fields['modified'] ||= ts
+        fields['created'] ||= ts
+      end
 
       Nokogiri::XML::Node.new('div', tw_doc) do |div|
         # Add the attributes to the div
         fields.each { |k, v| div[k] = v }
 
-        # Add the tiddler text inside a pre element
-        inner_pre = div.add_child(Nokogiri::XML::Node.new('pre', tw_doc))
-        inner_pre.content = text
+        if old_format
+          # Text goes in the div with escaped line breaks and slashes
+          div.content = text.gsub(/\\/, '\\s').gsub(/\n/, '\\n')
 
+        else
+          # Add the tiddler text inside a pre element
+          inner_pre = div.add_child(Nokogiri::XML::Node.new('pre', tw_doc))
+          inner_pre.content = text
+
+        end
       end
     end
 
@@ -23,8 +38,18 @@ class TwFile
       # div.to_a is a list of attr/value pairs
       fields = Hash[div.to_a]
 
-      # The tiddler text is inside a pre element
-      fields.merge!('text' => div.at_xpath('pre').content) unless skinny
+      if inner_pre = div.at_xpath('pre')
+        # The tiddler text is inside a pre element
+        fields.merge!('text' => inner_pre.content) unless skinny
+
+      else
+        # Old TW classic format have the content in the div with escaped line breaks
+        fields.merge!('text' => div.content.gsub(/\\n/, "\n").gsub(/\\s/, "\\")) unless skinny
+        # Also the title is in the "tiddler" attribute
+        fields['title'] = result.delete('tiddler')
+
+      end
+
       fields
     end
 
@@ -52,16 +77,22 @@ class TwFile
   # We can't be certain, but we can sanity check a few things to
   # confirm that it at least looks like a legitimate TiddlyWiki
   def looks_valid?
-      # The application name is present
-      tiddlywiki_title == 'TiddlyWiki' &&
-        # Has one or other store divs but not both
-        (store.present? ^ encrypted_store.present?) &&
-        # We're able to extract a tiddlywiki version
-        tiddlywiki_version.present?
+    # Has one or other store divs but not both
+    (store.present? ^ encrypted_store.present?) &&
+      # We're able to extract a tiddlywiki version
+      tiddlywiki_version.present?
   end
 
   def is_classic?
     tiddlywiki_version_classic.present?
+  end
+
+  # Detect when we should use the old format tiddlers
+  # Doesn't work if the store is empty, but hopefully that won't matter much
+  def old_tiddler_format?
+    return @_old_tiddler_format unless @_old_tiddler_format.nil?
+    first_tiddler = store.element_children.first
+    @_old_tiddler_format = first_tiddler.present? && first_tiddler.at_xpath('pre').nil? && first_tiddler['tiddler'].present?
   end
 
   def is_tw5?
@@ -76,30 +107,19 @@ class TwFile
     tiddlywiki_version_tw5 || tiddlywiki_version_classic
   end
 
-  def tiddlywiki_title
-    tiddlywiki_title_tw5 || tiddlywiki_title_classic
-  end
-
   def tiddlywiki_version_tw5
     get_meta('tiddlywiki-version')
   end
 
-  def tiddlywiki_title_tw5
-    get_meta('application-name')
-  end
-
   def tiddlywiki_version_area
     doc.at_xpath("/html/head/script[@id='versionArea']").presence
+      # For older tiddlywikis the script tag doesn't have the id
+      doc.at_xpath("/html/head/script").presence
   end
 
   def tiddlywiki_version_classic
     match = tiddlywiki_version_area.try(:text).try(:match, /major: (\d+), minor: (\d+), revision: (\d+)/).presence
     "#{match[1]}.#{match[2]}.#{match[3]}" if match
-  end
-
-  def tiddlywiki_title_classic
-    match = tiddlywiki_version_area.try(:text).try(:match, /title: "(\w+)"/).presence
-    match[1] if match
   end
 
   def encrypted?
@@ -141,7 +161,8 @@ class TwFile
     return [] if encrypted?
 
     store.xpath('div').map do |t|
-      next unless include_system || !t.attr('title').start_with?('$:/')
+      title = t.attr('title') || t.attr('tiddler')
+      next unless include_system || !title.start_with?('$:/')
       TiddlerDiv.to_fields(t, skinny: skinny)
     end.compact
   end
@@ -149,6 +170,12 @@ class TwFile
   private
 
   attr_reader :doc, :store, :encrypted_store, :shadow_store
+
+  def choose_store(shadow: false)
+    # Old versions of TiddlyWiki classic don't have a shadow store.
+    # For those we'll just use the regular store.
+    shadow ? (shadow_store || store) : store
+  end
 
   def insert_or_replace(title, data, shadow: false)
     return if encrypted?
@@ -181,7 +208,7 @@ class TwFile
 
   def create_tiddler_div(title, fields)
     fields = { text: fields } if fields.is_a?(String)
-    TiddlerDiv.from_fields(fields.merge(title: title), doc)
+    TiddlerDiv.from_fields(fields.merge(title: title), doc, old_format: old_tiddler_format?)
   end
 
 end

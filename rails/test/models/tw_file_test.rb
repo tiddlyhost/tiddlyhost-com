@@ -66,30 +66,30 @@ class TwFileTest < ActiveSupport::TestCase
 
   test "tiddlywiki validation" do
     # Valid files
-    %w[ tw5 encrypted classic ].each do |type|
+    %w[ tw5 encrypted classic classic_old ].each do |type|
       tw_file = TwFile.new(minimal_html(type))
       assert tw_file.looks_valid?
 
-      # Some extra sanity checks
-      assert tw_file.tiddlywiki_title.present?
       assert tw_file.tiddlywiki_version.present?
-      assert_equal tw_file.is_classic?, tw_file.tiddlywiki_title_classic.present?
-      assert_equal tw_file.is_classic?, tw_file.tiddlywiki_version_classic.present?
-      assert_equal tw_file.is_tw5?, tw_file.tiddlywiki_title_tw5.present?
-      assert_equal tw_file.is_tw5?, tw_file.tiddlywiki_version_tw5.present?
     end
 
     # Invalid files
     [
-      ['Area', 'Aria'],
-      ['TiddlyWiki', 'HackyWiki'],
-      ['application-name', 'app-name', true],
+      # Can't find store area
+      [/[Ss]toreArea/, 'storeAria'],
 
-    ].each do |match, replace, skip_classic|
+      # Can't find a version (for TW5)
+      [/"tiddlywiki-version"/, 'tiddly-version', :tw5],
+
+      # Can't find version (for Classic)
+      [/major:/, 'majer:', :classic],
+
+    ].each do |match, replace, only|
       [
-        :tw5,
-        :encrypted,
-        (:classic unless skip_classic),
+        (:tw5 unless only == :classic),
+        (:encrypted unless only == :classic),
+        (:classic unless only == :tw5),
+        (:classic_old unless only == :tw5),
 
       ].compact.each do |type|
         refute TwFile.new(minimal_html(type).sub(match, replace)).looks_valid?
