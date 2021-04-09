@@ -1,6 +1,35 @@
 
 class TwFile
 
+  module TiddlerDiv
+    def self.from_fields(fields, tw_doc)
+      fields.stringify_keys!
+      text = fields.delete('text')
+
+      Nokogiri::XML::Node.new('div', tw_doc) do |div|
+        # Add the attributes to the div
+        fields.each { |k, v| div[k] = v }
+
+        # Add the tiddler text inside a pre element
+        inner_pre = div.add_child(Nokogiri::XML::Node.new('pre', tw_doc))
+        inner_pre.content = text
+
+      end
+    end
+
+    def self.to_fields(div, skinny: false)
+      return nil unless div
+
+      # div.to_a is a list of attr/value pairs
+      fields = Hash[div.to_a]
+
+      # The tiddler text is inside a pre element
+      fields.merge!('text' => div.at_xpath('pre').content) unless skinny
+      fields
+    end
+
+  end
+
   def initialize(html_content)
     @doc = Nokogiri::HTML(html_content) do |config|
       config.options |= Nokogiri::XML::ParseOptions::HUGE
@@ -97,8 +126,7 @@ class TwFile
   end
 
   def tiddler_data(title, shadow: false)
-    tiddler_div = tiddler(title, shadow: shadow)
-    tiddler_to_data(tiddler_div)
+    TiddlerDiv.to_fields(tiddler(title, shadow: shadow))
   end
 
   def tiddler_content(title, shadow: false)
@@ -109,20 +137,12 @@ class TwFile
     tiddler_content(title, shadow: true)
   end
 
-  def tiddler_to_data(tiddler_div, skinny=false)
-    return unless tiddler_div
-    # Node#to_a gives a list of attribute/value pairs
-    data = Hash[tiddler_div.to_a]
-    # The tiddler text is inside the pre tag
-    data = data.merge('text' => tiddler_div.at_xpath('pre').content) unless skinny
-    data
-  end
-
   def tiddlers_data(include_system: false, skinny: false)
     return [] if encrypted?
 
     store.xpath('div').map do |t|
-      tiddler_to_data(t, skinny) if include_system || !t.attr('title').start_with?('$:/')
+      next unless include_system || !t.attr('title').start_with?('$:/')
+      TiddlerDiv.to_fields(t, skinny: skinny)
     end.compact
   end
 
@@ -159,30 +179,9 @@ class TwFile
     tiddler(title, shadow: true)
   end
 
-  # We can return a string like this and it works fine:
-  #   %{<div title="#{title}"><pre>#{content}</pre></div>}
-  #
-  # Doing it this way because I expect Nokogiri knows
-  # better than I do how to do the escaping.
-  #
-  def create_tiddler_div(title, data)
-    data = { text: data } if data.is_a?(String)
-
-    div = new_node('div')
-    pre = div.add_child(new_node('pre'))
-    div['title'] = title
-    pre.content = data.delete(:text) || ''
-
-    # For attributes like tags, modifier, etc
-    data.each do |attr_name, attr_value|
-      div[attr_name.to_s] = attr_value
-    end
-
-    div
-  end
-
-  def new_node(elem_name)
-    Nokogiri::XML::Node.new(elem_name, doc)
+  def create_tiddler_div(title, fields)
+    fields = { text: fields } if fields.is_a?(String)
+    TiddlerDiv.from_fields(fields.merge(title: title), doc)
   end
 
 end
