@@ -21,6 +21,18 @@ $contrast_color: #29AE4A;
 
     .nav-item {
         font-weight: bold;
+        .dropdown-item-text {
+            font-weight: normal;
+        }
+    }
+
+    img.gravatar {
+        border-radius: 50%;
+    }
+
+    .dropdown-toggle:after {
+        margin-left: 0px;
+        vertical-align: 0.18em;
     }
 }
 

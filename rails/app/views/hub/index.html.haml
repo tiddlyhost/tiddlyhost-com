@@ -50,7 +50,7 @@
         =span_with_title_truncated(s.description)
       .owner
         -if s.user.use_gravatar?
-          =gravatar_image(s.user, size: 14) if s.user.use_gravatar?
+          =gravatar_image(s.user, size: 14)
         -else
           =bi_icon('person-fill', style: 'margin-right:-3px;')
         -if s.user.has_username?
