@@ -1,0 +1,15 @@
+
+.container-fluid
+  .row
+    .col-8
+      =link_to 'Report an issue', Settings.issues_url
+      %br
+      =link_to 'Donations', '/donate'
+      %br
+    .col-4{style: "text-align: right;"}
+      -unless Rails.env.production?
+        Env: #{Rails.env}
+        %br
+      Version: #{link_to App::VERSION, '/build-info'}
+      %br
+      &copy; 2021 Simon Baird
