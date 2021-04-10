@@ -5,6 +5,9 @@ class TspotSite < ApplicationRecord
   # Some duck typing for hub rendering
   alias_attribute :view_count, :access_count
 
+  scope :owned, -> { where.not(user_id: nil) }
+  scope :for_hub, -> { searchable.owned }
+
   # The TspotFetcher class knows how to fetch a site from the
   # dreamhost bucket. It can also determine if the site is public
   # or private, and can fetch the htpasswd file for auth checks.

@@ -26,7 +26,7 @@ class AdminController < ApplicationController
 
     @tspot_site_count = TspotSite.where(exists: true).count
     @notexist_tspot_site_count = TspotSite.where(exists: false).count
-    @owned_tspot_site_count = TspotSite.where("user_id IS NOT NULL").count
+    @owned_tspot_site_count = TspotSite.owned.count
     @tspot_sites_with_storage = TspotSite.joins(:tiddlywiki_file_attachment).count
 
     # See also fixup-scripts/clean-attachment-dupes.rb

@@ -30,8 +30,6 @@ module SiteCommon
     # Private sites are not searchable even if is_searchable is set
     scope :searchable, -> { where(is_private: false, is_searchable: true) }
 
-    scope :for_hub, -> { searchable }
-
     scope :owned_by, ->(user) { where(user_id: user.id) }
 
     scope :search_for, ->(search_text) {

@@ -15,8 +15,8 @@ module HubQuery
   def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:)
     # Work with two separate queries
     qs = [
-      Site.searchable.select("'Site' as type", :id, :name, :view_count).updated_at_least_once,
-      TspotSite.searchable.select("'TspotSite' as type", :id, :name, "access_count as view_count"),
+      Site.for_hub.select("'Site' as type", :id, :name, :view_count),
+      TspotSite.for_hub.select("'TspotSite' as type", :id, :name, "access_count as view_count"),
     ]
 
     # Apply filters
