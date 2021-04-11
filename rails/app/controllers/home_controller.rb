@@ -10,6 +10,9 @@ class HomeController < ApplicationController
     render template: 'devise/registrations/after_registration'
   end
 
+  def about
+  end
+
   def donate
   end
 

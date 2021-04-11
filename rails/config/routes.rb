@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     get 'home/index'
     get 'home/after_registration'
 
+    get 'about', to: 'home#about'
     get 'donate', to: 'home#donate'
     get 'build-info', to: 'home#build_info'
 

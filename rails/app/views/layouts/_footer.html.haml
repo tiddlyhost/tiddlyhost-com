@@ -2,10 +2,11 @@
 .container-fluid
   .row
     .col-8
-      =link_to 'Report an issue', Settings.issues_url
+      =link_to 'Report an issue', Settings.create_issue_url, target: '_blank'
       %br
       =link_to 'Donations', '/donate'
       %br
+      =link_to 'About Tiddlyhost', '/about'
     .col-4{style: "text-align: right;"}
       -unless Rails.env.production?
         Env: #{Rails.env}

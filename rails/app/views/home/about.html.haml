@@ -1,0 +1,44 @@
+
+%h1 About Tiddlyhost
+
+%p= image_tag 'logo-800-square.png',
+  style: 'width: 150px; height: 150px; border-radius: 0.25rem;'
+
+%p <i>The easiest way to use TiddlyWiki online.</i>
+
+%p Created, maintained and supported by Simon Baird.
+
+%p
+  If you have problems please
+  =link_to('report an issue in Github',
+    Settings.create_issue_url, target: '_blank')
+  or send an email to
+  =support_mail_to + '.'
+
+%ul.about-links
+  %li<
+    =link_to Settings.github_url do
+      =bi_icon('github')
+      Code
+  %li<
+    =link_to 'https://twitter.com/tiddlyhost' do
+      =bi_icon('twitter')
+      Twitter
+  %li<
+    =link_to 'https://tiddlyspot.blogspot.com/' do
+      =bi_icon('newspaper')
+      Blog
+  %li<
+    =link_to Settings.faq_url do
+      =bi_icon('patch-question')
+      FAQ
+  %li<
+    =link_to '/donate' do
+      =bi_icon('wallet2')
+      Donations
+
+%p<
+  %small
+    Version:
+    =link_to '/build-info' do
+      #{App::VERSION}
