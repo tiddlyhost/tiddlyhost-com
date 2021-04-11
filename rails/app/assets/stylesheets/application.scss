@@ -54,6 +54,13 @@ $contrast_color: #29AE4A;
     .navbar-toggler {
         border-style: none;
     }
+
+    .navbar-nav {
+        .nav-link {
+            color: #fff;
+            opacity: 85%;
+        }
+    }
 }
 
 .jumbotron {
