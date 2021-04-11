@@ -1,4 +1,4 @@
 App::VERSION = [
-  "0.1.0-pre",
+  "0.2.0-pre",
   ENV['APP_VERSION_BUILD'].presence,
 ].compact.join("-")
