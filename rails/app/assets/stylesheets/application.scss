@@ -36,6 +36,19 @@ $contrast_color: #29AE4A;
     }
 }
 
+
+.dropdown-item {
+    svg.bi {
+        opacity: 60%;
+        font-size: 90%;
+    }
+}
+
+.navbar .dropdown-item {
+    svg.bi {
+        opacity: 50%;
+    }
+}
 // Fast snap the burger menu
 .collapsing {
     transition-duration: 0.02s;
