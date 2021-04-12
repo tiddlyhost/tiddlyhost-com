@@ -40,9 +40,11 @@ h1 {
             font-size: 80%;
             margin-left: 0.5em;
             color: #555;
-            span {
+
+            span.views {
+                margin-left: 0.1em;
                 color: #999;
-                font-size: 90%;
+                font-size: 70%;
             }
 
             svg.bi {

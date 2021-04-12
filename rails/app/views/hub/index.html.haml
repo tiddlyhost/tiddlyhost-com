@@ -58,10 +58,11 @@
             =link_to s.user.username, hub_user_url(s.user.username)
         -else
           =s.user.name
-        %span{style: 'margin-left: 0.5em;'} Views:
-        =s.view_count
+        %span.views
+          =views_and_updated_text(s).html_safe
       -unless s.tag_list.empty?
-        .site-tags= clickable_site_tags(s)
+        .site-tags
+          =clickable_site_tags(s)
 
 .pagination
   =will_paginate(@sites)

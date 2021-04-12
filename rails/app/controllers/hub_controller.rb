@@ -31,11 +31,15 @@ class HubController < ApplicationController
     @sort_options = {
       'views' => {
         name: 'view count',
-        field: 'view_count desc',
+        field: 'view_count DESC',
+      },
+      'updated' => {
+        name: 'recently updated',
+        field: 'blob_created_at DESC NULLS LAST',
       },
       'name' => {
         name: 'name',
-        field: 'name asc',
+        field: 'name ASC',
       },
     }
     @sort_by = @sort_options[params[:sort]] || @sort_options['views']

@@ -72,6 +72,10 @@ module ApplicationHelper
     end
   end
 
+  def brief_time_ago_in_words(timestamp)
+    "#{time_ago_in_words(timestamp).sub(/^(about|less than) /, '')} ago"
+  end
+
   # For use with overflow: hidden.
   # You can see the full text on hover.
   def span_with_title(text)

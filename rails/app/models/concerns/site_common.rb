@@ -35,6 +35,8 @@ module SiteCommon
     scope :search_for, ->(search_text) {
       where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
       or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
+
+    scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
   end
 
   # Used by Site records and TspotSite records that have been saved.
