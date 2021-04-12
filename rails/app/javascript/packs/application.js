@@ -43,10 +43,10 @@ $(document).ready(function(){
   $('form.new_site input#site_name').on('keyup', limitChars);
   $('form.edit_user input#user_username').on('keyup', limitChars);
 
-  // If site is set to private, automatically make it unsearchable
-  // If site is set to searchable, automatically make it public
-  $('#site_is_private'   ).on('change', function(){ if ($(this).prop('checked')) { $('#site_is_searchable').prop('checked', false); } });
-  $('#site_is_searchable').on('change', function(){ if ($(this).prop('checked')) { $('#site_is_private'   ).prop('checked', false); } });
+  // If user checks 'private', automatically uncheck 'hub listed'
+  // If user checks 'hub listed', automatically uncheck 'private'
+  $('.private-checkbox').on('change', function(){ if ($(this).prop('checked')) { $('.hub-checkbox'    ).prop('checked', false); } });
+  $('.hub-checkbox'    ).on('change', function(){ if ($(this).prop('checked')) { $('.private-checkbox').prop('checked', false); } });
 
   // Upload form UI tweaks
   $('#site_tiddlywiki_file').on('change', function(){
