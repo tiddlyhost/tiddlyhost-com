@@ -28,8 +28,8 @@ module SitesHelper
 
   def site_access(site)
     [
+      site.is_public? && site.is_searchable? ? 'Hub listed' : nil,
       site.is_public? ? 'Public' : 'Private',
-      site.is_public? && site.is_searchable? ? 'Searchable' : nil
 
     ].compact.join(', ')
   end

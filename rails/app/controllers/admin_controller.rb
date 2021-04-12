@@ -55,7 +55,7 @@ class AdminController < ApplicationController
     plan: 'plans.name',
     private: 'is_private',
     saves: 'save_count',
-    searchable: 'is_searchable',
+    hub: 'is_searchable',
     sites: 'COUNT(sites.id)',
     sizemb: 'active_storage_blobs.byte_size',
     tspotsites: 'COUNT(tspot_sites.id)',

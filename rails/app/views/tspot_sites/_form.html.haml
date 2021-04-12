@@ -8,26 +8,32 @@
           %li= message
 
   %div.form-group
-    =f.label :description
-    =f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'
-    %small.form-text.text-muted Optional. A description of the site.
+    %small.form-text.text-muted{style: 'opacity: 60%;'}
+      (Currently it's not possible to rename Tiddlyspot sites.)
 
   %div.form-group
     %div.form-check
       =f.check_box :is_private, class: 'form-check-input'
       =f.label :is_private, 'Private', class: 'form-check-label'
-    %small.form-text.text-muted Private sites are visible to you only. Non-private sites are visible to anyone.
+    %small.form-text.text-muted
+      Make the site private, rather than publicly viewable.
 
   %div.form-group
     %div.form-check
       =f.check_box :is_searchable, class: 'form-check-input'
-      =f.label :is_searchable, 'Searchable', class: 'form-check-label'
-    %small.form-text.text-muted Searchable sites will be visible and discoverable in the Tiddlyhost Hub.
+      =f.label :is_searchable, 'Hub listed', class: 'form-check-label'
+    %small.form-text.text-muted
+      Include this site in the #{link_to 'Tiddlyhost Hub', '/hub', target: '_blank'}.
+
+  %div.form-group
+    =f.label :description
+    =f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'
+    %small.form-text.text-muted Optional. A short description of the site.
 
   %div.form-group
     =f.label :tag_list, 'Tags'
     =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
-    %small.form-text.text-muted Optional. A comma delimited list of tags. Tags will be visible in Tiddlyhost Hub.
+    %small.form-text.text-muted Optional. A comma delimited list of tags.
 
   %div.form-group{style: 'margin-top: 2em;'}
     =f.submit 'Update', class: 'btn btn-primary'
