@@ -36,6 +36,9 @@
                 =bi_icon('file-earmark-spreadsheet')
                 Administration
               .dropdown-divider
+            =link_to sites_path, class: 'dropdown-item' do
+              =bi_icon('sliders')
+              Manage your sites
             =link_to edit_user_registration_path, class: 'dropdown-item' do
               =bi_icon('file-earmark-person')
               Manage your account
