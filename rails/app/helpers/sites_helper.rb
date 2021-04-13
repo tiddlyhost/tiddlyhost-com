@@ -42,12 +42,21 @@ module SitesHelper
     end)
   end
 
+  def hub_all_url
+    add_sort_param_maybe("/hub")
+  end
+
   def hub_tag_url(tag_name)
-    "/hub/tag/#{ERB::Util.url_encode(tag_name)}"
+    add_sort_param_maybe("/hub/tag/#{ERB::Util.url_encode(tag_name)}")
   end
 
   def hub_user_url(username)
-    "/hub/user/#{ERB::Util.url_encode(username)}"
+    add_sort_param_maybe("/hub/user/#{ERB::Util.url_encode(username)}")
+  end
+
+  def add_sort_param_maybe(url)
+    url += "?#{{ sort: params[:sort] }.to_query}" if controller_name == 'hub' && params[:sort]
+    url
   end
 
   def clickable_site_tags(site)
