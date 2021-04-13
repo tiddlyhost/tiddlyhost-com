@@ -85,27 +85,33 @@ h1 {
         }
     }
 
-    .search {
-        margin-left: 2em;
+}
 
-        input {
-            border: 1px solid #eee;
-            border-radius: 4px;
-        }
+.search {
+    margin-left: 2em;
 
-        button {
-            font-size: 80%;
-            margin-left: 0px;
-            padding-left: 0px;
-            margin-right: 0px;
-            padding-right: 0px;
-            color: #6c757d;
-        }
+    input {
+        border: 1px solid #eee;
+        border-radius: 4px;
 
-        a {
-            font-size: 80%;
-            color: #6c757d;
+        &:focus {
+            outline: none;
+            border-color: #ccc;
         }
+    }
+
+    button {
+        font-size: 80%;
+        margin-left: 0px;
+        padding-left: 0px;
+        margin-right: 0px;
+        padding-right: 0px;
+        color: #6c757d;
+    }
+
+    a {
+        font-size: 80%;
+        color: #6c757d;
     }
 }
 
