@@ -172,7 +172,7 @@ build-deploy:        build-push deploy-app
 fast-build-deploy:   build-push fast-upgrade
 faster-build-deploy: build-push faster-upgrade
 
-PLAY = ansible-playbook -i ansible/inventory.yml $(V)
+PLAY = ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
 
 full-deploy: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml
