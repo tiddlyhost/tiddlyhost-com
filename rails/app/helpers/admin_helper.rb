@@ -48,7 +48,7 @@ module AdminHelper
       new_sort_by = "#{field}#{'_desc' unless @is_desc}"
       klass = @is_desc ? 'desc' : 'asc'
     else
-      new_sort_by = "#{field}_#{default_dir}"
+      new_sort_by = "#{field}#{'_desc' unless default_dir == :asc}"
       klass = nil
     end
 
