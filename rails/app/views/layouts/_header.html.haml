@@ -13,6 +13,8 @@
         =nav_link_to "Home", root_path
         =nav_link_to "Hub", '/hub'
       %ul.navbar-nav.ml-auto
+        -if user_is_admin?
+          =nav_link_to "Admin", admin_path
         %li.nav-item.dropdown
           %a.nav-link.dropdown-toggle#navbarDropdown{"href"=>"#", "role"=>"button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false"}
             -if current_user.use_gravatar?
@@ -31,11 +33,6 @@
                   =bi_icon('person-fill', style: 'margin-right: -2px; color: #aaa;')
                 =current_user.username_or_email
             .dropdown-divider
-            -if user_is_admin?
-              =link_to admin_path, class: 'dropdown-item' do
-                =bi_icon('file-earmark-spreadsheet')
-                Administration
-              .dropdown-divider
             =link_to sites_path, class: 'dropdown-item' do
               =bi_icon('sliders')
               Manage your sites
