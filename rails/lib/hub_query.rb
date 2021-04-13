@@ -7,10 +7,6 @@
 # WillPaginate::Collection and some creative hackery... :)
 #
 module HubQuery
-  SEARCH_SQL = %{
-    name ILIKE CONCAT('%',?,'%') OR
-    description ILIKE CONCAT('%',?,'%')
-  }.squish.freeze
 
   def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:)
     # Work with two separate queries
@@ -25,7 +21,7 @@ module HubQuery
     # Apply filters
     qs.map! { |q| q.tagged_with(tag) } if tag.present?
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
-    qs.map! { |q| q.where(SEARCH_SQL, search, search) } if search.present?
+    qs.map! { |q| q.search_for(search) } if search.present?
 
     # Return paginated collection
     WillPaginate::Collection.create(page||1, per_page) do |pager|
