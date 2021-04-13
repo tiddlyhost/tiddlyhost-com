@@ -20,31 +20,33 @@ class HubController < ApplicationController
     end
   end
 
+  # s = sort
+  # q = search (query)
   FILTER_PARAMS = %i[
-    sort
-    search
+    s
+    q
   ]
 
   private
 
   def render_hub
     @sort_options = {
-      'views' => {
+      'v' => {
         name: 'view count',
         field: 'view_count DESC',
       },
-      'updated' => {
+      'u' => {
         name: 'recently updated',
         field: 'blob_created_at DESC NULLS LAST',
       },
-      'name' => {
+      'n' => {
         name: 'name',
         field: 'name ASC',
       },
     }
-    @sort_by = @sort_options[params[:sort]] || @sort_options['views']
+    @sort_by = @sort_options[params[:s]] || @sort_options['v']
 
-    @search = params[:search]
+    @search = params[:q]
 
     # Show four popular tags in the tab bar.
     # (It's not the best UX for tag based site discovery, but good enough for now.)

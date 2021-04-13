@@ -52,7 +52,7 @@ module AdminHelper
       klass = nil
     end
 
-    link_to(params.permit(AdminController::FILTER_PARAMS).merge(sort: new_sort_by), class: klass) do
+    link_to(params.permit(AdminController::FILTER_PARAMS).merge(s: new_sort_by), class: klass) do
       link_title
     end
   end

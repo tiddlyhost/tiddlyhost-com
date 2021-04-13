@@ -2,7 +2,7 @@
   Search:
   %form{method: 'GET', style: 'display: inline;'}
     =hidden_filter_params
-    %input{name: 'search', value: @search, autofocus: true, id: 'search_box', autofocus: true}
+    %input{name: 'q', value: @search, id: 'search_box', autofocus: true}
     %button.btn.btn-sm
       =bi_icon(:search)
     -if @search.present?

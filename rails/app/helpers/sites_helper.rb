@@ -55,7 +55,7 @@ module SitesHelper
   end
 
   def add_sort_param_maybe(url)
-    url += "?#{{ sort: params[:sort] }.to_query}" if controller_name == 'hub' && params[:sort]
+    url += "?#{{ s: params[:s] }.to_query}" if controller_name == 'hub' && params[:s]
     url
   end
 

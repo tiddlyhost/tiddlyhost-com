@@ -114,11 +114,11 @@ module ApplicationHelper
   end
 
   def sort_url(new_sort)
-    params.permit(known_filter_params).merge(sort: new_sort)
+    params.permit(known_filter_params).merge(s: new_sort)
   end
 
   def clear_search_url
-    params.permit(known_filter_params).merge(search: nil)
+    params.permit(known_filter_params).merge(q: nil)
   end
 
   # Preserve the other sorting and filter optiosn when searching
