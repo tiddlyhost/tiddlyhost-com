@@ -233,18 +233,6 @@
     - fast-upgrade
     - migration
 
-  - name: Clean up unused docker images
-    command:
-      cmd: docker image prune -f
-    tags:
-    - app
-
-  - name: Clean up stale containers
-    command:
-      cmd: docker-compose rm
-    tags:
-    - app
-
   - name: Create bin dir
     become: no
     file:
@@ -285,3 +273,15 @@
       hour: "*/8"
     tags:
     - scripts
+
+  - name: Clean up unused docker images
+    command:
+      cmd: docker image prune -f
+    tags:
+    - cleanup
+
+  - name: Clean up stale containers
+    command:
+      cmd: docker-compose rm
+    tags:
+    - cleanup

@@ -189,6 +189,9 @@ deploy-scripts:
 deploy-app: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=app
 
+deploy-cleanup:
+	$(PLAY) ansible/deploy.yml --tags=cleanup
+
 fast-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
