@@ -34,6 +34,7 @@ class HubController < ApplicationController
       'v' => {
         name: 'view count',
         field: 'view_count DESC',
+        default: true,
       },
       'u' => {
         name: 'recently updated',
