@@ -52,7 +52,7 @@ class AdminController < ApplicationController
     logins: 'sign_in_count',
     name: 'name',
     owner: 'COALESCE(users.username, users.email)',
-    plan: 'plans.name',
+    plan: 'plan_id',
     private: 'is_private',
     saves: 'save_count',
     hub: 'is_searchable',
