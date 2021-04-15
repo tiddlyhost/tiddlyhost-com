@@ -14,7 +14,7 @@
         =nav_link_to "Hub", '/hub'
       %ul.navbar-nav.ml-auto
         -if user_is_admin?
-          =nav_link_to "Admin", admin_path
+          =nav_link_to "Admin", admin_path, style: 'margin-right: 0.4rem;'
         %li.nav-item.dropdown
           %a.nav-link.dropdown-toggle#navbarDropdown{"href"=>"#", "role"=>"button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false"}
             -if current_user.use_gravatar?
