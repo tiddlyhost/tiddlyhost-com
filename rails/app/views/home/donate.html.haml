@@ -1,15 +1,21 @@
 
-%h1 Donations
+%h1 Donations &amp; Sponsorships
 
 .row
   .col-12{style: 'max-width: 38em;'}
     %p
-      If you find Tiddlyhost useful then please consider a donation. A donation
-      will help cover hosting costs, and encourage the continued support and
-      development of Tiddlyhost.
+      If you find Tiddlyhost useful then please consider a donation or a
+      sponsorship. A donation or sponsorship will help cover hosting costs, and
+      encourage the continued support and development of Tiddlyhost.
 
     %p
-      Click the button below to donate using
-      =link_to('PayPal', "https://www.paypal.com/", target: '_blank') + '.'
+      Click the buttons below to donate using
+      =link_to('PayPal', "https://www.paypal.com/", target: '_blank') + ','
+      or to become a sponsor at
+      =link_to('Github Sponsors', "https://github.com/sponsors", target: '_blank') + '.'
 
-    %div{style: 'padding: 1em;'}= render 'paypal_donate_button'
+    .donate-button
+      =render 'paypal_donate_button'
+
+    .donate-button{style: 'margin-top: 1.9em;'}
+      =render 'github_sponsor_button'
