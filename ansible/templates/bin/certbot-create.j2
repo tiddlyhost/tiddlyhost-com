@@ -7,4 +7,4 @@ certbot certonly \
   -d {{ cert_host }} -d *.{{ cert_host }} \
   -d {{ extra_cert_host }} -d *.{{ extra_cert_host }} \
   --dns-route53 \
-  -n --agree-tos -m simon.baird@gmail.com
+  -n --agree-tos -m {{ certbot_notification_email }}

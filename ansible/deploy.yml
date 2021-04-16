@@ -21,6 +21,7 @@
     certbot_dir_work: "{{ home_dir }}/.certbot/work"
     certbot_dir_logs: "{{ home_dir }}/.certbot/logs"
     certbot_dir_live: "{{ certbot_dir_config }}/live/{{ cert_host }}"
+    certbot_notification_email: simon.baird@gmail.com
 
     thost_log_dir: "{{ home_dir }}/docker/log"
     nginx_conf_dir: "{{ home_dir }}/docker/nginx-conf-prod"
