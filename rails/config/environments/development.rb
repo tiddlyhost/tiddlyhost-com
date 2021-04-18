@@ -22,7 +22,7 @@ Rails.application.configure do
 
     # 'cache' here is the hostname of the memcached container inside
     # the docker environment created by docker-compose
-    config.cache_store = :mem_cache_store, 'cache'
+    config.cache_store = :mem_cache_store, 'cache', { value_max_bytes: 8.megabytes }
 
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"

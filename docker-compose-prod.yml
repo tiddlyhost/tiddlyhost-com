@@ -32,6 +32,7 @@ services:
   cache:
     image: memcached
     container_name: th_cache
+    command: memcached -I 8M
 
   db:
     image: postgres
