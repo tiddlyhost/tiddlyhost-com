@@ -133,7 +133,7 @@ class AdminController < ApplicationController
     @records = @records.search_for(@search) if @search.present?
 
     # Sorting
-    @sort_by = (params[:s] || 'created_desc')
+    @sort_by = (params[:s].dup || 'created_desc')
     null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     @is_desc = @sort_by.sub!(/_desc$/, '')
     sort_field = SORT_OPTIONS[@sort_by.to_sym]
