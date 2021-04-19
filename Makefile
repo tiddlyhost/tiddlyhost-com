@@ -157,7 +157,7 @@ redo-cert: clear-cert cert
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-info
+build-prod: build-info js-math
 	docker-compose -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
 	  --build-arg RAILS_MASTER_KEY=$$( cat rails/config/master.key ) \
@@ -227,6 +227,18 @@ full-backup: db-backup s3-backup
 # For credentials: source etc/openrc.sh
 openstack-info:
 	openstack server show thost
+
+#----------------------------------------------------------
+rails/public/jsMath/jsMath.js:
+	curl -s http://www.math.union.edu/~dpvc/jsmath/download/jsMath-3.3g.zip -o /tmp/jsMath.zip
+	curl -s http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts-1.2.zip -o /tmp/jsMath-fonts.zip
+	cd rails/public && unzip /tmp/jsMath.zip
+	cd rails/public/jsMath && unzip /tmp/jsMath-fonts.zip
+
+js-math: rails/public/jsMath/jsMath.js
+
+js-math-clean:
+	rm -rf rails/public/jsMath
 
 #----------------------------------------------------------
 
