@@ -14,7 +14,9 @@ start() {
 }
 
 stop() {
-    $DOCKER_COMPOSE down
+    # The --volumes option is so that the rails-static volume is removed on
+    # shutdown. It will be recreated again on startup which is what we want.
+    $DOCKER_COMPOSE down --volumes
 }
 
 cd $START_DIR

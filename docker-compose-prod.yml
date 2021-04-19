@@ -51,3 +51,4 @@ services:
 volumes:
   # Share rails public with nginx so it can serve static files directly
   rails-static:
+    name: th_rails_static
