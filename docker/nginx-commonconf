@@ -4,7 +4,7 @@
 location = /ads.txt { return 404; }
 location = /robots.txt { return 404; }
 
-location ~ \.php(?:$|\?) { return 404; }
+location ~ \.(?:php|jsp|asp|aspx)(?:$|\?) { return 404; }
 
 location /_ts_ { return 404; }
 location /_ts/ { return 404; }
