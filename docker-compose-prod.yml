@@ -4,7 +4,7 @@ services:
     container_name: th_web
     restart: always
     depends_on:
-    - prod
+    - app
     ports:
     - "80:80"
     - "443:443"
@@ -16,7 +16,7 @@ services:
     - ./docker/nginx-conf-prod:/etc/nginx/conf.d:Z
     - rails-static:/opt/rails-static
 
-  prod:
+  app:
     image: sbaird/tiddlyhost:latest
     container_name: th_app
     restart: always

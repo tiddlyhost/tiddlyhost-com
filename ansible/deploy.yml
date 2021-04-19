@@ -219,7 +219,7 @@
 
   - name: Apply database migrations
     command:
-      cmd: docker-compose exec prod bash -c "bin/rails db:migrate"
+      cmd: docker-compose exec app bash -c "bin/rails db:migrate"
     register: db_migrate
     tags:
     - app

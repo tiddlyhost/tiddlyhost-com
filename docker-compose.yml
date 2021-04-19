@@ -3,7 +3,7 @@ services:
     image: nginx
     container_name: th_web
     depends_on:
-    - base
+    - app
     ports:
     - "80:80"
     - "443:443"
@@ -11,7 +11,7 @@ services:
     - ./docker/certs:/etc/letsencrypt/live/tiddlyhost.com:Z
     - ./docker/nginx-conf-local:/etc/nginx/conf.d:Z
 
-  base:
+  app:
     image: base:latest
     container_name: th_app
     depends_on:
