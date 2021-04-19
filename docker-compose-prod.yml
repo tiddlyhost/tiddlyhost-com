@@ -9,8 +9,12 @@ services:
     - "80:80"
     - "443:443"
     volumes:
+    # Use this for testing the prod container locally:
+    #- ./docker/certs:/etc/letsencrypt/live/tiddlyhost.com:Z
     - ./docker/letsencrypt:/etc/letsencrypt:Z
+
     - ./docker/nginx-conf-prod:/etc/nginx/conf.d:Z
+    - rails-static:/opt/rails-static
 
   prod:
     image: sbaird/tiddlyhost:latest
@@ -24,6 +28,7 @@ services:
 
     volumes:
     - ./docker/log:/var/log/app:Z
+    - rails-static:/opt/app/public
 
     build:
       context: .
@@ -42,3 +47,7 @@ services:
       POSTGRES_PASSWORD: notsecure123
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
+
+volumes:
+  # Share rails public with nginx so it can serve static files directly
+  rails-static:

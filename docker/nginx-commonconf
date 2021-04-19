@@ -18,3 +18,38 @@ location = /index.xml { return 404; }
 # is probably a good idea. 200m seems large enough. A new site is 2m.
 #
 client_max_body_size 200m;
+
+#
+# In production this is volume mounting #{Rails.root}/public from the
+# rails app container. If the request matches a static file there, serve
+# it directly, otherwise pass the request through to rails. (In development
+# it won't exist so everything will be passed through to rails.)
+#
+root /opt/rails-static;
+location / {
+  try_files $uri @app;
+}
+
+#
+# Proxy everything else through to the rails app
+#
+location @app {
+  #
+  # The rails application cares about all this so make
+  # sure it knows the real request details
+  #
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Real-IP $remote_addr;
+
+  #
+  # Not sure what these do...
+  #
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_redirect off;
+
+  #
+  # The rails app is here
+  #
+  proxy_pass http://${APP_HOST}:3333;
+}

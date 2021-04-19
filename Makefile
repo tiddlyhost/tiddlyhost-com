@@ -107,7 +107,9 @@ start-prod: nginx-conf-prod
 # Stop and remove containers, clean up unused images
 cleanup:
 	docker-compose stop
+	docker-compose -f docker-compose-prod.yml stop
 	docker-compose rm -f
+	docker-compose -f docker-compose-prod.yml rm -f
 	docker image prune -f
 
 # Use this when you sign up a new user

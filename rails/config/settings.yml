@@ -36,6 +36,8 @@ test:
 production:
   url_defaults:
     :host: tiddlyhost.com
+    #:host: tiddlyhost.local
     :protocol: https
 
   tiddlyspot_host: tiddlyspot.com
+  #tiddlyspot_host: tiddlyspot.local
