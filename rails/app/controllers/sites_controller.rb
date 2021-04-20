@@ -35,13 +35,7 @@ class SitesController < ApplicationController
   def create
     @empty = Empty.find(site_params_for_create[:empty_id])
 
-    tiddlywiki_file = {
-      # These are the params used by active storage
-      io: StringIO.new(@empty.html),
-      filename: 'index.html',
-      content_type: 'text/html',
-    }
-
+    tiddlywiki_file = SiteCommon.attachable_hash(@empty.html)
     @site = Site.new(site_params_for_create.merge(tiddlywiki_file: tiddlywiki_file))
 
     respond_to do |format|
@@ -110,7 +104,8 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_create
-    params.require(:site).permit(:name, :description, :empty_id, :is_private, :is_searchable, :tag_list).merge(user_id: current_user.id)
+    params.require(:site).permit(
+      :name, :description, :empty_id, :is_private, :is_searchable, :tag_list).merge(user_id: current_user.id)
   end
 
   def site_params_for_update
@@ -118,6 +113,7 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_upload
-    params.require(:site).permit(:tiddlywiki_file)
+    params.require(:site).permit(:tiddlywiki_file).merge(
+      tiddlywiki_file: SiteCommon.attachable_hash(params[:site][:tiddlywiki_file].read))
   end
 end

@@ -17,7 +17,9 @@ module SiteCommon
     # Set allow_nil here though it's only needed for TspotSite records
     # that have never been saved
     delegate :blob, to: :tiddlywiki_file, allow_nil: true
-    delegate :byte_size, :key, :created_at, to: :blob, prefix: true, allow_nil: true
+
+    delegate :byte_size, :key, :created_at, :content_type,
+      to: :blob, prefix: true, allow_nil: true
 
     # Set allow_nil here though it's only needed for TspotSite that are unowned
     delegate :name, :email, :username, to: :user, prefix: true, allow_nil: true
@@ -39,11 +41,39 @@ module SiteCommon
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
   end
 
+  COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
+
+  def self.compress_html(raw_html)
+    Zlib::Deflate.deflate(raw_html)
+  end
+
+  def self.decompress_html(compressed_html)
+    Zlib::Inflate.inflate(compressed_html)
+  end
+
+  # Compress before attaching
+  # See the find_or_build_blob method in
+  #  lib/active_storage/attached/changes/create_one.rb
+  #
+  def self.attachable_hash(html_string)
+    {
+      io: StringIO.new(compress_html(html_string)),
+      content_type: SiteCommon::COMPRESSED_CONTENT_TYPE,
+      filename: 'index.html',
+    }
+  end
+
   # Used by Site records and TspotSite records that have been saved.
   def file_download
     blob_cache(:file_download) do
-      tiddlywiki_file.download
+      raw_download = tiddlywiki_file.download
+      is_compressed? ? SiteCommon.decompress_html(raw_download) : raw_download
     end
+  end
+
+  # params_userfile should be an ActionDispatch::Http::UploadedFile
+  def file_upload(params_userfile)
+    tiddlywiki_file.attach(SiteCommon.attachable_hash(params_userfile.read))
   end
 
   # When a site is saved it gets a brand new blob. So if we use the blob's
@@ -54,6 +84,10 @@ module SiteCommon
   def blob_cache(cache_type, tiddler_name=nil, &blk)
     blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
     Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+  end
+
+  def is_compressed?
+    blob_content_type == COMPRESSED_CONTENT_TYPE
   end
 
   # Currently only used by TspotSite but define it here anyway.

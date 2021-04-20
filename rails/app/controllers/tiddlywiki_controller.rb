@@ -86,7 +86,7 @@ class TiddlywikiController < ApplicationController
   def save
     begin
       if site_saveable?
-        @site.tiddlywiki_file.attach(params[:userfile])
+        @site.file_upload(params[:userfile])
         render plain: "0 - OK\n"
       else
         # Give a 200 status no matter what so the user sees the message in a browser alert

@@ -31,7 +31,7 @@ class TiddlyspotController < ApplicationController
   def save
     begin
       if @site.passwd_ok?(upload_params[:user], upload_params[:password])
-        @site.tiddlywiki_file.attach(params[:userfile])
+        @site.file_upload(params[:userfile])
         @site.increment_save_count
         render plain: "0 - OK\n"
       else
