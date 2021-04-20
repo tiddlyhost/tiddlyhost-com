@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SLAB_IDS=$( bin/cache-info stats items | grep 'STAT items' | cut -d: -f2 | uniq )
+MAX_ITEMS=100
+
+for slab_id in $SLAB_IDS; do
+  echo Slab $slab_id
+  bin/cache-info stats cachedump $slab_id $MAX_ITEMS | grep ITEM
+done

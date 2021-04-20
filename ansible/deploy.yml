@@ -7,7 +7,6 @@
     certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
     docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
-    cache_info_file: ../bin/cache-info.sh
     master_key_file: ../rails/config/master.key
     nginx_conf_src_dir: ../docker/nginx-conf-prod/
     nginx_conf_files:
@@ -256,12 +255,15 @@
     tags:
     - scripts
 
-  - name: Copy bin/cache-info
+  - name: Copy cache info scripts
     become: no
     copy:
-      src: "{{ cache_info_file }}"
-      dest: "{{ bin_dir }}/cache-info"
+      src: "../bin/{{ item }}"
+      dest: "{{ bin_dir }}/{{ item }}"
       mode: "0755"
+    with_items:
+    - cache-info
+    - cache-list-items
     tags:
     - scripts
 
