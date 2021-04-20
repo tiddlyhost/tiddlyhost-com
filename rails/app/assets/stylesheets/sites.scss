@@ -136,6 +136,17 @@ table.sites {
 
 }
 
+.compressed-indicator {
+    vertical-align: middle;
+    font-size: 60%;
+    color: #777;
+}
+
+.admin .compressed-indicator {
+    font-size: 80%;
+    color: #444;
+}
+
 .clear-left {
     clear: left;
 }

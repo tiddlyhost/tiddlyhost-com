@@ -39,9 +39,14 @@ module SiteCommon
       or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
 
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
+
+    scope :compressed,   -> { with_blob.where(active_storage_blobs: { content_type: COMPRESSED_CONTENT_TYPE   }) }
+    scope :uncompressed, -> { with_blob.where(active_storage_blobs: { content_type: UNCOMPRESSED_CONTENT_TYPE }) }
+
   end
 
   COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
+  UNCOMPRESSED_CONTENT_TYPE = 'text/html'.freeze
 
   def self.compress_html(raw_html)
     Zlib::Deflate.deflate(raw_html)

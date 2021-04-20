@@ -61,12 +61,14 @@ class AdminController < ApplicationController
     tspotsites: 'COUNT(tspot_sites.id)',
     username: "NULLIF(username, '')",
     views: 'view_count',
+    z: 'active_storage_blobs.content_type',
   }.freeze
 
   NULL_ALWAYS_LAST = %w[
     username
     description
     owner
+    z
   ]
 
   # s = sort
@@ -80,6 +82,7 @@ class AdminController < ApplicationController
     saved
     private
     hub
+    compressed
   ]
 
   def users
@@ -128,6 +131,9 @@ class AdminController < ApplicationController
 
     @records = @records.where(is_searchable: true) if params[:hub] == '1'
     @records = @records.where(is_searchable: false) if params[:hub] == '0'
+
+    @records = @records.compressed if params[:compressed] == '1'
+    @records = @records.uncompressed if params[:compressed] == '0'
 
     @search = params[:q]
     @records = @records.search_for(@search) if @search.present?
