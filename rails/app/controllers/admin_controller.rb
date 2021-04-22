@@ -16,6 +16,7 @@ class AdminController < ApplicationController
 
     @active_weekly = User.where('last_sign_in_at > ?', 1.week.ago).count
     @active_monthly = User.where('last_sign_in_at > ?', 1.month.ago).count
+    @active_daily = User.where('last_sign_in_at > ?', 1.day.ago).count
 
     @site_count = Site.count
     @never_updated_sites = Site.never_updated.count
@@ -23,11 +24,13 @@ class AdminController < ApplicationController
     @public_count = Site.public_sites.count
     @public_non_searchable_count = Site.public_non_searchable.count
     @searchable_count = Site.searchable.count
+    @compressed_count = Site.compressed.count
 
     @tspot_site_count = TspotSite.where(exists: true).count
     @notexist_tspot_site_count = TspotSite.where(exists: false).count
     @owned_tspot_site_count = TspotSite.owned.count
     @tspot_sites_with_storage = TspotSite.joins(:tiddlywiki_file_attachment).count
+    @tspot_compressed_count = TspotSite.compressed.count
 
     # See also fixup-scripts/clean-attachment-dupes.rb
     @dupe_attachments = ActiveStorage::Attachment.
