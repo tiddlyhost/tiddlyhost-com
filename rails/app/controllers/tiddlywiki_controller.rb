@@ -7,7 +7,7 @@ class TiddlywikiController < ApplicationController
   before_action :find_site
 
   # TiddlyWiki can't provide the token for saving so we need to skip it
-  skip_before_action :verify_authenticity_token, only: :save
+  skip_before_action :verify_authenticity_token, only: [:upload_save, :put_save]
 
   # Rails wants a token for options requests, which TiddlyWiki similarly can't provide
   skip_before_action :verify_authenticity_token,
@@ -19,6 +19,9 @@ class TiddlywikiController < ApplicationController
 
   def serve
     return site_not_available unless site_visible?
+
+    # Convince TiddlyWiki it can use the put saver
+    dummy_webdav_header if request.options? && @site.enable_put_saver?
 
     etag_header
 
@@ -92,7 +95,8 @@ class TiddlywikiController < ApplicationController
     download_html_content(@site.download_content, @site.name)
   end
 
-  def save
+  # Using the "upload" saver
+  def upload_save
     begin
       if site_saveable?
         @site.file_upload(params[:userfile])
@@ -105,6 +109,24 @@ class TiddlywikiController < ApplicationController
     rescue => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
       render plain: "#{e.class.name} - #{e.message}\n"
+    end
+  end
+
+  # Using the "put" saver
+  def put_save
+    begin
+      if site_saveable?
+        @site.file_upload(request.body)
+        @site.increment_save_count
+        head 204
+      else
+        err_message = "If this is your site please log in at #{main_site_url} and try again."
+        render status: 403, plain: err_message
+      end
+    rescue => e
+      # Todo: Should probably give a generic "Save failed!" message, and log the real problem
+      err_message = "#{e.class.name} #{e.message}"
+      render status: 500, plain: err_message
     end
   end
 
@@ -198,6 +220,11 @@ class TiddlywikiController < ApplicationController
     response.set_header 'Access-Control-Allow-Origin', '*'
     response.set_header 'Access-Control-Request-Method', 'GET'
     response.set_header 'Access-Control-Allow-Headers', 'X-Requested-With'
+  end
+
+  # TiddlyWiki just checks if the header exists so the value doesn't matter
+  def dummy_webdav_header
+    response.set_header 'dav', "Dummy WebDAV header to enable TiddlyWiki's PUT saver"
   end
 
 end

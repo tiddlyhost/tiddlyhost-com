@@ -29,7 +29,8 @@ Rails.application.routes.draw do
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
 
-    post '/', to: 'tiddlywiki#save'
+    post '/', to: 'tiddlywiki#upload_save'
+    put '/', to: 'tiddlywiki#put_save'
   end
 
   #
