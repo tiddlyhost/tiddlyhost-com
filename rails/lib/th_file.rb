@@ -38,17 +38,22 @@ class ThFile < TwFile
     from_file(empty_path(empty_type))
   end
 
-  def apply_tiddlyhost_mods(site_name, for_download: false, signed_in_user: nil)
+  def apply_tiddlyhost_mods(site_name, for_download: false, enable_put_saver: false, signed_in_user: nil)
     if is_tw5?
 
-      upload_url = if !for_download
+      upload_url = if for_download || enable_put_saver
+        # Clear $:/UploadURL for downloads so the save button in the downloaded
+        # file will not try to use upload.js. It should use another save
+        # method, probably download to file.
+        #
+        # Todo: Consider if we should do that also when signed_in_user is nil.
+        #
+        # Clear $:/UploadURL when using the put saver otherwise TW will
+        # prioritize the upload saver
+        ""
+      else
         # The url for uploads is the same as the site url
         Settings.subdomain_site_url(site_name)
-      else
-        # Clear $:/UploadURL so the save button in the downloaded file will not try
-        # to use upload.js. It should use another save method, probably download to file.
-        # Todo: Consider if we should do that also when signed_in_user is nil.
-        ""
       end
 
       if !for_download && signed_in_user
@@ -73,6 +78,7 @@ class ThFile < TwFile
 
         # Set this otherwise TiddlyWiki won't consider upload.js usable unless there
         # is a username and password present.
+        # (Not needed for put saver but should be harmless.)
         '$:/UploadWithUrlOnly' => 'yes',
 
         # Autosave is nice, but I'm thinking we should start with it off to generate

@@ -60,6 +60,18 @@ class TwFileTest < ActiveSupport::TestCase
       # We can't get the name without $:/UploadURL...
       assert_nil tw.get_site_name
     end
+
+    ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite', enable_put_saver: true).tap do |tw|
+      {
+        '$:/UploadURL' => '',
+        '$:/UploadWithUrlOnly' => 'yes',
+        '$:/config/AutoSave' => 'no',
+
+      }.each do |tiddler_name, expected_content|
+        assert_equal expected_content, tw.tiddler_content(tiddler_name)
+      end
+
+    end
   end
 
   test "tiddlyhost mods for classic" do

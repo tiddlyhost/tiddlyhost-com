@@ -56,7 +56,8 @@ class Site < ApplicationRecord
   end
 
   def html_content(signed_in_user: nil)
-    th_file.apply_tiddlyhost_mods(name, signed_in_user: signed_in_user).to_html
+    th_file.apply_tiddlyhost_mods(name,
+      signed_in_user: signed_in_user, enable_put_saver: enable_put_saver).to_html
   end
 
   def json_data(opts={})

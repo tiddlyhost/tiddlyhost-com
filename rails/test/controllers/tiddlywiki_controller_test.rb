@@ -130,7 +130,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         site.th_file.write_tiddlers({'NewTiddler'=>'Hey now'}).to_html)
 
       # Now simulate a save
-      save_site_as_user(user: site.user, site: site, fixture_file: 'index.html')
+      upload_save_site_as_user(user: site.user, site: site, fixture_file: 'index.html')
 
       # Should see these fields are updated
       site.reload
@@ -145,6 +145,35 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       # Confirm it via http get
       th_file = fetch_site_as_user(user: site.user, site: site)
       assert_equal 'Hey now', th_file.tiddler_content('NewTiddler')
+
+      if th_file.is_tw5?
+        # Same thing again but using the put saver
+        # (compatible with TW5 only)
+
+        site.update(enable_put_saver: true)
+        prev_blob_key = site.blob.key
+
+        File.write(modified_tw_file,
+          site.th_file.write_tiddlers({'NewTiddler'=>'Hi from put saver'}).to_html)
+
+        put_save_site_as_user(user: site.user, site: site, content_file: modified_tw_file)
+
+        # Should see these fields are updated
+        site.reload
+        assert_not_equal original_blob_key, site.blob.key
+        assert_not_equal prev_blob_key, site.blob.key
+        assert original_size < site.raw_byte_size
+        assert_equal site_name, site.name
+        assert_equal tw_version, site.tw_version
+
+        # Confirm the site has the new tiddler
+        assert_equal "Hi from put saver", site.th_file.tiddler_content('NewTiddler')
+
+        # Confirm it via http get
+        th_file = fetch_site_as_user(user: site.user, site: site)
+        assert_equal 'Hi from put saver', th_file.tiddler_content('NewTiddler')
+
+      end
 
       # Clean up temporary file
       File.delete(modified_tw_file)
@@ -167,7 +196,14 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       th_file = ThFile.new(response.body)
 
       # Sanity checks
-      assert_equal site.name, th_file.get_site_name
+      if site.enable_put_saver?
+        # Fixme: get_site_name can't work because $:/UploadURL isn't set
+        #assert_equal site.name, th_file.get_site_name
+        assert_equal '', th_file.tiddler_content('$:/UploadURL') if th_file.is_tw5?
+      else
+        assert_equal site.name, th_file.get_site_name
+        assert_equal site.url, th_file.tiddler_content('$:/UploadURL') if th_file.is_tw5?
+      end
       assert_equal 'Hi there', th_file.tiddler_content('MyTiddler')
       assert_equal 'Bar', th_file.tiddler_content('Foo')
       assert_equal '123', th_file.tiddler_content('Baz')
@@ -183,7 +219,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def save_site_as_user(site:, user:, fixture_file:, expected_status: 200)
+  def upload_save_site_as_user(site:, user:, fixture_file:, expected_status: 200)
     host! site.host
     sign_in user
 
@@ -199,6 +235,17 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal "0 - OK\n", response.body
     assert_equal "text/plain; charset=utf-8", response.headers["Content-Type"]
     # Todo maybe: Is there anything else worth asserting in the headers?
+  end
+
+  def put_save_site_as_user(site:, user:, content_file:, expected_status: 204)
+    host! site.host
+    sign_in user
+
+    put '/', params: File.read(content_file),
+      headers: { 'Content-Type' => 'text/html;charset=UTF-8' }
+
+    assert_response expected_status
+    assert_equal '', response.body
   end
 
 end
