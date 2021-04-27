@@ -21,7 +21,7 @@ class TspotSite < ApplicationRecord
   end
 
   def html_content
-    if tiddlywiki_file.blob
+    if blob
       file_download
 
     else
@@ -37,6 +37,16 @@ class TspotSite < ApplicationRecord
       logger.info "  TspotSite fetch for #{name}"
       fetcher.html_file
     end
+  end
+
+  # Take the original Tiddlyspot site html and save it to a blob if it hasn't
+  # been done already. I used it to bulk migrate all unmigrated tspots.
+  # (Probably not useful any more since all tspot sites are now migrated.)
+  #
+  def ensure_migrated
+    return if blob
+
+    content_upload(fetcher.html_file)
   end
 
   def self.find_or_create(site_name, ip_address=nil)

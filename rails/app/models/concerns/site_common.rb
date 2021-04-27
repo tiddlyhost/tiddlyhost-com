@@ -78,7 +78,11 @@ module SiteCommon
 
   # params_userfile should be an ActionDispatch::Http::UploadedFile
   def file_upload(params_userfile)
-    tiddlywiki_file.attach(SiteCommon.attachable_hash(params_userfile.read))
+    content_upload(params_userfile.read)
+  end
+
+  def content_upload(new_content)
+    tiddlywiki_file.attach(SiteCommon.attachable_hash(new_content))
   end
 
   # When a site is saved it gets a brand new blob. So if we use the blob's
@@ -93,6 +97,18 @@ module SiteCommon
 
   def is_compressed?
     blob_content_type == COMPRESSED_CONTENT_TYPE
+  end
+
+  # Re-save a site in order to compress it, but preserve the blob created
+  # timestamp. I used it to bulk-convert all sites to compressed format.
+  # (Probably not useful any more since all sites are now compressed.)
+  #
+  def ensure_compressed
+    return if is_compressed?
+
+    original_timestamp = blob_created_at
+    content_upload(file_download)
+    blob.update_column(:created_at, original_timestamp)
   end
 
   # Currently only used by TspotSite but define it here anyway.
