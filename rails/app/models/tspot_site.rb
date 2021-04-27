@@ -22,14 +22,13 @@ class TspotSite < ApplicationRecord
 
   def html_content
     if tiddlywiki_file.blob
-      # This will exist only if the site was ever updated
-      # post-tiddlyhost. Use it if we have it.
-      # (This is defined in site_common.rb)
       file_download
+
     else
-      # The original pre-tiddlyhost content is availble here.
-      # Treat this as read-only.
+      # In case the site's content has never been saved.
+      # (Probably not needed any more.)
       fetched_html
+
     end
   end
 
@@ -54,11 +53,9 @@ class TspotSite < ApplicationRecord
         exists: true,
         is_private: fetched_site.is_private?,
         htpasswd: fetched_site.htpasswd_file,
+        tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
         created_ip: ip_address.to_s,
       })
-      # Could consider creating the tiddlywiki_file
-      # attachment here, but for now let's leave the
-      # content where it is until the site is updated.
 
     else
       # Site doesn't exist but create a record for it anyway. The idea

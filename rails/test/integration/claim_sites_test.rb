@@ -24,6 +24,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
       m.expect(:exists?, true)
       m.expect(:is_private?, false)
       m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
+      m.expect(:html_file, 'whatever')
     end
   end
 

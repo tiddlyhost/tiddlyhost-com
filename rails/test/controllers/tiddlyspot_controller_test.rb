@@ -22,6 +22,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     mock = mock_helper do |m|
       m.expect(:exists?, exists)
       m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc') if exists
+      m.expect(:html_file, 'some site html') if exists
     end
 
     yield mock if block_given?
@@ -36,7 +37,6 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   test "viewing a public site" do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
-      m.expect(:html_file, 'some site html')
     end
 
     with_mocked_site(mock) { get '/' }
@@ -46,7 +46,6 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   test "viewing a public site with index.html" do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
-      m.expect(:html_file, 'some site html')
     end
 
     with_mocked_site(mock) { get '/index.html' }
@@ -56,7 +55,6 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   test "downloading a public site" do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
-      m.expect(:html_file, 'some site html')
     end
 
     with_mocked_site(mock) { get '/download' }
@@ -95,12 +93,11 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   test "viewing a private site with successful auth" do
     mock = mocked_site('privatestuff') do |m|
       m.expect(:is_private?, true)
-      m.expect(:html_file, 'private stuff')
     end
 
     with_mocked_site(mock) { get '/', headers: {
       "Authorization" => "Basic #{Base64.encode64('mulder:trustno1')}" } }
-    assert_success('private stuff', mock)
+    assert_success('some site html', mock)
   end
 
   test "viewing a site that doesn't exist" do
