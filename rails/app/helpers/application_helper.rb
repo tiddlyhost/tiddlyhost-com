@@ -66,7 +66,7 @@ module ApplicationHelper
   end
 
   def nice_timestamp(timestamp)
-    return '-' if timestamp.nil?
+    return '-' unless timestamp
     content_tag :span, title: timestamp.to_s do
       "#{time_ago_in_words(timestamp)} ago"
     end

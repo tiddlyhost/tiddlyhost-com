@@ -19,7 +19,7 @@
       %th Site
       %th Access
       %th Views
-      %th Size
+      %th Size<small><br>(Compressed)</small>
       %th Last updated
       %th
 
@@ -48,13 +48,15 @@
             -if site.blob
               =as_megabytes(site.blob_byte_size)
               MB
-              =compressed_indicator(site)
 
             -else
               .text-muted -
 
           %td
-            =nice_timestamp(site.blob_created_at)
+            -if is_tspot
+              =nice_timestamp(site.save_count > 0 && site.blob_created_at)
+            -else
+              =nice_timestamp(site.blob_created_at)
 
           %td
             .btn-group

@@ -65,11 +65,4 @@ module SitesHelper
     end)
   end
 
-  def compressed_indicator(site)
-    return '' unless site.is_compressed?
-    content_tag :span, class: 'compressed-indicator', title: 'Compressed' do
-      bi_icon('file-zip')
-    end
-  end
-
 end

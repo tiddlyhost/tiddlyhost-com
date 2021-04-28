@@ -26,7 +26,6 @@
       -unless params[:saved] == '0'
         %th= 'Storage key'
         %th= sort_link 'Size (MB)'
-        %th= sort_link 'Z?'
       %th= sort_link 'Last access'
       %th= sort_link 'Last update'
       %th= sort_link 'Created IP'
@@ -60,7 +59,6 @@
         -unless params[:saved] == '0'
           %td= site.blob_key
           %td= as_megabytes site.blob_byte_size
-          %td= compressed_indicator site
         %td= nice_timestamp site.accessed_at
         %td= nice_timestamp site.blob_created_at
         %td= site.created_ip

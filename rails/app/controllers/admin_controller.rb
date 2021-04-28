@@ -24,13 +24,11 @@ class AdminController < ApplicationController
     @public_count = Site.public_sites.count
     @public_non_searchable_count = Site.public_non_searchable.count
     @searchable_count = Site.searchable.count
-    @compressed_count = Site.compressed.count
 
     @tspot_site_count = TspotSite.where(exists: true).count
     @notexist_tspot_site_count = TspotSite.where(exists: false).count
     @owned_tspot_site_count = TspotSite.owned.count
-    @tspot_sites_with_storage = TspotSite.joins(:tiddlywiki_file_attachment).count
-    @tspot_compressed_count = TspotSite.compressed.count
+    @saved_tspot_count = TspotSite.where.not(save_count: 0).count
 
     # See also fixup-scripts/clean-attachment-dupes.rb
     @dupe_attachments = ActiveStorage::Attachment.
@@ -85,7 +83,6 @@ class AdminController < ApplicationController
     saved
     private
     hub
-    compressed
   ]
 
   def users
@@ -134,9 +131,6 @@ class AdminController < ApplicationController
 
     @records = @records.where(is_searchable: true) if params[:hub] == '1'
     @records = @records.where(is_searchable: false) if params[:hub] == '0'
-
-    @records = @records.compressed if params[:compressed] == '1'
-    @records = @records.uncompressed if params[:compressed] == '0'
 
     @search = params[:q]
     @records = @records.search_for(@search) if @search.present?
