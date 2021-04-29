@@ -8,6 +8,9 @@ class TspotSite < ApplicationRecord
   scope :owned, -> { where.not(user_id: nil) }
   scope :for_hub, -> { searchable.owned }
 
+  scope :no_stubs, -> { where(exists: true).where.not(htpasswd: nil) }
+  scope :stubs, -> { where(exists: true).where(htpasswd: nil) }
+
   # The TspotFetcher class knows how to fetch a site from the
   # dreamhost bucket. It can also determine if the site is public
   # or private, and can fetch the htpasswd file for auth checks.
@@ -49,23 +52,49 @@ class TspotSite < ApplicationRecord
     content_upload(fetcher.html_file)
   end
 
+  # If we know the site exists, but we never fetched its details
+  # then htpasswd will be nil. Let's call that a "stub".
+  #
+  def is_stub?
+    exists? && htpasswd.blank?
+  end
+
+  def self.fetched_site_to_attrs(fetched_site, ip_address=nil)
+    {
+      name: fetched_site.name,
+      exists: fetched_site.exists?,
+      is_private: fetched_site.is_private?,
+      htpasswd: fetched_site.htpasswd_file,
+      tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
+      created_ip: ip_address.try(:to_s),
+    }
+  end
+
+  def fetcher_attrs
+    TspotSite.fetched_site_to_attrs(fetcher)
+  end
+
+  def ensure_destubbed(ip_address=nil)
+    return self unless is_stub?
+    update(fetcher_attrs)
+    self
+  end
+
   def self.find_or_create(site_name, ip_address=nil)
     # If we have a record for it already then return it,
     # otherwise create a new one
-    find_by_name(site_name) || create_new(site_name, ip_address)
+    find_by_name(site_name).try(:ensure_destubbed) || create_new(site_name, ip_address)
   end
 
   def self.create_new(site_name, ip_address=nil)
     fetched_site = TspotFetcher.new(site_name)
     if fetched_site.exists?
-      new_site = TspotSite.create({
-        name: site_name,
-        exists: true,
-        is_private: fetched_site.is_private?,
-        htpasswd: fetched_site.htpasswd_file,
-        tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
-        created_ip: ip_address.to_s,
-      })
+      # Will probably never get here when every known site has a record
+      ThostLogger.thost_logger.info(
+        "Creating new TspotSite record for existing site #{site_name}")
+
+      new_site = TspotSite.create(
+        TspotSite.fetched_site_to_attrs(fetched_site, ip_address))
 
     else
       # Site doesn't exist but create a record for it anyway. The idea
@@ -74,13 +103,10 @@ class TspotSite < ApplicationRecord
       new_site = TspotSite.create({
         name: site_name,
         exists: false,
-        created_ip: ip_address.to_s,
+        created_ip: ip_address.try(:to_s),
       })
 
     end
-
-    # Avoid recreating the fetcher the first time around (I guess)
-    new_site.fetcher = fetched_site
 
     new_site
   end

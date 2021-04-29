@@ -21,8 +21,12 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
     mock = mock_helper do |m|
       m.expect(:exists?, exists)
-      m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc') if exists
-      m.expect(:html_file, 'some site html') if exists
+      if exists
+        m.expect(:name, name)
+        m.expect(:exists?, exists)
+        m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
+        m.expect(:html_file, 'some site html')
+      end
     end
 
     yield mock if block_given?
@@ -108,6 +112,27 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
     # Access was counted
     assert_equal 1, TspotSite.find_by_name('notexist').access_count
+  end
+
+  test "viewing a stubbed site will cause it to be populated" do
+    # Create a stub tspot site
+    stubbed_site = TspotSite.create(name: 'stubsite', exists: true)
+    assert stubbed_site.is_stub?
+
+    mock = mocked_site('stubsite') do |m|
+      m.expect(:is_private?, false)
+    end
+
+    # This code path only calls exists? once I guess
+    # so burn one of the unneeded expects
+    mock.exists?
+
+    with_mocked_site(mock) { get '/' }
+    assert_success('some site html', mock)
+
+    # Sanity check
+    refute stubbed_site.reload.is_stub?
+    assert stubbed_site.blob.present?
   end
 
   # Skip testing downloads with auth. I'm pretty sure they'll

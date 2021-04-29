@@ -60,10 +60,15 @@ class TiddlyspotController < ApplicationController
     end
 
     @site = TspotSite.find_or_create(@site_name, request.ip)
-    if !@site.exists?
+    if @site.exists?
+      # Probably not needed, but should do no harm either way
+      @site.ensure_migrated
+
+    else
       # Let's record accesses to phantom sites
       update_access_count_and_timestamp
       return render :site_not_found, status: 404
+
     end
   end
 

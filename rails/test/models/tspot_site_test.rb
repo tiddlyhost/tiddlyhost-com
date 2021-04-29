@@ -11,4 +11,12 @@ class TspotSiteTest < ActiveSupport::TestCase
     assert_equal 'http://tiddlyspot-example.com', Settings.tiddlyspot_url
   end
 
+  test "is_stub" do
+    refute @site.is_stub?
+
+    stub_site = TspotSite.create(name: 'stubby', exists: true)
+    assert stub_site.is_stub?
+  end
+
+  # See also test/controllers/tiddlyspot_controller_test
 end

@@ -22,6 +22,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
   def existing
     mock_helper do |m|
       m.expect(:exists?, true)
+      m.expect(:exists?, true)
       m.expect(:is_private?, false)
       m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
       m.expect(:html_file, 'whatever')
@@ -36,6 +37,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
     visit '/tspot_sites/claim_form'
     fill_in :site_name, with: site_name
     fill_in :password, with: password
+    mocked_site.expect(:name, site_name)
     with_mocked_site(mocked_site) do
       click_button 'Claim'
     end

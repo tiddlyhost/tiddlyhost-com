@@ -25,7 +25,7 @@ class AdminController < ApplicationController
     @public_non_searchable_count = Site.public_non_searchable.count
     @searchable_count = Site.searchable.count
 
-    @tspot_site_count = TspotSite.where(exists: true).count
+    @tspot_site_count = TspotSite.no_stubs.count
     @notexist_tspot_site_count = TspotSite.where(exists: false).count
     @owned_tspot_site_count = TspotSite.owned.count
     @saved_tspot_count = TspotSite.where.not(save_count: 0).count
@@ -83,6 +83,7 @@ class AdminController < ApplicationController
     saved
     private
     hub
+    no_stub
   ]
 
   def users
@@ -131,6 +132,9 @@ class AdminController < ApplicationController
 
     @records = @records.where(is_searchable: true) if params[:hub] == '1'
     @records = @records.where(is_searchable: false) if params[:hub] == '0'
+
+    @records = @records.no_stubs if params[:no_stub] == '1'
+    @records = @records.stubs if params[:no_stub] == '0'
 
     @search = params[:q]
     @records = @records.search_for(@search) if @search.present?
