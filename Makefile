@@ -230,6 +230,13 @@ full-backup: db-backup s3-backup
 openstack-info:
 	openstack server show thost
 
+# If you can't ping then...
+openstack-reboot:
+	openstack server reboot thost
+
+openstack-reboot-hard:
+	openstack server reboot --hard thost
+
 #----------------------------------------------------------
 rails/public/jsMath/jsMath.js:
 	curl -s http://www.math.union.edu/~dpvc/jsmath/download/jsMath-3.3g.zip -o /tmp/jsMath.zip
