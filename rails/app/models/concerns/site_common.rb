@@ -130,4 +130,8 @@ module SiteCommon
     !is_private?
   end
 
+  def long_name
+    URI(url).hostname
+  end
+
 end

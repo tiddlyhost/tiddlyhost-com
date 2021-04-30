@@ -10,7 +10,7 @@ module SitesHelper
 
   def site_long_link(site, opts={})
     link_to site.url, {target: '_blank'}.merge(opts) do
-      (yield if block_given?).to_s + URI(site.url).hostname
+      (yield if block_given?).to_s + site.long_name
     end
   end
 

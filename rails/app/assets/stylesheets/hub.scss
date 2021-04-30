@@ -36,6 +36,15 @@ h1 {
             color: #555;
         }
 
+        .name {
+            a {
+                overflow: hidden;
+                display: block;
+                width: 100%;
+                text-overflow: ellipsis;
+            }
+        }
+
         .owner {
             font-size: 80%;
             margin-left: 0.5em;
