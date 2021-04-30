@@ -15,7 +15,7 @@ module HubQuery
         "'Site' as type", :id, :name, :view_count, "active_storage_blobs.created_at as blob_created_at"),
 
       TspotSite.for_hub.with_blob.select(
-        "'TspotSite' as type", :id, :name, "access_count as view_count", "active_storage_blobs.created_at as blob_created_at"),
+        "'TspotSite' as type", :id, :name, "access_count as view_count", "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END as blob_created_at"),
     ]
 
     # Apply filters

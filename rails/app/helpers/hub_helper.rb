@@ -11,7 +11,7 @@ module HubHelper
   def views_and_updated_text(hub_site)
     [
       "#{hub_site.view_count} views",
-      ("updated #{brief_time_ago_in_words(hub_site.blob_created_at)}" if hub_site.blob_created_at)
+      ("updated #{brief_time_ago_in_words(hub_site.blob_created_at)}" if hub_site.blob_created_at && hub_site.save_count > 0)
 
     ].compact.join(", ")
   end
