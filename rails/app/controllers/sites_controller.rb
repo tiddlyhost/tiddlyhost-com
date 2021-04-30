@@ -72,6 +72,7 @@ class SitesController < ApplicationController
     # (Could consider combining this with update, but for now it's separate)
     respond_to do |format|
       if @site.update(site_params_for_upload)
+        @site.increment_save_count
         format.html { redirect_to sites_url, notice: 'Upload to site was successfully completed.' }
         # format.json { render :show, status: :ok, location: @site }
       else

@@ -9,7 +9,6 @@ module WithAccessCount
     gentle_increment_count(:access_count)
   end
 
-  # Actually only for TspotSite
   def increment_save_count
     gentle_increment_count(:save_count)
   end

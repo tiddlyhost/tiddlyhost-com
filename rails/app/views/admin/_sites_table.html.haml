@@ -11,6 +11,7 @@
       %th= sort_link 'Hub?'
     %th= sort_link 'Views'
     %th= sort_link 'Accesses'
+    %th= sort_link 'Saves'
     -unless @user
       %th= sort_link 'Owner'
     %th= 'Storage key'
@@ -33,6 +34,7 @@
         %td= bool_text site.is_searchable?
       %td= site.view_count
       %td= site.access_count
+      %td= site.save_count
       -unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
       %td= site.blob_key
