@@ -33,9 +33,7 @@ module AdminHelper
   end
 
   def admin_site_link(site)
-    if !site.exists?
-      "#{site.name} #{site_link(site, link_title: '○')}".html_safe
-    elsif site.is_private?
+    if site.is_private?
       "#{site.name} #{site_link(site, link_title: '▪')}".html_safe
     else
       site_link(site)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_023050) do
+ActiveRecord::Schema.define(version: 2021_04_30_211506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,7 +101,6 @@ ActiveRecord::Schema.define(version: 2021_04_30_023050) do
 
   create_table "tspot_sites", force: :cascade do |t|
     t.string "name"
-    t.boolean "exists"
     t.boolean "is_private", default: false
     t.boolean "is_searchable", default: false
     t.string "htpasswd"

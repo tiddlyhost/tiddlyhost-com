@@ -15,8 +15,6 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
   def mocked_fetcher
     mock_helper do |m|
-      m.expect(:exists?, true)
-      m.expect(:exists?, true)
       m.expect(:is_private?, false)
       m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
       m.expect(:html_file, 'whatever')

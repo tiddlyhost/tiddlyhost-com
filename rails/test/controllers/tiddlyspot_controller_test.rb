@@ -22,7 +22,6 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     if TspotSite.find_by_name(name)
       mock = mock_helper do |m|
         m.expect(:name, name)
-        m.expect(:exists?, true)
         m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
         m.expect(:html_file, 'some site html')
       end
@@ -115,7 +114,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
   test "viewing a stubbed site will cause it to be populated" do
     # Create a stub tspot site
-    stubbed_site = TspotSite.create(name: 'stubsite', exists: true)
+    stubbed_site = TspotSite.create(name: 'stubsite')
     assert stubbed_site.is_stub?
 
     mock = mocked_site('stubsite') do |m|

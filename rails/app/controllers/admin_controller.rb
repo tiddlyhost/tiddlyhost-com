@@ -26,7 +26,6 @@ class AdminController < ApplicationController
     @searchable_count = Site.searchable.count
 
     @tspot_site_count = TspotSite.no_stubs.count
-    @notexist_tspot_site_count = TspotSite.where(exists: false).count
     @owned_tspot_site_count = TspotSite.owned.count
     @saved_tspot_count = TspotSite.where.not(save_count: 0).count
 
@@ -44,7 +43,6 @@ class AdminController < ApplicationController
     description: "NULLIF(sites.description, '')",
     email: 'email',
     empty: 'empties.name',
-    exists: 'exists',
     gravatar: 'use_gravatar',
     id: 'id',
     lastaccess: 'accessed_at',
@@ -78,7 +76,6 @@ class AdminController < ApplicationController
     s
     q
     user
-    exists
     owned
     saved
     private
@@ -118,9 +115,6 @@ class AdminController < ApplicationController
     end
 
     # Filtering
-    @records = @records.where(exists: true) if params[:exists] == '1'
-    @records = @records.where(exists: false) if params[:exists] == '0'
-
     @records = @records.where.not(user_id: nil) if params[:owned] == '1'
     @records = @records.where(user_id: nil) if params[:owned] == '0'
 

@@ -81,8 +81,4 @@ class Site < ApplicationRecord
     'favicon-green.ico'
   end
 
-  def exists?
-    true
-  end
-
 end

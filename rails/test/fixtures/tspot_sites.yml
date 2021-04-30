@@ -2,7 +2,6 @@
 mysite:
   id: 1
   name: mysite
-  exists: true
   is_private: 0
   # Password here is abc123
   htpasswd: mysite:my0UeDUGdY7xE
@@ -10,16 +9,12 @@ mysite:
 simon:
   id: 2
   name: simon
-  exists: true
 coolsite:
   id: 3
   name: coolsite
-  exists: true
 mulder:
   id: 4
   name: mulder
-  exists: true
 privatestuff:
   id: 5
   name: privatestuff
-  exists: true

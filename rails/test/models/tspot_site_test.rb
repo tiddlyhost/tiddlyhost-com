@@ -14,7 +14,7 @@ class TspotSiteTest < ActiveSupport::TestCase
   test "is_stub" do
     refute @site.is_stub?
 
-    stub_site = TspotSite.create(name: 'stubby', exists: true)
+    stub_site = TspotSite.create(name: 'stubby')
     assert stub_site.is_stub?
   end
 

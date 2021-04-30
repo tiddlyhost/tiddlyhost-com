@@ -10,7 +10,7 @@ ARGF.each_line do |site_name|
 
   else
     # Create stub site
-    TspotSite.create(name: site_name, exists: true)
+    TspotSite.create(name: site_name)
     puts "#{site_name} created"
 
   end

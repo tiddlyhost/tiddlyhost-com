@@ -24,4 +24,3 @@
   -if Settings.tiddlyspot_enabled?
     =render 'stat_card', title: 'Owned tspots',   count: @owned_tspot_site_count, total: @tspot_site_count
     =render 'stat_card', title: 'Saved tspots',   count: @saved_tspot_count, total: @tspot_site_count
-    =render 'stat_card', title: 'Phantom tspots', count: @notexist_tspot_site_count, total: @notexist_tspot_site_count + @tspot_site_count

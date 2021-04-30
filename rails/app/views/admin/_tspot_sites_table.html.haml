@@ -1,65 +1,43 @@
 
 %thead
   %tr
-    -if params[:exists] == '0'
-      %th= sort_link 'Id', :asc
-      %th= sort_link 'Name', :asc
-      %th= sort_link 'Accesses'
-      %th= sort_link 'Last access'
-      %th= sort_link 'Created IP'
-      %th= sort_link 'Created'
-
-    -else
-      %th= sort_link 'Id', :asc
-      %th= sort_link 'Name', :asc
-      -unless params[:exists]
-        %th= sort_link 'Exists?'
-      -unless params[:private]
-        %th= sort_link 'Private?'
-      -unless params[:hub]
-        %th= sort_link 'Hub?'
-      %th= sort_link 'Accesses'
-      -unless params[:saved] == '0'
-        %th= sort_link 'Saves'
-      -unless @user
-        %th= sort_link 'Owner', :asc
-      -unless params[:saved] == '0'
-        %th= 'Storage key'
-        %th= sort_link 'Size (MB)'
-      %th= sort_link 'Last access'
-      %th= sort_link 'Last update'
-      %th= sort_link 'Created IP'
-      %th= sort_link 'Created'
+    %th= sort_link 'Id', :asc
+    %th= sort_link 'Name', :asc
+    -unless params[:private]
+      %th= sort_link 'Private?'
+    -unless params[:hub]
+      %th= sort_link 'Hub?'
+    %th= sort_link 'Accesses'
+    -unless params[:saved] == '0'
+      %th= sort_link 'Saves'
+    -unless @user
+      %th= sort_link 'Owner', :asc
+    -unless params[:saved] == '0'
+      %th= 'Storage key'
+      %th= sort_link 'Size (MB)'
+    %th= sort_link 'Last access'
+    %th= sort_link 'Last update'
+    %th= sort_link 'Created IP'
+    %th= sort_link 'Created'
 
 %tbody
   -@records.each do |site|
     %tr
-      -if params[:exists] == '0'
-        %td= site.id
-        %td= admin_site_link site
-        %td= site.access_count
-        %td= nice_timestamp site.accessed_at
-        %td= site.created_ip
-        %td= nice_timestamp site.created_at
-
-      -else
-        %td= site.id
-        %td= admin_site_link site
-        -unless params[:exists]
-          %td= bool_text site.exists?
-        -unless params[:private]
-          %td= bool_text site.is_private?
-        -unless params[:hub]
-          %td= bool_text site.is_searchable?
-        %td= site.access_count
-        -unless params[:saved] == '0'
-          %td= site.save_count
-        -unless @user
-          %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
-        -unless params[:saved] == '0'
-          %td= site.blob_key
-          %td= as_megabytes site.blob_byte_size
-        %td= nice_timestamp site.accessed_at
-        %td= nice_timestamp site.blob_created_at
-        %td= site.created_ip
-        %td= nice_timestamp site.created_at
+      %td= site.id
+      %td= admin_site_link site
+      -unless params[:private]
+        %td= bool_text site.is_private?
+      -unless params[:hub]
+        %td= bool_text site.is_searchable?
+      %td= site.access_count
+      -unless params[:saved] == '0'
+        %td= site.save_count
+      -unless @user
+        %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
+      -unless params[:saved] == '0'
+        %td= site.blob_key
+        %td= as_megabytes site.blob_byte_size
+      %td= nice_timestamp site.accessed_at
+      %td= nice_timestamp site.blob_created_at
+      %td= site.created_ip
+      %td= nice_timestamp site.created_at

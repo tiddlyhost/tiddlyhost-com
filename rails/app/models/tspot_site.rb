@@ -8,8 +8,8 @@ class TspotSite < ApplicationRecord
   scope :owned, -> { where.not(user_id: nil) }
   scope :for_hub, -> { searchable.owned }
 
-  scope :no_stubs, -> { where(exists: true).where.not(htpasswd: nil) }
-  scope :stubs, -> { where(exists: true).where(htpasswd: nil) }
+  scope :no_stubs, -> { where.not(htpasswd: nil) }
+  scope :stubs, -> { where(htpasswd: nil) }
 
   # The TspotFetcher class knows how to fetch a site from the
   # dreamhost bucket. It can also determine if the site is public
@@ -52,17 +52,16 @@ class TspotSite < ApplicationRecord
     content_upload(fetcher.html_file)
   end
 
-  # If we know the site exists, but we never fetched its details
-  # then htpasswd will be nil. Let's call that a "stub".
+  # If we never fetched the site's details then htpasswd will be
+  # nil. Let's call that a "stub".
   #
   def is_stub?
-    exists? && htpasswd.blank?
+    htpasswd.blank?
   end
 
   def self.fetched_site_to_attrs(fetched_site, ip_address=nil)
     {
       name: fetched_site.name,
-      exists: fetched_site.exists?,
       is_private: fetched_site.is_private?,
       htpasswd: fetched_site.htpasswd_file,
       tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
