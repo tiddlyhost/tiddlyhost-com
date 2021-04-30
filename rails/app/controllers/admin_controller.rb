@@ -137,7 +137,7 @@ class AdminController < ApplicationController
     @records = @records.stubs if params[:no_stub] == '0'
 
     @search = params[:q]
-    @records = @records.search_for(@search) if @search.present?
+    @records = @records.admin_search_for(@search) if @search.present?
 
     # Sorting
     @sort_by = (params[:s].dup || 'created_desc')
