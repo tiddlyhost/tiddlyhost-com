@@ -52,24 +52,8 @@ class TiddlyspotController < ApplicationController
 
   def find_site
     @site_name = request.subdomain
-
-    # Fast 404 without checking
-    if shadow_blocked_ip?(request.ip)
-      th_log "Shadow blocked tspot site #{@site_name}"
-      return render :site_not_found, status: 404
-    end
-
-    @site = TspotSite.find_or_create(@site_name, request.ip)
-    if @site.exists?
-      # Probably not needed, but should do no harm either way
-      @site.ensure_migrated
-
-    else
-      # Let's record accesses to phantom sites
-      update_access_count_and_timestamp
-      return render :site_not_found, status: 404
-
-    end
+    @site = TspotSite.find_and_populate(@site_name, request.ip)
+    render :site_not_found, status: 404 unless @site
   end
 
   def auth_required?
@@ -95,10 +79,6 @@ class TiddlyspotController < ApplicationController
       key_value_strings = params[:UploadPlugin].strip.split(';').map(&:presence).compact
       Hash[ key_value_strings.map{ |kv| kv.split('=') } ].with_indifferent_access
     end
-  end
-
-  def shadow_blocked_ip?(ip)
-    (Settings.secrets(:tspot_shadow_blocked_ips) || []).include?(ip)
   end
 
 end

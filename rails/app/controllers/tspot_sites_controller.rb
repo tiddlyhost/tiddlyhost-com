@@ -38,9 +38,9 @@ class TspotSitesController < ApplicationController
     return redirect_to action: :claim_form \
       unless @site_name = params[:site_name].strip.presence
 
-    @site = TspotSite.find_or_create(@site_name, request.ip)
+    @site = TspotSite.find_and_populate(@site_name, request.ip)
 
-    if !@site.exists?
+    if !@site
       @message = "'#{@site_name}' does not exist on Tiddlyspot"
 
     elsif @site.user.present?

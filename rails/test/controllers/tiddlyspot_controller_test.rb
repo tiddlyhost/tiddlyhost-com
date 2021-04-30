@@ -16,17 +16,19 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to "http://tiddlyspot-example.com/"
   end
 
-  def mocked_site(name, exists=true)
+  def mocked_site(name)
     host! "#{name}.#{Settings.tiddlyspot_host}"
 
-    mock = mock_helper do |m|
-      m.expect(:exists?, exists)
-      if exists
+    if TspotSite.find_by_name(name)
+      mock = mock_helper do |m|
         m.expect(:name, name)
-        m.expect(:exists?, exists)
+        m.expect(:exists?, true)
         m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
         m.expect(:html_file, 'some site html')
       end
+    else
+      # Non-existing sites don't need to mock a fetcher
+      mock = nil
     end
 
     yield mock if block_given?
@@ -105,13 +107,10 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "viewing a site that doesn't exist" do
-    mock = mocked_site('notexist', false)
+    mock = mocked_site('notexist')
 
     with_mocked_site(mock) { get '/' }
     assert_404(mock)
-
-    # Access was counted
-    assert_equal 1, TspotSite.find_by_name('notexist').access_count
   end
 
   test "viewing a stubbed site will cause it to be populated" do
@@ -122,10 +121,6 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     mock = mocked_site('stubsite') do |m|
       m.expect(:is_private?, false)
     end
-
-    # This code path only calls exists? once I guess
-    # so burn one of the unneeded expects
-    mock.exists?
 
     with_mocked_site(mock) { get '/' }
     assert_success('some site html', mock)
@@ -153,7 +148,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   def assert_404(mock)
     assert_response 404
     assert_select 'h1', '404 Not Found', response.body
-    assert_mock mock
+    assert_mock mock if mock
   end
 
 end

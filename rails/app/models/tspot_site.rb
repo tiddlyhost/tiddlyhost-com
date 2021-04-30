@@ -80,35 +80,13 @@ class TspotSite < ApplicationRecord
     self
   end
 
-  def self.find_or_create(site_name, ip_address=nil)
-    # If we have a record for it already then return it,
-    # otherwise create a new one
-    find_by_name(site_name).try(:ensure_destubbed) || create_new(site_name, ip_address)
-  end
-
-  def self.create_new(site_name, ip_address=nil)
-    fetched_site = TspotFetcher.new(site_name)
-    if fetched_site.exists?
-      # Will probably never get here when every known site has a record
-      ThostLogger.thost_logger.info(
-        "Creating new TspotSite record for existing site #{site_name}")
-
-      new_site = TspotSite.create(
-        TspotSite.fetched_site_to_attrs(fetched_site, ip_address))
-
-    else
-      # Site doesn't exist but create a record for it anyway. The idea
-      # is to avoid trying again and avain to fetch a site that will
-      # never exist. (Might cause problems if we get a million of them.)
-      new_site = TspotSite.create({
-        name: site_name,
-        exists: false,
-        created_ip: ip_address.try(:to_s),
-      })
-
-    end
-
-    new_site
+  # Returns nil if the tspot site doesn't exist.
+  # Because we populated all known tspot sites in the database we
+  # no longer create a new record here, but we might need to use
+  # the fetcher to populate its content and metadata.
+  #
+  def self.find_and_populate(site_name, ip_address=nil)
+    find_by_name(site_name).try(:ensure_destubbed, ip_address)
   end
 
   def passwd_ok?(user, pass)
