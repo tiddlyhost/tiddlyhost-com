@@ -80,6 +80,29 @@ $contrast_color: #29AE4A;
 .jumbotron {
     padding: 1.5em 1.5em 2em 1.5em;
     margin-top:1em;
+    line-height: 300%;
+
+    h3 {
+        margin-bottom: 0.5em;
+    }
+
+    .btn {
+        padding-right: 1.1em;
+
+        .bi {
+            font-size: 77%;
+            color: white;
+            opacity: 90%;
+            margin-right: -4px;
+        }
+    }
+
+    span {
+        display: inline-block;
+        text-align: center;
+        padding: 0.5em;
+        margin-left: 0.3em;
+    }
 }
 
 .btn-primary {
@@ -110,8 +133,11 @@ $contrast_color: #29AE4A;
     }
 }
 
-.blurb p {
-    font-size: 90%;
+.blurb {
+    margin-top: 1em;
+    p {
+        font-size: 90%;
+    }
 }
 
 main {

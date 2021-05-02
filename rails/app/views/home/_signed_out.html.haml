@@ -22,6 +22,10 @@
 
 .jumbotron
   %h3 Get started now
-  =link_to 'Log in', new_user_session_path, class: 'btn btn-lg btn-primary'
-  or
-  =link_to 'Sign up', new_user_registration_path, class: 'btn btn-lg btn-primary'
+  =link_to new_user_registration_path, class: 'btn btn-lg btn-primary' do
+    =bi_icon('person-plus-fill', style: 'margin-right: -1px;')
+    Sign up
+  %span or
+  =link_to new_user_session_path, class: 'btn btn-lg btn-primary' do
+    =bi_icon('person-fill', style: 'margin-right: -2px;')
+    Log in
