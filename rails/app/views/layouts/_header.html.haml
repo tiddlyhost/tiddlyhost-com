@@ -1,51 +1,54 @@
 
 .navbar.navbar-expand-sm.navbar-dark
+  -#
+  -# Logo
+  -#
   =link_to(root_path, class: 'navbar-brand', title: 'Tiddlyhost') do
     =image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;")
 
+  -#
+  -# Burger button for phone screens
+  -#
   %button.navbar-toggler{"type"=>"button", "data-toggle"=>"collapse", "data-target"=>"#navbarSupportedContent",
     "aria-controls"=>"navbarSupportedContent", "aria-expanded"=>"false", "aria-label"=>"Toggle navigation"}
     %span.navbar-toggler-icon
 
+  -#
+  -# Nav bar content
+  -#
   .collapse.navbar-collapse#navbarSupportedContent
     -if user_signed_in?
+      -#
+      -# Links for logged in users
+      -#
       %ul.navbar-nav.mr-auto
         =nav_link_to "Home", root_path
         =nav_link_to "Hub", '/hub'
+
       %ul.navbar-nav.ml-auto
         -if user_is_admin?
           =nav_link_to "Admin", admin_path, style: 'margin-right: 0.4rem;'
+
         %li.nav-item.dropdown
-          %a.nav-link.dropdown-toggle#navbarDropdown{"href"=>"#", "role"=>"button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false"}
+          %a.nav-link.dropdown-toggle#navbarDropdown{"href"=>"#", "role"=>"button", "data-toggle"=>"dropdown",
+            "aria-haspopup"=>"true", "aria-expanded"=>"false"}
             -if current_user.use_gravatar?
               =gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
             -else
               =bi_icon('person-fill', style: 'color: white; margin-right: -1px;')
             =current_user.username_or_name
+
           .dropdown-menu.dropdown-menu-right{'aria-labelledby'=>'navbarDropdown'}
-            .dropdown-item-text{style: 'color: #888; white-space: nowrap; font-size: 80%;'}
-              Signed in as
-              %br
-              %b
-                -if current_user.use_gravatar?
-                  =gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
-                -else
-                  =bi_icon('person-fill', style: 'margin-right: -2px; color: #aaa;')
-                =current_user.username_or_email
-            .dropdown-divider
-            =link_to sites_path, class: 'dropdown-item' do
-              =bi_icon('sliders')
-              Manage your sites
-            =link_to edit_user_registration_path, class: 'dropdown-item' do
-              =bi_icon('file-earmark-person')
-              Manage your account
-            .dropdown-divider
-            =link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
-              =bi_icon('box-arrow-left')
-              Log out
+            =render 'layouts/user_menu_items'
+
     -else
+      -#
+      -# Links for not logged in users
+      -#
       %ul.navbar-nav.mr-auto
         =nav_link_to "Home", root_path
         =nav_link_to "Hub", '/hub'
-        =nav_link_to "Log in", new_user_session_path
         =nav_link_to "Sign up", new_user_registration_path
+
+      %ul.navbar-nav.ml-auto
+        =nav_link_to "Log in", new_user_session_path

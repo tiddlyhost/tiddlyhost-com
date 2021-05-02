@@ -1,5 +1,10 @@
 %h1 Sign up
 
+%p.small.text-muted{style: 'margin-left: 0.5em;'}<
+  Already have an account? Go to
+  =link_to "log in", new_user_session_path
+  \.
+
 =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
 
   .form-group

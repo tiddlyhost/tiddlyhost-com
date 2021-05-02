@@ -1,0 +1,25 @@
+.dropdown-item-text{style: 'color: #888; white-space: nowrap; font-size: 80%;'}
+  Signed in as
+  %br
+  %b
+    -if current_user.use_gravatar?
+      =gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
+    -else
+      =bi_icon('person-fill', style: 'margin-right: -2px; color: #aaa;')
+    =current_user.username_or_email
+
+.dropdown-divider
+
+=link_to sites_path, class: 'dropdown-item' do
+  =bi_icon('sliders')
+  Manage your sites
+
+=link_to edit_user_registration_path, class: 'dropdown-item' do
+  =bi_icon('file-earmark-person')
+  Manage your account
+
+.dropdown-divider
+
+=link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
+  =bi_icon('box-arrow-left')
+  Log out
