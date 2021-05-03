@@ -216,7 +216,6 @@ db-backup:
 s3-backup:
 	@[[ ! -z "$$BUCKET_NAME" ]] || ( echo "BUCKET_NAME not set!" && exit 1 )
 	aws s3 sync s3://$(BUCKET_NAME) ./backups/s3/$(TIMESTAMP)
-	cd ./backups/s3/$(TIMESTAMP) && gzip -v *
 	du -h backups
 
 show-backups:
