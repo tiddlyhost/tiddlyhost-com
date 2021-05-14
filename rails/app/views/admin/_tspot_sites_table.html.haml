@@ -14,7 +14,8 @@
       %th= sort_link 'Owner', :asc
     -unless params[:saved] == '0'
       %th= 'Storage key'
-      %th= sort_link 'Size (MB)'
+      %th= sort_link 'Raw (MB)'
+      %th= sort_link 'Blob (MB)'
     %th= sort_link 'Last access'
     %th= sort_link 'Last update'
     %th= sort_link 'Created IP'
@@ -36,6 +37,7 @@
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       -unless params[:saved] == '0'
         %td= site.blob_key
+        %td= as_megabytes site.raw_byte_size
         %td= as_megabytes site.blob_byte_size
       %td= nice_timestamp site.accessed_at
       %td= nice_timestamp site.blob_created_at

@@ -114,7 +114,9 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_upload
+    new_content = params[:site][:tiddlywiki_file].read
     params.require(:site).permit(:tiddlywiki_file).merge(
-      tiddlywiki_file: SiteCommon.attachable_hash(params[:site][:tiddlywiki_file].read))
+      tiddlywiki_file: SiteCommon.attachable_hash(new_content),
+      raw_byte_size: new_content.bytesize)
   end
 end

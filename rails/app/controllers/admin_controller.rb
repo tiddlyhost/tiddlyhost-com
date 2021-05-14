@@ -37,6 +37,7 @@ class AdminController < ApplicationController
 
   SORT_OPTIONS = {
     accesses: 'access_count',
+    blobmb: 'active_storage_blobs.byte_size',
     created: 'created_at',
     createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',
@@ -55,19 +56,17 @@ class AdminController < ApplicationController
     private: 'is_private',
     saves: 'save_count',
     hub: 'is_searchable',
+    rawmb: 'raw_byte_size',
     sites: 'COUNT(sites.id)',
-    sizemb: 'active_storage_blobs.byte_size',
     tspotsites: 'COUNT(tspot_sites.id)',
     username: "NULLIF(username, '')",
     views: 'view_count',
-    z: 'active_storage_blobs.content_type',
   }.freeze
 
   NULL_ALWAYS_LAST = %w[
     username
     description
     owner
-    z
   ]
 
   # s = sort

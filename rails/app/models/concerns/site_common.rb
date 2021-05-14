@@ -83,7 +83,10 @@ module SiteCommon
   end
 
   def content_upload(new_content)
+    # It gets compressed in attachable_hash so record the uncompressed size now
+    self.raw_byte_size = new_content.bytesize
     tiddlywiki_file.attach(SiteCommon.attachable_hash(new_content))
+    self.save
   end
 
   # When a site is saved it gets a brand new blob. So if we use the blob's
