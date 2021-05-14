@@ -6,6 +6,7 @@ module SiteCommon
     acts_as_taggable_on :tags
 
     include WithAccessCount
+    include AdminSearchable
 
     # Optional is needed only for TspotSite records
     # Site records always have a user
@@ -37,10 +38,6 @@ module SiteCommon
     scope :search_for, ->(search_text) {
       where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
       or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
-
-    scope :admin_search_for, ->(search_text) {
-      search_for(search_text).
-      or(where(id: search_text)) }
 
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
 

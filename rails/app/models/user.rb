@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include AdminSearchable
+
   #
   # Include devise modules. Others available are:
   # :omniauthable
