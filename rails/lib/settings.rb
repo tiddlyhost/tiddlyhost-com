@@ -34,6 +34,11 @@ class Settings
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults)
   end
 
+  # This is the same as `new_user_session_path` but we'll hard code it here
+  def self.login_url
+    "#{main_site_url}/users/sign_in"
+  end
+
   def self.tiddlyspot_enabled?
     Rails.env.test? || Settings.secrets(:dreamobjects).present?
   end
