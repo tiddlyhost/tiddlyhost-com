@@ -96,6 +96,13 @@ class AdminController < ApplicationController
       :user, :tiddlywiki_file_attachment, tiddlywiki_file_attachment: :blob)
   end
 
+  def raw_download
+    klass = params[:tspot].present? ? TspotSite : Site
+    site = klass.find(params[:id])
+    download_html_content(site.file_download,
+      "raw_#{klass.name.underscore}_#{site.id}_#{site.name}")
+  end
+
   private
 
   def render_records(records)

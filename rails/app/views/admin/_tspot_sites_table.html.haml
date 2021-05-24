@@ -36,7 +36,7 @@
       -unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       -unless params[:saved] == '0'
-        %td= site.blob_key
+        %td= link_to site.blob_key, action: :raw_download, id: site.id, tspot: 1
         %td= as_megabytes site.raw_byte_size
         %td= as_megabytes site.blob_byte_size
       %td= nice_timestamp site.accessed_at
