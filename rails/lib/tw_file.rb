@@ -35,10 +35,16 @@ class TwFile
       config.options |= Nokogiri::XML::ParseOptions::HUGE
     end
 
+    # Should be present for TW5 5.2 and later unless the site is encrypted.
+    # Generally there is just one, but because TW will happily read from
+    # multiple of these, we'll support that too and store this as a list.
+    @json_stores = @doc.xpath("/html/body/script[@class='tiddlywiki-tiddler-store']")
+
     # Should be present for both TW5 and Classic
+    # For 5.2 and later it's there also for backwards compatibility, but it will be empty.
     @store = @doc.at_xpath("/html/body/div[@id='storeArea']")
 
-    # Present for encrypted TW5 files only
+    # Present for encrypted TW5 files only, (even if they are 5.2 and later).
     @encrypted_store = @doc.at_xpath("/html/body/pre[@id='encryptedStoreArea']")
 
     # Present for Classic only
@@ -66,6 +72,10 @@ class TwFile
 
   def is_tw5?
     !is_classic?
+  end
+
+  def json_store?
+    json_stores.present?
   end
 
   def get_meta(name)
@@ -113,8 +123,16 @@ class TwFile
   # ** Methods from here down are useless for encrypted TiddlyWikis **
 
   def write_tiddlers(tiddlers, shadow: false)
-    tiddlers.each do |title, data|
-      insert_or_replace(title, data, shadow: shadow)
+    if json_store?
+      # Assume we're using TW 5.2 and later
+      append_json_store(tiddlers)
+
+    else
+      # Assume we're using TW 5.1.x or earlier
+      tiddlers.each do |title, data|
+        insert_or_replace(title, data, shadow: shadow)
+      end
+
     end
 
     # For chaining method calls
@@ -148,8 +166,11 @@ class TwFile
 
   private
 
-  attr_reader :doc, :store, :encrypted_store, :shadow_store
+  attr_reader :doc, :json_stores, :store, :encrypted_store, :shadow_store
 
+  # Insert tiddlers by inserting or replacing divs inside the storeArea div.
+  # For TW versions 5.1.x and earlier.
+  #
   def insert_or_replace(title, data, shadow: false)
     return if encrypted?
 
@@ -160,6 +181,34 @@ class TwFile
     else
       choose_store(shadow: shadow) << tiddler_div
     end
+  end
+
+  # Insert tiddlers by creating a new script element with json inside it.
+  # For TW versions 5.2 and later.
+  #
+  # It works because multiple store areas will be read in order, so tiddlers
+  # we create here will have precedence over their namesakes in the main store area.
+  # (The idea is that this should be easier and takes less memory resources than
+  # loading, modifying and writing to the main store area.)
+  #
+  def append_json_store(tiddlers)
+    # Convert tiddler data from a hash into an array of hashes,
+    # and make sure the title is included
+    tiddlers = tiddlers.map do |title, fields|
+      fields = { text: fields } if fields.is_a?(String)
+      fields[:title] = title
+      fields
+    end
+
+    # Create new script element
+    new_store_node = Nokogiri::XML::Node.new('script', doc) do |node|
+      node['class'] = 'tiddlywiki-tiddler-store'
+      node['type'] = 'application/json'
+      node.content = tiddlers.to_json
+    end
+
+    # Insert it after the others
+    json_stores.last.add_next_sibling(new_store_node)
   end
 
   def tiddler(title, shadow: false)
