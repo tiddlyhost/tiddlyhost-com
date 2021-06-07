@@ -25,9 +25,12 @@ class TwFileTest < ActiveSupport::TestCase
     # The old storeArea is present also but with no content
     assert_match '<div id="storeArea"></div>', tw.to_html
 
-    # TODO: The tiddler_content method is not yet supported for the script/json store
-    #assert_equal 'bar', tw.tiddler_content('foo')
-    #assert_equal 'bar', TwFile.new(tw.to_html).tiddler_content('foo')
+    # So we notice the new content
+    tw = TwFile.new(tw.to_html)
+
+    assert_equal 'bar', tw.tiddler_content('foo')
+    assert_equal([{'text'=>'bar','title'=>'foo'}], tw.tiddlers_data)
+    assert_equal([{'title'=>'foo'}], tw.tiddlers_data(skinny: true))
   end
 
   test "tiddlyhost mods for tw5" do

@@ -144,7 +144,11 @@ class TwFile
   end
 
   def tiddler_data(title, shadow: false)
-    TiddlerDiv.to_fields(tiddler(title, shadow: shadow))
+    if json_store?
+      tiddler_data_from_json(include_system: true)[title]
+    else
+      TiddlerDiv.to_fields(tiddler(title, shadow: shadow))
+    end
   end
 
   def tiddler_content(title, shadow: false)
@@ -158,10 +162,16 @@ class TwFile
   def tiddlers_data(include_system: false, skinny: false)
     return [] if encrypted?
 
-    store.xpath('div').map do |t|
-      next unless include_system || !t.attr('title').start_with?('$:/')
-      TiddlerDiv.to_fields(t, skinny: skinny)
-    end.compact
+    if json_store?
+      tiddler_data_from_json(include_system: include_system, skinny: skinny).values
+
+    else
+      store.xpath('div').map do |t|
+        next unless include_system || !t.attr('title').start_with?('$:/')
+        TiddlerDiv.to_fields(t, skinny: skinny)
+      end.compact
+
+    end
   end
 
   private
@@ -209,6 +219,35 @@ class TwFile
 
     # Insert it after the others
     json_stores.last.add_next_sibling(new_store_node)
+  end
+
+  # For easy lookups we'll convert the tiddler data from a list into a
+  # hash, where the keys will be the tiddler titles. Also, if we use a
+  # hash then there's no need to worry about duplicates. The later one will
+  # take precedence, which should match how TiddlyWiki does it.
+  #
+  def tiddler_data_from_json(include_system: false, skinny: false)
+    # Cache it so we don't have to rebuild it more than once
+    @_tiddler_data_from_json ||= begin
+      # Iterate over all the store nodes and merge the results
+      json_stores.inject({}) do |all_tiddlers, store_node|
+        tiddler_list = JSON.load(store_node.content)
+        tiddler_hash = Hash[ tiddler_list.map{ |t| [t['title'], t] } ]
+        all_tiddlers.merge(tiddler_hash)
+      end
+    end
+
+    # Return early if there's no need for further filtering
+    return @_tiddler_data_from_json if include_system && !skinny
+
+    # Otherwise, deal with the filtering as required.
+    # Todo: Consider how to do this in a more memory efficient way.
+    Hash[@_tiddler_data_from_json.map do |title, fields|
+      # Skip the text field for skinny results
+      use_fields = skinny ? fields.except('text') : fields
+      # Skip the system tiddlers maybe
+      include_system || !title.start_with?('$:/') ? [title, use_fields] : nil
+    end.compact]
   end
 
   def tiddler(title, shadow: false)
