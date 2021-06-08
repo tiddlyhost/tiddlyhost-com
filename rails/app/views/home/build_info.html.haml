@@ -19,7 +19,7 @@
         -when val.is_a?(Hash)
           -val.each do |hash_key, hash_val|
             %div
-              %div{style: 'display: inline-block; width: 5em; padding-right: 1em;'}= "#{hash_key}:"
+              %div{style: 'display: inline-block; min-width: 10em; padding-right: 1em; white-space: nowrap;'}= "#{hash_key}:"
               =hash_val
 
         -else
