@@ -38,7 +38,7 @@
       %td= site.save_count
       -unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
-      %td= link_to site.blob_key, action: :raw_download, id: site.id
+      %td= link_to(site.blob_key, action: :raw_download, id: site.id)
       %td= as_megabytes site.raw_byte_size
       %td= as_megabytes site.blob_byte_size
       %td= nice_timestamp site.accessed_at
