@@ -34,21 +34,6 @@ class TwFile
     @doc = Nokogiri::HTML(html_content) do |config|
       config.options |= Nokogiri::XML::ParseOptions::HUGE
     end
-
-    # Should be present for TW5 5.2 and later unless the site is encrypted.
-    # Generally there is just one, but because TW will happily read from
-    # multiple of these, we'll support that too and store this as a list.
-    @json_stores = @doc.xpath("/html/body/script[@class='tiddlywiki-tiddler-store']")
-
-    # Should be present for both TW5 and Classic
-    # For 5.2 and later it's there also for backwards compatibility, but it will be empty.
-    @store = @doc.at_xpath("/html/body/div[@id='storeArea']")
-
-    # Present for encrypted TW5 files only, (even if they are 5.2 and later).
-    @encrypted_store = @doc.at_xpath("/html/body/pre[@id='encryptedStoreArea']")
-
-    # Present for Classic only
-    @shadow_store = @doc.at_xpath("/html/body/div[@id='shadowArea']")
   end
 
   def self.from_file(file_name)
@@ -176,7 +161,34 @@ class TwFile
 
   private
 
-  attr_reader :doc, :json_stores, :store, :encrypted_store, :shadow_store
+  attr_reader :doc
+
+  # Should be present for TW5 5.2 and later unless the site is encrypted.
+  # Generally there is just one, but because TW will happily read from
+  # multiple of these, we'll support that too and store this as a list.
+  #
+  def json_stores
+    @_json_stores ||= doc.xpath("/html/body/script[@class='tiddlywiki-tiddler-store']")
+  end
+
+  # Should be present for both TW5 and Classic.
+  # For 5.2 and later it's there also for backwards compatibility, but it will be empty.
+  #
+  def store
+    (@_stores ||= doc.xpath("/html/body/div[@id='storeArea']")).first
+  end
+
+  # Present for encrypted TW5 files only, (even if they are 5.2 and later)
+  #
+  def encrypted_store
+    (@_encrypted_stores ||= doc.xpath("/html/body/pre[@id='encryptedStoreArea']")).first
+  end
+
+  # Present for Classic only
+  #
+  def shadow_store
+    (@_shadow_stores ||= doc.xpath("/html/body/div[@id='shadowArea']")).first
+  end
 
   # Insert tiddlers by inserting or replacing divs inside the storeArea div.
   # For TW versions 5.1.x and earlier.
@@ -219,6 +231,10 @@ class TwFile
 
     # Insert it after the others
     json_stores.last.add_next_sibling(new_store_node)
+
+    # Clear these to ensure the tiddler data will be refreshed
+    @_json_stores = nil
+    @_tiddler_data_from_json = nil
   end
 
   # For easy lookups we'll convert the tiddler data from a list into a
