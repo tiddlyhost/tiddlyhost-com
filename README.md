@@ -34,11 +34,9 @@ Getting Started (for developers)
 ### Prepare environment
 
 You need to have
-[docker](https://docs.docker.com/get-docker/),
-[docker-compose](https://docs.docker.com/compose/install/), and
-[ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-installed on your system, (though you can do without ansible, see details
-below).
+[docker](https://docs.docker.com/get-docker/) and
+[docker-compose](https://docs.docker.com/compose/install/)
+installed on your system.
 
 Check out the code:
 
@@ -57,13 +55,6 @@ Install all ruby gems, node modules, and initialize the databases:
 /opt/app/config/webpack/environment.js. Say no.)
 
     make rails-init
-
-Fetch TiddlyWiki empty files with ansible:
-
-    make download-empties
-
-(Alternatively you can run `bin/fetch-empties.sh` to do that without using
-ansible.)
 
 Run the test suite. Hopefully it's all passing:
 
@@ -95,7 +86,8 @@ so you will need to accept the warnings about insecure connections.
 
 Click "Sign up" and enter some details. A fake email address is fine.
 
-Find the email confirmation link by running this:
+Emails won't be sent when running locally, but you can find the email
+confirmation link by running this:
 
     make signup-link
 
