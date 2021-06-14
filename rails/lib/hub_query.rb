@@ -12,10 +12,12 @@ module HubQuery
     # Work with two separate queries
     qs = [
       Site.for_hub.with_blob.select(
-        "'Site' as type", :id, :name, :view_count, "active_storage_blobs.created_at as blob_created_at"),
+        "'Site' AS type", :id, :name, :view_count, :created_at,
+        "active_storage_blobs.created_at AS blob_created_at"),
 
       TspotSite.for_hub.with_blob.select(
-        "'TspotSite' as type", :id, :name, "access_count as view_count", "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END as blob_created_at"),
+        "'TspotSite' AS type", :id, :name, "access_count AS view_count", "NULL AS created_at",
+        "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at"),
     ]
 
     # Apply filters

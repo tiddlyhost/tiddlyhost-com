@@ -40,6 +40,10 @@ class HubController < ApplicationController
         name: 'recently updated',
         field: 'blob_created_at DESC NULLS LAST',
       },
+      'c' => {
+        name: 'recently created',
+        field: 'created_at DESC NULLS LAST',
+      },
       'n' => {
         name: 'name',
         field: 'name ASC',
