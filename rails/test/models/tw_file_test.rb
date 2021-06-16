@@ -12,6 +12,27 @@ class TwFileTest < ActiveSupport::TestCase
     # For an encrypted TiddlyWiki we can't do anything
   end
 
+  test "adding a tiddler with json script store" do
+    tw = TwFile.new(minimal_html(:tw5_json))
+    tw.write_tiddlers({'foo' => 'bar'})
+
+    # We add tiddlers by appending a new script element
+    assert_match '<script class="tiddlywiki-tiddler-store" type="application/json">[{"text":"bar","title":"foo"}]</script>', tw.to_html
+
+    # The original script element store area is still there
+    assert_match '<script class="tiddlywiki-tiddler-store" type="application/json">[]</script>', tw.to_html
+
+    # The old storeArea is present also but with no content
+    assert_match '<div id="storeArea"></div>', tw.to_html
+
+    # So we notice the new content
+    tw = TwFile.new(tw.to_html)
+
+    assert_equal 'bar', tw.tiddler_content('foo')
+    assert_equal([{'text'=>'bar','title'=>'foo'}], tw.tiddlers_data)
+    assert_equal([{'title'=>'foo'}], tw.tiddlers_data(skinny: true))
+  end
+
   test "tiddlyhost mods for tw5" do
     ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite').tap do |tw|
       {
