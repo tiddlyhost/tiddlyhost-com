@@ -1,7 +1,7 @@
 
 class TspotSitesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_site, only: [:show, :edit, :update, :disown]
+  before_action :set_site, except: [:index, :claim_form, :claim]
 
   # GET /tspot_sites
   def index
@@ -66,6 +66,20 @@ class TspotSitesController < ApplicationController
     redirect_to sites_path
   end
 
+  # GET /tspot_sites/1/change_password
+  def change_password
+  end
+
+  # POST /tspot_sites/1/change_password_submit
+  def change_password_submit
+    begin
+      @site.set_password(site_params_for_change_password[:password], site_params_for_change_password[:password_confirmation])
+    rescue ActiveRecord::RecordInvalid
+      return render :change_password
+    end
+    redirect_to sites_path
+  end
+
   private
 
   def set_site
@@ -75,6 +89,10 @@ class TspotSitesController < ApplicationController
 
   def site_params_for_update
     params.require(:tspot_site).permit(:name, :description, :is_private, :is_searchable, :tag_list)
+  end
+
+  def site_params_for_change_password
+    params.require(:tspot_site).permit(:password, :password_confirmation)
   end
 
 end

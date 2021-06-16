@@ -71,10 +71,14 @@ Rails.application.routes.draw do
         collection do
           get :claim_form
           post :claim
+
         end
 
         member do
           post :disown
+
+          get :change_password
+          patch :change_password_submit
         end
       end
 

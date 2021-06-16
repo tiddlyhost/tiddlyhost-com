@@ -114,7 +114,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
   test "viewing a stubbed site will cause it to be populated" do
     # Create a stub tspot site
-    stubbed_site = TspotSite.create(name: 'stubsite')
+    stubbed_site = TspotSite.create!(name: 'stubsite')
     assert stubbed_site.is_stub?
 
     mock = mocked_site('stubsite') do |m|

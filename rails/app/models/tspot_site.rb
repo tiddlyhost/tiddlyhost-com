@@ -1,5 +1,18 @@
 
 class TspotSite < ApplicationRecord
+  # We need to tweak the validations a little so disable the default validations.
+  # See lib/active_model/secure_password.rb in the active_model gem.
+  has_secure_password :password, validations: false
+
+  # This is the same as one of the default validations
+  validates_confirmation_of :password, allow_blank: true
+
+  # This one is different. The allow_nil is added so we can update
+  # sites with legacy passwords.
+  validates_length_of :password, allow_nil: true,
+    maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED,
+    minimum: 6
+
   include SiteCommon
 
   # Some duck typing for hub rendering
@@ -88,8 +101,36 @@ class TspotSite < ApplicationRecord
     find_by_name(site_name).try(:ensure_destubbed, ip_address)
   end
 
+  def use_legacy_password?
+    password_digest.blank?
+  end
+
   def passwd_ok?(user, pass)
-    TspotFetcher.passwd_match?(user, pass, htpasswd)
+    if use_legacy_password?
+      TspotFetcher.passwd_match?(user, pass, htpasswd)
+    else
+      user == name && authenticate(pass)
+    end
+  end
+
+  # Don't write to the legacy password. Instead create a new
+  # one using the standard rails functionality. It should write
+  # the digest to the password_digest field.
+  #
+  # Throws an exception if there's a problem.
+  #
+  def set_password(new_password, new_password_confirmation)
+    original_digest = password_digest
+
+    begin
+      self.password = new_password
+      self.password_confirmation = new_password_confirmation
+      self.save!
+    rescue ActiveRecord::RecordInvalid
+      # Reset the password_digest field so the existing password keeps working
+      update(password_digest: original_digest)
+      raise
+    end
   end
 
   def url
