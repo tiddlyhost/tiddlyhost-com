@@ -94,6 +94,9 @@ dump-secrets:
 tests:
 	$(DCC) 'bin/rails test:all'
 
+onetest:
+	$(DCC) 'bin/rails test $(TEST)'
+
 # (Use these if you want to run the prod container locally)
 shell-prod:
 	-docker-compose -f docker-compose-prod.yml run --rm app bash
