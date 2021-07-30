@@ -136,6 +136,9 @@ class AdminController < ApplicationController
     @records = @records.no_stubs if params[:no_stub] == '1'
     @records = @records.stubs if params[:no_stub] == '0'
 
+    @records = @records.where.not(password_digest: nil) if params[:new_pass] == '1'
+    @records = @records.where(password_digest: nil) if params[:new_pass] == '0'
+
     @search = params[:q]
     @records = @records.admin_search_for(@search) if @search.present?
 
