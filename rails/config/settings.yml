@@ -11,6 +11,7 @@ defaults:
   default_plan_name: basic
   default_empty_name: tw5
   minimum_password_length: 8
+  hub_tag_tab_count: 5
 
   #banner_message:
   #  :icon: exclamation-triangle

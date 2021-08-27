@@ -42,12 +42,23 @@ module HubQuery
 
   end
 
-  def self.tags_for_searchable_sites
-    tags = ActsAsTaggableOn::Tagging.where(
-      taggable_id: Site.searchable.updated_at_least_once.pluck(:id) + TspotSite.searchable.pluck(:id),
-      taggable_type: ['Site', 'TspotSite'])
+  def self.most_used_tags
+    # Find just the records for sites that are visible in the hub
+    tagging = ActsAsTaggableOn::Tagging.where(
+      taggable_id: Site.searchable.updated_at_least_once.pluck(:id),
+      taggable_type: 'Site'
+    ).or(ActsAsTaggableOn::Tagging.where(
+      taggable_id: TspotSite.searchable.pluck(:id),
+      taggable_type: 'TspotSite'
+    ))
 
-    ActsAsTaggableOn::Tag.where(id: tags.pluck(:tag_id)).order('taggings_count desc');
+    # Do our own counts because the built in taggings_count value
+    # is for all sites, not just sites visible in the hub
+    tagging.
+      group_by{ |t| t.tag.name }.
+      map{ |k, v| [k, -v.count] }.
+      sort_by(&:last).
+      map(&:first)
   end
 
 end

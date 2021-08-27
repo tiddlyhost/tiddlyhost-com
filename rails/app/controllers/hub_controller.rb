@@ -53,9 +53,9 @@ class HubController < ApplicationController
 
     @search = params[:q]
 
-    # Show four popular tags in the tab bar.
+    # Show a few popular tags in the tab bar.
     # (It's not the best UX for tag based site discovery, but good enough for now.)
-    @tag_tabs = HubQuery.tags_for_searchable_sites.limit(4).pluck(:name)
+    @tag_tabs = HubQuery.most_used_tags.first(Settings.hub_tag_tab_count)
 
     # If there's a particular tag selected, show that in the tab bar also
     @tag_tabs = @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
