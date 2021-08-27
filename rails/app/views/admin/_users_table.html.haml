@@ -22,7 +22,10 @@
       %td= link_to_user(user.name, user)
       %td= link_to_user(user.username, user)
       %td= link_to_user(user.email, user)
-      %td= link_to(bool_text(user.use_gravatar?), gravatar_url(user.email), target: '_blank')
+      %td
+        -if user.use_gravatar?
+          =link_to(gravatar_url(user.email), target: '_blank') do
+            =gravatar_image(user, size: 18)
       %td= user.plan.name
       %td= user.sign_in_count
       %td= link_to_user_sites(pluralize(user.sites.count, 'site'), user, action: :sites)
