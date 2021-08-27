@@ -14,6 +14,10 @@ class ThFile < TwFile
     "#{empty_dir}/#{empty_type}.html"
   end
 
+  def self.empty_file_present?(empty_type)
+    File.file?(empty_path(empty_type))
+  end
+
   def self.empty_html(empty_type)
     File.read(empty_path(empty_type))
   end

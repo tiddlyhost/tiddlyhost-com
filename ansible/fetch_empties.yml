@@ -5,9 +5,11 @@
 
   vars:
     empties_list:
-    - name: tw5
-      # Later we'll use stable versions but for now we need a prerelease so
-      # that https://github.com/Jermolene/TiddlyWiki5/pull/5455 is included.
+    # Waiting for 5.2.0
+    #- name: tw5
+    #  url: https://tiddlywiki.com/empty.html
+
+    - name: prerelease
       url: https://tiddlywiki.com/prerelease/empty.html
 
     - name: classic

@@ -5,11 +5,15 @@ class Empty < ApplicationRecord
   scope :enabled, ->{ where(enabled: true) }
 
   def self.for_select
-    enabled.order(:id)
+    enabled.order(:id).to_a.select(&:present?)
   end
 
   def th_file
     ThFile.from_empty(name)
+  end
+
+  def present?
+    ThFile.empty_file_present?(name)
   end
 
   def html

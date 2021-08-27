@@ -162,7 +162,7 @@ redo-cert: clear-cert cert
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-info js-math
+build-prod: build-info js-math download-empties
 	docker-compose -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
 	  --build-arg RAILS_MASTER_KEY=$$( cat rails/config/master.key ) \
