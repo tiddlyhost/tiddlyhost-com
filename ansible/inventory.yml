@@ -6,6 +6,10 @@ all:
   vars:
     root_home_dir: /root
     home_dir: /home/{{ ansible_user }}
+
     bin_dir: "{{ home_dir }}/bin"
+    docker_dir: "{{ home_dir }}/docker"
     backups_dir: "{{ home_dir }}/backups"
     db_dump_file: "{{ backups_dir }}/dbdump.gz"
+
+    prerelease_empty: https://tiddlywiki.com/prerelease/empty.html

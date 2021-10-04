@@ -28,6 +28,7 @@ services:
 
     volumes:
     - ./docker/log:/var/log/app:Z
+    - ./docker/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
     - rails-static:/opt/app/public
 
     build:

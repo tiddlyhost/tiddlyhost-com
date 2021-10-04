@@ -9,7 +9,7 @@
       url: https://tiddlywiki.com/empty.html
 
     - name: prerelease
-      url: https://tiddlywiki.com/prerelease/empty.html
+      url: "{{ prerelease_empty }}"
 
     - name: classic
       url: https://classic.tiddlywiki.com/empty.html

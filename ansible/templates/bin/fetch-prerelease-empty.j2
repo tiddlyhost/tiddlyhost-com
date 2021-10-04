@@ -1,0 +1,11 @@
+#!/bin/bash
+
+CURL=/usr/bin/curl
+
+PRERELEASE_URL={{ prerelease_empty }}
+PRERELEASE_FILE={{ docker_dir }}/prerelease.html
+
+TMP_FILE=$( /usr/bin/mktemp )
+
+$CURL -s $PRERELEASE_URL -o $TMP_FILE && cp $TMP_FILE $PRERELEASE_FILE
+rm -f $TMP_FILE
