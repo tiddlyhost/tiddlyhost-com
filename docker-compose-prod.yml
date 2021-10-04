@@ -40,7 +40,7 @@ services:
     command: memcached -I 8M
 
   db:
-    image: postgres
+    image: postgres:13
     container_name: th_db
     restart: always
     environment:
