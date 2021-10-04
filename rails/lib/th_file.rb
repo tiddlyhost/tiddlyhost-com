@@ -62,15 +62,6 @@ class ThFile < TwFile
         # a little less traffic.
         '$:/config/AutoSave' => 'no',
 
-        # A temporary workaround so users can install 5.1.23 plugins even though we're
-        # using a 5.1.24 TiddlyWiki prerelease.
-        '$:/config/OfficialPluginLibrary' => {
-          url: 'https://tiddlywiki.com/library/v5.1.23/index.html',
-          text: '{{$:/language/OfficialPluginLibrary/Hint}}',
-          caption: '{{$:/language/OfficialPluginLibrary}}',
-          tags: '$:/tags/PluginLibrary',
-        },
-
       })
 
     else # classic

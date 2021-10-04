@@ -21,7 +21,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
       { url: '/tiddlers.json?skinny=1&include_system=1',
         titles: [
-          "$:/config/OfficialPluginLibrary", "$:/core", "$:/isEncrypted",
+          "$:/core", "$:/isEncrypted",
           "$:/themes/tiddlywiki/snowwhite", "$:/themes/tiddlywiki/vanilla",
           "MyTiddler", "Foo", "Baz" ] },
 

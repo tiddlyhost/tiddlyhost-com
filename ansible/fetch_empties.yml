@@ -5,9 +5,8 @@
 
   vars:
     empties_list:
-    # Waiting for 5.2.0
-    #- name: tw5
-    #  url: https://tiddlywiki.com/empty.html
+    - name: tw5
+      url: https://tiddlywiki.com/empty.html
 
     - name: prerelease
       url: https://tiddlywiki.com/prerelease/empty.html
