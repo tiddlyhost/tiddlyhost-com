@@ -19,21 +19,28 @@ ARG APP_PATH=/opt/app
 ARG APP_LOG_PATH=/var/log/app
 ARG CERT_PATH=/opt/certs
 
-# Use the specified id so we can read and write directories outside the container
-RUN addgroup --gid $GROUP_ID $APP_USER
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $APP_USER
-RUN mkdir -p $APP_PATH && chown -R $APP_USER:$APP_USER $APP_PATH
-RUN mkdir -p $APP_LOG_PATH && chown -R $APP_USER:$APP_USER $APP_LOG_PATH
+RUN \
+  #
+  # Use the specified id so we can read and write directories outside the container
+  addgroup --gid $GROUP_ID $APP_USER && \
+  adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $APP_USER && \
+  #
+  # Create app dir and app log dir
+  mkdir -p $APP_PATH && chown -R $APP_USER:$APP_USER $APP_PATH && \
+  mkdir -p $APP_LOG_PATH && chown -R $APP_USER:$APP_USER $APP_LOG_PATH
 
-# Later we'll use bundler to install rails
-RUN gem install bundler
 
-# This is how to install yarn apparently...
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.d/yarn.list
-
-# Install psql client for database access, nodejs and yarn for webpacker, vim for rails credentials:edit
-RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
+RUN \
+  #
+  # Later we'll use bundler to install rails
+  gem install bundler && \
+  #
+  # This is how to install yarn apparently...
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.d/yarn.list && \
+  #
+  # Install psql client for database access, nodejs and yarn for webpacker, vim for rails credentials:edit
+  apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
 
 # Install script to help start rails
 COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin
