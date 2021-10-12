@@ -26,6 +26,17 @@ defaults:
   #    unstable. If you experience problems or have a feature suggestion, please create an
   #    issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
 
+  plan_descriptions:
+    :free:
+      :features:
+      - Create public and private TiddlyWiki & Feather Wiki sites
+    :standard:
+      :features:
+      - View and recover previous versions of your sites with the save history feature
+    :premium:
+      :features:
+      - Custom domain names
+      - File Upload Plugin support
 
 development:
   url_defaults:

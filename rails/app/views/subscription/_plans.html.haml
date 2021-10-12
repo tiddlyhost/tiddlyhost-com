@@ -1,0 +1,36 @@
+
+%h2 Subscription Plans
+
+%p.mt-3
+-if @subscribed
+  .card
+    .card-body.p-2.ps-3.subscribed-message
+      %big
+        You are currently subscribed to the <b>Tiddlyhost #{@subscription_info.name}</b> subscription plan.
+        Use
+        =link_to '/subscription', style: "text-decoration: none;" do
+          =bi_icon('bag-check', fill: '#0d5eed', style: 'margin-right: -2px;')
+          Manage plan
+        to view or change your subscription.
+
+-else
+  %p
+    %big
+      Upgrading to a subscription plan gives you access to Tiddlyhost features not available to free plan users.
+
+      Billing is handled by
+      =link_to 'https://stripe.com/', target: '_blank', title: "stripe.com", class: "stripe-logo-link" do
+        =render 'stripe_logo'
+      \.
+
+    .card
+      .card-body.p-2.ps-3.subscribed-message.text-center
+        %big
+          You are currently using the <b class="th-slightly-muted">Tiddlyhost Free Plan</b>.
+          To upgrade to <b class="th-slightly-muted">Tiddlyhost Standard</b> click
+          the <b class="th-slightly-muted">Subscribe Now</b> button below.
+
+.d-flex.mt-4.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
+  =render 'pricing_card', plan: :free
+  =render 'pricing_card', plan: :standard
+  =render 'pricing_card', plan: :premium

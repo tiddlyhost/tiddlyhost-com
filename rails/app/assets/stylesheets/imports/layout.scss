@@ -324,6 +324,10 @@ $hilight_bg_color: #d5e0f9;
     .thumbnail-large {
         border: 1px solid #ddd;
     }
+
+    .red-icon {
+        fill: var(--bs-red);
+    }
 }
 
 [data-bs-theme="dark"] {
@@ -344,5 +348,9 @@ $hilight_bg_color: #d5e0f9;
 
     .thumbnail-large {
         border: 1px solid #181822;
+    }
+
+    .red-icon {
+        fill: var(--bs-yellow);
     }
 }

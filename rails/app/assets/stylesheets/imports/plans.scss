@@ -1,0 +1,75 @@
+
+[data-bs-theme="light"], [data-bs-theme="dark"] {
+    .plan-Free { background-color: #678; }
+    .plan-Standard { background-color: #198754; }
+    .plan-Premium { background-color: #7952b3; }
+
+    .plan-Free-fg { color: #678 !important; }
+    .plan-Standard-fg { color: #198754 !important; }
+    .plan-Premium-fg { color: #7952b3 !important; }
+
+    .plan-Free-fg { color: #678 !important; border-color: #678 !important; }
+    .plan-Standard-fg { color: #198754 !important; border-color: #198754 !important; }
+    .plan-Premium-fg { color: #7952b3 !important; border-color: #7952b3 !important; }
+
+    button.plan-Free-fg:hover { color: #fff !important; border-color: #678 !important; background-color: #678 !important; }
+    button.plan-Standard-fg:hover { color: #fff !important; border-color: #198754 !important; background-color: #198754 !important; }
+    button.plan-Premium-fg:hover { color: #fff !important; border-color: #7952b3 !important; background-color: #7952b3 !important; }
+
+    .plan-Free-fg svg { fill: #678; }
+    .plan-Standard-fg svg { fill: #198754; }
+    .plan-Premium-fg svg { fill: #7952b3; }
+}
+
+.plan-card {
+    .card-header {
+        border-bottom-style: none;
+    }
+
+    .card-body ul li {
+        font-size: 95%;
+        padding: 0.5em;
+        text-align: left;
+        padding-left: 1.5rem;
+
+        &:before {
+            content: "\2713";
+            left: 32px;
+            margin-top: -3px;
+            position: absolute;
+            font-size: 130%;
+            opacity: 60%;
+        }
+    }
+
+}
+
+[data-bs-theme="light"] {
+    .plan-card {
+        @extend .shadow-sm;
+    }
+}
+
+[data-bs-theme="dark"] {
+    .plan-card, .subscribed-message {
+        background-color: #192023;
+    }
+}
+
+.stripe-logo-link {
+    text-decoration: none;
+    svg {
+        height: 1.7em;
+        margin-left: -0.35em;
+        margin-right: -0.35em;
+        opacity: 80%;
+    }
+}
+
+[data-bs-theme="dark"] .stripe-logo-link {
+    svg {
+        .st0 {
+            fill: var(--bs-gray-400) !important;
+        }
+    }
+}

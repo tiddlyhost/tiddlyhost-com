@@ -114,4 +114,18 @@ class Settings
     (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map{|m| m.to_s.sub(/_enabled\?/, '').to_sym}).uniq.sort
   end
 
+  def self.stripe_products
+    Settings.secrets(Rails.env.to_sym, :stripe, :products)
+  end
+
+  # The OpenStruct should have keys :name, :price, :id
+  def self.stripe_product(plan, frequency=:monthly)
+    OpenStruct.new(self.stripe_products&.dig(plan, frequency))
+  end
+
+  # Look up a product's details from its stripe id
+  def self.stripe_product_by_id(plan_id)
+    OpenStruct.new(stripe_products&.values.map(&:values).flatten.find{|p| p[:id] == plan_id})
+  end
+
 end

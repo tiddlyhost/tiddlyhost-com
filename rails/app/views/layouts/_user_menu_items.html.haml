@@ -15,6 +15,27 @@
     =bi_icon('person-square', fill: "#444", style: "margin-left: 2px;")
     Manage account
 
+-if feature_enabled?(:subscriptions)
+  %li.dropdown-divider
+
+  %li.dropdown-item-text
+    Plan
+    %br
+    %b.ps-1
+      =link_to subscription_path, class: "plan-#{current_user.subscription_info.name}-fg" do
+        -if current_user.subscribed?
+          =bi_icon('check2-circle', style: "margin-left: 1px; margin-right: -2px;")
+        Tiddlyhost #{current_user.subscription_info.name}
+
+  %li
+    =link_to subscription_path, class: 'dropdown-item' do
+      -if current_user.subscribed?
+        =bi_icon('bag-check', style: "margin-left: 1px;")
+        Manage plan
+      -else
+        =bi_icon('stars', style: "margin-left: 1px; margin-right: -2px;", class: "red-icon")
+        Upgrade plan
+
 %li.dropdown-divider
 
 %li.dropdown-item-text

@@ -7,13 +7,16 @@ module Settings::Features
   end
 
   def site_history_enabled?(user)
-    # Later: users with a subscription
+    user&.is_admin? || user&.subscribed?
+  end
+
+  def subscriptions_enabled?(user=nil)
+    # Hide subscriptions from non-admins until they're ready to launch
     user&.is_admin?
   end
 
   def redirect_tspot_to_url_enabled?(user)
-    # Later: users with a subscription
-    user&.is_admin?
+    user&.is_admin? || user&.subscribed?
   end
 
 end

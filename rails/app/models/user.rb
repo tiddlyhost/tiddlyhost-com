@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include AdminSearchable
+  include Subscriber
 
   #
   # Include devise modules. Others available are:
@@ -17,7 +18,11 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable,
          :secure_validatable, email_validation: false
 
+  # Beware this is completely unrelated to subscription plans but it
+  # is used to classify admin/superuser users and maybe in future
+  # other types of users. Todo maybe: rename it to prevent confusion.
   belongs_to :plan
+
   validates_presence_of :name
 
   has_many :sites, dependent: :destroy

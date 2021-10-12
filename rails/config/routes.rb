@@ -67,6 +67,9 @@ Rails.application.routes.draw do
     get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }
     get "hub/user/:username", to: 'hub#user'
 
+    get 'subscription', to: 'subscription#show'
+    get 'subscription/plans', to: 'subscription#plans'
+
     resources :sites do
       collection do
         get :view_toggle

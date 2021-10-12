@@ -561,6 +561,11 @@ js-math-purge: js-math-clean
 
 #----------------------------------------------------------
 
+stripe-dev-listen:
+	stripe listen --forward-to https://tiddlyhost.local/pay/webhooks/stripe --skip-verify
+
+#----------------------------------------------------------
+
 /tmp/Simon\ Baird.png:
 	@curl -s -o '$@' \
 	  https://www.gravatar.com/avatar/bfaba91f41f0c01aba1ef0751458b537
