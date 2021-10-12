@@ -45,6 +45,10 @@ gem 'haml-rails'
 # Support S3 for ActiveStorage
 gem "aws-sdk-s3", require: false
 
+# For payments
+gem 'pay', '~> 3.0'
+gem 'stripe', '>= 2.8', '< 6.0'
+
 # Needed after ruby 3.1 upgrade
 gem 'net-smtp', require: false
 gem 'net-pop', require: false
