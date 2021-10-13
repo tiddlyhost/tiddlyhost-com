@@ -22,7 +22,9 @@ class User < ApplicationRecord
 
   has_many :sites, dependent: :destroy
   has_many :tspot_sites, dependent: :nullify
+
   def all_sites
+    return sites unless Settings.tiddlyspot_enabled?
     sites + tspot_sites
   end
 
