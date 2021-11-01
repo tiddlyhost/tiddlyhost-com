@@ -21,5 +21,5 @@
     get_url:
       url: "{{ item.url }}"
       dest: "{{ empties_dir }}/{{ item.name }}.html"
-      mode: '0444'
+      mode: '0644'
     with_items: "{{ empties_list }}"
