@@ -6,6 +6,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   setup do
     @site = new_site_helper(name: 'foo', tiddlers: {
       'MyTiddler' => 'Hi there', 'Foo' => 'Bar', 'Baz' => '123' })
+
+    host! "#{@site.name}.#{Settings.main_site_host}"
   end
 
   test "tiddlers.json" do
@@ -38,7 +40,6 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   def assert_expected_json(url:, json: nil, titles: nil)
-    host! "foo.#{Settings.main_site_host}"
     get url
     assert_response :success
     assert_equal json, JSON.load(response.body) if json
@@ -60,7 +61,6 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   def assert_expected_tid(url:, tid:)
-    host! "foo.#{Settings.main_site_host}"
     get url
     assert_response :success
     assert_equal tid, response.body
@@ -71,10 +71,42 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   def assert_tid_not_found(url)
-    host! "foo.#{Settings.main_site_host}"
     get url
     assert_response :not_found
     assert_equal '', response.body
+  end
+
+  test "public site" do
+    [nil, :mary, :bobby].each do |username|
+      fetch_site_as_user(username: username, expected_status: 200)
+    end
+  end
+
+  test "private site" do
+    @site.update!(is_private: true)
+
+    {nil=>401, mary: 403, bobby: 200}.each do |username, expected_status|
+      fetch_site_as_user(username: username, expected_status: expected_status)
+    end
+  end
+
+  def fetch_site_as_user(username:, expected_status:)
+    user = User.where(username: username).first
+    sign_in user if user
+
+    get '/'
+    assert_response expected_status
+
+    if expected_status == 200
+      th_file = ThFile.new(response.body)
+
+      # Sanity checks
+      assert_equal 'foo', th_file.get_site_name
+      assert_equal 'Bar', th_file.tiddler_content('Foo')
+      assert_equal '123', th_file.tiddler_content('Baz')
+
+      th_file
+    end
   end
 
 end
