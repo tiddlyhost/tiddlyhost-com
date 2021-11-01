@@ -17,12 +17,12 @@ GROUP_ID ?= $(shell id -g)
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base: cleanup
-	docker-compose build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+	$(DC) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Set up your environment right after git clone
 rails-init:
 	mkdir -p docker/postgresql-data
-	docker-compose run --rm app bash -c "bundle install && \
+	$(DC) run --rm app bash -c "bundle install && \
 	  bundle exec rails webpacker:install && \
 	  bundle exec rails db:create && \
 	  bundle exec rails db:migrate"
@@ -51,15 +51,17 @@ nginx-conf-refresh: nginx-conf-clear nginx-conf
 
 # Brings up the web container only and runs bash in it
 run-base:
-	-docker-compose run --rm --no-deps app bash
+	-$(DC) run --rm --no-deps app bash
 
 # Brings up the db and the web container and runs bash in the web container
 shell:
-	-docker-compose run --rm app bash
+	-$(DC) run --rm app bash
 
 # Figure out if there's already a container running and use exec or run accordingly
-EXEC_OR_RUN=$(shell [[ $$(docker-compose ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
-DCC=-docker-compose $(EXEC_OR_RUN) app bash -c
+EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
+D=sudo docker
+DC=sudo docker-compose
+DCC=-$(DC) $(EXEC_OR_RUN) app bash -c
 
 join:
 	$(DCC) bash
@@ -77,18 +79,18 @@ app-log: docker/log
 
 # Start Tiddlyhost locally
 start: nginx-conf-local cert app-log
-	-docker-compose up
+	-$(DC) up
 
 # Run bundle-install
 bundle-install:
-	-docker-compose run --rm --no-deps app bash -c "bin/bundle install"
+	-$(DC) run --rm --no-deps app bash -c "bin/bundle install"
 
 # View or edit encrypted secrets
 secrets:
-	-docker-compose run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit"
+	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit"
 
 dump-secrets:
-	-@docker-compose run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit" | head -n -1
+	-@$(DC) run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit" | head -n -1
 
 # Run test suite
 tests:
@@ -99,21 +101,21 @@ onetest:
 
 # (Use these if you want to run the prod container locally)
 shell-prod:
-	-docker-compose -f docker-compose-prod.yml run --rm app bash
+	-$(DC) -f docker-compose-prod.yml run --rm app bash
 
 join-prod:
-	-docker-compose -f docker-compose-prod.yml exec app bash -c bash
+	-$(DC) -f docker-compose-prod.yml exec app bash -c bash
 
 start-prod: nginx-conf-prod
-	-RAILS_MASTER_KEY=`cat rails/config/master.key` docker-compose -f docker-compose-prod.yml up
+	-RAILS_MASTER_KEY=`cat rails/config/master.key` $(DC) -f docker-compose-prod.yml up
 
 # Stop and remove containers, clean up unused images
 cleanup:
-	docker-compose stop
-	docker-compose -f docker-compose-prod.yml stop
-	docker-compose rm -f
-	docker-compose -f docker-compose-prod.yml rm -f
-	docker image prune -f
+	$(DC) stop
+	$(DC) -f docker-compose-prod.yml stop
+	$(DC) rm -f
+	$(DC) -f docker-compose-prod.yml rm -f
+	$(D) image prune -f
 
 # Use this when you sign up a new user
 signup-link:
@@ -163,13 +165,13 @@ build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info js-math download-empties
-	docker-compose -f docker-compose-prod.yml build \
+	$(DC) -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
 	  --build-arg RAILS_MASTER_KEY=$$( cat rails/config/master.key ) \
 	  app
 
 push-prod:
-	docker --config etc/docker-conf push sbaird/tiddlyhost
+	$(D) --config etc/docker-conf push sbaird/tiddlyhost
 
 build-push:          tests build-prod push-prod
 full-build-deploy:   cleanup build-base build-push full-deploy
