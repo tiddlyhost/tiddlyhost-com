@@ -38,16 +38,33 @@ class ThFile < TwFile
     from_file(empty_path(empty_type))
   end
 
-  def apply_tiddlyhost_mods(site_name, for_download: false)
+  def apply_tiddlyhost_mods(site_name, for_download: false, signed_in_user: nil)
     if is_tw5?
 
-      upload_url = if for_download
-        # Clear $:/UploadURL so the save button in the downloaded file will not try
-        # to use upload.js. It should use another save method, probably download to file.
-        ""
-      else
+      upload_url = if !for_download
         # The url for uploads is the same as the site url
         Settings.subdomain_site_url(site_name)
+      else
+        # Clear $:/UploadURL so the save button in the downloaded file will not try
+        # to use upload.js. It should use another save method, probably download to file.
+        # Todo: Consider if we should do that also when signed_in_user is nil.
+        ""
+      end
+
+      if !for_download && signed_in_user
+        # Provide a way for TiddlyWiki files to detect when
+        # they're being viewed by their owner
+        status_is_logged_in = 'yes'
+
+        # Seems like a useful idea to expose the user also
+        status_user_name = signed_in_user
+
+      else
+        # The readonly plugin might user this to hide tiddler edit buttons, etc.
+        status_is_logged_in = 'no'
+
+        # Clear this when downloading or if it's not your site
+        status_user_name = ''
       end
 
       write_tiddlers({
@@ -62,6 +79,9 @@ class ThFile < TwFile
         # a little less traffic.
         '$:/config/AutoSave' => 'no',
 
+        # Provide a way for TiddlyWikis to detect when they're able to be saved
+        '$:/status/IsLoggedIn' => status_is_logged_in,
+        '$:/status/UserName' => status_user_name,
       })
 
     else # classic

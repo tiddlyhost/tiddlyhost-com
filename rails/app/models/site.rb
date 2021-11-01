@@ -55,8 +55,8 @@ class Site < ApplicationRecord
     th_file.looks_valid?
   end
 
-  def html_content
-    th_file.apply_tiddlyhost_mods(name).to_html
+  def html_content(signed_in_user: nil)
+    th_file.apply_tiddlyhost_mods(name, signed_in_user: signed_in_user).to_html
   end
 
   def json_data(opts={})
