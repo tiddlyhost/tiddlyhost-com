@@ -4,7 +4,8 @@ Tiddlyhost
 About
 -----
 
-Tiddlyhost is the new new Tiddlyspot, a hosting service for TiddlyWiki.
+[Tiddlyhost](https://tiddlyhost.com/) is the new Tiddlyspot, a hosting
+service for TiddlyWiki.
 
 It aims to be the easiest and best way to use TiddlyWiki online.
 
