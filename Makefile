@@ -215,13 +215,28 @@ TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
 db-backup:
 	mkdir -p backups/db/$(TIMESTAMP)
 	$(PLAY) -v ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP)
-	du -h backups
+	du -h backups/db
 
-# Assume you have suitable credentials available
-s3-backup:
+s3-bucket-name:
 	@[[ ! -z "$$BUCKET_NAME" ]] || ( echo "BUCKET_NAME not set!" && exit 1 )
+
+# Assume you have suitable s3 credentials available
+
+# Copy down new versions of sites, keeping old versions locally
+s3-backup: s3-bucket-name
+	aws s3 sync s3://$(BUCKET_NAME) ./backups/s3/latest
+	du -h backups/s3
+
+# Copy down new versions of sites, removing old versions locally
+s3-backup-and-prune: s3-bucket-name
+	aws s3 sync s3://$(BUCKET_NAME) ./backups/s3/latest --delete
+	du -h backups/s3
+
+# Ineffiently copy down everything to a timestamp directory
+# (Todo: Probably should just make a local copy of latest instead)
+s3-full-snapshot: s3-bucket-name
 	aws s3 sync s3://$(BUCKET_NAME) ./backups/s3/$(TIMESTAMP)
-	du -h backups
+	du -h backups/s3
 
 show-backups:
 	@du -h backups
