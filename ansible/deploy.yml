@@ -289,6 +289,14 @@
     tags:
     - scripts
 
+  - name: Fetch latest prerelease
+    command:
+      cmd: "{{ bin_dir }}/fetch-prerelease-empty"
+    tags:
+    - app
+    - fast-upgrade
+    - refresh-prerelease
+
   - name: Clean up unused docker images
     command:
       cmd: docker image prune -f

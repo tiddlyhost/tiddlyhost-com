@@ -193,6 +193,9 @@ deploy-certs:
 deploy-scripts:
 	$(PLAY) ansible/deploy.yml --tags=scripts
 
+refresh-prerelease:
+	$(PLAY) ansible/deploy.yml --tags=refresh-prerelease
+
 deploy-app: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=app
 
