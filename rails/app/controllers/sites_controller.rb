@@ -1,7 +1,7 @@
 
 class SitesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_site, only: [:show, :edit, :update, :upload_form, :upload, :destroy]
+  before_action :set_site, except: [:index, :new, :create]
   before_action :set_empties_list, only: [:new, :create]
 
   # GET /sites
@@ -15,6 +15,11 @@ class SitesController < ApplicationController
   # GET /sites/1
   # GET /sites/1.json
   def show
+  end
+
+  # GET /sites/1/download
+  def download
+    download_html_content(@site.html_content, @site.name)
   end
 
   # GET /sites/new

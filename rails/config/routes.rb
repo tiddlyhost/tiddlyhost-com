@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
     resources :sites do
       member do
+        get :download
         get :upload_form
         patch :upload
       end
@@ -75,6 +76,7 @@ Rails.application.routes.draw do
         end
 
         member do
+          get :download
           post :disown
 
           get :change_password

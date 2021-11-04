@@ -64,15 +64,17 @@
                 =bi_icon('gear-fill', style: 'color: white; margin-right: 0px;')
                 Actions
               .dropdown-menu
-                =site_download_link(site, class: 'dropdown-item') { bi_icon('download') + 'Download' }
-                .dropdown-divider
                 -if is_tspot
+                  =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+                  .dropdown-divider
                   =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Change settings' }
                   =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Change password' }
                   .dropdown-divider
                   =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
                     data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
                 -else
+                  =link_to(download_site_path(site), class: 'dropdown-item', target: '_blank') { bi_icon('download') + 'Download' }
+                  .dropdown-divider
                   =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Change settings' }
                   =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
                   .dropdown-divider
