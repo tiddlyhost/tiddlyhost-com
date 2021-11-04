@@ -1,5 +1,5 @@
 %h1
-  =bi_icon(@success ? 'check-circle' : 'exclamation-diamond', style: "color: #{@success ? 'green' : 'orange'}")
+  =bi_icon(@success ? 'check-circle' : 'exclamation-diamond', fill: "#{@success ? 'green' : 'orange'}", style: 'opacity: 100%;' )
   ="#{@message}"
 
 %p{style: "padding: 1em;"}

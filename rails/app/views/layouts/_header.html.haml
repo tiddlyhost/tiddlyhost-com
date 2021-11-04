@@ -35,7 +35,7 @@
             -if current_user.use_gravatar?
               =gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
             -else
-              =bi_icon('person-fill', style: 'color: white; margin-right: -1px;')
+              =bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
             =current_user.username_or_name
 
           .dropdown-menu.dropdown-menu-right{'aria-labelledby'=>'navbarDropdown'}
