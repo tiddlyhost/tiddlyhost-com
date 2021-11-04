@@ -85,6 +85,10 @@ start: nginx-conf-local cert app-log
 bundle-install:
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle install"
 
+# Run bundle-clean
+bundle-clean:
+	-$(DC) run --rm --no-deps app bash -c "bin/bundle clean"
+
 # View or edit encrypted secrets
 secrets:
 	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit"
