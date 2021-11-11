@@ -11,6 +11,8 @@ rails/public/jsMath/
 rails/public/build-info.txt
 rails/config/master.key
 rails/config/credentials.yml.enc
+rails/config/credentials/development.key
+rails/config/credentials/development.yml.enc
 docker/certs
 docker/nginx-conf-local
 docker/nginx-conf-prod

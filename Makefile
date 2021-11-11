@@ -89,12 +89,24 @@ bundle-install:
 bundle-clean:
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle clean"
 
+#----------------------------------------------------------
+
 # View or edit encrypted secrets
+# (Beware this is not the same as --environment=production)
+#
 secrets:
 	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit"
 
 dump-secrets:
 	-@$(DC) run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit" | head -n -1
+
+devel-secrets:
+	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit --environment=development"
+
+devel-dump-secrets:
+	-@$(DC) run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit --environment=development" | head -n -1
+
+#----------------------------------------------------------
 
 # Run test suite
 tests:
@@ -111,7 +123,7 @@ join-prod:
 	-$(DC) -f docker-compose-prod.yml exec app bash -c bash
 
 start-prod: nginx-conf-prod
-	-RAILS_MASTER_KEY=`cat rails/config/master.key` $(DC) -f docker-compose-prod.yml up
+	-RAILS_MASTER_KEY=$$( cat $(MASTER_KEY_FILE)` ) $(DC) -f docker-compose-prod.yml up
 
 # Stop and remove containers, clean up unused images
 cleanup:
@@ -165,13 +177,15 @@ redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
+MASTER_KEY_FILE=rails/config/master.key
+
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info js-math download-empties
 	$(DC) -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
-	  --build-arg RAILS_MASTER_KEY=$$( cat rails/config/master.key ) \
+	  --build-arg RAILS_MASTER_KEY=$$( cat $(MASTER_KEY_FILE) ) \
 	  app
 
 push-prod:
