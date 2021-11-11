@@ -4,6 +4,7 @@ rails/log
 rails/storage
 rails/tw_content/empties
 rails/node_modules/
+rails/public/assets/
 rails/public/packs/
 rails/public/packs-test/
 rails/public/jsMath/
