@@ -1,27 +1,42 @@
-%p
-  Tiddlyspot is in recovery mode due to some technical issues.
+%div{style: 'float:right; align: right; margin: 0 2em 1em 2em;'}
+  %i
+    TL;DR:<br>
+  =link_to Settings.main_site_url, class: 'btn btn-lg btn-primary' do
+    Continue to Tiddlyhost
+    =bi_icon 'arrow-right', fill: 'white'
 
 %p
-
-  %b March 26, 2021
-  %br
-  "Save to web" should be working again.
+  Tiddlyspot
+  =link_to('launched in 2006', 'http://announce.tiddlyspot.com/#%5B%5BInitial%20Launch%5D%5D')
+  as a free, quick, easy service for creating and using
+  =link_to('TiddlyWiki', 'https://tiddlywiki.com/')
+  online. It kept running until late 2020 when some
+  =link_to('technical difficulties', 'https://tiddlyspot.blogspot.com/2020/10/what-happened-to-tiddlyspot.html')
+  brought it down.
 
 %p
-  Creating new Tiddlyspot sites is not supported.
-  You can, however, create new sites on
-  %b
-    =link_to('Tiddlyhost', Settings.main_site_url) + ","
-  which is a new, improved replacement for Tiddlyspot. For more information see
-  =link_to 'this announcement', 'http://tiddlyspot.blogspot.com/2021/02/announcing-tiddlyhostcom.html'
+  Fortunately, it has now been replaced by a new, improved TiddlyWiki hosting service called
+  %b=link_to('Tiddlyhost', Settings.main_site_url) + "."
+  Tiddlyhost is completely new service that
+  =link_to('addresses many of the shortcomings', 'https://tiddlyspot.blogspot.com/2021/02/announcing-tiddlyhostcom.html')
+  of Tiddlyspot, and also provides a compatible replacement for existing Tiddlyspot sites,
+  so they can be viewed
+  =link_to("and even updated", 'https://tiddlyspot.blogspot.com/2021/03/tiddlyspot-save-to-web-is-back.html')
+  they way they used to.
+
+%p
+  For more information see the
+  =link_to('FAQ', Settings.faq_url)
   and the
-  =link_to('FAQ', Settings.faq_url) + "."
+  =link_to('About', 'https://tiddlyhost.com/about')
+  page and the
+  =link_to('Blog', 'https://tiddlyspot.blogspot.com/') + '.'
+
+%p Regards,
+%p{style: 'margin-left: 0.5em;'}
+  %i{style: 'opacity: 30%;'} <span style="font-size:140%;">-S</span><b>imon</b>
 
 %p
-  See
-  =link_to 'tiddlyspot.blogspot.com', 'https://tiddlyspot.blogspot.com/'
-  for more details and for the latest updates.
-
-%p Thank you for your patience and messages of support.
-%p Regards,
-%p Simon
+  Ps, thanks Tiddlyspot users for your patience and for all the messages of support
+  and encouragement for both Tiddlyspot and its successor,
+  %b=link_to('Tiddlyhost', Settings.main_site_url) + "."
