@@ -4,6 +4,10 @@
     margin-left: 1.5em;
     margin-bottom: 1.2em;
     font-size: 75%;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .summary-info {
@@ -69,6 +73,10 @@ table.sites {
               margin-right: 0.2rem;
               margin-top: -2px;
               border-radius: 2px;
+            }
+
+            a {
+                text-decoration: none;
             }
         }
 

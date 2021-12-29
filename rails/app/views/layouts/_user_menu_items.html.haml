@@ -1,4 +1,4 @@
-.dropdown-item-text{style: 'color: #888; white-space: nowrap; font-size: 80%;'}
+%li.dropdown-item-text{style: 'color: #6c757d; white-space: nowrap; font-size: 80%;'}
   Signed in as
   %br
   %b
@@ -8,18 +8,21 @@
       =bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
     =current_user.username_or_email
 
-.dropdown-divider
+%li.dropdown-divider
 
-=link_to sites_path, class: 'dropdown-item' do
-  =bi_icon('sliders')
-  Manage your sites
+%li
+  =link_to sites_path, class: 'dropdown-item' do
+    =bi_icon('sliders')
+    Manage your sites
 
-=link_to edit_user_registration_path, class: 'dropdown-item' do
-  =bi_icon('file-earmark-person')
-  Manage your account
+%li
+  =link_to edit_user_registration_path, class: 'dropdown-item' do
+    =bi_icon('file-earmark-person')
+    Manage your account
 
-.dropdown-divider
+%li.dropdown-divider
 
-=link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
-  =bi_icon('box-arrow-left')
-  Log out
+%li
+  =link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
+    =bi_icon('box-arrow-left')
+    Log out

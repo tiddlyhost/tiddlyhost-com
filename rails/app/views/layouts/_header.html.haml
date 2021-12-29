@@ -1,54 +1,57 @@
 
-.navbar.navbar-expand-sm.navbar-dark
-  -#
-  -# Logo
-  -#
-  =link_to(root_path, class: 'navbar-brand', title: 'Tiddlyhost') do
-    =image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;")
+%nav.navbar.navbar-expand-sm.navbar-dark
+  .container-fluid
+    -#
+    -# Logo
+    -#
+    =link_to(root_path, class: 'navbar-brand', title: 'Tiddlyhost') do
+      =image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;")
 
-  -#
-  -# Burger button for phone screens
-  -#
-  %button.navbar-toggler{"type"=>"button", "data-toggle"=>"collapse", "data-target"=>"#navbarSupportedContent",
-    "aria-controls"=>"navbarSupportedContent", "aria-expanded"=>"false", "aria-label"=>"Toggle navigation"}
-    %span.navbar-toggler-icon
+    -#
+    -# Burger button for phone screens
+    -#
+    %button.navbar-toggler(type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+      %span.navbar-toggler-icon
 
-  -#
-  -# Nav bar content
-  -#
-  .collapse.navbar-collapse#navbarSupportedContent
-    -if user_signed_in?
-      -#
-      -# Links for logged in users
-      -#
-      %ul.navbar-nav.mr-auto
-        =nav_link_to "Home", root_path
-        =nav_link_to "Hub", '/hub'
+    -#
+    -# Nav bar content
+    -#
+    .collapse.navbar-collapse#navbarSupportedContent
+      -if user_signed_in?
+        -#
+        -# Links for logged in users
+        -#
+        %ul.navbar-nav.me-auto.mb-lg-0
+          =nav_link_to "Home", root_path
+          =nav_link_to "Hub", '/hub'
 
-      %ul.navbar-nav.ml-auto
-        -if user_is_admin?
-          =nav_link_to "Admin", admin_path, style: 'margin-right: 0.4rem;'
+        %ul.navbar-nav.mb-auto
+          -if user_is_admin?
+            =nav_link_to "Admin", admin_path, style: 'margin-right: 0.4rem;'
 
-        %li.nav-item.dropdown
-          %a.nav-link.dropdown-toggle#navbarDropdown{"href"=>"#", "role"=>"button", "data-toggle"=>"dropdown",
-            "aria-haspopup"=>"true", "aria-expanded"=>"false"}
-            -if current_user.use_gravatar?
-              =gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
-            -else
-              =bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
-            =current_user.username_or_name
+          %li.nav-item.dropdown
+            %a.nav-link.dropdown-toggle#navbarDropdown(role="button"
+              data-bs-toggle="dropdown" aria-expanded="false" href="#"
+              aria-haspopup="true")
+              -if current_user.use_gravatar?
+                =gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
+              -else
+                =bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
+              =current_user.username_or_name
 
-          .dropdown-menu.dropdown-menu-right{'aria-labelledby'=>'navbarDropdown'}
-            =render 'layouts/user_menu_items'
+            %ul.dropdown-menu.dropdown-menu-end{'aria-labelledby'=>'navbarDropdown'}
+              =render 'layouts/user_menu_items'
 
-    -else
-      -#
-      -# Links for not logged in users
-      -#
-      %ul.navbar-nav.mr-auto
-        =nav_link_to "Home", root_path
-        =nav_link_to "Hub", '/hub'
-        =nav_link_to "Sign up", new_user_registration_path
+      -else
+        -#
+        -# Links for not logged in users
+        -#
+        %ul.navbar-nav.me-auto
+          =nav_link_to "Home", root_path
+          =nav_link_to "Hub", '/hub'
+          =nav_link_to "Sign up", new_user_registration_path
 
-      %ul.navbar-nav.ml-auto
-        =nav_link_to "Log in", new_user_session_path
+        %ul.navbar-nav.mb-auto
+          =nav_link_to "Log in", new_user_session_path

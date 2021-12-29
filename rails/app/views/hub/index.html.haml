@@ -32,7 +32,7 @@
   %span.sort-by
     Sort by:
     =link_to(@sort_by[:name], "#", class: 'dropdown-toggle',
-      role: 'button', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
     .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
       -@sort_options.each do |key, sort_option|
         =link_to sort_option[:name], sort_url(sort_option[:default] ? nil : key), class: 'dropdown-item'

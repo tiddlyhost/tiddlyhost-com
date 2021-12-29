@@ -78,6 +78,9 @@ $contrast_color: #29AE4A;
 }
 
 .jumbotron {
+    /* gray-200 in boostrap */
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
     padding: 1.5em 1.5em 2em 1.5em;
     margin-top:1em;
     line-height: 300%;
@@ -140,6 +143,7 @@ footer {
     a {
         padding-left: 0.5em;
         font-weight: bold;
+        text-decoration: none;
     }
 }
 

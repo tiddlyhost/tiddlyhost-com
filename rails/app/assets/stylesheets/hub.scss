@@ -37,6 +37,10 @@ h1 {
             color: #555;
         }
 
+        a {
+            text-decoration: none;
+        }
+
         .name {
             a {
                 overflow: hidden;
@@ -81,6 +85,10 @@ h1 {
 
     .sort-by {
         margin-left: 2em;
+
+        a {
+            text-decoration: none;
+        }
 
         .dropdown-toggle {
             color: #6c757d;

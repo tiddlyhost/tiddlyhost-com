@@ -54,6 +54,10 @@
 }
 
 .table.admin {
+    a {
+        text-decoration: none;
+    }
+
     th,td {
         font-size: 80%;
         white-space: nowrap;
@@ -93,7 +97,6 @@
         padding-right: 1em;
     }
 
-    border-bottom: 1px solid black;
 }
 
 .admin-paginate {
