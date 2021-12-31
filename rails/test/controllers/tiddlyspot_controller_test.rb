@@ -6,7 +6,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     host! Settings.tiddlyspot_host
     get '/'
     assert_response :success
-    assert_match 'Tiddlyspot is in recovery mode', response.body
+    assert_select 'a.btn', 'Continue to Tiddlyhost', response.body
   end
 
   test "www redirect" do
