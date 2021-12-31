@@ -6,8 +6,9 @@ defaults:
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
   faq_url: https://github.com/simonbaird/tiddlyhost/wiki/FAQ
   create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
-  support_email: tiddlyhost@gmail.com
-  support_email_name: Tiddlyhost Support
+  devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
+  support_email: simon.baird@gmail.com
+  support_email_name: Simon Baird
   default_plan_name: basic
   default_empty_name: tw5
   minimum_password_length: 8
