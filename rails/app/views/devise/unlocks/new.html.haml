@@ -1,20 +1,16 @@
-%h2 Resend unlock instructions
 
-=form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
+=render layout: 'form_wrapper', locals: { heading: 'Resend unlock instructions',
+  intro_text: "Enter your email address to resend the account unlock link." } do
 
-  .form-group
+  =form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
+
     =render 'devise/shared/error_messages', resource: resource
 
-  .form-group
-    .form-text
-      Todo.. some explanation here..
+    =render layout: 'field_wrapper' do
+      =f.label :email
+      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-3'
+    =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
+      =f.submit 'Resend unlock instructions', class: 'btn btn-primary'
 
-  .form-group{style: 'margin-top: 2em;'}
-    =f.submit 'Resend unlock instructions', class: 'btn btn-primary'
-
-  .form-group{style: 'margin-left:1em;'}
     =render 'devise/shared/links'

@@ -1,42 +1,37 @@
-%h1 Sign up
 
-%p.small.text-muted{style: 'margin-left: 0.5em;'}<
-  Already have an account? Go to
-  =link_to "log in", new_user_session_path
-  \.
+=render layout: 'form_wrapper', locals: { heading: 'Sign up',
+  intro_text: "Already have an account? Go to #{link_to "log in", new_user_session_path}."} do
 
-=form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
 
-  .form-group
     =render 'devise/shared/error_messages', resource: resource
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Enter your email address
+    =render layout: 'field_wrapper' do
+      =f.label :email
+      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
+      .small.form-text.text-muted Enter your email address
 
-  .form-group
-    =f.label :name
-    =f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Please enter your name
+    =render layout: 'field_wrapper' do
+      =f.label :name
+      =f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control'
+      .small.form-text.text-muted Please enter your name
 
-  .form-group
-    =f.label :username
-    =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Optional. Choose a unique username between 3 and 30 characters long.
+    =render layout: 'field_wrapper' do
+      =f.label :username
+      =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control'
+      .small.form-text.text-muted Optional. Choose a unique username between 3 and 30 characters long
 
-  .form-group
-    =f.label :password
-    =f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
+    =render layout: 'field_wrapper' do
+      =f.label :password
+      =f.password_field :password, autocomplete: 'new-password', class: 'form-control'
+      .small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
 
-  .form-group
-    =f.label :password_confirmation
-    =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Re-type your password to confirm
+    =render layout: 'field_wrapper' do
+      =f.label :password_confirmation
+      =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
+      .small.form-text.text-muted Re-type your password to confirm
 
-  .form-group{style: 'margin-top: 2em;'}
-    =f.submit 'Create account', class: 'btn btn-primary'
+    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+      =f.submit 'Create account', class: 'btn btn-primary'
 
-  .form-group{style: 'margin-left:1em;'}
     =render 'devise/shared/links'

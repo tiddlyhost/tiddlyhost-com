@@ -1,19 +1,16 @@
-%h2 Forgot your password?
 
-=form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+=render layout: 'form_wrapper', locals: { heading: 'Forgot your password?',
+  intro_text: "Enter your email address to receive a reset password link." } do
 
-  .form-group
-    .form-text Enter your email address to receive a reset password link.
+  =form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
 
-  .form-group
     =render 'devise/shared/error_messages', resource: resource
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-3'
+    =render layout: 'field_wrapper' do
+      =f.label :email
+      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
 
-  .form-group
-    =f.submit 'Send reset password link', class: 'btn btn-primary'
+    =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
+      =f.submit 'Send reset password link', class: 'btn btn-primary'
 
-  .form-group{style: 'margin-left:1em;'}
     =render 'devise/shared/links'

@@ -1,19 +1,28 @@
-.claim-tiddlyspot
-  =form_with url: '/tspot_sites/claim' do |f|
-    %table
-      %tr
-        %td= f.label :site_name, "Site name:"
-        %td= f.text_field :site_name, value: @site_name, class: 'form-control'
-        %td.big .tiddlyspot.com
-      %tr
-        %td= f.label :password, "Site password:"
-        %td= f.password_field :password, value: @password, class: 'form-control'
-        %td
-      %tr
-        %td
-        %td
-          =f.submit 'Claim', class: 'btn btn-primary'
-          =link_to 'Cancel', sites_path
-        %td
 
-.clear-left
+=render layout: 'form_wrapper', locals: { heading: 'Claim Tiddlyspot site' } do
+
+  =form_with url: '/tspot_sites/claim' do |f|
+
+    =render layout: 'field_wrapper' do
+      .form-text.text-body
+        %p
+          If you know the name and the password for a Tiddlyspot site, then you can
+          claim it as your own and manage it within Tiddlyhost.
+
+        %p
+          Enter a site name and password below to claim ownership of a Tiddlyspot site.
+
+    =render layout: 'field_wrapper' do
+      =f.label :site_name, "Site name:"
+      %div
+        -# Fixme: Should be a better way to make these two on the same line
+        =f.text_field :site_name, value: @site_name, class: 'form-control', style: 'display:inline; width:70%;'
+        %span .tiddlyspot.com
+
+    =render layout: 'field_wrapper' do
+      =f.label :password, "Site password:"
+      =f.password_field :password, value: @password, class: 'form-control'
+
+    =render layout: 'field_wrapper' do
+      =f.submit 'Claim site', class: 'btn btn-primary my-3'
+      =link_to 'Cancel', sites_path, class: 'mx-4'

@@ -1,0 +1,12 @@
+-#
+  These are bootstrap padding utility classes
+  (Todo: This seems like overkill for a div with some classes..)
+
+-px = local_assigns[:px] || 'px-2'
+-pt = local_assigns[:pt] || 'pt-0'
+-pb = local_assigns[:pb] || 'pb-3'
+
+-extra = local_assigns[:extra] || ""
+
+%div{class: "#{px} #{pt} #{pb} #{extra}".strip}
+  =yield

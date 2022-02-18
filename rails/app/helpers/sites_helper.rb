@@ -34,14 +34,6 @@ module SitesHelper
     ].compact.join(', ')
   end
 
-  def site_tags(site)
-    safe_join(site.tag_list.map do |tag_name|
-      content_tag :span do
-        tag_name
-      end
-    end)
-  end
-
   def hub_all_url
     add_sort_param_maybe("/hub")
   end
@@ -62,7 +54,7 @@ module SitesHelper
   def clickable_site_tags(site)
     safe_join(site.tag_list.map do |tag_name|
       link_to tag_name, hub_tag_url(tag_name)
-    end)
+    end, ' ')
   end
 
 end

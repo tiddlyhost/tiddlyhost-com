@@ -1,23 +1,23 @@
-%h1 Log in
 
-=form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+=render layout: 'form_wrapper', locals: { heading: 'Log in',
+  intro_text: "Need an account? Go to #{link_to "sign up", new_user_registration_path}."} do
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-6'
+  =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
 
-  .form-group
-    =f.label :password
-    =f.password_field :password, autocomplete: 'current-password', class: 'form-control col-sm-6'
+    =render layout: 'field_wrapper' do
+      =f.label :email
+      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
 
-  -if devise_mapping.rememberable?
-    .form-group
-      .form-check
+    =render layout: 'field_wrapper', locals: { pb: 'pb-2' } do
+      =f.label :password
+      =f.password_field :password, autocomplete: 'current-password', class: 'form-control'
+
+    -if devise_mapping.rememberable?
+      .form-check.px-3.pb-4
         =f.check_box :remember_me
         =f.label :remember_me
 
-  .form-group{style: 'margin-top: 2em;'}
-    =f.submit 'Log in', class: 'btn btn-primary'
+    =render layout: 'field_wrapper' do
+      =f.submit 'Log in', class: 'btn btn-primary'
 
-  .form-group{style: 'margin-left:1em;'}
     =render 'devise/shared/links'

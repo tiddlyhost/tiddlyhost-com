@@ -10,7 +10,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
   test "link is present" do
     visit '/sites'
     click_link "Claim Tiddlyspot site"
-    assert_selector "h1", text: "Claim ownership"
+    assert_selector "h2", text: "Claim Tiddlyspot site"
   end
 
   def mocked_fetcher

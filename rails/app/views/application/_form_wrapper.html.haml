@@ -1,0 +1,27 @@
+-#
+  A responsive centered box to make forms look good.
+  Maybe not the best and nicest, but hopefully passable.
+
+  Example usage:
+
+    =render layout: 'form_wrapper' do
+      ..form goes here..
+
+    =render layout: 'form_wrapper', locals { heading: 'Some heading',
+      intro_text: 'Some text here' } do
+      ..form goes here..
+
+  (Using the less pretty haml format so we could dynamically set
+  the classes if we wanted to.)
+
+%div{class: "row sm-px-5 py-2"}
+  %div{class: "form-wrapper col-lg-6 offset-lg-3 col-md-8 offset-md-2 shadow rounded p-4 bg-white"}
+    -if local_assigns.has_key?(:heading)
+      %h2.pt-0
+        =heading
+
+    -if local_assigns.has_key?(:intro_text)
+      %p.small.text-muted.px-2<
+        != intro_text
+
+    =yield

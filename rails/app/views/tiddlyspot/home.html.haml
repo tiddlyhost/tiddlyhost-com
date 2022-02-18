@@ -1,6 +1,8 @@
+
 %div{style: 'float:right; align: right; margin: 0 2em 1em 2em;'}
   %i
-    TL;DR:<br>
+    %small.text-muted.bg-light
+      TL;DR:<br>
   =link_to Settings.main_site_url, class: 'btn btn-lg btn-primary' do
     Continue to Tiddlyhost
     =bi_icon 'arrow-right', fill: 'white'
@@ -15,7 +17,7 @@
   brought it down.
 
 %p
-  Fortunately, it has now been replaced by a new, improved TiddlyWiki hosting service called
+  In 2021 Tiddlyspot was replaced by a new, improved TiddlyWiki hosting service called
   %b=link_to('Tiddlyhost', Settings.main_site_url) + "."
   Tiddlyhost is completely new service that
   =link_to('addresses many of the shortcomings', 'https://tiddlyspot.blogspot.com/2021/02/announcing-tiddlyhostcom.html')
@@ -26,17 +28,17 @@
 
 %p
   For more information see the
-  =link_to('FAQ', Settings.faq_url)
-  and the
+  =link_to('FAQ', Settings.faq_url) + ","
+  the
   =link_to('About', 'https://tiddlyhost.com/about')
   page and the
   =link_to('Blog', 'https://tiddlyspot.blogspot.com/') + '.'
 
 %p Regards,
-%p{style: 'margin-left: 0.5em;'}
-  %i{style: 'opacity: 30%;'} <span style="font-size:140%;">-S</span><b>imon</b>
+%p{style: 'margin-left: 0.5em; opacity: 50%;'}
+  %i -Simon
 
 %p
-  Ps, thanks Tiddlyspot users for your patience and for all the messages of support
+  Ps, thank you Tiddlyspot users for your patience and for the messages of support
   and encouragement for both Tiddlyspot and its successor,
   %b=link_to('Tiddlyhost', Settings.main_site_url) + "."

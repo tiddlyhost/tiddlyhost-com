@@ -1,40 +1,44 @@
-=form_for @site do |f|
 
-  -if @site.errors.any?
-    .alert.alert-danger
-      %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
-      %ul
-        -@site.errors.full_messages.each do |message|
-          %li= message
+=render layout: 'form_wrapper', locals: { heading: "Settings for '#{@site.name}'" } do
 
-  %div.form-group
-    %small.form-text.text-muted{style: 'opacity: 60%;'}
-      (Currently it's not possible to rename Tiddlyspot sites.)
+  =form_for @site do |f|
 
-  %div.form-group
-    %div.form-check
-      =f.check_box :is_private, class: 'form-check-input private-checkbox'
-      =f.label :is_private, 'Private', class: 'form-check-label'
-    %small.form-text.text-muted
-      Make the site private, rather than publicly viewable.
+    -if @site.errors.any?
+      =render layout: 'field_wrapper' do
+        .alert.alert-danger
+          %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
+          %ul
+            -@site.errors.full_messages.each do |message|
+              %li= message
 
-  %div.form-group
-    %div.form-check
-      =f.check_box :is_searchable, class: 'form-check-input hub-checkbox'
-      =f.label :is_searchable, 'Hub listed', class: 'form-check-label'
-    %small.form-text.text-muted
-      Include this site in the #{link_to 'Tiddlyhost Hub', '/hub', target: '_blank'}.
+    =render layout: 'field_wrapper' do
+      .form-text.text-muted
+        (Currently it's not possible to rename Tiddlyspot sites.)
 
-  %div.form-group
-    =f.label :description
-    =f.text_area :description, class: 'form-control', style: 'width: 35em; margin-left: 0.25em;'
-    %small.form-text.text-muted Optional. A short description of the site.
+    =render layout: 'field_wrapper' do
+      %div.form-check
+        =f.check_box :is_private, class: 'form-check-input private-checkbox'
+        =f.label :is_private, 'Private', class: 'form-check-label'
+      %small.form-text.text-muted
+        Make the site private, rather than publicly viewable.
 
-  %div.form-group
-    =f.label :tag_list, 'Tags'
-    =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s, style: 'width: 30em; margin-left: 0.25em;'
-    %small.form-text.text-muted Optional. A comma delimited list of tags.
+    =render layout: 'field_wrapper' do
+      %div.form-check
+        =f.check_box :is_searchable, class: 'form-check-input hub-checkbox'
+        =f.label :is_searchable, 'Hub listed', class: 'form-check-label'
+      %small.form-text.text-muted
+        Include this site in the #{link_to 'Tiddlyhost Hub', '/hub', target: '_blank'}.
 
-  %div.form-group{style: 'margin-top: 2em;'}
-    =f.submit 'Update', class: 'btn btn-primary'
-    =link_to 'Cancel', sites_path, style: 'margin-left: 1em;'
+    =render layout: 'field_wrapper' do
+      =f.label :description
+      =f.text_area :description, class: 'form-control'
+      %small.form-text.text-muted Optional. A short description of the site.
+
+    =render layout: 'field_wrapper' do
+      =f.label :tag_list, 'Tags'
+      =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
+      %small.form-text.text-muted Optional. A comma delimited list of tags.
+
+    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+      =f.submit 'Update', class: 'btn btn-primary'
+      =link_to 'Cancel', sites_path, class: 'mx-4'

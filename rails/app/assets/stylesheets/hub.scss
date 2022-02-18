@@ -12,6 +12,11 @@ h1 {
     }
 }
 
+.nav-tabs .nav-link.active {
+    background: linear-gradient(#ffffff, #ffffff, #ffffff, #f8f9fa);
+    border-bottom-color: #f8f9fa; /* bootstrap bg-light */
+}
+
 .nav-link {
     svg.bi {
         opacity: 35%;
@@ -134,14 +139,15 @@ h1 {
 }
 
 .site-tags {
-    line-height: 80%;
+    line-height: 90%;
 
     a {
+        text-decoration: none;
         background-color: #fea;
         color: #974;
         font-size: 65%;
         padding: 0.1em 0.3em;
-        margin-right:0.4em;
+        margin-right:0.1em;
 
         &:hover {
             text-decoration: none;

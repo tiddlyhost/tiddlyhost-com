@@ -7,10 +7,11 @@
       =link_to 'Donations', '/donate'
       %br
       =link_to 'About Tiddlyhost', '/about'
+
     .col-4{style: "text-align: right;"}
       -unless Rails.env.production?
         Env: #{Rails.env}
         %br
       Version: #{link_to App::VERSION, '/build-info'}
       %br
-      &copy; 2021 Simon Baird
+      &copy; 2021-2022 Simon Baird

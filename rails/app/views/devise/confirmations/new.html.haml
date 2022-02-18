@@ -1,20 +1,16 @@
-%h2 Resend confirmation instructions
+=render layout: 'form_wrapper', locals: { heading: 'Resend confirmation instructions',
+  intro_text: "Enter your email address to resend the password confirmation link." } do
 
-=form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+  =form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
 
-  .form-group
     =render 'devise/shared/error_messages', resource: resource
 
-  .form-group
-    .form-text Enter your email address to resend the password confirmation link.
+    =render layout: 'field_wrapper' do
+      =f.label :email
+      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control',
+        value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control col-sm-3',
-      value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
+    =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
+      =f.submit 'Resend confirmation instructions', class: 'btn btn-primary'
 
-  .form-group
-    =f.submit 'Resend confirmation instructions', class: 'btn btn-primary'
-
-  .form-group{style: 'margin-left:1em;'}
     =render 'devise/shared/links'

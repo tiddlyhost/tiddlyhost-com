@@ -1,4 +1,5 @@
-.card{class: "#{'big' if local_assigns[:big].present?}", style: "background-color: #{card_color(title)};"}
+
+.card{class: "shadow-sm #{'big' if local_assigns[:big].present?}", style: "background-color: #{card_color(title)};"}
   .card-body
     .big= number_with_precision(count, delimiter: ',', precision: 0)
     -if local_assigns[:total].present? && total != 0

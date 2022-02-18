@@ -137,14 +137,22 @@ main {
 }
 
 footer {
-    padding: 10em 1.2em 2em;
+    /* gray-300 in bootstrap */
+    background-color: #dee2e6;
+
+    padding: 2em 1.2em 10em;
     font-size: 80%;
-    opacity: 0.4;
+    .container-fluid {
+        opacity: 0.6;
+    }
     a {
         padding-left: 0.5em;
         font-weight: bold;
         text-decoration: none;
     }
+
+    /* trick so the body bg color doesn't show through after the footer */
+    box-shadow: 0 50vh 0 50vh #dee2e6;
 }
 
 h1 {
@@ -176,19 +184,33 @@ h1 {
     }
 }
 
+body {
+}
+
 body.simple-layout {
+    /* should match bg-light in bootstrap */
+    background-color: #f8f9fa;
+
     margin: 2em 2.5em;
 
     header {
         nav {
             box-shadow: none;
             height: 1.8em;
+            line-height: 1.8em;
             flex-wrap: nowrap;
-            margin-bottom: 0.5em;
+            margin-bottom: 0.4em;
+            padding: 1.2em;
+            font-weight: bold;
+        }
+
+        .navbar-brand {
+            font-size: 1.2rem;
         }
 
         img {
-            height: 18px;
+            margin-top: -3px;
+            height: 16px;
             opacity: 80%;
         }
 
@@ -199,6 +221,9 @@ body.simple-layout {
     }
 
     main {
+        /* should match bg-light in bootstrap */
+        background-color: #f8f9fa;
+
         h1 {
             margin-bottom: 0.5em;
         }
@@ -206,5 +231,7 @@ body.simple-layout {
         .big {
             font-size: 130%;
         }
+
+        padding-bottom: 8em;
     }
 }

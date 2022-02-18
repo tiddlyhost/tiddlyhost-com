@@ -1,7 +1,7 @@
 Tiddyhost
 ---------
 
-Copyright (c) 2021, Simon Baird.
+Copyright (c) 2021-2022, Simon Baird.
 
 All rights reserved.
 

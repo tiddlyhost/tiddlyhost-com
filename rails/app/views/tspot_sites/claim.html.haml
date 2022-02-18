@@ -1,14 +1,16 @@
+
 %h1
   =bi_icon(@success ? 'check-circle' : 'exclamation-diamond', fill: "#{@success ? 'green' : 'orange'}", style: 'opacity: 100%;' )
   ="#{@message}"
 
-%p{style: "padding: 1em;"}
-  -if @success
+-if @success
+  .p-3
     Return to
     =link_to('your sites', sites_path) + "."
 
-  -else
+-else
+  .p-3
     Try again or
     =link_to('cancel', sites_path) + "."
 
-    =render 'claim_form'
+  =render 'claim_form'

@@ -1,33 +1,37 @@
-%h1= "Upload to site '#{@site.name}'"
 
-.upload-form
-  %p
-    %span.warning
-      =bi_icon('exclamation-triangle', style: 'margin-right: -2px;')
-      Proceed carefully!
-    %br
-    This will delete your site's content and replace it with whatever TiddlyWiki
-    file you upload now.
-    %br
-    You may want to
-    =site_download_link(@site) { bi_icon('download') + 'download' }
-    a copy of your site first in case something goes wrong.
+=render layout: 'form_wrapper', locals: { heading: "Upload to site '#{@site.name}'" } do
 
   =form_for(@site, url: { action: :upload, id: @site.id }) do |f|
-    %label.btn.btn-secondary{for: 'site_tiddlywiki_file'}
-      Choose file to upload
 
-    -# It is hidden for cosmetic reasons. Clicking the label
-    -# above activates the file select dialog.
-    =f.file_field(:tiddlywiki_file, style: 'display: none;')
+    =render layout: 'field_wrapper', locals: { pb: 'pb-4' } do
+      %b.small.text-danger
+        %big
+          =bi_icon('exclamation-triangle', fill: '#dc3545', style: 'margin-right: -2px;')
+        Proceed carefully!
 
-    -confirmation_text = ["Are you sure you want to replace site '#{@site.name}' with",
-      "the TiddlyWiki file you're about to upload?",
-      "This operation cannot be undone."].join("\n")
+      .small
+        This will delete your site's content and replace it with whatever TiddlyWiki
+        file you upload now.
+        %br
+        You may want to
+        =link_to(download_site_path(@site)) { bi_icon('download') + 'download' }
+        a copy of your site first in case something goes wrong.
 
-    -# Also hidden to begin with but will be shown once a file is selected.
-    -# See the code in app/javascript/packs/application.js.
-    =f.submit("Upload", data: { confirm: confirmation_text }, id: 'upload-submit',
-      style: 'display: none; margin-left: 1em;', class: "form-submit btn btn-primary")
+    =render layout: 'field_wrapper' do
+      %label.btn.btn-secondary{for: 'site_tiddlywiki_file'}
+        Choose file to upload
 
-    =link_to 'Cancel', sites_url, style: 'margin-left: 1em;'
+      -# It is hidden for cosmetic reasons. Clicking the label
+      -# above activates the file select dialog.
+      =f.file_field(:tiddlywiki_file, style: 'display: none;')
+
+      -confirmation_text = ["Are you sure you want to replace site '#{@site.name}' with",
+        "the TiddlyWiki file you're about to upload?",
+        "This operation cannot be undone."].join("\n")
+
+      -# Also hidden to begin with but will be shown once a file is selected.
+      -# See the code in app/javascript/packs/application.js.
+      =f.submit("Upload", data: { confirm: confirmation_text }, id: 'upload-submit',
+        style: 'display: none; margin-left: 1em;', class: "form-submit btn btn-primary")
+
+      =link_to 'Cancel', sites_url, style: 'margin-left: 1em;'

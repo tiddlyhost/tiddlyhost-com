@@ -13,15 +13,15 @@
     =as_megabytes(@total_storage_bytes)
     MB storage used.
 
-  %table.sites
+  %table.sites.table.table-striped
 
     %thead
       %th Site
+      %th
       %th Access
       %th Views
       %th Size<small><br>(Compressed)</small>
       %th Last updated
-      %th
 
     %tbody
       -@sites.each do |site|
@@ -33,30 +33,6 @@
               .description= span_with_title(site.description)
             -unless site.tag_list.empty?
               .site-tags= clickable_site_tags(site)
-
-          %td
-            .site-access= site_access(site)
-
-          %td
-            .views
-              -if is_tspot
-                =site.access_count
-              -else
-                =site.view_count
-
-          %td
-            -if site.blob
-              =as_megabytes(site.blob_byte_size)
-              MB
-
-            -else
-              .text-muted -
-
-          %td
-            -if is_tspot
-              =nice_timestamp(site.save_count > 0 && site.blob_created_at)
-            -else
-              =nice_timestamp(site.blob_created_at)
 
           %td
             .btn-group
@@ -84,7 +60,31 @@
                   =link_to(site, method: :delete, class: 'dropdown-item',
                     data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
 
-.create-button
+          %td
+            .site-access= site_access(site)
+
+          %td
+            .views
+              -if is_tspot
+                =site.access_count
+              -else
+                =site.view_count
+
+          %td
+            -if site.blob
+              =as_megabytes(site.blob_byte_size)
+              MB
+
+            -else
+              .text-muted -
+
+          %td
+            -if is_tspot
+              =nice_timestamp(site.save_count > 0 && site.blob_created_at)
+            -else
+              =nice_timestamp(site.blob_created_at)
+
+.mx-2.my-4
   =link_to 'Create site', new_site_path, class: 'btn btn-primary'
   -if Settings.tiddlyspot_enabled?
-    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-light'
+    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-secondary mx-3', style: 'opacity: 65%'

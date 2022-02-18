@@ -1,70 +1,72 @@
-%h2 Update account
+=render layout: 'form_wrapper', locals: { heading: 'Update account' } do
 
-=form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+  =form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
 
-  .form-group
     =render 'devise/shared/error_messages', resource: resource
 
-  .form-group
-    =f.label :email
-    =f.email_field :email, autocomplete: true, autocomplete: 'email', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Your email address
+    =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
+      =f.label :email
+      =f.email_field :email, autofill: 'off', autocomplete: 'off', class: 'form-control'
+      .form-text Your email address
 
-  -if devise_mapping.confirmable? && resource.pending_reconfirmation?
-    %small.form-text.text-muted
-      Currently waiting confirmation for:
-      =resource.unconfirmed_email
+    -if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      =render layout: 'field_wrapper' do
+        .form-text
+          Currently waiting confirmation for email address:
+          %b
+            =resource.unconfirmed_email
 
-  .form-group
-    =f.label :name
-    =f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Your name
+    =render layout: 'field_wrapper' do
+      =f.label :name
+      =f.text_field :name, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control'
+      .form-text Your name
 
-  .form-group
-    =f.label :username
-    =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Unique username (optional). Will be clickable in the Tiddlyhost Hub.
+    =render layout: 'field_wrapper' do
+      =f.label :username
+      =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control'
+      .form-text Unique username (optional). Will be clickable in the Tiddlyhost Hub.
 
-  .form-group
-    =gravatar_image(resource)
-    %div.form-group
-      %div.form-check
-        =f.check_box :use_gravatar, class: 'form-check-input'
-        =f.label :use_gravatar, 'Use Gravatar', class: 'form-check-label'
-      %small.form-text.text-muted
-        Allow your profile picture from
-        =link_to 'Gravatar', 'https://gravatar.com/', target: '_blank'
-        to be used in the Tiddlyhost Hub.
+    =render layout: 'field_wrapper' do
+      =gravatar_image(resource)
+      %div.mb-3
+        %div.form-check
+          =f.check_box :use_gravatar, class: 'form-check-input'
+          =f.label :use_gravatar, 'Use Gravatar', class: 'form-check-label'
+        .form-text
+          Allow your profile picture from
+          =link_to 'Gravatar', 'https://gravatar.com/', target: '_blank'
+          to be used in the Tiddlyhost Hub.
 
-  .form-group
-    =f.label :password, 'New password'
-    %small.text-muted (leave blank if you don't want to change it)
-    =f.password_field :password, autocomplete: 'new-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
+    =render layout: 'field_wrapper' do
+      =f.label :password, 'New password'
+      .form-text (leave blank if you don't want to change it)
+      =f.password_field :password, autocomplete: 'new-password', class: 'form-control'
+      .form-text= "#{ Settings.minimum_password_length } characters minimum"
 
-  .form-group
-    =f.label :password_confirmation, 'New password confirmation'
-    =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Re-type your new password to confirm it
+    =render layout: 'field_wrapper' do
+      =f.label :password_confirmation, 'New password confirmation'
+      =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
+      .form-text Re-type your new password to confirm it
 
-  .form-group
-    =f.label :current_password
-    =f.password_field :current_password, autocomplete: 'current-password', class: 'form-control col-sm-6'
-    %small.form-text.text-muted Enter your current password to confirm the changes
+    =render layout: 'field_wrapper' do
+      =f.label :current_password, 'Current password. Required to make changes.'
+      =f.password_field :current_password, autocomplete: 'current-password', class: 'form-control'
+      .form-text Enter your current password to confirm the changes
 
-  .form-group{style: 'margin-top: 2em;'}
-    =f.submit 'Update', class: 'btn btn-primary'
-    =link_to 'Cancel', sites_path, style: 'margin-left: 1em;'
+    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+      =f.submit 'Update', class: 'btn btn-primary'
+      =link_to 'Cancel', sites_path, class: 'px-3'
 
+.m-2.p-2
+  &nbsp;
 
-%h2{style: 'margin-top:4em;'} Delete account
+=render layout: 'form_wrapper', locals: { heading: 'Delete account' } do
 
-.form-group
-  .form-text{style: 'padding:1em;'}
-    =bi_icon 'exclamation-triangle', fill: 'red', height: '2em', width: '2em'
-    %b
-      %i Proceed with caution. If you delete your account all your sites will be removed.
+  =render layout: 'field_wrapper' do
+    .form-text{style: 'padding:1em;'}
+      =bi_icon 'exclamation-triangle', fill: '#dc3545', height: '2em', width: '2em'
+      %b.text-danger Proceed with caution. If you delete your account your sites will also be immediately deleted.
 
-.form-group
-  =button_to 'Delete account', registration_path(resource_name), method: :delete, class: 'btn btn-danger',
-    data: { confirm: 'Are you sure you want to delete your account?' }
+  =render layout: 'field_wrapper' do
+    =button_to 'Delete account', registration_path(resource_name), method: :delete, class: 'btn btn-danger',
+      data: { confirm: 'Are you sure you want to delete your account?' }
