@@ -142,7 +142,7 @@ class SitesTest < CapybaraIntegrationTest
 
   test "updating site settings" do
     visit sites_url
-    click_on "Change settings", match: :first
+    click_on "Settings", match: :first
 
     fill_in "Name", with: "foo"
     click_on "Update"
