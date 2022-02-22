@@ -38,8 +38,8 @@ docker/nginx-conf-prod/%: docker/nginx-%
 docker/nginx-conf-local/%: docker/nginx-%
 	@bin/create-nginx-conf.sh $< $@
 
-nginx-conf-prod:  docker/nginx-conf-prod/app.conf  docker/nginx-conf-prod/commonconf  docker/nginx-conf-prod/proxyconf
-nginx-conf-local: docker/nginx-conf-local/app.conf docker/nginx-conf-local/commonconf docker/nginx-conf-local/proxyconf
+nginx-conf-prod:  docker/nginx-conf-prod/app.conf  docker/nginx-conf-prod/commonconf
+nginx-conf-local: docker/nginx-conf-local/app.conf docker/nginx-conf-local/commonconf
 nginx-conf: nginx-conf-local nginx-conf-prod
 
 nginx-conf-clear:

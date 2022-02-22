@@ -5,9 +5,12 @@ location = /ads.txt { return 404; }
 location = /robots.txt { return 404; }
 
 location ~ \.(?:php|jsp|asp|aspx)(?:$|\?) { return 404; }
+location ~ /wlwmanifest\.xml(?:$|\?) { return 404; }
 
 location /wp-content/ { return 404; }
 location /wp-includes/ { return 404; }
+location /wp-admin/ { return 404; }
+location /wp-plugins/ { return 404; }
 
 location /_ts_ { return 404; }
 location /_ts/ { return 404; }
