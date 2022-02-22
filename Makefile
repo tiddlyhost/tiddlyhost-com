@@ -85,6 +85,10 @@ start: nginx-conf-local cert app-log
 bundle-install:
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle install"
 
+# Run bundle-update
+bundle-update:
+	-$(DC) run --rm --no-deps app bash -c "bin/bundle update"
+
 # Run bundle-clean
 bundle-clean:
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle clean"
@@ -182,7 +186,7 @@ MASTER_KEY_FILE=rails/config/master.key
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-info js-math download-empties
+build-prod: build-info js-math download-empties bundle-clean
 	$(DC) -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
 	  --build-arg RAILS_MASTER_KEY=$$( cat $(MASTER_KEY_FILE) ) \
