@@ -42,11 +42,16 @@ module App
     config.eager_load_paths << Rails.root.join("lib")
 
     # For tiddlyhost and its wildcard subdomains
-    config.hosts << Settings.main_site_host << ".#{Settings.main_site_host}"
+    config.hosts << Settings.main_site_host
+    config.hosts << ".#{Settings.main_site_host}"
 
     # For tiddlyspot and its wildcard subdomains
-    config.hosts << Settings.tiddlyspot_host << ".#{Settings.tiddlyspot_host}" \
-      if Settings.tiddlyspot_host.present?
+    if Settings.tiddlyspot_host.present?
+      config.hosts << Settings.tiddlyspot_host
+      # Need the regex because some tiddlyspot site names have
+      # dots and underscores which wouldn't be matched otherwise
+      config.hosts << /.+\.#{Regexp.escape(Settings.tiddlyspot_host)}/
+    end
 
     # (`domain: :all` might be useful here later maybe)
     config.session_store :cookie_store, domain: Settings.main_site_host

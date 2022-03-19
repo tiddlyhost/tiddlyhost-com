@@ -57,6 +57,27 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
+  test "viewing sites with weird names" do
+    site = TspotSite.find_by_name('coolsite')
+
+    [
+      'cool.site',
+      # Actually test fails with underscores - it gives this:
+      # URI::InvalidURIError: the scheme http does not accept registry
+      #   part: cool_site.tiddlyspot-example.com (or bad hostname?)
+      #'cool_site',
+
+    ].each do |name|
+      site.update!(name: name)
+      mock = mocked_site(name) do |m|
+        m.expect(:is_private?, false)
+      end
+
+      with_mocked_site(mock) { get '/' }
+      assert_success('some site html', mock)
+    end
+  end
+
   test "downloading a public site" do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
