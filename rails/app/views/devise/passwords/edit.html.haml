@@ -1,0 +1,20 @@
+
+=render layout: 'form_wrapper', locals: { heading: 'Change your password',
+  intro_text: "(#{Settings.minimum_password_length} characters minimum)" } do
+
+  =form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+
+    =render "devise/shared/error_messages", resource: resource
+
+    =f.hidden_field :reset_password_token
+
+    =render layout: 'field_wrapper' do
+      =f.label :password, "New password"
+      =f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control"
+
+    =render layout: 'field_wrapper' do
+      =f.label :password_confirmation, "Confirm new password"
+      =f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control"
+
+    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+      =f.submit "Change password", class: 'btn btn-primary'
