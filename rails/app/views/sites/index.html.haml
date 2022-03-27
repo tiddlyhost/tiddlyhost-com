@@ -17,12 +17,13 @@
 
     %thead
       %th Site
-      %th
       %th Version
       %th Access
       %th Views
-      %th Size<small><br>(Compressed)</small>
+      %th Raw Size
+      %th Compressed Size
       %th Last updated
+      %th Actions
 
     %tbody
       -@sites.each do |site|
@@ -35,61 +36,42 @@
             -unless site.tag_list.empty?
               .site-tags= clickable_site_tags(site)
 
-          %td
-            .btn-group
-              %button.btn.btn-secondary.btn-sm.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-                =bi_icon('gear-fill', fill: '#fff', style: 'margin-right: 0px;')
-                Actions
-              .dropdown-menu
-                -if is_tspot
-                  =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
-                  =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
-                  .dropdown-divider
-                  =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
-                  =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
-                  .dropdown-divider
-                  =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
-                    data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
-                -else
-                  =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
-                  =link_to(download_site_path(site), class: 'dropdown-item', target: '_blank') { bi_icon('download') + 'Download' }
-                  .dropdown-divider
-                  =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
-                  .dropdown-divider
-                  =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
-                  .dropdown-divider
-                  =link_to(site, method: :delete, class: 'dropdown-item',
-                    data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
-
-          %td
+          %td.small
             -if site.tw_version
               =site.tw_version
             -else
               .text-muted -
 
-          %td
+          %td.small
             .site-access= site_access(site)
 
-          %td
+          %td.small
             .views
               -if is_tspot
                 =site.access_count
               -else
                 =site.view_count
 
-          %td
-            -if site.blob
-              =as_megabytes(site.blob_byte_size)
-              MB
-
+          %td.small
+            -if site.raw_byte_size
+              !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
             -else
               .text-muted -
 
-          %td
+          %td.small
+            -if site.blob
+              !="#{as_megabytes(site.blob_byte_size)}&nbsp;MB"
+            -else
+              .text-muted -
+
+          %td.small
             -if is_tspot
               =nice_timestamp(site.save_count > 0 && site.blob_created_at)
             -else
               =nice_timestamp(site.blob_created_at)
+
+          %td
+            =render 'actions_menu', site: site, is_tspot: is_tspot
 
 .mx-2.my-4
   =link_to 'Create site', new_site_path, class: 'btn btn-primary'
