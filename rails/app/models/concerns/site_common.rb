@@ -57,15 +57,29 @@ module SiteCommon
     Zlib::Inflate.inflate(compressed_html)
   end
 
-  # Compress before attaching
-  # See the find_or_build_blob method in
+  # See the `find_or_build_blob` method in
   #  lib/active_storage/attached/changes/create_one.rb
+  # in the active_storage gem to see how this hash gets
+  # used and why we need these particular keys.
   #
   def self.attachable_hash(html_string)
     {
       io: StringIO.new(compress_html(html_string)),
       content_type: SiteCommon::COMPRESSED_CONTENT_TYPE,
       filename: 'index.html',
+    }
+  end
+
+  def self.attachment_params(new_content)
+    {
+      # Record the uncompressed size before it gets compressed
+      raw_byte_size: new_content.bytesize,
+
+      # Extract the TiddlyWiki version
+      tw_version: TwFile.light_get_version(new_content),
+
+      # This is the actual attachment
+      tiddlywiki_file: SiteCommon.attachable_hash(new_content),
     }
   end
 
@@ -82,11 +96,10 @@ module SiteCommon
     content_upload(params_userfile.read)
   end
 
+  # The tiddlywiki_file attribute is an attachment. Updating that
+  # field is enough to make rails handle the new attachment upload
   def content_upload(new_content)
-    # It gets compressed in attachable_hash so record the uncompressed size now
-    self.raw_byte_size = new_content.bytesize
-    tiddlywiki_file.attach(SiteCommon.attachable_hash(new_content))
-    self.save
+    update(SiteCommon.attachment_params(new_content))
   end
 
   # When a site is saved it gets a brand new blob. So if we use the blob's

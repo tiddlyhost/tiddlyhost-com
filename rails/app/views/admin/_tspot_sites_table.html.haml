@@ -3,6 +3,7 @@
   %tr
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
+    %th= sort_link 'Version'
     -unless params[:private]
       %th= sort_link 'Private?'
     -unless params[:hub]
@@ -26,6 +27,7 @@
     %tr
       %td= site.id
       %td= admin_site_link site
+      %td= site.tw_version
       -unless params[:private]
         %td= bool_text site.is_private?
       -unless params[:hub]

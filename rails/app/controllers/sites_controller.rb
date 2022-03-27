@@ -40,8 +40,8 @@ class SitesController < ApplicationController
   def create
     @empty = Empty.find(site_params_for_create[:empty_id])
 
-    tiddlywiki_file = SiteCommon.attachable_hash(@empty.html)
-    @site = Site.new(site_params_for_create.merge(tiddlywiki_file: tiddlywiki_file))
+    @site = Site.new(
+      site_params_for_create.merge(SiteCommon.attachment_params(@empty.html)))
 
     respond_to do |format|
       if @site.save
@@ -110,18 +110,23 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_create
-    params.require(:site).permit(
-      :name, :description, :empty_id, :is_private, :is_searchable, :tag_list).merge(user_id: current_user.id)
+    params.
+      require(:site).
+      permit(:name, :description, :empty_id, :is_private, :is_searchable, :tag_list).
+      merge(user_id: current_user.id)
   end
 
   def site_params_for_update
-    params.require(:site).permit(:name, :description, :is_private, :is_searchable, :tag_list)
+    params.
+      require(:site).
+      permit(:name, :description, :is_private, :is_searchable, :tag_list)
   end
 
   def site_params_for_upload
     new_content = params[:site][:tiddlywiki_file].read
-    params.require(:site).permit(:tiddlywiki_file).merge(
-      tiddlywiki_file: SiteCommon.attachable_hash(new_content),
-      raw_byte_size: new_content.bytesize)
+    params.
+      require(:site).
+      permit(:tiddlywiki_file).
+      merge(SiteCommon.attachment_params(new_content))
   end
 end

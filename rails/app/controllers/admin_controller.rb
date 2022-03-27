@@ -60,6 +60,7 @@ class AdminController < ApplicationController
     sites: 'COUNT(sites.id)',
     tspotsites: 'COUNT(tspot_sites.id)',
     username: "NULLIF(username, '')",
+    version: 'tw_version',
     views: 'view_count',
   }.freeze
 
@@ -67,6 +68,7 @@ class AdminController < ApplicationController
     username
     description
     owner
+    version
   ]
 
   # s = sort

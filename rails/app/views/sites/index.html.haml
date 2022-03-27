@@ -18,6 +18,7 @@
     %thead
       %th Site
       %th
+      %th Version
       %th Access
       %th Views
       %th Size<small><br>(Compressed)</small>
@@ -59,6 +60,12 @@
                   .dropdown-divider
                   =link_to(site, method: :delete, class: 'dropdown-item',
                     data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
+
+          %td
+            -if site.tw_version
+              =site.tw_version
+            -else
+              .text-muted -
 
           %td
             .site-access= site_access(site)

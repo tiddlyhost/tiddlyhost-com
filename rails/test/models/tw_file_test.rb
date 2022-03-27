@@ -122,6 +122,15 @@ class TwFileTest < ActiveSupport::TestCase
 
   end
 
+  test "light get version" do
+    [
+      [:tw5, '5.1.24-prerelease'],
+      [:classic, '2.9.2'],
+    ].each do |type, expected_version|
+      assert_equal expected_version, TwFile.light_get_version(minimal_html(type))
+    end
+  end
+
   def minimal_html(type)
     File.read("test/data/minimal_#{type}.html")
   end

@@ -4,6 +4,7 @@
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
     %th= sort_link 'Empty'
+    %th= sort_link 'Version'
     %th= sort_link 'Description', :asc
     -unless params[:private]
       %th= sort_link 'Private?'
@@ -27,6 +28,7 @@
       %td= site.id
       %td= admin_site_link site
       %td= site.empty.name
+      %td= site.tw_version
       %td.nowrap.text-truncated{style: 'max-width: 8em;'}
         =span_with_title site.description
       -unless params[:private]
