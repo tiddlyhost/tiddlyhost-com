@@ -13,7 +13,7 @@
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
       =f.label :name, @site.new_record? ? 'Choose a name' : 'Name'
-      =f.text_field :name, class: 'form-control', maxlength: 63
+      =f.text_field :name, class: 'form-control', maxlength: 63, autofocus: @site.new_record?
       %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
     -if @site.new_record?
