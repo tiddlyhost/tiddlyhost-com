@@ -77,6 +77,10 @@ class Site < ApplicationRecord
     Settings.subdomain_site_url(name)
   end
 
+  def host
+    Settings.subdomain_site_host(name)
+  end
+
   def favicon_asset_name
     'favicon-green.ico'
   end

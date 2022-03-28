@@ -119,10 +119,10 @@ class ThFile < TwFile
     # (It would be nice if there was a better way to do this.)
     if is_tw5?
       tiddler_content('$:/UploadURL').
-        match(%r{//([a-z-]+)\.}).try(:[], 1)
+        match(%r{//([a-z0-9-]+)\.}).try(:[], 1)
     else
       tiddler_content('ThostUploadPlugin').
-        match(%r{bidix\.initOption\('txtThostSiteName','(\w+)'\);}).try(:[], 1)
+        match(%r{bidix\.initOption\('txtThostSiteName','([a-z0-9-]+)'\);}).try(:[], 1)
     end
   end
 

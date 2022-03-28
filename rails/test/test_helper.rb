@@ -28,16 +28,18 @@ class ActionDispatch::IntegrationTest
     mock
   end
 
-  def new_site_helper(name:, user: User.first, tiddlers: {})
-    empty = Empty.default
+  def new_site_helper(name:, user:, empty: :tw5, tiddlers: {}, empty_content: nil)
+    empty = Empty.find_by_name(empty)
+    th_file = empty.th_file
 
-    tiddlywiki_file = {
-      io: StringIO.new(empty.th_file.write_tiddlers(tiddlers).to_html),
-      filename: 'index.html',
-      content_type: 'text/html',
-    }
+    # Instead of the named empty, use the content provided
+    th_file = ThFile.new(empty_content) if empty_content
 
-    Site.create!(name: name, tiddlywiki_file: tiddlywiki_file, empty_id: empty.id, user_id: user.id)
+    # Inject tiddlers
+    tw_html = th_file.write_tiddlers(tiddlers).to_html
+
+    Site.create!({ name: name, empty_id: empty.id, user_id: user.id }.
+      merge(SiteCommon.attachment_params(tw_html)))
   end
 
 end

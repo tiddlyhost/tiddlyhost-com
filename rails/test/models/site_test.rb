@@ -7,6 +7,7 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   test "url" do
+    assert_equal 'mysite.example.com', @site.host
     assert_equal 'http://mysite.example.com', @site.url
     assert_equal 'http://example.com', Settings.main_site_url
   end

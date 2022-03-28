@@ -51,8 +51,16 @@ class Settings
     ActionDispatch::Http::URL.full_url_for(tiddlyspot_url_defaults)
   end
 
+  def self.subdomain_site_host(site_name)
+    "#{site_name}.#{Settings.main_site_host}"
+  end
+
   def self.subdomain_site_url(site_name)
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults.merge(subdomain: site_name))
+  end
+
+  def self.tiddlyspot_site_host(site_name)
+    "#{site_name}.#{Settings.tiddlyspot_host}"
   end
 
   def self.tiddlyspot_site_url(site_name)

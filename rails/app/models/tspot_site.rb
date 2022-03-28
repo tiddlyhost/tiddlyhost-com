@@ -137,6 +137,10 @@ class TspotSite < ApplicationRecord
     Settings.tiddlyspot_site_url(name)
   end
 
+  def host
+    Settings.tiddlyspot_site_host(name)
+  end
+
   def favicon_asset_name
     'favicon-tiddlyspot.ico'
   end
