@@ -10,6 +10,7 @@
       %th= sort_link 'Private?'
     -unless params[:hub]
       %th= sort_link 'Hub?'
+    %th= sort_link 'IFrames?'
     %th= sort_link 'Views'
     %th= sort_link 'Accesses'
     %th= sort_link 'Saves'
@@ -35,6 +36,7 @@
         %td= bool_text site.is_private?
       -unless params[:hub]
         %td= bool_text site.is_searchable?
+      %td= bool_text site.allow_in_iframe?
       %td= site.view_count
       %td= site.access_count
       %td= site.save_count

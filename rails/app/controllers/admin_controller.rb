@@ -46,6 +46,7 @@ class AdminController < ApplicationController
     empty: 'empties.name',
     gravatar: 'use_gravatar',
     id: 'id',
+    iframes: 'allow_in_iframe',
     lastaccess: 'accessed_at',
     lastsignin: 'last_sign_in_at',
     lastupdate: 'active_storage_blobs.created_at',

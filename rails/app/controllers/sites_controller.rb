@@ -112,14 +112,14 @@ class SitesController < ApplicationController
   def site_params_for_create
     params.
       require(:site).
-      permit(:name, :description, :empty_id, :is_private, :is_searchable, :tag_list).
+      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :empty_id).
       merge(user_id: current_user.id)
   end
 
   def site_params_for_update
     params.
       require(:site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list)
+      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe)
   end
 
   def site_params_for_upload

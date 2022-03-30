@@ -2,6 +2,8 @@
 class TiddlyspotController < ApplicationController
   layout 'tiddlyspot'
 
+  include SubdomainCommon
+
   before_action :find_site, only: [:serve, :download, :save]
   before_action :authenticate, only: [:serve, :download], if: :auth_required?
 

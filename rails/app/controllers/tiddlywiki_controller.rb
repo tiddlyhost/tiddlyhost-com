@@ -2,6 +2,8 @@
 class TiddlywikiController < ApplicationController
   layout false
 
+  include SubdomainCommon
+
   before_action :find_site
 
   # TiddlyWiki can't provide the token for saving so we need to skip it

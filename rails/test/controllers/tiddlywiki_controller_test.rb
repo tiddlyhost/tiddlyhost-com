@@ -82,6 +82,15 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "allow in iframe" do
+    fetch_site_as_user
+    assert_equal 'SAMEORIGIN', response.headers['X-Frame-Options']
+
+    @site.update(allow_in_iframe: true)
+    fetch_site_as_user
+    refute response.headers.has_key?("X-Frame-Options")
+  end
+
   test "private site" do
     @site.update!(is_private: true)
 

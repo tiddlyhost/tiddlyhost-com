@@ -54,6 +54,12 @@
       =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       .form-text Optional. A comma delimited list of tags.
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+    =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
+      .form-text
+        %h5 Advanced settings
+
+    =render 'site_common/allow_in_iframe', f: f
+
+    =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       =f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
       =link_to 'Cancel', sites_path, class: 'mx-4'
