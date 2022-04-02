@@ -58,6 +58,11 @@ table.sites {
             line-height: 1.2em;
         }
 
+        .btn.btn-light {
+            // A border so you can see it better
+            border-color: #dee2e6;
+        }
+
         .btn-secondary {
             // Slightly less dark (I'm lazy)
             opacity: 0.8;

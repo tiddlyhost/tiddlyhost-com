@@ -1,30 +1,37 @@
+.btn-group.btn-group-sm
 
-%button.btn.btn-light.btn-sm(type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-color:#dee2e6;")
-  =bi_icon('three-dots', fill: '#212529', style: 'margin-right: 0px;')
-
-.dropdown-menu
   -if is_tspot
-    =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
-    =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
-    .dropdown-divider
-
-    =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
-    =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
-    .dropdown-divider
-
-    =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
-      data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
-
+    =link_to(site.url, class: 'btn btn-light', target: '_blank', title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+    =link_to(download_tspot_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
+    =link_to(edit_tspot_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
   -else
-    =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
-    =link_to(download_site_path(site), class: 'dropdown-item', target: '_blank') { bi_icon('download') + 'Download' }
-    .dropdown-divider
+    =link_to(site.url, class: 'btn btn-light', target: '_blank', title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+    =link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
+    =link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
 
-    =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
-    .dropdown-divider
+  %button.btn.btn-light(type="button" data-bs-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false"
+    style="border-top-right-radius: 0.2rem; border-bottom-right-radius: 0.2rem;" title="More...")
+    =bi_icon('three-dots', fill: '#212529', style: 'margin-right: 0px;')
 
-    =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
-    .dropdown-divider
+  .dropdown-menu
+    -if is_tspot
+      =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
+      =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+      .dropdown-divider
+      =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
+      =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
+      .dropdown-divider
+      =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
+        data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
 
-    =link_to(site, method: :delete, class: 'dropdown-item',
-      data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
+    -else
+      =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
+      =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+      .dropdown-divider
+      =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
+      .dropdown-divider
+      =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
+      .dropdown-divider
+      =link_to(site, method: :delete, class: 'dropdown-item',
+        data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
