@@ -73,7 +73,7 @@
           %td
             =render 'actions_menu', site: site, is_tspot: is_tspot
 
-.mx-2.my-4
-  =link_to 'Create site', new_site_path, class: 'btn btn-primary'
+.mx-2.my-4(style="line-height: 3em;")
+  =link_to 'Create site', new_site_path, class: 'btn btn-primary me-3'
   -if Settings.tiddlyspot_enabled?
-    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-secondary mx-3', style: 'opacity: 65%'
+    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-secondary', style: 'opacity: 65%'
