@@ -146,9 +146,24 @@ footer {
         opacity: 0.6;
     }
     a {
-        padding-left: 0.5em;
         font-weight: bold;
         text-decoration: none;
+        opacity: 80%;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 1.8em;
+        padding-top: 0.5em;
+        li {
+            padding-bottom: 1.2em;
+            svg.bi {
+                opacity: 60%;
+                margin-left: -2em;
+                margin-right: 0px;
+                padding-right: 0px;
+            }
+        }
     }
 
     /* trick so the body bg color doesn't show through after the footer */

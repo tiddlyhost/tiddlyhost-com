@@ -1,17 +1,70 @@
 
 .container-fluid
-  .row
-    .col-8
-      =link_to 'Report an issue', Settings.create_issue_url, target: '_blank'
-      %br
-      =link_to 'Donations', '/donate'
-      %br
-      =link_to 'About Tiddlyhost', '/about'
+  .row.mx-2.my-4.p-md-2.p-0
 
-    .col-4{style: "text-align: right;"}
-      -unless Rails.env.production?
-        Env: #{Rails.env}
-        %br
-      Version: #{link_to App::VERSION, '/build-info'}
-      %br
-      &copy; 2021-2022 Simon Baird
+    .col-md-3.col-6
+      %h6.text-muted Tiddlyhost
+      %ul
+        %li
+          =link_to '/about' do
+            =bi_icon('info-circle')
+            About Tiddlyhost
+        %li
+          =link_to "#{Settings.github_url}/blob/main/LICENSE.md", target: '_blank' do
+            =bi_icon('file-earmark-check')
+            License
+        %li
+          =link_to Settings.github_url, target: '_blank' do
+            =bi_icon('gem')
+            Code
+
+    .col-md-3.col-6
+      %h6.text-muted About
+      %ul
+        %li
+          =link_to Settings.faq_url, target: '_blank' do
+            =bi_icon('patch-question')
+            FAQs
+        %li
+          =link_to 'https://github.com/simonbaird/tiddlyhost/wiki/Journal', target: '_blank' do
+            =bi_icon('journal-text')
+            Journal
+        %li
+          =link_to 'https://tiddlyspot.blogspot.com/', target: '_blank' do
+            =bi_icon('newspaper')
+            News
+        %li
+          =link_to 'https://twitter.com/tiddlyhost', target: '_blank' do
+            =bi_icon('twitter')
+            Tweets
+
+    .col-md-3.col-6
+      %h6.text-muted Support
+      %ul
+        %li
+          =link_to Settings.create_issue_url, target: '_blank' do
+            =bi_icon('bug')
+            Report an issue
+
+        %li
+          =link_to Settings.create_issue_url, target: '_blank' do
+            =bi_icon('lightbulb')
+            Suggest a feature
+
+        %li
+          =mail_to Settings.support_email do
+            =bi_icon('envelope')
+            Send an email
+
+        %li
+          =link_to '/donate' do
+            =bi_icon('piggy-bank')
+            Donate/Sponsor
+
+    .col-md-3.col-6
+      %h6.text-muted Version
+      %ul(style="padding-left: 0.5em; opacity: 70%;")
+        -unless Rails.env.production?
+          %li Env: #{Rails.env}
+        %li Version: #{link_to App::VERSION, '/build-info'}
+        %li &copy; 2021-2022 Simon Baird
