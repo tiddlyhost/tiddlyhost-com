@@ -234,9 +234,6 @@ fast-upgrade: nginx-conf-prod
 faster-upgrade: nginx-conf-prod
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
-prod-ssh:
-	@ssh fedora@tiddlyhost.com
-
 #----------------------------------------------------------
 
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
