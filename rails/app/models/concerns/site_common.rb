@@ -135,6 +135,11 @@ module SiteCommon
     Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks.from_now, &blk)
   end
 
+  # For use with the TW site, not the site record itself
+  def tw_etag
+    blob.checksum
+  end
+
   def download_url
     "#{url}/download"
   end

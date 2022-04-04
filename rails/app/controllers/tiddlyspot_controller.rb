@@ -14,11 +14,13 @@ class TiddlyspotController < ApplicationController
 
   def serve
     update_access_count_and_timestamp
+    etag_header
     render html: @site.html_content.html_safe, layout: false
   end
 
   def download
     update_access_count_and_timestamp
+    etag_header
     download_html_content(@site.html_content, @site.name)
   end
 
