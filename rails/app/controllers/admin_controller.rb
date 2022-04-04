@@ -55,6 +55,7 @@ class AdminController < ApplicationController
     owner: 'COALESCE(users.username, users.email)',
     plan: 'plan_id',
     private: 'is_private',
+    put: 'enable_put_saver',
     saves: 'save_count',
     hub: 'is_searchable',
     rawmb: 'raw_byte_size',

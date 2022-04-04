@@ -58,6 +58,14 @@
       .form-text
         %h5 Advanced settings
 
+    =render layout: 'field_wrapper' do
+      .form-check
+        =f.check_box :enable_put_saver, class: 'form-check-input'
+        =f.label :enable_put_saver, 'Enable put saver', class: 'form-check-label'
+      .form-text
+        Save to Tiddlyhost using the 'put' saver instead of the legacy 'upload' saver.
+        Not recommended unless you're using a TiddlyWiki 5.2.3 prerelease.
+
     =render 'site_common/allow_in_iframe', f: f
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do

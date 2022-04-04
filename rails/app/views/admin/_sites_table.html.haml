@@ -11,6 +11,7 @@
     -unless params[:hub]
       %th= sort_link 'Hub?'
     %th= sort_link 'IFrames?'
+    %th= sort_link 'Put?'
     %th= sort_link 'Views'
     %th= sort_link 'Accesses'
     %th= sort_link 'Saves'
@@ -37,6 +38,7 @@
       -unless params[:hub]
         %td= bool_text site.is_searchable?
       %td= bool_text site.allow_in_iframe?
+      %td= bool_text site.enable_put_saver?
       %td= site.view_count
       %td= site.access_count
       %td= site.save_count
