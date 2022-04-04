@@ -153,10 +153,10 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         site.update(enable_put_saver: true)
         prev_blob_key = site.blob.key
 
-        File.write(modified_tw_file,
-          site.th_file.write_tiddlers({'NewTiddler'=>'Hi from put saver'}).to_html)
+        new_content = site.th_file.
+          write_tiddlers({'NewTiddler'=>'Hi from put saver'}).to_html
 
-        put_save_site_as_user(user: site.user, site: site, content_file: modified_tw_file)
+        put_save_site_as_user(user: site.user, site: site, content: new_content)
 
         # Should see these fields are updated
         site.reload
@@ -180,13 +180,66 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "upload save requires auth" do
+    new_content = @site.th_file.
+      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+
+    modified_tw_file = "#{Rails.root}/test/fixtures/files/index.html"
+    File.write(modified_tw_file, new_content)
+
+    # It gives a 200 status even if it fails to save
+    upload_save_site_as_user(user: users(:mary), site: @site, fixture_file: 'index.html',
+      expected_status: 200, expect_success: false)
+
+    assert_equal "If this is your site please log in at\nhttp://example.com and try again.\n",
+      response.body
+  end
+
+  test "put save with etag check" do
+    new_content = @site.th_file.
+      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+
+    @site.update(enable_put_saver: true)
+    fetch_site_as_user
+    etag = response.headers['ETag']
+    assert_equal etag, @site.tw_etag
+
+    put_save_site_as_user(user: @site.user, site: @site, content: new_content,
+      headers: { 'If-Match' => etag }, expected_status: 204)
+
+    assert_equal '', response.body
+    assert_equal 'Hi', @site.th_file.tiddler_content('NewTiddler')
+  end
+
+  test "put save will not overwrite" do
+    new_content = @site.th_file.
+      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+    @site.update(enable_put_saver: true)
+    put_save_site_as_user(user: @site.user, site: @site, content: new_content,
+      headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
+    assert_equal(
+      %{The site has been updated since you first loaded it. Saving now would cause those
+      updates to be overwritten. Try reloading and then reapplying your changes.}.squish,
+      response.body.squish)
+  end
+
+  test "put save requires auth" do
+    new_content = @site.th_file.
+      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+    @site.update(enable_put_saver: true)
+    put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
+      headers: { 'If-Match' => 'whatever' }, expected_status: 403)
+    assert_equal(
+      "If this is your site please log in at http://example.com and try again.", response.body)
+  end
+
   def fetch_site_as_user(user: @user, site: @site, expected_status: 200)
     user = users(user) if user && !user.is_a?(User)
 
     host! site.host
     sign_in user if user
 
-    get '/'
+    get '/', headers: headers
     assert_response expected_status
 
     if expected_status == 200
@@ -219,7 +272,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def upload_save_site_as_user(site:, user:, fixture_file:, expected_status: 200)
+  def upload_save_site_as_user(site:, user:, fixture_file:, expected_status: 200, expect_success: true)
     host! site.host
     sign_in user
 
@@ -232,20 +285,22 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
     assert_response expected_status
 
-    assert_equal "0 - OK\n", response.body
+    if expect_success
+      assert_equal "0 - OK\n", response.body
+    end
+
     assert_equal "text/plain; charset=utf-8", response.headers["Content-Type"]
     # Todo maybe: Is there anything else worth asserting in the headers?
   end
 
-  def put_save_site_as_user(site:, user:, content_file:, expected_status: 204)
+  def put_save_site_as_user(site:, user:, content:, expected_status: 204, headers: {})
     host! site.host
     sign_in user
 
-    put '/', params: File.read(content_file),
-      headers: { 'Content-Type' => 'text/html;charset=UTF-8' }
+    put '/', params: content,
+      headers: { 'Content-Type' => 'text/html;charset=UTF-8' }.merge(headers)
 
     assert_response expected_status
-    assert_equal '', response.body
   end
 
 end
