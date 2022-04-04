@@ -116,13 +116,36 @@ class TiddlywikiController < ApplicationController
   def put_save
     begin
       if site_saveable?
-        @site.file_upload(request.body)
-        @site.increment_save_count
-        head 204
+        if site_save_would_overwrite?
+          #
+          # Todo: Find a better solution for this. Some ideas:
+          # - Do a sync of the newer content and refresh the etag
+          # - Somehow do a merge-save that keeps all the changes
+          # - Detect the etag change early and warn the user they need to
+          #   reload so they're less likely to have a lot of edits they can't
+          #   save when they get this message
+          # - Some kind of "force overwrite" option if they decide the other
+          #   changes are less important
+          #
+          err_message = "The site has been updated since you first loaded it. " +
+            "Saving now would cause those updates to be overwritten.\n\n" +
+            "Try reloading and then reapplying your changes."
+          render status: 412, plain: err_message
+
+        else
+          # All clear to save
+          @site.file_upload(request.body)
+          @site.increment_save_count
+          head 204
+
+        end
+
       else
+        # Maybe login is needed
         err_message = "If this is your site please log in at #{main_site_url} and try again."
         render status: 403, plain: err_message
       end
+
     rescue => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
       err_message = "#{e.class.name} #{e.message}"
@@ -182,6 +205,11 @@ class TiddlywikiController < ApplicationController
 
   def site_saveable?
     site_exists? && user_owns_site?
+  end
+
+  def site_save_would_overwrite?
+    expected_etag = request.headers['If-Match']
+    expected_etag.present? && expected_etag != @site.tw_etag
   end
 
   def user_owns_site?
