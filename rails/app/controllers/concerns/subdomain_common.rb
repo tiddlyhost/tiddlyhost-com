@@ -10,4 +10,8 @@ module SubdomainCommon
     response.headers.except!('X-Frame-Options') if @site.try(:allow_in_iframe?)
   end
 
+  def etag_header
+    response.set_header 'ETag', @site.tw_etag
+  end
+
 end

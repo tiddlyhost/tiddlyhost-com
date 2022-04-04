@@ -161,6 +161,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_response expected_status
 
     if expected_status == 200
+      # ETag header is present and looks correct
+      assert_equal site.tw_etag.encode('US-ASCII'), response.headers['ETag']
+
       th_file = ThFile.new(response.body)
 
       # Sanity checks

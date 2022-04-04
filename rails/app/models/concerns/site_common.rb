@@ -135,6 +135,12 @@ module SiteCommon
     Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks.from_now, &blk)
   end
 
+  # For use with the TW site, not the site record itself
+  # Maybe blob.key itself would work, but let's not expose that
+  def tw_etag
+    Digest::SHA256.base64digest("#{id}-#{blob.key}")
+  end
+
   def download_url
     "#{url}/download"
   end

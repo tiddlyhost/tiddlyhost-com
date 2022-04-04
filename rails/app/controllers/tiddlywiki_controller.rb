@@ -20,6 +20,8 @@ class TiddlywikiController < ApplicationController
   def serve
     return site_not_available unless site_visible?
 
+    etag_header
+
     # Avoid site download for head or options requests
     return head 200 if request.head? || request.options?
 
@@ -34,6 +36,8 @@ class TiddlywikiController < ApplicationController
 
   def json_content
     return site_not_available unless site_visible?
+
+    etag_header
 
     # Return empty body for options request with CORS headers
     return head 200 if request.options?
@@ -61,6 +65,8 @@ class TiddlywikiController < ApplicationController
 
     # If we get nil, assume the tiddler doesn't exist
     return head 404 unless tiddler_data
+
+    etag_header
 
     # Return empty body for options request with CORS headers
     return head 200 if request.options?
