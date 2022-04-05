@@ -133,6 +133,11 @@ class TspotSite < ApplicationRecord
     end
   end
 
+  def show_advanced_settings?
+    return true if allow_in_iframe?
+    false
+  end
+
   def url
     Settings.tiddlyspot_site_url(name)
   end

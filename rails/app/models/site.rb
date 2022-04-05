@@ -74,6 +74,12 @@ class Site < ApplicationRecord
     th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
   end
 
+  def show_advanced_settings?
+    return true if new_record? && empty_id && empty_id != Empty.default_id
+    return true if enable_put_saver? || allow_in_iframe?
+    false
+  end
+
   def url
     Settings.subdomain_site_url(name)
   end
