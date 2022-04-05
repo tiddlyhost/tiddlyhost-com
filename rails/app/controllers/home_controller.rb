@@ -11,19 +11,16 @@ class HomeController < ApplicationController
   end
 
   def about
-  end
-
-  def donate
-  end
-
-  def build_info
     @build_info = {
       'version' => App::VERSION,
       'empties' => Empty.versions,
     }.merge(read_build_info)
 
     @sha = @build_info['sha']
-    @short_sha = @sha[0...9]
+    @short_sha = @sha[0...7]
+  end
+
+  def donate
   end
 
   def error_404
