@@ -5,7 +5,10 @@
   =image_tag 'logo-800-square.png', class: 'about-logo'
 
 %p
-  <i>The easiest way to use TiddlyWiki online.</i>
+  %i
+    The easiest way to use
+    =link_to 'TiddlyWiki', 'https://tiddlywiki.com/', target: '_blank'
+    online.
 
 %p Created, maintained and supported by Simon Baird.
 
@@ -13,37 +16,49 @@
   If you have problems please
   =link_to('report an issue in Github',
     Settings.create_issue_url, target: '_blank')
-  or send an email to
-  =support_mail_to + '.'
+  or
+  =support_mail_to(link_title: 'send an email to Simon') + '.'
 
 %ul.about-links
   %li<
+    =link_to "#{Settings.github_url}/blob/main/LICENSE.md" do
+      =bi_icon('file-earmark-check')
+      License
+  %li<
     =link_to Settings.github_url do
-      =bi_icon('github')
+      =bi_icon('gem')
       Code
-  %li<
-    =link_to 'https://twitter.com/tiddlyhost' do
-      =bi_icon('twitter')
-      Twitter
-  %li<
-    =link_to 'https://tiddlyspot.blogspot.com/' do
-      =bi_icon('newspaper')
-      Blog
   %li<
     =link_to Settings.faq_url do
       =bi_icon('patch-question')
-      FAQ
+      FAQs
   %li<
     =link_to 'https://github.com/simonbaird/tiddlyhost/wiki/Journal' do
       =bi_icon('journal-text')
       Journal
   %li<
+    =link_to 'https://tiddlyspot.blogspot.com/' do
+      =bi_icon('newspaper')
+      News
+  %li<
+    =link_to 'https://twitter.com/tiddlyhost' do
+      =bi_icon('twitter')
+      Tweets
+  %li<
     =link_to '/donate' do
-      =bi_icon('wallet2')
+      =bi_icon('piggy-bank')
       Donations
 
-%p<
-  %small
-    Version:
-    =link_to '/build-info', style: 'text-decoration: none;' do
-      #{App::VERSION}
+%table.m-2.p-1
+  %tr
+    %td.p-1.pe-3.text-muted Version:
+    %td.p-1= App::VERSION
+  %tr
+    %td.p-1.pe-3.text-muted TW versions:
+    %td.p-1= @build_info['empties'].values.join(", ")
+  %tr
+    %td.p-1.pe-3.text-muted Built:
+    %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
+  %tr
+    %td.p-1.pe-3.text-muted SHA:
+    %td.p-1= github_history_link_to(@short_sha, @sha)

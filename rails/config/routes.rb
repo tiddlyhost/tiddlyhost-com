@@ -46,7 +46,6 @@ Rails.application.routes.draw do
 
     get 'about', to: 'home#about'
     get 'donate', to: 'home#donate'
-    get 'build-info', to: 'home#build_info'
 
     get 'admin', to: 'admin#index'
     get 'admin/users'
