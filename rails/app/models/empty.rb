@@ -21,7 +21,7 @@ class Empty < ApplicationRecord
   end
 
   def long_title
-    "#{title} (#{th_file.tiddlywiki_version})"
+    "#{title} (#{th_file.tiddlywiki_version})#{' - Recommended' if is_default?}"
   end
 
   # Returns a hash of names and versions

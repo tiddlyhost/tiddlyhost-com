@@ -16,20 +16,6 @@
       =f.text_field :name, class: 'form-control', maxlength: 63, autofocus: @site.new_record?
       %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
-    -if @site.new_record?
-      .px-3.pt-0.pb-4.advanced{style: display_none_when(@show_advanced)}
-        %small
-          =link_to 'Advanced options', '#', onclick: "$('.advanced').toggle(150); return false;"
-      .px-2.pt-0.pb-4.advanced{style: display_none_when(!@show_advanced)}
-        =f.label :empty_id, 'TiddlyWiki version'
-        =f.select(:empty_id,
-          options_from_collection_for_select(@empties_for_select, :id, :long_title, @site.empty_id || @default_empty),
-          {}, class: 'form-control')
-        .form-text
-          'TiddlyWiki', also known as 'TiddlyWiki5', is the default and the recommended choice.
-          %br
-          'Classic' is the old version of TiddlyWiki that hasn't been updated much since 2011.
-
     =render layout: 'field_wrapper' do
       .form-check
         =f.check_box :is_private, class: 'form-check-input private-checkbox'
@@ -54,19 +40,26 @@
       =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       .form-text Optional. A comma delimited list of tags.
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
-      .form-text
-        %h5 Advanced settings
+    =render layout: 'advanced_wrapper' do
+      -if @site.new_record?
+        .px-2.pt-0.pb-4
+          =f.label :empty_id, 'TiddlyWiki version'
+          =f.select(:empty_id,
+            options_from_collection_for_select(@empties_for_select, :id, :long_title, @site.empty_id || Empty.default_id),
+            {}, class: 'form-control')
+          .form-text
+            <i>TiddlyWiki</i>, also known as TiddlyWiki 5, is the default and the recommended choice.
+            <i>TiddlyWiki Classic</i> refers to the original version of TiddlyWiki which stopped receiving updates around 2011.
 
-    =render layout: 'field_wrapper' do
-      .form-check
-        =f.check_box :enable_put_saver, class: 'form-check-input'
-        =f.label :enable_put_saver, 'Enable put saver', class: 'form-check-label'
-      .form-text
-        Save to Tiddlyhost using the 'put' saver instead of the legacy 'upload' saver.
-        Not recommended unless you're using a TiddlyWiki 5.2.3 prerelease.
+      =render layout: 'field_wrapper' do
+        .form-check
+          =f.check_box :enable_put_saver, class: 'form-check-input'
+          =f.label :enable_put_saver, 'Enable put saver', class: 'form-check-label'
+        .form-text
+          Save to Tiddlyhost using the 'put' saver instead of the legacy 'upload' saver.
+          Not recommended unless you're using a TiddlyWiki 5.2.3 prerelease.
 
-    =render 'site_common/allow_in_iframe', f: f
+      =render 'site_common/allow_in_iframe', f: f
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       =f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'

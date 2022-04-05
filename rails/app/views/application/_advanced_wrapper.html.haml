@@ -1,0 +1,11 @@
+.advanced.pt-4{style: display_none_when(@site.show_advanced_settings?)}
+  =render layout: 'field_wrapper' do
+    .form-text
+      =link_to 'Show advanced settings', '#', onclick: "$('.advanced').toggle(150); return false;"
+
+.advanced.pt-4{style: display_none_when(!@site.show_advanced_settings?)}
+  =render layout: 'field_wrapper' do
+    .form-text
+      %h5 Advanced settings
+
+  =yield

@@ -48,9 +48,6 @@ class SitesController < ApplicationController
         format.html { redirect_to sites_url }
         # format.json { render :show, status: :created, location: @site }
       else
-        # Make sure the version select is shown if it needs to be
-        @show_advanced = @site.empty_id != @default_empty.id
-
         format.html { render :new }
         # format.json { render json: @site.errors, status: :unprocessable_entity }
       end
@@ -106,7 +103,6 @@ class SitesController < ApplicationController
 
   def set_empties_list
     @empties_for_select = Empty.for_select
-    @default_empty = Empty.default
   end
 
   def site_params_for_create

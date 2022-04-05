@@ -14,6 +14,14 @@ module WithDefault
     def default_id
       default.id
     end
+
+    def is_default?(record)
+      record == default
+    end
+  end
+
+  def is_default?
+    self.class.is_default?(self)
   end
 
 end
