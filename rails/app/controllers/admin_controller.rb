@@ -146,7 +146,7 @@ class AdminController < ApplicationController
     @records = @records.admin_search_for(@search) if @search.present?
 
     # Sorting
-    @sort_by = (params[:s].dup || 'created_desc')
+    @sort_by = (params[:s].dup || default_sort)
     null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     @is_desc = @sort_by.sub!(/_desc$/, '')
     sort_field = SORT_OPTIONS[@sort_by.to_sym]
@@ -157,6 +157,15 @@ class AdminController < ApplicationController
     @records = @records.paginate(page: params[:page], per_page: 15)
 
     render action: :paginated_records
+  end
+
+  def default_sort
+    case action_name
+    when 'tspot_sites'
+      'lastupdate_desc'
+    else
+      'created_desc'
+    end
   end
 
 end
