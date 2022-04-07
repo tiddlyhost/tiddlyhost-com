@@ -222,16 +222,16 @@ deploy-scripts:
 refresh-prerelease:
 	$(PLAY) ansible/deploy.yml --tags=refresh-prerelease
 
-deploy-app: nginx-conf-prod
+deploy-app: nginx-conf-prod prod-info
 	$(PLAY) ansible/deploy.yml --tags=app
 
 deploy-cleanup:
 	$(PLAY) ansible/deploy.yml --tags=cleanup
 
-fast-upgrade: nginx-conf-prod
+fast-upgrade: nginx-conf-prod prod-info
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
-faster-upgrade: nginx-conf-prod
+faster-upgrade: nginx-conf-prod prod-info
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 #----------------------------------------------------------
@@ -292,6 +292,11 @@ openstack-reboot:
 
 openstack-reboot-hard:
 	openstack server reboot --hard thost
+
+#----------------------------------------------------------
+
+prod-info:
+	@curl https://tiddlyhost.com/build-info.txt
 
 #----------------------------------------------------------
 rails/public/jsMath/jsMath.js:
