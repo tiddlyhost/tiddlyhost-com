@@ -32,8 +32,8 @@ RUN \
 
 RUN \
   #
-  # Later we'll use bundler to install rails
-  gem install bundler && \
+  # Installs a newer version of bundle and bundler
+  gem update --system --quiet --no-document && \
   #
   # This is how to install yarn apparently...
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \

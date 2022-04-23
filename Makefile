@@ -20,15 +20,20 @@ pull-ruby:
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base: cleanup pull-ruby
+	$(DC) build --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+
+# Use this if you're hacking on docker/Dockerfile.base and building repeatedly
+fast-build-base:
 	$(DC) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Set up your environment right after git clone
 rails-init:
 	mkdir -p docker/postgresql-data
-	$(DC) run --rm app bash -c "bundle install && \
-	  bundle exec rails webpacker:install && \
-	  bundle exec rails db:create && \
-	  bundle exec rails db:migrate"
+	$(DC) run --rm app bash -c "\
+	  bin/bundle install && \
+	  bin/bundle exec rails webpacker:install && \
+	  bin/bundle exec rails db:create && \
+	  bin/bundle exec rails db:migrate"
 
 #----------------------------------------------------------
 
@@ -98,7 +103,7 @@ bundle-clean:
 
 # Run yarn upgrade
 yarn-upgrade:
-	-$(DC) run --rm --no-deps app bash -c "yarn upgrade"
+	-$(DC) run --rm --no-deps app bash -c "bin/yarn upgrade"
 
 #----------------------------------------------------------
 
