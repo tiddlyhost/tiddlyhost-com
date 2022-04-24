@@ -31,7 +31,7 @@ rails-init:
 	mkdir -p docker/postgresql-data
 	$(DC) run --rm app bash -c "\
 	  bin/bundle install && \
-	  bin/bundle exec rails webpacker:install && \
+	  echo n | bin/bundle exec rails webpacker:install && \
 	  bin/bundle exec rails db:create && \
 	  bin/bundle exec rails db:migrate"
 

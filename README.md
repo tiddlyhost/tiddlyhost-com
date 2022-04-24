@@ -52,9 +52,6 @@ Build the container image used for development:
 
 Install all ruby gems, node modules, and initialize the databases:
 
-(It will ask you if you want to overwrite
-/opt/app/config/webpack/environment.js. Say no.)
-
     make rails-init
 
 Run the test suite. Hopefully it's all passing:
