@@ -7,7 +7,7 @@
 #
 
 # See https://hub.docker.com/_/ruby
-FROM ruby:3.1
+FROM ruby:3.1-slim
 
 # The values will be passed in with --build-arg
 ARG USER_ID
@@ -29,18 +29,30 @@ RUN \
   mkdir -p $APP_PATH && chown -R $APP_USER:$APP_USER $APP_PATH && \
   mkdir -p $APP_LOG_PATH && chown -R $APP_USER:$APP_USER $APP_LOG_PATH
 
+RUN \
+  #
+  # First install curl and gpg so we can do the next bit
+  apt-get update -qq && apt-get install -y --no-install-recommends \
+    curl \
+    gnupg \
+  && \
+  #
+  # Install the package source for yarn and its signing key
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn-archive-keyring.gpg && \
+  echo 'deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main' > \
+    /etc/apt/sources.list.d/yarn.list && \
+  #
+  # Now install some required packages including yarn
+  apt-get update -qq && apt-get install -y --no-install-recommends \
+    postgresql-client \
+    nodejs \
+    yarn \
+    vim-tiny
 
 RUN \
   #
   # Installs a newer version of bundle and bundler
-  gem update --system --quiet --no-document && \
-  #
-  # This is how to install yarn apparently...
-  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-  echo deb https://dl.yarnpkg.com/debian/ stable main > /etc/apt/sources.list.d/yarn.list && \
-  #
-  # Install psql client for database access, nodejs and yarn for webpacker, vim for rails credentials:edit
-  apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client nodejs yarn vim-tiny
+  gem update --system --silent --no-document
 
 # Install script to help start rails
 COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin
