@@ -13,6 +13,7 @@ defaults:
   default_empty_name: tw5
   minimum_password_length: 8
   hub_tag_tab_count: 5
+  db_host: <%= is_in_container ? "db" : "localhost" %>
 
   #banner_message:
   #  :icon: exclamation-triangle
@@ -21,10 +22,14 @@ defaults:
   #    unstable. If you experience problems or have a feature suggestion, please create an
   #    issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
 
+
 development:
   url_defaults:
     :host: tiddlyhost.local
-    :protocol: https
+    # By "in container" we actually mean running with
+    # docker-compose up with the nginx front end
+    :protocol: <%= is_in_container ? "https" : "http" %>
+    :port: <%= is_in_container ? nil : 3333 %>
 
   tiddlyspot_host: tiddlyspot.local
 

@@ -39,5 +39,9 @@ services:
     container_name: th_db
     environment:
       POSTGRES_PASSWORD: notsecure123
+    # So we can use localhost for the rails db when running
+    # on bare metal rather than in the app container
+    ports:
+    - "5432:5432"
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z

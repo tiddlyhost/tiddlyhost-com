@@ -85,9 +85,28 @@ docker/log:
 
 app-log: docker/log
 
-# Start Tiddlyhost locally
+#----------------------------------------------------------
+
+# Start Tiddlyhost locally - app only, no container, no SSL
+db-start:
+	@$(DC) up --detach db
+
+db-stop:
+	$(DC) stop
+
+rstart: db-start
+	@cd rails && rails s
+
+rtest: db-start
+	@cd rails && rails t
+
+#----------------------------------------------------------
+
+# Start Tiddlyhost locally - containerized full stack with SSL
 start: nginx-conf-local cert app-log
 	-$(DC) up
+
+#----------------------------------------------------------
 
 # Run bundle-install
 bundle-install:

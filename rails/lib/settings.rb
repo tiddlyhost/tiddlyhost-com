@@ -7,9 +7,15 @@ class Settings
     rails_root = "#{__dir__}/.."
     rails_env = ENV['RAILS_ENV'] || 'development'
 
+    # If we're running in /opt/app then assume it's in the container
+    # (Used in settings.yaml to tweak db name, url protocol and port)
+    is_in_container = File.expand_path(rails_root) == "/opt/app"
+
     read_settings = ->(settings_file) do
       file_name = "#{rails_root}/config/#{settings_file}.yml"
-      YAML.load(ERB.new(File.read(file_name)).result) || {}
+      erb_template = ERB.new(File.read(file_name))
+      settings_yaml = erb_template.result_with_hash(is_in_container: is_in_container)
+      YAML.load(settings_yaml) || {}
     end
 
     settings = read_settings["settings"]

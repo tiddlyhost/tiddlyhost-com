@@ -32,6 +32,9 @@ For status updates see the
 Getting Started (for developers)
 --------------------------------
 
+Todo: Describe the other way to bring up a development system where you run
+rails directly.
+
 ### Prepare environment
 
 You need to have

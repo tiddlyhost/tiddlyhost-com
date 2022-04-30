@@ -37,7 +37,7 @@ development:
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
-  host: db
+  host: <%= Settings.db_host %>
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
@@ -59,7 +59,7 @@ test:
   <<: *default
   username: postgres
   password: notsecure123
-  host: db
+  host: <%= Settings.db_host %>
   database: app_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
@@ -86,5 +86,5 @@ production:
   <<: *default
   username: postgres
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-  host: db
+  host: <%= Settings.db_host %>
   database: app_production
