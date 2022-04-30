@@ -56,7 +56,7 @@ Install all ruby gems, node modules, and initialize the databases:
 
 Run the test suite. Hopefully it's all passing:
 
-    make tests
+    make test
 
 Tiddlyhost uses wildcard subdomains. To simulate this for local development,
 add some entries to your /etc/hosts:

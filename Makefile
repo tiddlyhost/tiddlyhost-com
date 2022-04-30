@@ -125,8 +125,10 @@ devel-dump-secrets:
 #----------------------------------------------------------
 
 # Run test suite
-tests:
+test:
 	$(DCC) 'bin/rails test:all'
+
+tests: test
 
 onetest:
 	$(DCC) 'bin/rails test $(TEST)'
