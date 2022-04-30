@@ -4,7 +4,7 @@
 class Settings
   SETTINGS = begin
     # Since we might run this before Rails has started
-    rails_root = '/opt/app'
+    rails_root = "#{__dir__}/.."
     rails_env = ENV['RAILS_ENV'] || 'development'
 
     read_settings = ->(settings_file) do
