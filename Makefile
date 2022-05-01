@@ -328,11 +328,23 @@ prod-info:
 	@curl https://tiddlyhost.com/build-info.txt
 
 #----------------------------------------------------------
-rails/public/jsMath/jsMath.js:
-	curl -s http://www.math.union.edu/~dpvc/jsmath/download/jsMath-3.3g.zip -o /tmp/jsMath.zip
-	curl -s http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts-1.2.zip -o /tmp/jsMath-fonts.zip
-	cd rails/public && unzip /tmp/jsMath.zip
-	cd rails/public/jsMath && unzip /tmp/jsMath-fonts.zip
+JS_MATH_DOWNLOADS=http://www.math.union.edu/~dpvc/jsmath/download
+JS_MATH_ZIP=jsMath-3.3g.zip
+JS_MATH_FONTS_ZIP=jsMath-fonts-1.2.zip
+
+$(JS_MATH_ZIP):
+	@echo "Please download $(JS_MATH_DOWNLOADS)/$(JS_MATH_ZIP)"
+
+$(JS_MATH_FONTS_ZIP):
+	@echo "Please download $(JS_MATH_DOWNLOADS)/$(JS_MATH_FONTS_ZIP)"
+
+rails/public/jsMath/jsMath.js: ./$(JS_MATH_ZIP) ./$(JS_MATH_FONTS_ZIP)
+	@# For some reason the curl download doesn't work any more
+	@#curl -sO http://www.math.union.edu/~dpvc/jsmath/download/$(JS_MATH_ZIP)
+	@#curl -sO http://www.math.union.edu/~dpvc/jsmath/download/$(JS_MATH_FONTS_ZIP)
+	cd rails/public && unzip ../../$(JS_MATH_ZIP)
+	cd rails/public/jsMath && unzip ../../../$(JS_MATH_FONTS_ZIP)
+	@touch rails/public/jsMath/jsMath.js # so make doesn't think it's stale
 
 js-math: rails/public/jsMath/jsMath.js
 
