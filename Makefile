@@ -219,10 +219,12 @@ MASTER_KEY_FILE=rails/config/master.key
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-info js-math download-empties bundle-clean
+prod-assets:
+	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:precompile"
+
+build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties
 	$(DC) -f docker-compose-prod.yml build \
 	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
-	  --build-arg RAILS_MASTER_KEY=$$( cat $(MASTER_KEY_FILE) ) \
 	  app
 
 push-prod:

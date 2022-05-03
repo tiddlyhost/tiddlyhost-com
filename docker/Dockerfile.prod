@@ -21,14 +21,5 @@ ENV APP_VERSION_BUILD=$APP_VERSION_BUILD
 # Ignores things listed in .dockerignore
 COPY --chown=$APP_USER:$APP_USER rails $APP_PATH
 
-ARG RAILS_MASTER_KEY
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-
-# It's likely all gems are there already, but there's no harm in running this again
-RUN bundle install
-
-# Build static assets
-RUN bin/rails assets:precompile
-
 # Start rails
 CMD /bin/start-rails.sh

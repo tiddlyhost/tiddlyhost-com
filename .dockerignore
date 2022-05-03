@@ -3,6 +3,5 @@ rails/tmp/*
 rails/log/*
 rails/storage/*
 rails/test/*
-rails/public/packs/*
 rails/public/packs-test/*
 backups/
