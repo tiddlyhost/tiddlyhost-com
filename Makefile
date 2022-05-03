@@ -37,6 +37,24 @@ rails-init:
 
 #----------------------------------------------------------
 
+docker/secrets:
+	@mkdir -p $@
+
+docker/secrets/master.key: docker/secrets
+	@cp rails/config/master.key $@
+
+docker/secrets/credentials.yml.enc: docker/secrets
+	@cp rails/config/credentials.yml.enc $@
+
+prod-secrets: docker/secrets/master.key docker/secrets/credentials.yml.enc
+
+docker/prerelease.html:
+	curl -s https://tiddlywiki.com/prerelease/empty.html -o docker/prerelease.html
+
+prod-prerelease: docker/prerelease.html
+
+#----------------------------------------------------------
+
 # Create two sets of nginx config files from templates
 # (Todo: Figure out how to combine the two rules into one..)
 #
@@ -152,15 +170,19 @@ tests: test
 onetest:
 	$(DCC) 'bin/rails test $(TEST)'
 
+#----------------------------------------------------------
+
 # (Use these if you want to run the prod container locally)
-shell-prod:
+shell-prod: prod-secrets prod-prerelease
 	-$(DC) -f docker-compose-prod.yml run --rm app bash
 
 join-prod:
 	-$(DC) -f docker-compose-prod.yml exec app bash -c bash
 
-start-prod: nginx-conf-prod
-	-RAILS_MASTER_KEY=$$( cat $(MASTER_KEY_FILE)` ) $(DC) -f docker-compose-prod.yml up
+start-prod: nginx-conf-prod prod-secrets prod-prerelease
+	-$(DC) -f docker-compose-prod.yml up
+
+#----------------------------------------------------------
 
 # Stop and remove containers, clean up unused images
 cleanup:
@@ -214,7 +236,6 @@ redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
-MASTER_KEY_FILE=rails/config/master.key
 
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt

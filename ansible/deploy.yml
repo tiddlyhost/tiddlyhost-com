@@ -8,6 +8,7 @@
     docker_config_json: ../etc/docker-conf/config.json
     docker_compose_file: ../docker-compose-prod.yml
     master_key_file: ../rails/config/master.key
+    credentials_file: ../rails/config/credentials.yml.enc
     nginx_conf_src_dir: ../docker/nginx-conf-prod/
     nginx_conf_files:
     - app.conf
@@ -23,7 +24,7 @@
 
     thost_log_dir: "{{ docker_dir }}/log"
     nginx_conf_dir: "{{ docker_dir }}/nginx-conf-prod"
-    secrets_dir: "{{ home_dir }}/secrets"
+    secrets_dir: "{{ docker_dir }}/secrets"
 
     service_name: thost
     db_name: app_production
@@ -187,6 +188,15 @@
     copy:
       src: "{{ master_key_file }}"
       dest: "{{ secrets_dir }}/master.key"
+      mode: "0400"
+    tags:
+    - app
+
+  - name: Copy encrypted credentials file
+    become: no
+    copy:
+      src: "{{ credentials_file }}"
+      dest: "{{ secrets_dir }}/credentials.yml.enc"
       mode: "0400"
     tags:
     - app

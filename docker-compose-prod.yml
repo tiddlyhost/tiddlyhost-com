@@ -23,12 +23,12 @@ services:
     depends_on:
     - db
     - cache
-    environment:
-      RAILS_MASTER_KEY:
 
     volumes:
     - ./docker/log:/var/log/app:Z
     - ./docker/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
+    - ./docker/secrets/master.key:/opt/app/config/master.key:Z,ro
+    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:Z,ro
     - rails-static:/opt/app/public
 
     build:

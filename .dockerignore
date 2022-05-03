@@ -4,4 +4,6 @@ rails/log/*
 rails/storage/*
 rails/test/*
 rails/public/packs-test/*
+rails/config/master.key
+rails/config/credentials.yml.enc
 backups/

@@ -6,11 +6,10 @@
 . /etc/init.d/functions
 
 START_DIR={{ home_dir }}
-MASTER_KEY_FILE={{ secrets_dir }}/master.key
 DOCKER_COMPOSE=/usr/local/bin/docker-compose
 
 start() {
-    RAILS_MASTER_KEY=$( cat $MASTER_KEY_FILE ) $DOCKER_COMPOSE up --detach
+    $DOCKER_COMPOSE up --detach
 }
 
 stop() {
