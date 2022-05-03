@@ -32,7 +32,7 @@ development:
   username: postgres
 
   # The password associated with the postgres role (username).
-  password: notsecure123
+  password: <%= Settings.secrets(:postgres, :dev_password) || 'notsecure123' %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -58,7 +58,7 @@ development:
 test:
   <<: *default
   username: postgres
-  password: notsecure123
+  password: <%= Settings.secrets(:postgres, :dev_password) || 'notsecure123' %>
   host: <%= Settings.db_host %>
   database: app_test
 
@@ -85,6 +85,6 @@ test:
 production:
   <<: *default
   username: postgres
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+  password: <%= Settings.secrets(:postgres, :prod_password) %>
   host: <%= Settings.db_host %>
   database: app_production

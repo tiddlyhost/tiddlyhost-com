@@ -45,6 +45,7 @@ services:
     container_name: th_db
     restart: always
     environment:
+      # (Only used when the container sets up a brand new db IIUC)
       POSTGRES_PASSWORD: notsecure123
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
