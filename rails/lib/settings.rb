@@ -89,4 +89,8 @@ class Settings
     self.url_defaults[:protocol] == 'https'
   end
 
+  def self.short_sha(length=7)
+    self.build_info["sha"][0...length]
+  end
+
 end

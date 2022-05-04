@@ -61,4 +61,4 @@
     %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
   %tr
     %td.p-1.pe-3.text-muted SHA:
-    %td.p-1= github_history_link_to(@short_sha, @sha)
+    %td.p-1= github_history_link_to(@build_info['short_sha'], @build_info['sha'])

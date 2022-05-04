@@ -244,9 +244,7 @@ prod-assets:
 	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:precompile"
 
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties
-	$(DC) -f docker-compose-prod.yml build \
-	  --build-arg APP_VERSION_BUILD=$$( git log -n1 --format=%h ) \
-	  app
+	$(DC) -f docker-compose-prod.yml build app
 
 push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost

@@ -14,10 +14,8 @@ class HomeController < ApplicationController
     @build_info = {
       'version' => App::VERSION,
       'empties' => Empty.versions,
+      'short_sha' => Settings.short_sha(9),
     }.merge(Settings.build_info)
-
-    @sha = @build_info['sha']
-    @short_sha = @sha[0...7]
   end
 
   def donate
