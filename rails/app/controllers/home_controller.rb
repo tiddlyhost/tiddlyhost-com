@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     @build_info = {
       'version' => App::VERSION,
       'empties' => Empty.versions,
-    }.merge(read_build_info)
+    }.merge(Settings.build_info)
 
     @sha = @build_info['sha']
     @short_sha = @sha[0...7]
@@ -58,11 +58,6 @@ class HomeController < ApplicationController
       end
 
     end
-  end
-
-  def read_build_info
-    build_info_file = Rails.root.join('public', 'build-info.txt')
-    YAML.load(File.read(build_info_file))
   end
 
 end

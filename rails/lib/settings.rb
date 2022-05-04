@@ -2,6 +2,15 @@
 # Read settings from config/settings.yml and config/settings_local.yml
 #
 class Settings
+
+  # Used to avoid throwing errors if build-info.txt is not there
+  PLACEHOLDER_BUILD_INFO = {
+    "date" => "Wed May 4 12:41:58 PM EDT 2022",
+    "sha" => "0123456789abcdef",
+    "branch" => "devel",
+    "tag" => "v0.0.1",
+  }
+
   SETTINGS = begin
     # Since we might run this before Rails has started
     rails_root = "#{__dir__}/.."
@@ -12,16 +21,19 @@ class Settings
     is_in_container = File.expand_path(rails_root) == "/opt/app"
 
     read_settings = ->(settings_file) do
-      file_name = "#{rails_root}/config/#{settings_file}.yml"
+      file_name = "#{rails_root}/#{settings_file}"
+      return nil unless File.exist?(file_name)
       erb_template = ERB.new(File.read(file_name))
       settings_yaml = erb_template.result_with_hash(is_in_container: is_in_container)
       YAML.load(settings_yaml) || {}
     end
 
-    settings = read_settings["settings"]
-    settings_local = read_settings["settings_local"]
+    settings = read_settings["config/settings.yml"]
+    settings_local = read_settings["config/settings_local.yml"]
+    build_info = {"build_info" =>
+      (read_settings["public/build-info.txt"] || PLACEHOLDER_BUILD_INFO)}
 
-    settings['defaults'].merge(settings[rails_env]).merge(settings_local)
+    settings['defaults'].merge(settings[rails_env]).merge(build_info).merge(settings_local)
   end
 
   def self.method_missing(method)
