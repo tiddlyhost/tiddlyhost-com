@@ -280,6 +280,10 @@ deploy-app: nginx-conf-prod prod-info
 deploy-cleanup:
 	$(PLAY) ansible/deploy.yml --tags=cleanup
 
+# If you want to run selected tasks givem them the foo tag
+deploy-foo:
+	$(PLAY) ansible/deploy.yml --tags=foo
+
 fast-upgrade: nginx-conf-prod prod-info
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
