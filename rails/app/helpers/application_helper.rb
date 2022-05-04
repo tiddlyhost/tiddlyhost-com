@@ -105,8 +105,8 @@ module ApplicationHelper
     "#{Settings.github_url}/commits/#{branch_or_sha}"
   end
 
-  def github_history_link_to(title, sha, opts={})
-    link_to(title, github_history_url(sha), {target: '_blank'}.reverse_merge(opts))
+  def github_history_link_to(title, sha=nil, opts={})
+    link_to(title, github_history_url(sha||title), {target: '_blank'}.reverse_merge(opts))
   end
 
   def known_filter_params
