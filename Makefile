@@ -384,6 +384,8 @@ js-math-clean:
 
 gource-image: /tmp/Simon\ Baird.png
 
+# Fixme: It doesn't work any more. I'm getting this:
+#   gource: SDL initialization failed - GLEW Error: Unknown error
 pretty-colors: gource-image
 	@gource \
 	  --user-image-dir /tmp \
