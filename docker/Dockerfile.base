@@ -45,9 +45,12 @@ RUN \
   # Now install some required packages including yarn
   apt-get update -qq && apt-get install -y --no-install-recommends \
     postgresql-client \
-    nodejs \
-    yarn \
-    vim-tiny
+    # For webpacker
+    nodejs yarn \
+    # For editing, e.g. rails secrets
+    vim-tiny \
+    # Needed at build time to compile gems with native extensions
+    gcc g++ make libpq-dev
 
 RUN \
   #
