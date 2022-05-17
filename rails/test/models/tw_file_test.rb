@@ -136,11 +136,8 @@ class TwFileTest < ActiveSupport::TestCase
 
   test "light get version" do
     # Test with real empty files
-    Dir["#{Rails.root}/tw_content/empties/*/*.html"].each do |empty_file|
-      assert_equal(
-        File.basename(empty_file, '.html'),
-        TwFile.light_get_version(File.read(empty_file))
-      )
+    for_all_empties do |empty_file, tw_kind, tw_version|
+      assert_equal tw_version, TwFile.light_get_version(File.read(empty_file))
     end
 
     # Test with the minimal test html files too I guess

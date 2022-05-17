@@ -101,9 +101,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
   test "saving" do
     # Test against different versions of TW since they'll all be present in prod
-    Dir["#{Rails.root}/tw_content/empties/*/*.html"].each do |empty_file|
+    for_all_empties do |empty_file, tw_kind, tw_version|
 
-      tw_version = File.basename(empty_file, '.html')
       site_name = "test-#{tw_version.gsub(/\./, '-')}"
       site_tiddlers = @tiddlers
       site_user = @user

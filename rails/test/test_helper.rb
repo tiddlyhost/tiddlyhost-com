@@ -6,6 +6,16 @@ require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/mock'
 
+def for_all_empties
+  Dir["#{Rails.root}/tw_content/empties/*"].each do |kind_dir|
+    Dir["#{kind_dir}/*.html"].each do |empty_file|
+      tw_kind = File.basename(kind_dir)
+      tw_version = File.basename(empty_file, '.html')
+      yield(empty_file, tw_kind, tw_version)
+    end
+  end
+end
+
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
