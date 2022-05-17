@@ -3,6 +3,8 @@
   %tr
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
+    -unless params[:kind]
+      %th= sort_link 'Kind'
     %th= sort_link 'Empty'
     %th= sort_link 'Version'
     %th= sort_link 'Description', :asc
@@ -29,6 +31,8 @@
     %tr
       %td= site.id
       %td= admin_site_link site
+      -unless params[:kind]
+        %td= site.tw_kind
       %td= site.empty.name
       %td= site.tw_version
       %td.nowrap.text-truncated{style: 'max-width: 8em;'}

@@ -47,6 +47,7 @@ class AdminController < ApplicationController
     gravatar: 'use_gravatar',
     id: 'id',
     iframes: 'allow_in_iframe',
+    kind: 'tw_kind',
     lastaccess: 'accessed_at',
     lastsignin: 'last_sign_in_at',
     lastupdate: 'active_storage_blobs.created_at',
@@ -71,6 +72,7 @@ class AdminController < ApplicationController
     description
     owner
     version
+    kind
   ]
 
   # s = sort
@@ -84,6 +86,7 @@ class AdminController < ApplicationController
     private
     hub
     no_stub
+    kind
   ]
 
   def users
@@ -142,6 +145,8 @@ class AdminController < ApplicationController
 
     @records = @records.where.not(password_digest: nil) if params[:new_pass] == '1'
     @records = @records.where(password_digest: nil) if params[:new_pass] == '0'
+
+    @records = @records.where(tw_kind: params[:kind]) if params[:kind].present?
 
     @search = params[:q]
     @records = @records.admin_search_for(@search) if @search.present?

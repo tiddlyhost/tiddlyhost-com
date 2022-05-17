@@ -41,18 +41,18 @@ class TwFile
   end
 
   # Presumably parsing the entire TW as a Nokogiri document is quite
-  # heavy on memory resources. Provide a way to find the TW version
-  # without doing that.
+  # heavy on memory resources. Provide a way to find the TW kind and
+  # version without doing that.
   #
-  def self.light_get_version(html_content)
+  def self.light_get_kind_and_version(html_content)
     # For TW5
     match = html_content.match(/^<meta name="tiddlywiki-version" content="([a-zA-Z0-9\-\._]+)"/m)
-    return match[1] if match
+    return ['tw5', match[1]] if match
 
     # For classic
     match = html_content.match(
       /^var version = { title: "TiddlyWiki", major: (\d+), minor: (\d+), revision: (\d+),/m)
-    return match[1..3].join(".") if match
+    return ['classic', match[1..3].join(".")] if match
   end
 
   # We can't be certain, but we can sanity check a few things to
@@ -73,6 +73,11 @@ class TwFile
 
   def is_tw5?
     !is_classic?
+  end
+
+  def kind
+    return 'classic' if is_classic?
+    'tw5'
   end
 
   def json_store?

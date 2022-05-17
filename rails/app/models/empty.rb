@@ -20,6 +20,10 @@ class Empty < ApplicationRecord
     th_file.to_html
   end
 
+  def kind
+    th_file.kind
+  end
+
   def long_title
     "#{title} (#{th_file.tiddlywiki_version})#{' - Recommended' if is_default?}"
   end

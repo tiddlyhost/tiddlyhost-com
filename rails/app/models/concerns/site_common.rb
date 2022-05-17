@@ -44,7 +44,15 @@ module SiteCommon
     scope :compressed,   -> { with_blob.where(active_storage_blobs: { content_type: COMPRESSED_CONTENT_TYPE   }) }
     scope :uncompressed, -> { with_blob.where(active_storage_blobs: { content_type: UNCOMPRESSED_CONTENT_TYPE }) }
 
+    validates :tw_kind, inclusion: { in: SiteCommon::KIND_VALS }, allow_nil: true
   end
+
+  KINDS = {
+    'tw5'     => 'TiddlyWiki',
+    'classic' => 'TiddlyWiki Classic',
+  }.freeze
+
+  KIND_VALS = KINDS.keys.freeze
 
   COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
   UNCOMPRESSED_CONTENT_TYPE = 'text/html'.freeze
@@ -71,12 +79,14 @@ module SiteCommon
   end
 
   def self.attachment_params(new_content)
+    tw_kind, tw_version = TwFile.light_get_kind_and_version(new_content)
     {
       # Record the uncompressed size before it gets compressed
       raw_byte_size: new_content.bytesize,
 
-      # Extract the TiddlyWiki version
-      tw_version: TwFile.light_get_version(new_content),
+      # The kind and version of the site
+      tw_kind: tw_kind,
+      tw_version: tw_version,
 
       # This is the actual attachment
       tiddlywiki_file: SiteCommon.attachable_hash(new_content),
@@ -110,6 +120,14 @@ module SiteCommon
   def blob_cache(cache_type, tiddler_name=nil, &blk)
     blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
     Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+  end
+
+  # See also TwFile.is_#{kind}? methods which look at the content, unlike these
+  #
+  SiteCommon::KIND_VALS.each do |kind|
+    define_method("is_#{kind}?") do
+      tw_kind == kind
+    end
   end
 
   def is_compressed?

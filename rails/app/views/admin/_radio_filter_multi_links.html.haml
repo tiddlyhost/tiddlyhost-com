@@ -1,0 +1,5 @@
+.group
+  -values = values.zip(values).to_h if values.is_a?(Array)
+  -values.each do |k, v|
+    =filter_radio_link(k, param, v)
+  =filter_radio_link('all', param)

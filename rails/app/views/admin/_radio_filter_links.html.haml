@@ -1,4 +1,1 @@
-.group
-  =filter_radio_link(a, key, '1')
-  =filter_radio_link(b, key, '0')
-  =filter_radio_link('all', key)
+=render 'radio_filter_multi_links', param: key, values: { a => '1', b => '0' }

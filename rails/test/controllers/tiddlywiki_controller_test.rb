@@ -116,6 +116,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       original_size = site.raw_byte_size
 
       # Sanity check
+      assert_equal tw_kind, site.tw_kind
       assert_equal tw_version, site.tw_version
       assert_equal site_name, site.name
       fetch_site_as_user(user: site.user, site: site)
