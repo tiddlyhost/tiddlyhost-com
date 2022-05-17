@@ -90,7 +90,7 @@ class ThFile < TwFile
         '$:/status/UserName' => status_user_name,
       })
 
-    else # classic
+    elsif is_classic?
       # We don't want to hard code the site url in the plugin, but we also don't
       # want to hard code the domain name and port etc since they're different
       # in different environments. This is clever way to deal with that.
@@ -114,6 +114,9 @@ class ThFile < TwFile
         }
       })
 
+    else # FeatherWiki
+      # No hackery for FeatherWiki currently
+      self
     end
   end
 

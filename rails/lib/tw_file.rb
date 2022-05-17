@@ -53,18 +53,25 @@ class TwFile
     match = html_content.match(
       /^var version = { title: "TiddlyWiki", major: (\d+), minor: (\d+), revision: (\d+),/m)
     return ['classic', match[1..3].join(".")] if match
+
+    # For FeatherWiki
+    # (Compressed versions don't have the quotes hence the "? here)
+    match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
+    return ['feather', match[1]] if match
   end
 
   # We can't be certain, but we can sanity check a few things to
   # confirm that it at least looks like a legitimate TiddlyWiki
   #
   def looks_valid?
-      # The application name is present
-      tiddlywiki_title == 'TiddlyWiki' &&
-        # Has one or other store divs but not both
-        (store.present? ^ encrypted_store.present?) &&
-        # We're able to extract a tiddlywiki version
-        tiddlywiki_version.present?
+    return true if is_feather?
+
+    # The application name is present
+    tiddlywiki_title == 'TiddlyWiki' &&
+      # Has one or other store divs but not both
+      (store.present? ^ encrypted_store.present?) &&
+      # We're able to extract a tiddlywiki version
+      tiddlywiki_version.present?
   end
 
   def is_classic?
@@ -72,10 +79,15 @@ class TwFile
   end
 
   def is_tw5?
-    !is_classic?
+    !is_classic? && !is_feather?
+  end
+
+  def is_feather?
+    get_meta('application-name') == 'Feather Wiki'
   end
 
   def kind
+    return 'feather' if is_feather?
     return 'classic' if is_classic?
     'tw5'
   end
@@ -89,6 +101,7 @@ class TwFile
   end
 
   def tiddlywiki_version
+    return featherwiki_version if is_feather?
     tiddlywiki_version_tw5 || tiddlywiki_version_classic
   end
 
@@ -111,6 +124,10 @@ class TwFile
   def tiddlywiki_version_classic
     match = tiddlywiki_version_area.try(:text).try(:match, /major: (\d+), minor: (\d+), revision: (\d+)/).presence
     "#{match[1]}.#{match[2]}.#{match[3]}" if match
+  end
+
+  def featherwiki_version
+    get_meta('version')
   end
 
   def tiddlywiki_title_classic

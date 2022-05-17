@@ -61,6 +61,15 @@ module SitesHelper
     kind_logo(site, 'height: 1.2em; margin-right: 2px; margin-top: -2px;') + " #{site.kind_title} #{site.tw_version}" if site.tw_kind
   end
 
+  def kind_link(kind)
+    title = SiteCommon::KINDS[kind]
+    url = SiteCommon::KIND_URLS[kind]
+    logo = SiteCommon::KIND_LOGOS[kind]
+    link_to url, target: '_blank' do
+      image_tag(logo, style: 'height: 1.2em; margin-top: -2px; padding-left: 2px; padding-right: 4px;', title: title) + title
+    end
+  end
+
   def clickable_site_tags(site)
     safe_join(site.tag_list.map do |tag_name|
       link_to tag_name, hub_tag_url(tag_name)

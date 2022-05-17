@@ -207,7 +207,18 @@ EMPTY_DIR=rails/tw_content/empties
 download-empties:
 	@mkdir -p $(EMPTY_DIR)
 	@$(PLAY) ansible/fetch_empties.yml
+	@$(MAKE) -s feather-empty
 	@$(MAKE) -s empty-versions
+
+FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Dove.html
+FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
+$(FEATHER_EMPTY): $(FEATHER_BUILD)
+	@mkdir -p $(EMPTY_DIR)
+	cp $? $@
+	# Temporary while we're interating quickly
+	cp $? $(EMPTY_DIR)/feather/Dove_1.2.1.html
+
+feather-empty: $(FEATHER_EMPTY)
 
 refresh-empties: empty-versions clear-empties download-empties
 

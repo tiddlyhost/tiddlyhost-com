@@ -76,7 +76,8 @@ class Site < ApplicationRecord
 
   def show_advanced_settings?
     return true if new_record? && empty_id && empty_id != Empty.default_id
-    return true if enable_put_saver? || allow_in_iframe?
+    return true if enable_put_saver? && !is_feather?
+    return true if allow_in_iframe?
     false
   end
 

@@ -102,6 +102,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   test "saving" do
     # Test against different versions of TW since they'll all be present in prod
     for_all_empties do |empty_file, tw_kind, tw_version|
+      # TODO: Test coverage for saving feather sites
+      next if tw_kind == 'feather'
 
       site_name = "test-#{tw_version.gsub(/\./, '-')}"
       site_tiddlers = @tiddlers

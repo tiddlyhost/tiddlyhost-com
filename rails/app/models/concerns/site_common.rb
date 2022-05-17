@@ -50,11 +50,19 @@ module SiteCommon
   KINDS = {
     'tw5'     => 'TiddlyWiki',
     'classic' => 'TiddlyWiki Classic',
+    'feather' => 'Feather Wiki',
   }.freeze
 
   KIND_LOGOS = {
     'tw5'     => 'https://raw.githubusercontent.com/jermolene/tiddlywiki5/master/editions/tw5.com/tiddlers/images/favicon.ico',
     'classic' => 'https://classic.tiddlywiki.com/images/favicon.ico',
+    'feather' => 'https://raw.githubusercontent.com/alamantus/featherwiki/main/logo.svg',
+  }.freeze
+
+  KIND_URLS = {
+    'tw5'     => 'https://tiddlywiki.com/',
+    'classic' => 'https://classic.tiddlywiki.com/',
+    'feather' => 'https://feather.wiki/',
   }.freeze
 
   KIND_VALS = KINDS.keys.freeze
@@ -141,6 +149,12 @@ module SiteCommon
 
   def kind_logo_url
     SiteCommon::KIND_LOGOS[tw_kind] if tw_kind
+  end
+
+  # FeatherWiki sites should always use the put saver
+  #
+  def enable_put_saver?
+    is_feather? || super
   end
 
   def is_compressed?
