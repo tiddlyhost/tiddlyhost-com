@@ -52,6 +52,11 @@ module SiteCommon
     'classic' => 'TiddlyWiki Classic',
   }.freeze
 
+  KIND_LOGOS = {
+    'tw5'     => 'https://raw.githubusercontent.com/jermolene/tiddlywiki5/master/editions/tw5.com/tiddlers/images/favicon.ico',
+    'classic' => 'https://classic.tiddlywiki.com/images/favicon.ico',
+  }.freeze
+
   KIND_VALS = KINDS.keys.freeze
 
   COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
@@ -128,6 +133,14 @@ module SiteCommon
     define_method("is_#{kind}?") do
       tw_kind == kind
     end
+  end
+
+  def kind_title
+    SiteCommon::KINDS[tw_kind] if tw_kind
+  end
+
+  def kind_logo_url
+    SiteCommon::KIND_LOGOS[tw_kind] if tw_kind
   end
 
   def is_compressed?

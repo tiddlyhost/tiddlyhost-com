@@ -17,6 +17,7 @@
 
     %thead
       %th Site
+      %th Kind
       %th Version
       %th Access
       %th Views
@@ -35,6 +36,9 @@
               .description= span_with_title(site.description)
             -unless site.tag_list.empty?
               .site-tags= clickable_site_tags(site)
+
+          %td.small
+            =kind_logo(site)
 
           %td.small
             -if site.tw_version

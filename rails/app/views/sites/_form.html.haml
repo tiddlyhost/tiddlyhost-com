@@ -1,5 +1,5 @@
 
-=render layout: 'form_wrapper', locals: { heading: heading } do
+=render layout: 'form_wrapper', locals: { heading: heading, intro_text: kind_summary(@site) } do
 
   =form_for @site do |f|
 
