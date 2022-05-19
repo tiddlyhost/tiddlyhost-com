@@ -4,10 +4,34 @@ class SitesController < ApplicationController
   before_action :set_site, except: [:index, :new, :create]
   before_action :set_empties_list, only: [:new, :create]
 
+  SORT_OPTIONS = {
+    compressed: 'size',
+    kind: 'tw_kind',
+    name: 'name',
+    updated: 'blob_created_at',
+    version: 'tw_kind,tw_version',
+    access: 'not_searchable,is_private',
+    views: 'view_count',
+    size: 'raw_size',
+  }
+
+  NULL_ALWAYS_LAST = %w[
+    version
+    size
+  ]
+
   # GET /sites
   # GET /sites.json
   def index
-    @sites = current_user.all_sites.sort_by(&:updated_at).reverse
+    # Todo: DRY this (see admin controller)
+    @sort_by = (params[:s].dup || 'updated_desc')
+    @is_desc = @sort_by.sub!(/_desc$/, '')
+    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
+    sort_field = SORT_OPTIONS[@sort_by.to_sym] || SORT_OPTIONS[:updated]
+    desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
+    sort_by = sort_field.split(',').map{|f| "#{f} #{desc_sql}"}.join(",")
+
+    @sites = HubQuery.sites_for_user(current_user, sort_by: sort_by)
     @site_count = @sites.count
     @total_storage_bytes = current_user.total_storage_bytes
   end

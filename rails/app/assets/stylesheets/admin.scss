@@ -68,10 +68,21 @@
         border-bottom: 1px solid black;
         border-top-style: none;
         white-space: nowrap;
-        color: #666;
+        color: #888;
+    }
 
+    td {
+        padding-right: 1em;
+    }
+}
+
+.table.admin, .table.sites {
+    th {
+        color: #888;
         a {
-            color: #666;
+            color: #888;
+            text-decoration: none;
+            white-space: nowrap;
             &.asc, &.desc { color: #444; }
 
             @mixin up   { content: "↑"; color: #666; padding-left: 1px; font-size: 90%; }
@@ -92,11 +103,6 @@
             &.asc:hover:after  { @include up; }
         }
     }
-
-    td {
-        padding-right: 1em;
-    }
-
 }
 
 .admin-paginate {

@@ -153,8 +153,8 @@ class AdminController < ApplicationController
 
     # Sorting
     @sort_by = (params[:s].dup || default_sort)
-    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     @is_desc = @sort_by.sub!(/_desc$/, '')
+    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     sort_field = SORT_OPTIONS[@sort_by.to_sym]
     desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
     @records = @records.order(Arel.sql("#{sort_field} #{desc_sql}")) if sort_field

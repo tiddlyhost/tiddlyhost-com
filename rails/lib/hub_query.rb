@@ -8,19 +8,35 @@
 #
 module HubQuery
 
-  def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:)
+  def self.sites_for_user(user, sort_by:)
+    # Not really paginated or hub related...
+    # Todo: Cap site count per user or do pagination
+    paginated_sites(
+      page: nil, per_page: 1000, sort_by: sort_by, tag: nil, user: user, search: nil, for_hub: false,
+      extra_fields_in_select: [
+        :tw_kind, :tw_version, :is_private, :is_searchable,
+        # Have a rough guess if it was never set
+        'COALESCE(raw_byte_size, active_storage_blobs.byte_size * 4) as raw_size',
+        'not is_searchable as not_searchable', 'active_storage_blobs.byte_size as size'
+      ])
+  end
+
+  def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:, for_hub: true, extra_fields_in_select: [])
     # Work with two separate queries
     qs = [
-      Site.for_hub.with_blob.select(
+      Site.with_blob.select(
         "'Site' AS type", :id, :name, :view_count, :created_at,
-        "active_storage_blobs.created_at AS blob_created_at"),
+        "active_storage_blobs.created_at AS blob_created_at",
+        *extra_fields_in_select),
 
-      TspotSite.for_hub.with_blob.select(
+      TspotSite.with_blob.select(
         "'TspotSite' AS type", :id, :name, "access_count AS view_count", "NULL AS created_at",
-        "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at"),
+        "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
+        *extra_fields_in_select),
     ]
 
     # Apply filters
+    qs.map! { |q| q.for_hub } if for_hub
     qs.map! { |q| q.tagged_with(tag) } if tag.present?
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
     qs.map! { |q| q.search_for(search) } if search.present?

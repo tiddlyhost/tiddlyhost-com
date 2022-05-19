@@ -16,14 +16,14 @@
   %table.sites.table.table-striped
 
     %thead
-      %th Site
-      %th Kind
-      %th Version
-      %th Access
-      %th Views
-      %th Raw Size
-      %th Compressed Size
-      %th Last updated
+      %th= sort_link 'Name', :asc
+      %th= sort_link 'Kind'
+      %th= sort_link 'Version'
+      %th= sort_link 'Access', :asc
+      %th= sort_link 'Views'
+      %th= sort_link 'Size'
+      %th= sort_link 'Compressed'
+      %th= sort_link 'Updated'
       %th Actions
 
     %tbody
@@ -46,29 +46,29 @@
             -else
               .text-muted -
 
-          %td.small
-            .site-access= site_access(site)
+          %td.small.smaller
+            =site_access(site)
 
-          %td.small
+          %td.small.smaller
             .views
               -if is_tspot
                 =site.access_count
               -else
                 =site.view_count
 
-          %td.small
+          %td.small.smaller
             -if site.raw_byte_size
               !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
             -else
               .text-muted -
 
-          %td.small
+          %td.small.smaller
             -if site.blob
               !="#{as_megabytes(site.blob_byte_size)}&nbsp;MB"
             -else
               .text-muted -
 
-          %td.small
+          %td.small.smaller
             -if is_tspot
               =nice_timestamp(site.save_count > 0 && site.blob_created_at)
             -else
