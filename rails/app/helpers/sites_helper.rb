@@ -27,11 +27,13 @@ module SitesHelper
   end
 
   def site_access(site)
-    [
-      site.is_public? && site.is_searchable? ? 'Hub listed' : nil,
-      site.is_public? ? 'Public' : 'Private',
-
-    ].compact.join(', ')
+    if site.is_searchable? && site.is_public?
+      bi_icon('search-heart', fill: '#6c757d') + 'Hub listed'
+    elsif site.is_public?
+      bi_icon('eye', fill: '#6c757d') + 'Public'
+    else site.is_private?
+      bi_icon('eye-slash', fill: '#6c757d') + 'Private'
+    end
   end
 
   def hub_all_url
