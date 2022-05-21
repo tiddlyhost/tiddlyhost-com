@@ -206,7 +206,7 @@ EMPTY_DIR=rails/tw_content/empties
 
 download-empties:
 	@mkdir -p $(EMPTY_DIR)
-	@$(PLAY) -v ansible/fetch_empties.yml
+	@$(PLAY) ansible/fetch_empties.yml
 	@$(MAKE) -s empty-versions
 
 refresh-empties: empty-versions clear-empties download-empties
