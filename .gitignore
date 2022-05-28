@@ -20,6 +20,7 @@ docker/nginx-conf-prod
 docker/postgresql-data
 docker/log
 docker/secrets
+docker/bundle
 docker/prerelease.html
 etc/certbot-dns-user-credentials.yml
 etc/docker-conf/

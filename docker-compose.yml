@@ -19,6 +19,7 @@ services:
     - cache
     volumes:
     - ./rails:/opt/app:Z
+    - ./docker/bundle:/opt/bundle:Z
     - ./docker/log:/var/log/app:Z
     command: /bin/start-rails.sh
 

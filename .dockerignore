@@ -5,6 +5,7 @@ rails/storage/*
 rails/test/*
 rails/node_modules/*
 rails/public/packs-test/*
+rails/vendor/*
 rails/config/master.key
 rails/config/credentials.yml.enc
 backups/

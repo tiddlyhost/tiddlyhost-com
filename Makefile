@@ -29,6 +29,7 @@ fast-build-base:
 # Set up your environment right after git clone
 rails-init:
 	mkdir -p docker/postgresql-data
+	mkdir -p docker/bundle
 	$(DC) run --rm app bash -c "\
 	  bin/bundle install && \
 	  echo n | bin/bundle exec rails webpacker:install && \
@@ -128,6 +129,7 @@ start: nginx-conf-local cert app-log
 
 # Run bundle-install
 bundle-install:
+	@mkdir -p docker/bundle
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle install"
 
 # Run bundle-update

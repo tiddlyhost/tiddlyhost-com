@@ -67,7 +67,7 @@ USER $APP_USER
 COPY ./docker/dot_bash_aliases /home/$APP_USER/.bash_aliases
 
 # Writes to /home/$APP_USER/.bundle/config
-RUN bundle config set --global path 'vendor/bundle'
+RUN bundle config set --global path '/opt/bundle'
 
 # Make it easy to connect and do things in the container
 # See docker-compose for how we start rails
