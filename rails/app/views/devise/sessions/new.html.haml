@@ -18,6 +18,8 @@
         =f.label :remember_me
 
     =render layout: 'field_wrapper' do
+      -if params[:s]
+        =f.hidden_field :site_redir, value: params[:s]
       =f.submit 'Log in', class: 'btn btn-primary'
 
     =render 'devise/shared/links'

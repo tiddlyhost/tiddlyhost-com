@@ -6,7 +6,7 @@
     You don't have permission to view this site!
   %p
     If this is your site then login at
-    =link_to 'Tiddlyhost', Settings.login_url
+    =link_to 'Tiddlyhost', Settings.login_url + "?s=#{@site.name}"
     to access it.
 
 -when 403

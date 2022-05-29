@@ -99,6 +99,31 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "sign in redirect" do
+    @site.update!(is_private: true)
+    host! @site.host
+
+    # Can't see private site to begin with
+    get '/'
+    assert_response 401
+
+    sign_in_url = "http://example.com/users/sign_in"
+    sign_in_url_with_redir = "#{sign_in_url}?s=#{@site.name}"
+
+    # The sign in link includes the extra url param
+    assert_select "a[href='#{sign_in_url_with_redir}']"
+
+    # The sign in form includes the extra field
+    get sign_in_url_with_redir
+    assert_select "form input[type='hidden'][id='user_site_redir'][value='#{@site.name}']"
+
+    # The sign in form doesn't includes the extra field
+    get sign_in_url
+    assert_select "form input[id='user_site_redir']", false
+
+    # Todo: Test the actual redirect, probably in an integration test though
+  end
+
   test "saving" do
     # Test against different versions of TW since they'll all be present in prod
     for_all_empties do |empty_file, tw_kind, tw_version|
@@ -241,7 +266,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     host! site.host
     sign_in user if user
 
-    get '/', headers: headers
+    get '/'
     assert_response expected_status
 
     if expected_status == 200
