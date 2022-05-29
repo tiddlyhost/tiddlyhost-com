@@ -54,7 +54,7 @@ module SitesHelper
   end
 
   def kind_logo(site, style='height: 1.4em; margin-top: -3px;')
-    image_tag(site.kind_logo_url, style: style, title: site.kind_title) if site.tw_kind
+    image_tag(site.kind_logo_image, style: style, title: site.kind_title) if site.tw_kind
   end
 
   def kind_summary(site)

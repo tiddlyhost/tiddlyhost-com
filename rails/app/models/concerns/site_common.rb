@@ -54,9 +54,9 @@ module SiteCommon
   }.freeze
 
   KIND_LOGOS = {
-    'tw5'     => 'https://raw.githubusercontent.com/jermolene/tiddlywiki5/master/editions/tw5.com/tiddlers/images/favicon.ico',
-    'classic' => 'https://classic.tiddlywiki.com/images/favicon.ico',
-    'feather' => 'https://raw.githubusercontent.com/alamantus/featherwiki/main/logo.svg',
+    'tw5'     => 'tw5-icon.ico',
+    'classic' => 'classic-icon.ico',
+    'feather' => 'feather-icon.svg',
   }.freeze
 
   KIND_URLS = {
@@ -147,7 +147,7 @@ module SiteCommon
     SiteCommon::KINDS[tw_kind] if tw_kind
   end
 
-  def kind_logo_url
+  def kind_logo_image
     SiteCommon::KIND_LOGOS[tw_kind] if tw_kind
   end
 
