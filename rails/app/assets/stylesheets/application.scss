@@ -5,9 +5,8 @@
 @import "admin";
 @import "home";
 
-// Color (respectfully) stolen from TW...
-// Todo: Review color scheme, branding etc
-$nav_bg_color: #5778d8;
+// https://gka.github.io/palettes/#/15|d|5c7cd9||1|1
+$nav_bg_color: #3c60b9;
 
 $contrast_color: #29AE4A;
 
@@ -143,7 +142,7 @@ footer {
     padding: 2em 1.2em 10em;
     font-size: 80%;
     .container-fluid {
-        opacity: 0.8;
+        opacity: 0.9;
     }
     a {
         font-weight: bold;
