@@ -1,3 +1,4 @@
+require 'csv'
 
 class AdminController < ApplicationController
   before_action :authenticate_user!
@@ -33,6 +34,10 @@ class AdminController < ApplicationController
     @dupe_attachments = ActiveStorage::Attachment.
       group(:record_type, :record_id).count.select{ |k, c| c > 1 }.count
 
+  end
+
+  def data
+    @title = "Data"
   end
 
   SORT_OPTIONS = {
@@ -108,6 +113,29 @@ class AdminController < ApplicationController
     site = klass.find(params[:id])
     download_html_content(site.file_download,
       "raw_#{klass.name.underscore}_#{site.id}_#{site.name}")
+  end
+
+  def csv_data
+    # Return signup count per day
+    query = %{
+      SELECT
+        TO_CHAR(created_at, 'YYYY-MM-DD') AS day,
+        count(id) AS signup_count
+      FROM
+        users
+      GROUP BY
+        1
+      ORDER BY
+        1
+    }
+
+    csv_data = CSV.generate do |csv|
+      ActiveRecord::Base.connection.select_all(query).rows.each do |r|
+        csv << r
+      end
+    end
+
+    render inline: csv_data, content_type: "text/csv"
   end
 
   private

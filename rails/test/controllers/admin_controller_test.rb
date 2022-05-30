@@ -34,4 +34,12 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "csv data" do
+    sign_in @admin
+    get '/admin/csv_data'
+    @response.body.lines.each do |line|
+      assert_match /^\d\d\d\d-\d\d-\d\d,\d$/, line
+    end
+  end
+
 end

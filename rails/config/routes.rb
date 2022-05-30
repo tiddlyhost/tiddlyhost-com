@@ -53,7 +53,9 @@ Rails.application.routes.draw do
     get 'admin/users'
     get 'admin/sites'
     get 'admin/tspot_sites'
+    get 'admin/data'
     get 'admin/raw_download'
+    get 'admin/csv_data'
 
     get 'hub', to: 'hub#index'
     get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }
