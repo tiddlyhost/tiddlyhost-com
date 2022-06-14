@@ -37,13 +37,24 @@ class ApplicationController < ActionController::Base
   end
 
   def user_is_admin?
-    user_signed_in? && current_user.is_admin?
+    feature_enabled?(:admin)
   end
   helper_method :user_is_admin?
 
+  def feature_enabled?(feature_name)
+    Settings.feature_enabled?(feature_name, current_user)
+  end
+  helper_method :feature_enabled?
+
   def require_admin_user!
-    # Todo: A nicer 403 response
-    raise "Unauthorized!" unless user_is_admin?
+    require_feature_enabled!(:admin)
+  end
+
+  def require_feature_enabled!(feature_name)
+    return if feature_enabled?(feature_name)
+    # 403 would be more accurate but let's pretend it's a 404
+    @status_code, @status_message = 404, 'Not Found'
+    render 'home/error_page', status: @status_code, layout: 'simple'
   end
 
   # Used for serving custom favicons

@@ -15,8 +15,9 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
 
     ].each do |page|
       sign_in users(:bobby)
-      e = assert_raises { get page }
-      assert_equal "Unauthorized!", e.to_s
+      get page
+      assert_response :not_found
+      assert_select 'h1', '404 Not Found', @response.body
     end
   end
 

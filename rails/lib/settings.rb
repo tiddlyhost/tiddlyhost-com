@@ -93,4 +93,9 @@ class Settings
     self.build_info["sha"][0...length]
   end
 
+  def self.feature_enabled?(feature_name, user=nil)
+    method_name = "#{feature_name}_enabled?"
+    !!(Settings::Features.respond_to?(method_name) && Settings::Features.send(method_name, user))
+  end
+
 end

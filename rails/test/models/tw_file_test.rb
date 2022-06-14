@@ -1,3 +1,4 @@
+require "test_helper"
 
 class TwFileTest < ActiveSupport::TestCase
 
