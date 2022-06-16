@@ -7,7 +7,7 @@ module SubdomainCommon
   end
 
   def manage_iframe_header
-    response.headers.except!('X-Frame-Options') if @site.try(:allow_in_iframe?)
+    response.headers.except!('X-Frame-Options') if @site&.allow_in_iframe?
   end
 
   def etag_header

@@ -78,7 +78,7 @@ class TspotSite < ApplicationRecord
       is_private: fetched_site.is_private?,
       htpasswd: fetched_site.htpasswd_file,
       tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
-      created_ip: ip_address.try(:to_s),
+      created_ip: ip_address&.to_s,
     }
   end
 
@@ -98,7 +98,7 @@ class TspotSite < ApplicationRecord
   # the fetcher to populate its content and metadata.
   #
   def self.find_and_populate(site_name, ip_address=nil)
-    find_by_name(site_name).try(:ensure_destubbed, ip_address)
+    find_by_name(site_name)&.ensure_destubbed(ip_address)
   end
 
   def use_legacy_password?

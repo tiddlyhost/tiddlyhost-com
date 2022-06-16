@@ -97,7 +97,7 @@ class TwFile
   end
 
   def get_meta(name)
-    doc.at_xpath("/html/head/meta[@name='#{name}']/@content").try(:to_s)
+    doc.at_xpath("/html/head/meta[@name='#{name}']/@content")&.to_s
   end
 
   def tiddlywiki_version
@@ -122,7 +122,7 @@ class TwFile
   end
 
   def tiddlywiki_version_classic
-    match = tiddlywiki_version_area.try(:text).try(:match, /major: (\d+), minor: (\d+), revision: (\d+)/).presence
+    match = tiddlywiki_version_area&.text&.match(/major: (\d+), minor: (\d+), revision: (\d+)/).presence
     "#{match[1]}.#{match[2]}.#{match[3]}" if match
   end
 
@@ -131,7 +131,7 @@ class TwFile
   end
 
   def tiddlywiki_title_classic
-    match = tiddlywiki_version_area.try(:text).try(:match, /title: "(\w+)"/).presence
+    match = tiddlywiki_version_area&.text&.match(/title: "(\w+)"/).presence
     match[1] if match
   end
 
@@ -175,7 +175,7 @@ class TwFile
   end
 
   def tiddler_content(title, shadow: false)
-    tiddler_data(title, shadow: shadow).try(:[], 'text')
+    tiddler_data(title, shadow: shadow)&.send(:[], 'text')
   end
 
   def shadow_tiddler_content(title)
