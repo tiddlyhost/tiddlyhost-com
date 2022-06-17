@@ -209,7 +209,7 @@ EMPTY_DIR=rails/tw_content/empties
 download-empties:
 	@mkdir -p $(EMPTY_DIR)
 	@$(PLAY) ansible/fetch_empties.yml
-	@$(MAKE) -s feather-empty
+	#@$(MAKE) -s feather-empty
 	@$(MAKE) -s empty-versions
 
 FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Tern.html
