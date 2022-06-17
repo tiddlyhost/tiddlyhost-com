@@ -86,8 +86,8 @@ shell:
 
 # Figure out if there's already a container running and use exec or run accordingly
 EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
-D=sudo docker
-DC=sudo docker-compose
+D=docker
+DC=docker-compose
 DCC=-$(DC) $(EXEC_OR_RUN) app bash -c
 
 join:
