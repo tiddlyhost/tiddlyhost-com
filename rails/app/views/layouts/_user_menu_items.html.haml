@@ -1,27 +1,39 @@
 
-%li.dropdown-item-text{style: 'color: #6c757d; white-space: nowrap; font-size: 80%;'}
-  Signed in as
+%li.dropdown-item-text
+  Account
   %br
-  %b
-    -if current_user.use_gravatar?
-      =gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
-    -else
-      =bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
-    =current_user.username_or_email
+  %b.ps-1
+    =link_to edit_user_registration_path do
+      -if current_user.use_gravatar?
+        =gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
+      -else
+        =bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
+      =current_user.username_or_email
+
+%li
+  =link_to edit_user_registration_path, class: 'dropdown-item' do
+    =bi_icon('person-square', fill: "#444", style: "margin-left: 2px;")
+    Manage account
 
 %li.dropdown-divider
+
+%li.dropdown-item-text
+  Sites
+  %br
+  %b.ps-2
+    =link_to sites_path do
+      #{current_user.all_sites.count}
+      sites
+      (#{as_megabytes(current_user.total_storage_bytes)} MB)
+  %br
 
 %li
   =link_to sites_path, class: 'dropdown-item' do
     =bi_icon('sliders')
     Manage sites
 
-%li
-  =link_to edit_user_registration_path, class: 'dropdown-item' do
-    =bi_icon('file-earmark-person')
-    Manage account
 
-%li.dropdown-divider
+%li.dropdown-divider{style: "margin-bottom: 1.5em;"}
 
 %li
   =link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do

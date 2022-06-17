@@ -41,7 +41,7 @@
                 =bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
               =current_user.username_or_name
 
-            %ul.dropdown-menu.dropdown-menu-end{'aria-labelledby'=>'navbarDropdown'}
+            %ul.dropdown-menu.dropdown-menu-end.th-nav-menu{'aria-labelledby'=>'navbarDropdown'}
               =render 'layouts/user_menu_items'
 
       -else

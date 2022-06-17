@@ -253,3 +253,32 @@ body.simple-layout {
         padding-bottom: 8em;
     }
 }
+
+/* The menu is quite busy so give it some extra whitespace */
+.th-nav-menu {
+    padding-top: 0.9rem;
+    padding-bottom: 1.2rem;
+    min-width: 14.5em;
+
+    li {
+        a.dropdown-item {
+            padding-left: 1.7em;
+        }
+    }
+
+    li.dropdown-item-text {
+        margin-left: 0.8em;
+        margin-bottom: 0px;
+        color: #6c757d;
+        font-size: 80%;
+        white-space: nowrap;
+        a {
+            text-decoration: none;
+            color: #6c757d;
+        }
+    }
+
+    li.dropdown-divider {
+        margin-top: 0.9em;
+    }
+}
