@@ -15,7 +15,7 @@ USER_ID ?= $(shell id -u)
 GROUP_ID ?= $(shell id -g)
 
 pull-ruby:
-	$(D) pull ruby:3.1
+	$(D) pull ruby:3.1-slim
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
