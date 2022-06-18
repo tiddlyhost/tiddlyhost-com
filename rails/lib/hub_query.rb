@@ -74,7 +74,8 @@ module HubQuery
       group_by{ |t| t.tag.name }.
       map{ |k, v| [k, -v.count] }.
       sort_by(&:last).
-      map(&:first)
+      map(&:first).
+      reject{ |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags)||[]) }
   end
 
 end
