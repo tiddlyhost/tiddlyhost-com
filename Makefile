@@ -313,8 +313,11 @@ DB_BACKUPS=$(BACKUPS_DIR)/db
 
 db-backup:
 	mkdir -p $(DB_BACKUPS)/$(TIMESTAMP)
-	$(PLAY) -v ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP)
-	du -h $(DB_BACKUPS)
+	$(PLAY) ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP)
+	ls -l $(DB_BACKUPS)/$(TIMESTAMP)
+	zcat $(DB_BACKUPS)/$(TIMESTAMP)/dbdump.gz | grep '^-- ' | head -3
+	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)
+	du -h -s $(DB_BACKUPS)
 
 s3-bucket-name:
 	@[[ ! -z "$$BUCKET_NAME" ]] || ( echo "BUCKET_NAME not set!" && exit 1 )
