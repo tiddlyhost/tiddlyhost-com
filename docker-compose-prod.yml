@@ -10,10 +10,10 @@ services:
     - "443:443"
     volumes:
     # Use this for testing the prod container locally:
-    #- ./docker/certs:/etc/letsencrypt/live/tiddlyhost.com:Z
+    #- ./docker/certs:/etc/letsencrypt/live/tiddlyhost.local:Z
     - ./docker/letsencrypt:/etc/letsencrypt:Z
 
-    - ./docker/nginx-conf-prod:/etc/nginx/conf.d:Z
+    - ./docker/nginx-conf:/etc/nginx/conf.d:Z
     - rails-static:/opt/rails-static
 
   app:
@@ -26,9 +26,10 @@ services:
 
     volumes:
     - ./docker/log:/var/log/app:Z
-    - ./docker/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
     - ./docker/secrets/master.key:/opt/app/config/master.key:Z,ro
     - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:Z,ro
+    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:Z,ro
+    - ./docker/config/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
     - rails-static:/opt/app/public
 
     build:

@@ -8,8 +8,8 @@ services:
     - "80:80"
     - "443:443"
     volumes:
-    - ./docker/certs:/etc/letsencrypt/live/tiddlyhost.com:Z
-    - ./docker/nginx-conf-local:/etc/nginx/conf.d:Z
+    - ./docker/certs:/etc/letsencrypt/live/tiddlyhost.local:Z
+    - ./docker/nginx-conf:/etc/nginx/conf.d:Z
 
   app:
     image: base:latest

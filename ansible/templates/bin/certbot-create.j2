@@ -4,7 +4,6 @@ certbot certonly \
   --config-dir {{ certbot_dir_config }} \
   --work-dir {{ certbot_dir_work }} \
   --logs-dir {{ certbot_dir_logs }} \
-  -d {{ cert_host }} -d *.{{ cert_host }} \
-  -d {{ extra_cert_host }} -d *.{{ extra_cert_host }} \
+  {% for cert_host in cert_hosts %}-d {{ cert_host }} -d *.{{ cert_host }} {% endfor %}\
   --dns-route53 \
   -n --agree-tos -m {{ certbot_notification_email }}

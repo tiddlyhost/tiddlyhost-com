@@ -56,23 +56,18 @@ prod-prerelease: docker/prerelease.html
 
 #----------------------------------------------------------
 
-# Create two sets of nginx config files from templates
-# (Todo: Figure out how to combine the two rules into one..)
-#
-docker/nginx-conf-prod/%: docker/nginx-%
-	@bin/create-nginx-conf.sh $< $@
+# Fun way to reuse the ansible templates to create local config
+docker/%: ansible/templates/docker/%.j2
+	@mkdir -p $$(dirname $@)
+	@env primary_host=tiddlyhost.local tiddlyspot_host=tiddlyspot.local \
+	  python -c "import os,sys,jinja2; print(jinja2.Template(sys.stdin.read()).render(os.environ))" \
+	  < $< > $@
+	@echo $@ created using $<
 
-docker/nginx-conf-local/%: docker/nginx-%
-	@bin/create-nginx-conf.sh $< $@
+local-nginx: docker/nginx-conf/app.conf docker/nginx-conf/commonconf
+local-rails: docker/config/settings_local.yml
 
-nginx-conf-prod:  docker/nginx-conf-prod/app.conf  docker/nginx-conf-prod/commonconf
-nginx-conf-local: docker/nginx-conf-local/app.conf docker/nginx-conf-local/commonconf
-nginx-conf: nginx-conf-local nginx-conf-prod
-
-nginx-conf-clear:
-	rm -rf docker/nginx-conf-prod docker/nginx-conf-local
-
-nginx-conf-refresh: nginx-conf-clear nginx-conf
+local-config: local-nginx local-rails
 
 #----------------------------------------------------------
 
@@ -122,7 +117,7 @@ rtest: db-start
 #----------------------------------------------------------
 
 # Start Tiddlyhost locally - containerized full stack with SSL
-start: nginx-conf-local cert app-log
+start: local-config cert app-log
 	-$(DC) up
 
 #----------------------------------------------------------
@@ -175,13 +170,13 @@ onetest:
 #----------------------------------------------------------
 
 # (Use these if you want to run the prod container locally)
-shell-prod: prod-secrets prod-prerelease
+shell-prod: local-config prod-secrets prod-prerelease
 	-$(DC) -f docker-compose-prod.yml run --rm app bash
 
 join-prod:
 	-$(DC) -f docker-compose-prod.yml exec app bash -c bash
 
-start-prod: nginx-conf-prod prod-secrets prod-prerelease
+start-prod: local-config prod-secrets prod-prerelease
 	-$(DC) -f docker-compose-prod.yml up
 
 #----------------------------------------------------------
@@ -270,9 +265,12 @@ fast-build-deploy:   build-push fast-upgrade
 faster-build-deploy: build-push faster-upgrade
 fastest-build-deploy: fast-build-prod push-prod faster-upgrade
 
-PLAY = ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
+ifdef LIMIT
+  LIMIT_OPT=-l $(LIMIT)
+endif
+PLAY = ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(LIMIT_OPT) $(V)
 
-full-deploy: nginx-conf-prod
+full-deploy:
 	$(PLAY) ansible/deploy.yml
 
 deploy-deps:
@@ -287,7 +285,7 @@ deploy-scripts:
 refresh-prerelease:
 	$(PLAY) ansible/deploy.yml --tags=refresh-prerelease
 
-deploy-app: nginx-conf-prod prod-info
+deploy-app: prod-info
 	$(PLAY) ansible/deploy.yml --tags=app
 
 deploy-cleanup:
@@ -295,12 +293,12 @@ deploy-cleanup:
 
 # If you want to run selected tasks givem them the foo tag
 deploy-foo:
-	$(PLAY) ansible/deploy.yml --tags=foo
+	$(PLAY) ansible/deploy.yml --tags=foo --diff
 
-fast-upgrade: nginx-conf-prod prod-info
+fast-upgrade: prod-info
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
-faster-upgrade: nginx-conf-prod prod-info
+faster-upgrade: prod-info
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 #----------------------------------------------------------
@@ -313,7 +311,7 @@ DB_BACKUPS=$(BACKUPS_DIR)/db
 
 db-backup:
 	mkdir -p $(DB_BACKUPS)/$(TIMESTAMP)
-	$(PLAY) ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP)
+	$(PLAY) ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP) --limit=prod
 	ls -l $(DB_BACKUPS)/$(TIMESTAMP)
 	zcat $(DB_BACKUPS)/$(TIMESTAMP)/dbdump.gz | grep '^-- ' | head -3
 	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)

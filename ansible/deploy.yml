@@ -9,21 +9,16 @@
     docker_compose_file: ../docker-compose-prod.yml
     master_key_file: ../rails/config/master.key
     credentials_file: ../rails/config/credentials.yml.enc
-    nginx_conf_src_dir: ../docker/nginx-conf-prod/
-    nginx_conf_files:
-    - app.conf
-    - commonconf
 
-    cert_host: tiddlyhost.com
-    extra_cert_host: tiddlyspot.com
     certbot_dir_config: "{{ docker_dir }}/letsencrypt"
     certbot_dir_work: "{{ home_dir }}/.certbot/work"
     certbot_dir_logs: "{{ home_dir }}/.certbot/logs"
-    certbot_dir_live: "{{ certbot_dir_config }}/live/{{ cert_host }}"
+    certbot_dir_live: "{{ certbot_dir_config }}/live/{{ primary_host }}"
     certbot_notification_email: simon.baird@gmail.com
 
     thost_log_dir: "{{ docker_dir }}/log"
-    nginx_conf_dir: "{{ docker_dir }}/nginx-conf-prod"
+    nginx_conf_dir: "{{ docker_dir }}/nginx-conf"
+    rails_conf_dir: "{{ docker_dir }}/config"
     secrets_dir: "{{ docker_dir }}/secrets"
 
     service_name: thost
@@ -52,6 +47,7 @@
       - make
       - cronie
       - nmap-ncat
+      - python3-pip
     tags:
     - deps
 
@@ -167,11 +163,32 @@
 
   - name: Copy nginx config
     become: no
-    copy:
-      src: "{{ nginx_conf_src_dir }}/{{ item }}"
+    template:
+      src: templates/docker/nginx-conf/{{ item }}.j2
       dest: "{{ nginx_conf_dir }}/{{ item }}"
       mode: "0600"
-    with_items: "{{ nginx_conf_files }}"
+    with_items:
+    - app.conf
+    - commonconf
+    tags:
+    - app
+
+  - name: Create rails local settings dir
+    become: no
+    file:
+      path: "{{ rails_conf_dir }}"
+      state: directory
+    tags:
+    - app
+
+  - name: Copy rails local settings
+    become: no
+    template:
+      src: templates/docker/config/{{ item }}.j2
+      dest: "{{ rails_conf_dir }}/{{ item }}"
+      mode: "0600"
+    with_items:
+    - settings_local.yml
     tags:
     - app
 

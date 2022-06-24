@@ -15,11 +15,11 @@ rails/config/credentials/development.key
 rails/config/credentials/development.yml.enc
 rails/.byebug_history
 docker/certs
-docker/nginx-conf-local
-docker/nginx-conf-prod
+docker/nginx-conf
 docker/postgresql-data
 docker/log
 docker/secrets
+docker/config
 docker/bundle
 docker/prerelease.html
 etc/certbot-dns-user-credentials.yml

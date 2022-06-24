@@ -1,2 +1,4 @@
 ---
-# You can use this to override values in settings.yml
+# You can use this to override values in settings.yml.
+# The content here will be replaced by ansible on deploy,
+# see ansible/templates/config/settings_local
