@@ -10,15 +10,15 @@ all:
       - "{{ primary_host }}"
       - "{{ tiddlyspot_host }}"
 
-    prod_new:
-      # (Not the original intended purpose of this domain name but never mind)
-      primary_host: tiddlyhub.com
-      tiddlyspot_host: ~
-      ansible_host: "{{ primary_host }}"
-      ansible_user: fedora
-      # For letsencrypt
-      cert_hosts:
-      - "{{ primary_host }}"
+    #prod_new:
+    #  # (Not the original intended purpose of this domain name but never mind)
+    #  primary_host: tiddlyhub.com
+    #  tiddlyspot_host: ~
+    #  ansible_host: "{{ primary_host }}"
+    #  ansible_user: fedora
+    #  # For letsencrypt
+    #  cert_hosts:
+    #  - "{{ primary_host }}"
 
   vars:
     root_home_dir: /root
