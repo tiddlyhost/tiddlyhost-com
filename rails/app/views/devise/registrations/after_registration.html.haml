@@ -1,0 +1,28 @@
+=render layout: 'form_wrapper',
+  locals: { heading: "#{bi_icon('check-circle', fill: 'green', style: 'opacity: 85%; font-size: 65%;')}Account created".html_safe } do
+
+  %p.pt-4
+    Thanks for signing up!
+
+  %p.pb-5
+    A confirmation email has been sent to your email address.
+    To complete the signup process please click the confirmation link
+    in that email.
+
+  %hr.mt-5.mb-4
+
+  %h6.text-muted Troubleshooting
+
+  %ul.pt-2.pe-2
+    %li.text-muted.pb-3.small
+      If the confirmation email did not arrive it may be being classified as spam.
+      Check your spam folder or try adding 'tiddlyhost@gmail.com' to your email
+      contacts and then use
+      =link_to 'this form', new_confirmation_path(:user)
+      to resend the email.
+
+    %li.text-muted.small
+      If you're still unable to receive the confirmation link,
+      =mail_to Settings.support_email, 'email me', subject: "Tiddlyhost signup problems",
+        body: "I signed up and I didn't receive my confirmation email.\n\nPlease send it to me manually if you can."
+      and I'll see if I can send it to you directly.

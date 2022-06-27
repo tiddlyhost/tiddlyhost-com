@@ -1,0 +1,34 @@
+=render 'salutation'
+
+-if @resource.email_change_in_progress?
+  -# Actually we're confirming an email address change
+  %p
+    To verify the change to your Tiddlyhost account email address
+    please click 'Confirm email' below.
+
+  =render 'button_link', link_text: 'Confirm email', link_url: confirmation_url(@resource, confirmation_token: @token)
+
+  %p.pt-5
+    %small.text-gray-600
+      You received this email because you or someone else changed their
+      =link_to 'Tiddlyhost', Settings.main_site_url, target: "_blank"
+      account to use this email address.
+
+-else
+  -# It's a new signup
+  %p
+    Welcome to Tiddlyhost!
+
+  %p
+    To complete the signup process please confirm your
+    email address by clicking 'Confirm account' below.
+
+  =render 'button_link', link_text: 'Confirm account', link_url: confirmation_url(@resource, confirmation_token: @token)
+
+  =render 'show_email'
+
+  %p.pt-5
+    %small.text-gray-600
+      You received this email because you or someone else submitted the
+      =link_to 'Tiddlyhost sign up', "#{Settings.main_site_url}/users/sign_up", target: "_blank"
+      form using this email address.

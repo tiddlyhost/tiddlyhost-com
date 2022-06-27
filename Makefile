@@ -189,10 +189,12 @@ cleanup:
 	$(DC) -f docker-compose-prod.yml rm -f
 	$(D) image prune -f
 
+## FIXME: I don't think this works any more since switching to the new email format
 # Use this when you sign up a new user
 signup-link:
 	@$(DCC) 'cat log/development.log | grep "Confirm my account" | tail -1 | cut -d\" -f2'
 
+## FIXME: I don't think this works any more since switching to the new email format
 # Use this when you click "Forgot password"
 forgot-link:
 	@$(DCC) 'cat log/development.log | grep "Change my password" | tail -1 | cut -d\" -f2'

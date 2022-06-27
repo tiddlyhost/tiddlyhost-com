@@ -32,14 +32,14 @@ class UserSignupTest < CapybaraIntegrationTest
     assert_difference('ActionMailer::Base.deliveries.count') { click_button 'Create account' }
 
     # Confirm the "check email" page is shown
-    assert page.has_content?('check your email for a confirmation link')
+    assert page.has_content?('please click the confirmation link')
 
     # Sanity check the 'to' address in the confirmation email
     confirmation_email = ActionMailer::Base.deliveries.last
     assert_equal [email], confirmation_email.to
 
     # Extract the confirmation link from the email and click it
-    confirmation_link = confirmation_email.body.match(/href="([^"]+)"/)[1]
+    confirmation_link = confirmation_email.body.encoded.match(%r{href="([^"]+)">Confirm account</a>})[1]
     visit confirmation_link
 
     # Login

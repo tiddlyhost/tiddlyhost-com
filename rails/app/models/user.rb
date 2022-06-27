@@ -55,6 +55,18 @@ class User < ApplicationRecord
     username.presence || email
   end
 
+  def short_name
+    name.split(/\s+/).first
+  end
+
+  def pretty_email
+    %{"#{name}" <#{email}>}
+  end
+
+  def email_change_in_progress?
+    unconfirmed_email.present?
+  end
+
   scope :with_plan,    ->(*plan_names) { where(    plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
   scope :without_plan, ->(*plan_names) { where.not(plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
 

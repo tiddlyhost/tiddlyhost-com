@@ -1,0 +1,40 @@
+<%#
+  #
+  # This will be converted into email friendly html with tables and inlined styles.
+  # The email content is defined under app/views/devise/mailer.
+  #
+  # See also:
+  # - https://bootstrapemail.com/
+  # - app/mailers/devise_bootstrap_mailer.rb
+  # - test/mailers/previews/devise_bootstrap_mailer_preview.rb
+  # - http://tiddlyhost.local:3333/rails/mailers/ or https://tiddlyhost.local/rails/mailers/
+  #
+-%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  </head>
+  <body class="bg-light">
+    <div class="container">
+      <div class="card my-10">
+        <div class="card-header" style="background-color: #3c60b9; color: white; height: 2.5em;" class="navbar nav bg-gradient">
+          <%= link_to Settings.main_site_url, target: '_blank' do %>
+            <%# Let's take the image from github instead of using the local asset so old emails are less likely to have a broken image url %>
+            <%= image_tag("https://raw.githubusercontent.com/simonbaird/tiddlyhost/devel/rails/app/assets/images/email-banner.png", style: "height: 2.5em;") %>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <% if @email_title.present? %><h1 class="h3 mb-2 mt-2"><%= @email_title %></h1><% end %>
+          <div class="space-y-3 p-2 pt-5">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

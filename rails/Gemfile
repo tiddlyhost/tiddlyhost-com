@@ -45,6 +45,9 @@ gem 'haml-rails'
 # Support S3 for ActiveStorage
 gem "aws-sdk-s3", require: false
 
+# For nice emails
+gem 'bootstrap-email'
+
 # For payments
 gem 'pay', '~> 3.0'
 gem 'stripe', '>= 2.8', '< 6.0'
