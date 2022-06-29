@@ -26,17 +26,20 @@ h1 {
 
 .hub {
     margin-bottom: 2em;
+    padding-right: 0;
+    margin-right: 0;
 
     .site {
         vertical-align: top;
         display: inline-block;
-        width: 16em;
-        margin: 0em 1em 1.5em 1em;
+        width: 14em;
+        margin: 0em 2em 4.5em 0.5em;
+
         .description {
-            margin-left: 0.5em;
+            margin-left: 0.25em;
             font-size: 85%;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-line-clamp: 3; /* number of lines to show */
             -webkit-box-orient: vertical;
             overflow: hidden;
             color: #555;
@@ -47,17 +50,32 @@ h1 {
         }
 
         .name {
+            padding-left: 0.25em;
             a {
                 overflow: hidden;
                 display: block;
                 width: 100%;
                 text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 110%;
+                font-weight: bold;
+                color: var(--bs-gray-600);
+            }
+        }
+
+        .thumb-container {
+            margin: 0.25em 0;
+
+            img {
+                width: 95%;
+                border: 1px solid #ddd;
             }
         }
 
         .owner {
-            font-size: 80%;
-            margin-left: 0.5em;
+            font-size: 75%;
+            margin-top: 0.5em;
+            margin-left: 0.25em;
             color: #555;
 
             span.views {
@@ -78,7 +96,7 @@ h1 {
 
         .site-tags {
             margin-left: 0.4em;
-            margin-top: 2px;
+            margin: 2px;
             font-size: 90%;
         }
     }

@@ -42,10 +42,21 @@
 .hub
   -@sites.each do |s|
     .site{id: s.name}
+      -if s.thumbnail.present?
+        .thumb-container
+          =link_to s.url, target: '_blank' do
+            =image_tag rails_storage_proxy_path(s.thumbnail)
+
       .name{title: s.long_name}
-        =site_long_link s
+        =site_link s
+
       .description
         =span_with_title_truncated(s.description)
+
+      -unless s.tag_list.empty?
+        .site-tags
+          =clickable_site_tags(s)
+
       .owner
         -if s.user.use_gravatar?
           =gravatar_image(s.user, size: 14)
@@ -58,9 +69,8 @@
           =s.user.name
         %span.views
           =views_and_updated_text(s).html_safe
-      -unless s.tag_list.empty?
-        .site-tags
-          =clickable_site_tags(s)
+
+
 
 .pagination
   =will_paginate(@sites)

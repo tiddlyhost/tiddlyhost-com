@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     resources :sites do
       member do
         get :download
+        get :thumb
         get :upload_form
         patch :upload
       end

@@ -5,6 +5,7 @@ module SiteCommon
   included do
     acts_as_taggable_on :tags
 
+    include WithThumbnail
     include WithAccessCount
     include AdminSearchable
 
@@ -123,6 +124,9 @@ module SiteCommon
   # field is enough to make rails handle the new attachment upload
   def content_upload(new_content)
     update(SiteCommon.attachment_params(new_content))
+
+    # See app/models/concerns/with_thumbnail
+    update_thumbnail_later
   end
 
   # When a site is saved it gets a brand new blob. So if we use the blob's
@@ -191,6 +195,10 @@ module SiteCommon
 
   def is_public?
     !is_private?
+  end
+
+  def hub_listed?
+    is_public? && is_searchable?
   end
 
   def long_name
