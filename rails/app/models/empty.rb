@@ -24,13 +24,16 @@ class Empty < ApplicationRecord
     th_file.kind
   end
 
+  def tiddlywiki_version
+    th_file.tiddlywiki_version
+  end
+
   def long_title
     "#{title} (#{th_file.tiddlywiki_version})#{' - Recommended' if is_default?}"
   end
 
-  # Returns a hash of names and versions
   def self.versions
-    Hash[ enabled.map{ |e| [e.name, e.th_file.tiddlywiki_version] } ]
+    self.for_select.map{ |e| {name: e.name, version: e.tiddlywiki_version, kind: e.kind } }
   end
 
 end

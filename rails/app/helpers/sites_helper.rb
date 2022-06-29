@@ -53,8 +53,12 @@ module SitesHelper
     url
   end
 
+  def logo_for_kind(kind, style='height: 1.4em; margin-top: -3px;')
+    image_tag(SiteCommon::KIND_LOGOS[kind], style: style, title: SiteCommon::KINDS[kind])
+  end
+
   def kind_logo(site, style='height: 1.4em; margin-top: -3px;')
-    image_tag(site.kind_logo_image, style: style, title: site.kind_title) if site.tw_kind
+    logo_for_kind(site.tw_kind, style) if site.tw_kind
   end
 
   def kind_summary(site)

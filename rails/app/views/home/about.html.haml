@@ -54,8 +54,13 @@
     %td.p-1.pe-3.text-muted Version:
     %td.p-1= App::VERSION
   %tr
-    %td.p-1.pe-3.text-muted TW versions:
-    %td.p-1= @build_info['empties'].values.join(", ")
+    %td.p-1.pe-3.text-muted.align-top Empty versions:
+    %td.p-1.lh-lg
+      -@build_info['empties'].each do |e|
+        %span.me-1
+          =logo_for_kind(e[:kind])
+        =e[:version]
+        %br
   %tr
     %td.p-1.pe-3.text-muted Built:
     %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
