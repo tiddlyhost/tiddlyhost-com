@@ -13,7 +13,7 @@ class DeviseBootstrapMailer < Devise::Mailer
     @email_title = email_title_for(action)
 
     # Use bootstrap mail
-    make_bootstrap_mail(headers_for(action, opts.merge(to: record.pretty_email)), &block)
+    make_bootstrap_mail(headers_for(action, opts), &block)
   end
 
   private

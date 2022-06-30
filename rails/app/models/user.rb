@@ -59,10 +59,6 @@ class User < ApplicationRecord
     name.split(/\s+/).first
   end
 
-  def pretty_email
-    %{"#{name}" <#{email}>}
-  end
-
   def email_change_in_progress?
     unconfirmed_email.present?
   end
