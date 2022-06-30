@@ -22,6 +22,10 @@ services:
     - ./docker/bundle:/opt/bundle:Z
     - ./docker/log:/var/log/app:Z
     command: /bin/start-rails.sh
+    security_opt:
+    # Todo: Figure out what syscalls chrome sandbox really needs
+    # and use an appropriate policy
+    - "seccomp:unconfined"
 
     build:
       context: .

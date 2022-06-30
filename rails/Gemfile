@@ -48,6 +48,9 @@ gem "aws-sdk-s3", require: false
 # For nice emails
 gem 'bootstrap-email'
 
+# For thumbnails and screenshots
+gem 'grover'
+
 # For payments
 gem 'pay', '~> 3.0'
 gem 'stripe', '>= 2.8', '< 6.0'

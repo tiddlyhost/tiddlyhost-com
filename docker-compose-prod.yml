@@ -32,6 +32,11 @@ services:
     - ./docker/config/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
     - rails-static:/opt/app/public
 
+    security_opt:
+    # Todo: Figure out what syscalls chrome sandbox really needs
+    # and use an appropriate policy
+    - "seccomp:unconfined"
+
     build:
       context: .
       dockerfile: docker/Dockerfile.prod

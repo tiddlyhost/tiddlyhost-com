@@ -99,6 +99,9 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (4.1.0)
+    combine_pdf (1.0.22)
+      matrix
+      ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     css_parser (1.11.0)
@@ -118,6 +121,9 @@ GEM
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    grover (1.1.1)
+      combine_pdf (~> 1.0)
+      nokogiri (~> 1.0)
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
@@ -216,6 +222,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
+    ruby-rc4 (0.1.5)
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
@@ -288,6 +295,7 @@ DEPENDENCIES
   dalli
   devise
   devise-security
+  grover
   haml-rails
   jbuilder (~> 2.7)
   net-imap
