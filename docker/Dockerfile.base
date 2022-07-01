@@ -31,18 +31,17 @@ RUN \
 
 RUN \
   #
-  # First install curl and gpg so we can do the next bit
-  apt-get update -qq && apt-get install -y --no-install-recommends \
-    curl \
-    gnupg \
-  && \
+  # First install curl
+  apt-get update -qq && apt-get install -y --no-install-recommends curl && \
   #
-  # Install the package source for yarn and its signing key
-  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn-archive-keyring.gpg && \
-  echo 'deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main' > \
-    /etc/apt/sources.list.d/yarn.list && \
+  # This installs some dependencies required to add deb sources and also the node deb source
+  curl -sSL https://deb.nodesource.com/setup_16.x | bash - && \
   #
-  # Now install some required packages including yarn
+  # Install the deb source for yarn
+  curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn.gpg && \
+  echo 'deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list && \
+  #
+  # Now install some dependencies
   apt-get update -qq && apt-get install -y --no-install-recommends \
     postgresql-client \
     # For webpacker
