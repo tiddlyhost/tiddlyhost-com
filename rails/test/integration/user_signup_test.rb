@@ -39,7 +39,7 @@ class UserSignupTest < CapybaraIntegrationTest
     assert_equal [email], confirmation_email.to
 
     # Extract the confirmation link from the email and click it
-    confirmation_link = confirmation_email.body.encoded.match(%r{href="([^"]+)">Confirm account</a>})[1]
+    confirmation_link = confirmation_email.html_part.body.decoded.match(%r{href="([^"]+)">Confirm account</a>})[1]
     visit confirmation_link
 
     # Login
