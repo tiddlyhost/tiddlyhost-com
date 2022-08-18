@@ -3,7 +3,6 @@ rails/tmp/*
 rails/log/*
 rails/storage/*
 rails/test/*
-rails/node_modules/*
 rails/public/packs-test/*
 rails/vendor/*
 rails/config/master.key
