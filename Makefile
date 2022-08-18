@@ -49,10 +49,11 @@ docker/secrets/credentials.yml.enc: docker/secrets
 
 prod-secrets: docker/secrets/master.key docker/secrets/credentials.yml.enc
 
-docker/prerelease.html:
-	curl -s https://tiddlywiki.com/prerelease/empty.html -o docker/prerelease.html
+PROD_PRERELEASE=docker/config/prerelease.html
+$(PROD_PRERELEASE):
+	curl -s https://tiddlywiki.com/prerelease/empty.html -o $@
 
-prod-prerelease: docker/prerelease.html
+prod-prerelease: $(PROD_PRERELEASE)
 
 #----------------------------------------------------------
 
