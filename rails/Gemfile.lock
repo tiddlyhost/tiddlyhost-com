@@ -65,8 +65,8 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     aws-eventstream (1.2.0)
-    aws-partitions (1.610.0)
-    aws-sdk-core (3.131.3)
+    aws-partitions (1.619.0)
+    aws-sdk-core (3.132.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
@@ -116,7 +116,7 @@ GEM
     devise-security (0.17.0)
       devise (>= 4.3.0)
     digest (3.1.0)
-    erubi (1.10.0)
+    erubi (1.11.0)
     erubis (2.7.0)
     ffi (1.15.5)
     globalid (1.0.0)
@@ -155,7 +155,7 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.16.2)
+    minitest (5.16.3)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -176,7 +176,7 @@ GEM
     orm_adapter (0.5.0)
     pay (3.0.24)
       rails (>= 6.0.0)
-    pg (1.4.1)
+    pg (1.4.3)
     premailer (1.16.0)
       addressable
       css_parser (>= 1.6.0)
@@ -236,7 +236,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.3.0)
+    selenium-webdriver (4.4.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -251,7 +251,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     stripe (5.55.0)
-    strscan (3.0.3)
+    strscan (3.0.4)
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
