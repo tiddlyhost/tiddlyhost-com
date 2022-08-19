@@ -27,11 +27,13 @@ module HubQuery
       Site.with_blob.select(
         "'Site' AS type", :id, :name, :view_count, :created_at,
         "active_storage_blobs.created_at AS blob_created_at",
+        "RANDOM() as rand_sort",
         *extra_fields_in_select),
 
       TspotSite.with_blob.select(
         "'TspotSite' AS type", :id, :name, "access_count AS view_count", "NULL AS created_at",
         "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
+        "RANDOM() as rand_sort",
         *extra_fields_in_select),
     ]
 

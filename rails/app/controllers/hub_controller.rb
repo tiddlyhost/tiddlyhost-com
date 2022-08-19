@@ -1,5 +1,5 @@
 class HubController < ApplicationController
-  PER_PAGE = 15
+  PER_PAGE = 18
 
   def index
     render_hub
@@ -44,9 +44,17 @@ class HubController < ApplicationController
         name: 'recently created',
         field: 'created_at DESC NULLS LAST',
       },
-      'n' => {
-        name: 'name',
+      'a' => {
+        name: 'name a-z',
         field: 'name ASC',
+      },
+      'z' => {
+        name: 'name z-a',
+        field: 'name DESC',
+      },
+      'r' => {
+        name: 'random',
+        field: 'rand_sort',
       },
     }
     @sort_by = @sort_options[params[:s]] || @sort_options['v']
