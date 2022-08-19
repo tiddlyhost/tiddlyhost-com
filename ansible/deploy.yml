@@ -149,6 +149,62 @@
     tags:
     - deps
 
+  - name: Create bin dir
+    become: no
+    file:
+      path: "{{ bin_dir }}"
+      state: directory
+    tags:
+    - scripts
+
+  - name: Copy up a Makefile and some scripts
+    become: no
+    template:
+      src: templates/{{ item }}.j2
+      dest: "{{ home_dir }}/{{ item }}"
+      mode: "0755"
+    with_items:
+    - Makefile
+    - bin/certbot-create
+    - bin/certbot-renew
+    - bin/db-backup
+    - bin/fetch-prerelease-empty
+    tags:
+    - scripts
+
+    # (These are in a different place because they're also useful locally)
+  - name: Copy cache info scripts
+    become: no
+    copy:
+      src: "../bin/{{ item }}"
+      dest: "{{ bin_dir }}/{{ item }}"
+      mode: "0755"
+    with_items:
+    - cache-info
+    - cache-list-items
+    tags:
+    - scripts
+
+  - name: Create a cron job for regular db backups
+    cron:
+      name: thost db backup
+      user: root
+      job: "{{ bin_dir }}/db-backup"
+      minute: "5"
+      hour: "*/8"
+    tags:
+    - scripts
+
+  - name: Create a cron job for regular prerelease empty fetches
+    cron:
+      name: fetch prerelease empty
+      user: "{{ ansible_user }}"
+      job: "{{ bin_dir }}/fetch-prerelease-empty"
+      minute: "4"
+      hour: "*/8"
+    tags:
+    - scripts
+
   - name: Create dir for certbot aws credentials
     become: no
     file:
@@ -317,62 +373,6 @@
     - app
     - fast-upgrade
     - migration
-
-  - name: Create bin dir
-    become: no
-    file:
-      path: "{{ bin_dir }}"
-      state: directory
-    tags:
-    - scripts
-
-  - name: Copy up a Makefile and some scripts
-    become: no
-    template:
-      src: templates/{{ item }}.j2
-      dest: "{{ home_dir }}/{{ item }}"
-      mode: "0755"
-    with_items:
-    - Makefile
-    - bin/certbot-create
-    - bin/certbot-renew
-    - bin/db-backup
-    - bin/fetch-prerelease-empty
-    tags:
-    - scripts
-
-    # (These are in a different place because they're also useful locally)
-  - name: Copy cache info scripts
-    become: no
-    copy:
-      src: "../bin/{{ item }}"
-      dest: "{{ bin_dir }}/{{ item }}"
-      mode: "0755"
-    with_items:
-    - cache-info
-    - cache-list-items
-    tags:
-    - scripts
-
-  - name: Create a cron job for regular db backups
-    cron:
-      name: thost db backup
-      user: root
-      job: "{{ bin_dir }}/db-backup"
-      minute: "5"
-      hour: "*/8"
-    tags:
-    - scripts
-
-  - name: Create a cron job for regular prerelease empty fetches
-    cron:
-      name: fetch prerelease empty
-      user: "{{ ansible_user }}"
-      job: "{{ bin_dir }}/fetch-prerelease-empty"
-      minute: "4"
-      hour: "*/8"
-    tags:
-    - scripts
 
   - name: Fetch latest prerelease
     command:
