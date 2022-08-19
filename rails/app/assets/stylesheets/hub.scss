@@ -98,6 +98,11 @@ h1 {
             margin-left: 0.4em;
             margin: 2px;
             font-size: 90%;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 5; /* number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     }
 }
