@@ -4,6 +4,7 @@ all:
       primary_host: tiddlyhost.com
       tiddlyspot_host: tiddlyspot.com
       ansible_host: "{{ primary_host }}"
+      #ansible_host: tiddlyhub.com
       ansible_user: fedora
       # For letsencrypt
       cert_hosts:

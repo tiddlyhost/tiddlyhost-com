@@ -349,6 +349,15 @@
     tags:
     - app
 
+  - name: Fetch latest prerelease
+    command:
+      cmd: "{{ bin_dir }}/fetch-prerelease-empty"
+    become: no
+    tags:
+    - app
+    - fast-upgrade
+    - refresh-prerelease
+
   - name: Start/restart service
     systemd:
       name: "{{ service_name }}"
@@ -356,6 +365,13 @@
     tags:
     - app
     - fast-upgrade
+
+    # Only for bootstrapping a new server
+  - name: Create db
+    command:
+      cmd: docker-compose exec app bash -c "bin/rails db:create"
+    tags:
+    - db-create
 
   - name: Apply database migrations
     command:
@@ -373,14 +389,6 @@
     - app
     - fast-upgrade
     - migration
-
-  - name: Fetch latest prerelease
-    command:
-      cmd: "{{ bin_dir }}/fetch-prerelease-empty"
-    tags:
-    - app
-    - fast-upgrade
-    - refresh-prerelease
 
   - name: Clean up unused docker images
     command:

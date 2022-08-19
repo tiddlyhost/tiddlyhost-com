@@ -51,7 +51,7 @@ services:
     container_name: th_db
     restart: always
     environment:
-      # (Only used when the container sets up a brand new db IIUC)
+      # (For a brand new fresh deploy you should put the real password here)
       POSTGRES_PASSWORD: notsecure123
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z

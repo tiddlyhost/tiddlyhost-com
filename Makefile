@@ -294,6 +294,9 @@ refresh-prerelease:
 deploy-app: prod-info
 	$(PLAY) ansible/deploy.yml --tags=app
 
+deploy-app-bootstrap:
+	$(PLAY) ansible/deploy.yml --tags=app,db-create
+
 deploy-cleanup:
 	$(PLAY) ansible/deploy.yml --tags=cleanup
 
