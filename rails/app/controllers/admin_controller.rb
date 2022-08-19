@@ -31,7 +31,7 @@ class AdminController < ApplicationController
     @saved_tspot_count = TspotSite.where.not(save_count: 0).count
 
     # See also fixup-scripts/clean-attachment-dupes.rb
-    @dupe_attachments = ActiveStorage::Attachment.
+    @dupe_attachments = ActiveStorage::Attachment.where(name: 'tiddlywiki_file').
       group(:record_type, :record_id).count.select{ |k, c| c > 1 }.count
 
   end

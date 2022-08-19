@@ -12,7 +12,8 @@
 #
 
 sites_with_dupes =
-  ActiveStorage::Attachment.group(:record_type, :record_id).count.
+  ActiveStorage::Attachment.where(name: 'tiddlywiki_file').
+    group(:record_type, :record_id).count.
     map{ |type_and_id, count| type_and_id if count > 1}.compact.
     map{ |record_type, record_id| self.class.const_get(record_type).find(record_id) }
 
