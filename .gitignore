@@ -14,6 +14,7 @@ rails/config/credentials.yml.enc
 rails/config/credentials/development.key
 rails/config/credentials/development.yml.enc
 rails/.byebug_history
+node_modules/
 docker/certs
 docker/nginx-conf
 docker/postgresql-data

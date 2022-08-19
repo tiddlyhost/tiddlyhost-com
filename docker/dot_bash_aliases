@@ -4,3 +4,6 @@ PS1="\[\033[1;35m\]$PS1\[\033[0m\]"
 
 # Not sure if we need this or not...
 export CHROME_DEVEL_SANDBOX=/usr/lib/chromium/chrome-sandbox
+
+# Webpacker ignores .yarnrc
+WEBPACKER_NODE_MODULES_BIN_PATH="/opt/node_modules/.bin"

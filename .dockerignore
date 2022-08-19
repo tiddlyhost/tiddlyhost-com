@@ -1,4 +1,5 @@
 docker/postgresql-data
+rails/node_modules/*
 rails/tmp/*
 rails/log/*
 rails/storage/*
