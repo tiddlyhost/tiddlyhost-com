@@ -51,11 +51,70 @@
     tags:
     - deps
 
+    # So we don't run out of space on the root partition we'll
+    # use /home/docker instead of the default /var/lib/docker
+    # (Todo: Better storage management)
+    #
+  - name: Ensure /home/docker exists
+    file:
+      path: /home/docker
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+    tags:
+    - deps
+
+  - name: Set selinux context for /home/docker
+    community.general.sefcontext:
+      target: '/home/docker(.*)?'
+      setype: container_var_lib_t
+      state: present
+    register: docker_context
+    tags:
+    - deps
+
+  - name: Apply the new selinux context created above
+    command: |-
+      restorecon -r /home/docker
+    when: docker_context.changed
+    tags:
+    - deps
+
+  - name: Change docker default from /var/lib/docker to /home/docker
+    lineinfile:
+      path: /lib/systemd/system/docker.service
+      regexp: '^ExecStart'
+      # Default line looks like this:
+      #   ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+      # We're intending to insert the '-g /home/docker' option
+      line: "ExecStart=/usr/bin/dockerd -g /home/docker -H fd:// --containerd=/run/containerd/containerd.sock"
+    register: docker_config
+    tags:
+    - deps
+
+    # Need to reload when the docker.service file changes
+  - name: Run systemctl daemon-reload if required
+    command:
+      cmd: systemctl daemon-reload
+    when: docker_config.changed
+    tags:
+    - deps
+
   - name: Start docker service
     systemd:
       name: docker
       state: started
       enabled: yes
+    tags:
+    - deps
+
+    # For the case when it was already running but needs a restart now
+  - name: Restart docker service if required
+    systemd:
+      name: docker
+      state: restarted
+    when: docker_config.changed or docker_context.changed
     tags:
     - deps
 
