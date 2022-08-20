@@ -106,22 +106,8 @@
 }
 
 .admin-paginate {
-    font-size: 70%;
+    font-size: 80%;
     float: right;
-
-    .pagination {
-        a, span, em {
-            border-style: none;
-            color: black;
-        }
-        em.current {
-            background-color: #e9ecef;
-        }
-        .gap {
-            line-height: 220%;
-        }
-        margin-bottom: 1em;
-    }
 }
 
 .admin-page-info {

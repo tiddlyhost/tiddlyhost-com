@@ -7,6 +7,7 @@
 
 // https://gka.github.io/palettes/#/15|d|5c7cd9||1|1
 $nav_bg_color: #3c60b9;
+$hilight_bg_color: #d5e0f9;
 
 $contrast_color: #29AE4A;
 
@@ -186,22 +187,6 @@ h1 {
     white-space: nowrap;
 }
 
-// Recycle the .page-link bootstrap class.
-// FIXME: It doesn't work for active and inactive links.
-.pagination {
-    .previous_page,.next_page {
-        @extend .page-link;
-    }
-
-    a,em {
-        @extend .page-link;
-    }
-
-    em.current {
-        @extend .page-link
-    }
-}
-
 body {
 }
 
@@ -280,5 +265,41 @@ body.simple-layout {
 
     li.dropdown-divider {
         margin-top: 0.9em;
+    }
+}
+
+.pagination {
+    .page-item .page-link {
+        border-color: transparent;
+        background-color: inherit;
+        font-size: 90%;
+        padding: 3px 8px;
+        margin: 0 2px;
+        white-space: nowrap;
+    }
+
+    .page-item:hover .page-link {
+        background-color: $hilight_bg_color;
+        border-color: $hilight_bg_color;
+    }
+
+    .page-item.disabled:hover .page-link {
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+    .page-item.disabled .page-link {
+        color: var(--bs-gray-600)
+    }
+
+    .page-link.active, .active > .page-link {
+        background-color: $hilight_bg_color;
+        border-color: $hilight_bg_color;
+        color: var(--bs-pagination-color);
+    }
+
+    .gap {
+        color: var(--bs-gray-500);
+        margin-right: 1px;
     }
 }
