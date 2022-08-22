@@ -409,12 +409,10 @@ js-math-clean:
 
 gource-image: /tmp/Simon\ Baird.png
 
-# Fixme: It doesn't work any more. I'm getting this:
-#   gource: SDL initialization failed - GLEW Error: Unknown error
 pretty-colors: gource-image
-	@gource \
+	@SDL_VIDEODRIVER=x11 gource \
 	  --user-image-dir /tmp \
-	  --seconds-per-day 0.3 \
+	  --seconds-per-day 0.07 \
 	  --key \
 	  --title 'Tiddlyhost Development' \
 	  --fullscreen \
@@ -425,7 +423,7 @@ pretty-colors: gource-image
 	  --font-size 6 \
 	  --dir-font-size 5 \
 	  --user-font-size 5 \
-	  --file-font-size 20 \
+	  --file-font-size 5 \
 	  --bloom-multiplier 0.2 \
 	  --bloom-intensity 0.2 \
 	  --filename-colour 555555 \
