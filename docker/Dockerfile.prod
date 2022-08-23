@@ -26,5 +26,8 @@ COPY --chown=$APP_USER:$APP_USER node_modules $NODE_MODULES_PATH
 # Todo: Split node_modules out similar to gems
 COPY --chown=$APP_USER:$APP_USER rails $APP_PATH
 
+# Symlink to the node_modules dir
+RUN ln -s $NODE_MODULES_PATH $APP_PATH/node_modules
+
 # Start rails
 CMD /bin/start-rails.sh

@@ -136,6 +136,10 @@ bundle-update:
 bundle-clean:
 	-$(DC) run --rm --no-deps app bash -c "bin/bundle clean"
 
+# Run yarn install
+yarn-install:
+	-$(DC) run --rm --no-deps app bash -c "bin/yarn install"
+
 # Run yarn upgrade
 yarn-upgrade:
 	-$(DC) run --rm --no-deps app bash -c "bin/yarn upgrade"
