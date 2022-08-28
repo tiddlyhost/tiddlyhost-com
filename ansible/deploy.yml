@@ -167,6 +167,7 @@
     - Makefile
     - bin/certbot-create
     - bin/certbot-renew
+    - bin/certbot-revoke
     - bin/db-backup
     - bin/fetch-prerelease-empty
     tags:

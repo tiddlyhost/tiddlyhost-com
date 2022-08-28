@@ -1,0 +1,8 @@
+#!/bin/bash -u
+
+certbot revoke \
+  --config-dir {{ certbot_dir_config }} \
+  --work-dir {{ certbot_dir_work }} \
+  --logs-dir {{ certbot_dir_logs }} \
+  --reason ${2:-unspecified} \
+  --cert-path $1
