@@ -10,32 +10,46 @@
 #  # Really delete them
 #  REALLY=1 rails runner fixup-scripts/clean-attachment-dupes.rb
 #
+#
+
+attachment_name = if ENV['THUMB'] == '1'
+  # Thumbnail image
+  'thumbnail'
+else
+  # Uploaded TiddlyWiki file
+  'tiddlywiki_file'
+end
 
 sites_with_dupes =
-  ActiveStorage::Attachment.where(name: 'tiddlywiki_file').
+  ActiveStorage::Attachment.where(name: attachment_name).
     group(:record_type, :record_id).count.
     map{ |type_and_id, count| type_and_id if count > 1}.compact.
     map{ |record_type, record_id| self.class.const_get(record_type).find(record_id) }
 
-sites_with_dupes.each do |s|
-  puts "#{s.class.name} #{s.id} #{s.name}"
+if sites_with_dupes.empty?
+  puts "No dupes found."
 
-  # Sort the attachments so the most recently created one is first
-  attachments = ActiveStorage::Attachment.where(record_type: s.class.name, record_id: s.id).
-    to_a.sort_by{ |a| a.blob.created_at }.reverse
+else
+  sites_with_dupes.each do |s|
+    puts "#{s.class.name} #{s.id} #{s.name}"
 
-  # Keep the most recent one since it's presumably the latest save
-  attachments[0..0].each do |a|
-    puts " - KEEP #{a.id} #{a.blob.key} #{a.blob.created_at}"
+    # Sort the attachments so the most recently created one is first
+    attachments = ActiveStorage::Attachment.where(name: attachment_name, record_type: s.class.name, record_id: s.id).
+      to_a.sort_by{ |a| a.blob.created_at }.reverse
+
+    # Keep the most recent one since it's presumably the latest save
+    attachments[0..0].each do |a|
+      puts " - KEEP #{a.name} #{a.id} #{a.blob.key} #{a.blob.created_at}"
+    end
+
+    # Delete the others (maybe)
+    attachments[1..].each do |a|
+      puts " - DUPE #{a.name} #{a.id} #{a.blob.key} #{a.blob.created_at}"
+
+      # Do it..
+      a.destroy if ENV['REALLY'] == '1'
+    end
+
+    puts "\n"
   end
-
-  # Delete the others (maybe)
-  attachments[1..].each do |a|
-    puts " - DUPE #{a.id} #{a.blob.key} #{a.blob.created_at}"
-
-    # Do it..
-    a.destroy if ENV['REALLY'] == '1'
-  end
-
-  puts "\n"
 end
