@@ -14,8 +14,8 @@ module SitesHelper
     end
   end
 
-  def site_pretty_link(site)
-    site_long_link(site) do
+  def site_pretty_link(site, opts={})
+    site_long_link(site, opts) do
       image_tag(asset_path(site.favicon_asset_name))
     end
   end
