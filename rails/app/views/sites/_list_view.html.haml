@@ -7,7 +7,6 @@
     %th= sort_link 'Access', :asc
     %th= sort_link 'Views'
     %th= sort_link 'Size'
-    %th= sort_link 'Compressed'
     %th= sort_link 'Updated'
     %th Actions
 
@@ -44,12 +43,6 @@
         %td.small.smaller
           -if site.raw_byte_size
             !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
-          -else
-            .text-muted -
-
-        %td.small.smaller
-          -if site.blob
-            !="#{as_megabytes(site.blob_byte_size)}&nbsp;MB"
           -else
             .text-muted -
 

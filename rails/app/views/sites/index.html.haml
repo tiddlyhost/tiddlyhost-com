@@ -9,8 +9,27 @@
     .hub-link
       =link_to_user_hub_with_count(current_user)
 
-  .float-end{style: "margin-top: -1.0rem;"}
-    =render 'view_mode'
+  .float-end.small{style: "margin-top: -0.6rem;"}
+    .d-inline-block.grid-sort
+      =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Sort options',
+        role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
+        Sort
+        =bi_icon('sort-down', fill: '#666')
+      .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
+        =sort_link 'name',    :asc,  'dropdown-item'
+        =sort_link 'kind',    :desc, 'dropdown-item'
+        =sort_link 'version', :desc, 'dropdown-item'
+        =sort_link 'access',  :asc,  'dropdown-item'
+        =sort_link 'views',   :desc, 'dropdown-item'
+        =sort_link 'size',    :desc, 'dropdown-item'
+        =sort_link 'updated', :desc, 'dropdown-item'
+        -if @sites.any?(&:is_tspot?)
+          =sort_link 'origin', :asc, 'dropdown-item'
+
+    .d-inline-block
+      =link_to(view_toggle_sites_path, class: "m-1 btn btn-sm btn-light text-muted", title: @grid_view ? 'List view' : 'Grid view') do
+        View
+        =bi_icon(@grid_view ? 'list-ul' : 'grid', fill: '#666')
 
   .summary-info
     =pluralize(@site_count, 'site') + ","

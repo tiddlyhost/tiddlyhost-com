@@ -93,4 +93,8 @@ class Site < ApplicationRecord
     'favicon-green.ico'
   end
 
+  def is_tspot?
+    false
+  end
+
 end

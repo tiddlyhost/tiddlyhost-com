@@ -40,7 +40,7 @@ module AdminHelper
     end
   end
 
-  def sort_link(link_title, default_dir=:desc)
+  def sort_link(link_title, default_dir=:desc, extra_klass=nil)
     field = link_title.downcase.gsub(/[^a-z]/, '')
     if @sort_by == field
       new_sort_by = "#{field}#{'_desc' unless @is_desc}"
@@ -50,7 +50,8 @@ module AdminHelper
       klass = nil
     end
 
-    link_to(params.permit(AdminController::FILTER_PARAMS).merge(s: new_sort_by), class: klass) do
+    # Fixme FILTER_PARAMS seems wrong here..
+    link_to(params.permit(AdminController::FILTER_PARAMS).merge(s: new_sort_by), class: [klass, extra_klass].compact.join(" ")) do
       link_title
     end
   end

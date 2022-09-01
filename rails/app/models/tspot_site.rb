@@ -150,4 +150,8 @@ class TspotSite < ApplicationRecord
     'favicon-tiddlyspot.ico'
   end
 
+  def is_tspot?
+    true
+  end
+
 end

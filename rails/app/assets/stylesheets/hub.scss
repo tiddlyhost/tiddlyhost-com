@@ -122,27 +122,26 @@ h1 {
 .page_info {
     margin-bottom: 2em;
     font-size: 80%;
+}
 
-    .sort-by {
-        margin-left: 2em;
+.page_info .sort-by, .sites-filter-by {
+    margin-left: 2em;
 
-        a {
-            text-decoration: none;
-        }
-
-        .dropdown-toggle {
-            color: #6c757d;
-        }
-
-        .dropdown-menu {
-            font-size: 95%;
-
-            .dropdown-item {
-                padding: 0.5em 2em;
-            }
-        }
+    a {
+        text-decoration: none;
     }
 
+    .dropdown-toggle {
+        color: #6c757d;
+    }
+
+    .dropdown-menu {
+        font-size: 95%;
+
+        .dropdown-item {
+            padding: 0.5em 2em;
+        }
+    }
 }
 
 .search {

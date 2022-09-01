@@ -13,6 +13,7 @@ class SitesController < ApplicationController
     access: 'not_searchable,is_private',
     views: 'view_count',
     size: 'raw_size',
+    origin: 'type,id',
   }
 
   NULL_ALWAYS_LAST = %w[
