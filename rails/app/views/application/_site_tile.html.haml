@@ -1,0 +1,46 @@
+-is_tspot = site.is_a?(TspotSite)
+
+.site{id: site.name}
+  -if site.thumbnail.present?
+    .thumb-container
+      =link_to site.url, target: '_blank' do
+        =image_tag rails_storage_proxy_path(site.thumbnail)
+
+  .name{title: site.long_name}
+    =site_link site
+
+  -if mode == "home"
+    -# Show the actions menu
+    .float-end
+      =render 'actions_menu', site: site, is_tspot: is_tspot, menu_only: true
+
+    .small.m-1
+      =site_access(site)
+      .small{style: "margin-left: 1px; margin-top: 3px;"}
+        =kind_logo(site)
+        -if site.tw_version
+          =site.tw_version
+        -if site.raw_byte_size
+          %span.mx-1.text-muted!= "&centerdot;"
+          !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
+
+  .description
+    =span_with_title_truncated(site.description)
+
+  -unless site.tag_list.empty?
+    .site-tags
+      =clickable_site_tags(site)
+
+  -if mode == "hub"
+    .owner
+      -if site.user.use_gravatar?
+        =gravatar_image(site.user, size: 14)
+      -else
+        =bi_icon('person-fill', style: 'margin-right:-3px;')
+      -if site.user.has_username?
+        %span{title: site.user.name}
+          =link_to site.user.username, hub_user_url(site.user.username)
+      -else
+        =site.user.name
+      %span.views
+        =views_and_updated_text(site).html_safe

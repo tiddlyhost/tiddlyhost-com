@@ -62,6 +62,10 @@ Rails.application.routes.draw do
     get "hub/user/:username", to: 'hub#user'
 
     resources :sites do
+      collection do
+        get :view_toggle
+      end
+
       member do
         get :download
         get :thumb

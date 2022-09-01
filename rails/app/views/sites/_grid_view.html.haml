@@ -1,0 +1,5 @@
+
+.sites-grid.d-flex
+
+  -@sites.each do |site|
+    =render 'site_tile', site: site, mode: 'home'

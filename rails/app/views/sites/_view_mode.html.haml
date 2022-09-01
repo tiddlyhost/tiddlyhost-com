@@ -1,0 +1,9 @@
+-grid_view_border_style = @grid_view ? ' border:1px solid #ccc' : ''
+-list_view_border_style = @grid_view ? '' : ' border: 1px solid #ccc'
+
+=link_to(view_toggle_sites_path, class: "m-1 btn btn-sm btn-light", style: list_view_border_style, title: 'List view') do
+  =bi_icon('list-ul', height: '1.2em', fill: '#888')
+
+=link_to(view_toggle_sites_path, class: "btn btn-sm btn-light", style: grid_view_border_style, title: 'Grid view') do
+  =bi_icon('grid-fill', height: '1.2em', fill: '#999')
+

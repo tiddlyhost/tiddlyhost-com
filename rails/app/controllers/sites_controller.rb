@@ -1,7 +1,7 @@
 
 class SitesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_site, except: [:index, :new, :create]
+  before_action :set_site, except: [:index, :new, :create, :view_toggle]
   before_action :set_empties_list, only: [:new, :create]
 
   SORT_OPTIONS = {
@@ -26,6 +26,8 @@ class SitesController < ApplicationController
     # Todo: DRY this (see admin controller)
     @sort_by = (params[:s].dup || 'updated_desc')
     @is_desc = @sort_by.sub!(/_desc$/, '')
+    @grid_view = cookies[:grid_view].present?
+
     null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
     sort_field = SORT_OPTIONS[@sort_by.to_sym] || SORT_OPTIONS[:updated]
     desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
@@ -34,6 +36,15 @@ class SitesController < ApplicationController
     @sites = HubQuery.sites_for_user(current_user, sort_by: sort_by)
     @site_count = @sites.count
     @total_storage_bytes = current_user.total_storage_bytes
+  end
+
+  def view_toggle
+    if cookies[:grid_view].present?
+      cookies.delete(:grid_view)
+    else
+      cookies[:grid_view] = "1"
+    end
+    redirect_to sites_path
   end
 
   # GET /sites/1

@@ -28,18 +28,25 @@ h1 {
     margin-bottom: 2em;
     padding-right: 0;
     margin-right: 0;
+}
+
+// The same classes and partial are used for both the hub
+// index and the sites index in grid view
+.hub, .sites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
 
     .site {
         vertical-align: top;
-        display: inline-block;
         width: 14em;
-        margin: 0em 2em 4.5em 0.5em;
+        margin: 0 0 1rem 0; // gap should handle the spacing
 
         .description {
             margin-left: 0.25em;
             font-size: 85%;
             display: -webkit-box;
-            -webkit-line-clamp: 3; /* number of lines to show */
+            -webkit-line-clamp: 3; // number of lines to show
             -webkit-box-orient: vertical;
             overflow: hidden;
             color: #555;
@@ -67,7 +74,7 @@ h1 {
             margin: 0.25em 0;
 
             img {
-                width: 95%;
+                width: 100%;
                 border: 1px solid #ddd;
             }
         }
@@ -100,9 +107,14 @@ h1 {
             font-size: 90%;
 
             display: -webkit-box;
-            -webkit-line-clamp: 5; /* number of lines to show */
+            -webkit-line-clamp: 5; // number of lines to show
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        .btn-light {
+            // A border so you can see it better
+            border-color: #dee2e6 !important;
         }
     }
 }
