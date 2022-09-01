@@ -9,12 +9,11 @@ module WithThumbnail
   # Todo:
   # - Can we at least set long-ish cache headers?
   # - Do we need to cache to reduce s3 traffic?
+  # - Per site or per user throttle or debounce maybe
 
   # See app/jobs/generate_thumbnail_job
-  # For now, only hub sites get a thumbnail generated
   #
   def update_thumbnail_later
-    return unless hub_listed?
     GenerateThumbnailJob.perform_later(self)
   end
 

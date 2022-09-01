@@ -69,6 +69,8 @@ class SitesController < ApplicationController
 
     respond_to do |format|
       if @site.save
+        @site.update_thumbnail_later
+
         format.html { redirect_to sites_url }
         # format.json { render :show, status: :created, location: @site }
       else
@@ -99,6 +101,8 @@ class SitesController < ApplicationController
     respond_to do |format|
       if @site.update(site_params_for_upload)
         @site.increment_save_count
+        @site.update_thumbnail_later
+
         format.html { redirect_to sites_url, notice: 'Upload to site was successfully completed.' }
         # format.json { render :show, status: :ok, location: @site }
       else
