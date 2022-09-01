@@ -1,3 +1,6 @@
+-#
+-# Todo: Some clean up here
+-#
 .btn-group.btn-group-sm
 
   -unless local_assigns[:menu_only]
@@ -19,6 +22,12 @@
     -if is_tspot
       =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
       .dropdown-divider
+
+      -# I want to only show this on the grid view, hence the menu_only check here
+      -if !site.thumbnail.present? && local_assigns[:menu_only]
+        =link_to(create_thumbnail_tspot_site_path(site), class: 'dropdown-item', method: :post,
+          data: { confirm: "The thumbnail may take some time to generate. Click OK then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
+
       =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
       =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
       .dropdown-divider
@@ -30,6 +39,12 @@
     -else
       =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
       .dropdown-divider
+
+      -# I want to only show this on the grid view, hence the menu_only check here
+      -if !site.thumbnail.present? && local_assigns[:menu_only]
+        =link_to(create_thumbnail_site_path(site), class: 'dropdown-item', method: :post,
+          data: { confirm: "The thumbnail may take some time to generate. Click okay then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
+
       =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
       =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
       .dropdown-divider

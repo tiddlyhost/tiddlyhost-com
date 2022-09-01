@@ -14,7 +14,7 @@ module WithThumbnail
   # See app/jobs/generate_thumbnail_job
   #
   def update_thumbnail_later
-    GenerateThumbnailJob.perform_later(self)
+    GenerateThumbnailJob.perform_later(self.class.name, self.id)
   end
 
   private

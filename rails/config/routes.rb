@@ -68,9 +68,10 @@ Rails.application.routes.draw do
 
       member do
         get :download
-        get :thumb
         get :upload_form
         patch :upload
+
+        post :create_thumbnail
       end
     end
 
@@ -89,6 +90,8 @@ Rails.application.routes.draw do
 
           get :change_password
           patch :change_password_submit
+
+          post :create_thumbnail
         end
       end
 

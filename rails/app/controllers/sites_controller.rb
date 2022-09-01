@@ -47,6 +47,15 @@ class SitesController < ApplicationController
     redirect_to sites_path
   end
 
+  # Any site that's been saved recently would probably already
+  # have a thumbnail. This is to make it easier for users with older
+  # sites.
+  #
+  def create_thumbnail
+    @site.update_thumbnail_later unless @site.thumbnail.present?
+    redirect_to sites_path
+  end
+
   # GET /sites/1
   # GET /sites/1.json
   def show

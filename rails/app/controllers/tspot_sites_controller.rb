@@ -85,6 +85,15 @@ class TspotSitesController < ApplicationController
     redirect_to sites_path
   end
 
+  # Any tspot site that's been saved recently would probably already
+  # have a thumbnail. This is to make it easier for users with older
+  # sites.
+  #
+  def create_thumbnail
+    @site.update_thumbnail_later unless @site.thumbnail.present?
+    redirect_to sites_path
+  end
+
   private
 
   def set_site
