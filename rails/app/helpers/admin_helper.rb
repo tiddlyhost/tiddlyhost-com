@@ -50,8 +50,19 @@ module AdminHelper
       klass = nil
     end
 
-    # Fixme FILTER_PARAMS seems wrong here..
-    link_to(params.permit(AdminController::FILTER_PARAMS).merge(s: new_sort_by), class: [klass, extra_klass].compact.join(" ")) do
+    # Todo: Clean up this mess...
+    link_to(params.permit(AdminController::FILTER_PARAMS + [:access]).merge(s: new_sort_by), class: [klass, extra_klass].compact.join(" ")) do
+      link_title
+    end
+  end
+
+  def filter_link(param_name, link_title)
+    param_value = link_title.downcase.gsub(/[^a-z]/, '')
+    param_value = nil if link_title =~ /all/
+    param_value = 'hub' if link_title =~ /hub/
+    current_value = params[param_name]
+    # Todo: And here...
+    link_to(params.permit(AdminController::FILTER_PARAMS + [:s]).merge(param_name => param_value), class: "dropdown-item #{' sel' if current_value.to_s == param_value.to_s}") do
       link_title
     end
   end

@@ -11,7 +11,7 @@
     %th Actions
 
   %tbody
-    -@sites.each do |site|
+    -@filtered_sites.each do |site|
       -is_tspot = site.is_a?(TspotSite)
       %tr
         %td

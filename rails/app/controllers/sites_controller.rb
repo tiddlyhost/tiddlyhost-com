@@ -35,8 +35,16 @@ class SitesController < ApplicationController
     sort_by = sort_field.split(',').map{|f| "#{f} #{desc_sql}"}.join(",")
 
     @sites = HubQuery.sites_for_user(current_user, sort_by: sort_by)
+
     @site_count = @sites.count
     @total_storage_bytes = current_user.total_storage_bytes
+
+    # Filtering
+    @filtered_sites = @sites
+    @filtered_sites = @filtered_sites.select(&:hub_listed?) if params[:access] == 'hub'
+    @filtered_sites = @filtered_sites.select(&:is_public?).reject(&:hub_listed?) if params[:access] == 'public'
+    @filtered_sites = @filtered_sites.select(&:is_private?) if params[:access] == 'private'
+    @filtered_site_count = @filtered_sites.count
   end
 
   def view_toggle
@@ -45,7 +53,8 @@ class SitesController < ApplicationController
     else
       cookies[:grid_view] = "1"
     end
-    redirect_to sites_path
+    # Preserve filter and sort params
+    redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({action: :index}))
   end
 
   # Any site that's been saved recently would probably already

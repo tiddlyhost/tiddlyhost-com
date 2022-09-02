@@ -79,6 +79,7 @@
 @mixin up   { content: "↑"; color: #666; padding-left: 1px; font-size: 90%; }
 @mixin down { content: "↓"; color: #666; padding-left: 1px; font-size: 90%; }
 @mixin both { content: "⇵"; color: #ddd; font-size: 80%; }
+@mixin sel  { content: "•"; color: #666; font-size: 100%; }
 
 .table.admin, .table.sites {
     th {
@@ -110,6 +111,7 @@
         &:before      { @include down; visibility: hidden; padding-right: 0.5em; font-weight: bold;}
         &.asc:before  { @include down; visibility: visible; padding-right: 0.5em; font-weight: bold;}
         &.desc:before { @include up;   visibility: visible; padding-right: 0.5em; font-weight: bold; }
+        &.sel:before  { @include sel;  visibility: visible; padding-right: 0.5em; font-weight: bold; }
     }
 }
 

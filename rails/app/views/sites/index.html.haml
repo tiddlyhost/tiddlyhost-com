@@ -11,10 +11,21 @@
 
   .float-end.small{style: "margin-top: -0.6rem;"}
     .d-inline-block.grid-sort
+      =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Filter options',
+        role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
+        -if params[:access]
+          Access: #{params[:access]}
+        -else
+          Access
+        =bi_icon('funnel', fill: '#666')
+      .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
+        =render 'filter_link_group', param_name: 'access', filter_options: [ 'hub listed', 'public', 'private' ]
+
+    .d-inline-block.grid-sort
       =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Sort options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
-        Sort
-        =bi_icon('sort-down', fill: '#666')
+        Sort: #{@sort_by}
+        =bi_icon(@is_desc ? 'sort-up' : 'sort-down', fill: '#666')
       .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
         =sort_link 'name',    :asc,  'dropdown-item'
         =sort_link 'kind',    :desc, 'dropdown-item'
@@ -27,12 +38,16 @@
           =sort_link 'origin', :asc, 'dropdown-item'
 
     .d-inline-block
-      =link_to(view_toggle_sites_path, class: "m-1 btn btn-sm btn-light text-muted", title: @grid_view ? 'List view' : 'Grid view') do
-        View
+      =link_to({controller: :sites, action: :view_toggle}.merge(params.permit(:access,:s)), class: "m-1 btn btn-sm btn-light text-muted", title: @grid_view ? 'List view' : 'Grid view') do
+        View:
         =bi_icon(@grid_view ? 'list-ul' : 'grid', fill: '#666')
 
   .summary-info
-    =pluralize(@site_count, 'site') + ","
+    -if @filtered_site_count != @site_count
+      Showing #{@filtered_site_count} #{params[:access]} sites of #{pluralize(@site_count, 'site')} total.
+      =link_to('Clear filter', sites_path, style: 'text-decoration: none;') + "."
+    -else
+      =pluralize(@site_count, 'site') + ","
     =as_megabytes(@total_storage_bytes)
     MB storage used.
 
