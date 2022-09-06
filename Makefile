@@ -360,6 +360,11 @@ s3-snapshot-and-prune: s3-backup s3-local-timestamped-copy s3-backup-and-prune
 show-backups:
 	@du -h $(BACKUPS_DIR)
 
+# Example usage:
+#   make s3-extract FILEKEY=bc1viib59bbw3cpqvvd2x7dnth9b
+s3-extract:
+	openssl zlib -d -in $(S3_BACKUPS)/latest/$(FILEKEY) > $(FILEKEY).html
+
 full-backup: db-backup s3-backup
 full-backup-and-snapshot: db-backup s3-snapshot-and-prune
 
