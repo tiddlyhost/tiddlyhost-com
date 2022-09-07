@@ -27,15 +27,14 @@
 .page_info.text-muted
   =page_entries_info(@sites, model: Site)
   ="tagged with #{@tag}" if @tag.present?
-  ="matching '#{@search}'" if @search.present?
+  ="matching '#{search_text}'" if search_text
 
   %span.sort-by
     Sort by:
-    =link_to(@sort_by[:name], "#", class: 'dropdown-toggle',
-      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
-    .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
-      -@sort_options.each do |key, sort_option|
-        =link_to sort_option[:name], sort_url(sort_option[:default] ? nil : key), class: 'dropdown-item'
+    =link_to(sort_opt[:title], "#", class: 'dropdown-toggle', role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+    .dropdown-menu.hub-menu{'aria-labelledby': 'dropdownMenuLink'}
+      -sort_options.keys.each do |k|
+        =simple_sort_link k
 
   =render 'shared/search_box'
 

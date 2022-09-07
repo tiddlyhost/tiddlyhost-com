@@ -40,43 +40,6 @@ module AdminHelper
     end
   end
 
-  def sort_link(link_title, default_dir=:desc, extra_klass=nil)
-    field = link_title.downcase.gsub(/[^a-z]/, '')
-    if @sort_by == field
-      new_sort_by = "#{field}#{'_desc' unless @is_desc}"
-      klass = @is_desc ? 'desc' : 'asc'
-    else
-      new_sort_by = "#{field}#{'_desc' unless default_dir == :asc}"
-      klass = nil
-    end
-
-    # Todo: Clean up this mess...
-    link_to(params.permit(AdminController::FILTER_PARAMS + [:access]).merge(s: new_sort_by), class: [klass, extra_klass].compact.join(" ")) do
-      link_title
-    end
-  end
-
-  def filter_link(param_name, link_title)
-    param_value = link_title.downcase.gsub(/[^a-z]/, '')
-    param_value = nil if link_title =~ /all/
-    param_value = 'hub' if link_title =~ /hub/
-    current_value = params[param_name]
-    # Todo: And here...
-    link_to(params.permit(AdminController::FILTER_PARAMS + [:s]).merge(param_name => param_value), class: "dropdown-item #{' sel' if current_value.to_s == param_value.to_s}") do
-      link_title
-    end
-  end
-
-  # A radio button that acts like a link
-  def filter_radio_link(title, key, value=nil)
-    url = params.permit(AdminController::FILTER_PARAMS)
-    url.merge!(key => value)
-    content_tag :label do
-      radio_button_tag(key, value, params[key] == value, onclick:
-        "window.location.href = '#{url_for(url)}'") + ' ' + title
-    end
-  end
-
   def card_color(title)
     case title.downcase
     when /users/, /active/

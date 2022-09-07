@@ -106,12 +106,14 @@
     }
 }
 
-.grid-sort {
+.sites-menu, .hub-menu {
     .dropdown-item {
-        &:before      { @include down; visibility: hidden; padding-right: 0.5em; font-weight: bold;}
-        &.asc:before  { @include down; visibility: visible; padding-right: 0.5em; font-weight: bold;}
-        &.desc:before { @include up;   visibility: visible; padding-right: 0.5em; font-weight: bold; }
-        &.sel:before  { @include sel;  visibility: visible; padding-right: 0.5em; font-weight: bold; }
+        // Use visibility:hidden so it takes the exact same amount of space as when it's visible
+        &:before        { @include down; visibility: hidden;  padding-right: 0.5em; font-weight: bold; }
+        &.asc:before    { @include down; visibility: visible; padding-right: 0.5em; font-weight: bold; }
+        &.desc:before   { @include up;   visibility: visible; padding-right: 0.5em; font-weight: bold; }
+        &.sel:before    { @include sel;  visibility: visible; padding-right: 0.5em; font-weight: bold; }
+        &.notsel:before { @include sel;  visibility: hidden;  padding-right: 0.5em; font-weight: bold; }
     }
 }
 

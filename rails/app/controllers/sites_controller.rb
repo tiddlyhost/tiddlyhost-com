@@ -4,46 +4,43 @@ class SitesController < ApplicationController
   before_action :set_site, except: [:index, :new, :create, :view_toggle]
   before_action :set_empties_list, only: [:new, :create]
 
+  include SortAndFilterLinkHelper
+
   SORT_OPTIONS = {
     compressed: 'size',
     kind: 'tw_kind',
     name: 'name',
     updated: 'blob_created_at',
-    version: 'tw_kind,tw_version',
-    access: 'not_searchable,is_private',
+    version: %w[tw_kind tw_version],
+    access: %w[not_searchable is_private],
     views: 'view_count',
     size: 'raw_size',
     origin: 'type,id',
-  }
+  }.freeze
+
+  DEFAULT_SORT = :updated_desc
+
+  FILTER_PARAMS = {
+    access: {
+      hub: { filter: ->(s){ s.select(&:hub_listed?) }, title: 'hub listed' },
+      public: { filter: ->(s){ s.select(&:is_public?).reject(&:hub_listed?) } },
+      private: { filter: ->(s){ s.select(&:is_private?) } },
+    },
+  }.freeze
 
   NULL_ALWAYS_LAST = %w[
     version
     size
-  ]
+  ].freeze
 
   # GET /sites
   # GET /sites.json
   def index
-    # Todo: DRY this (see admin controller)
-    @sort_by = (params[:s].dup || 'updated_desc')
-    @is_desc = @sort_by.sub!(/_desc$/, '')
     @grid_view = cookies[:grid_view].present?
-
-    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
-    sort_field = SORT_OPTIONS[@sort_by.to_sym] || SORT_OPTIONS[:updated]
-    desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
-    sort_by = sort_field.split(',').map{|f| "#{f} #{desc_sql}"}.join(",")
-
-    @sites = HubQuery.sites_for_user(current_user, sort_by: sort_by)
-
-    @site_count = @sites.count
     @total_storage_bytes = current_user.total_storage_bytes
-
-    # Filtering
-    @filtered_sites = @sites
-    @filtered_sites = @filtered_sites.select(&:hub_listed?) if params[:access] == 'hub'
-    @filtered_sites = @filtered_sites.select(&:is_public?).reject(&:hub_listed?) if params[:access] == 'public'
-    @filtered_sites = @filtered_sites.select(&:is_private?) if params[:access] == 'private'
+    @sites = HubQuery.sites_for_user(current_user, sort_by: sort_sql)
+    @site_count = @sites.count
+    @filtered_sites = filter_results(@sites)
     @filtered_site_count = @filtered_sites.count
   end
 

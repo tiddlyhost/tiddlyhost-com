@@ -20,47 +20,29 @@ class HubController < ApplicationController
     end
   end
 
-  # s = sort
-  # q = search (query)
-  FILTER_PARAMS = %i[
-    s
-    q
-  ]
+  include SortAndFilterLinkHelper
+
+  FILTER_PARAMS = {
+    q: {
+      # Searching is handled in HubQuery
+    }
+  }.freeze
+
+  # We don't do asc/desc sorting for the hub
+  SORT_OPTIONS = {
+    v: { title: 'view count', field: 'view_count DESC' },
+    u: { title: 'recently updated', field: 'blob_created_at DESC NULLS LAST' },
+    c: { title: 'recently created', field: 'created_at DESC NULLS LAST' },
+    a: { title: 'name a-z', field: 'name ASC' },
+    z: { title: 'name z-a', field: 'name DESC' },
+    r: { title: 'random', field: 'rand_sort' },
+  }.freeze
+
+  DEFAULT_SORT = :v
 
   private
 
   def render_hub
-    @sort_options = {
-      'v' => {
-        name: 'view count',
-        field: 'view_count DESC',
-        default: true,
-      },
-      'u' => {
-        name: 'recently updated',
-        field: 'blob_created_at DESC NULLS LAST',
-      },
-      'c' => {
-        name: 'recently created',
-        field: 'created_at DESC NULLS LAST',
-      },
-      'a' => {
-        name: 'name a-z',
-        field: 'name ASC',
-      },
-      'z' => {
-        name: 'name z-a',
-        field: 'name DESC',
-      },
-      'r' => {
-        name: 'random',
-        field: 'rand_sort',
-      },
-    }
-    @sort_by = @sort_options[params[:s]] || @sort_options['v']
-
-    @search = params[:q]
-
     # Show a few popular tags in the tab bar.
     # (It's not the best UX for tag based site discovery, but good enough for now.)
     @tag_tabs = HubQuery.most_used_tags.first(Settings.hub_tag_tab_count)
@@ -72,10 +54,10 @@ class HubController < ApplicationController
     @sites = HubQuery.paginated_sites(
       page: params[:page],
       per_page: PER_PAGE,
-      sort_by: @sort_by[:field],
+      sort_by: sort_opt[:field],
       tag: @tag,
       user: @user,
-      search: @search)
+      search: search_text)
 
     # Render
     render action: :index

@@ -10,7 +10,7 @@
       =link_to_user_hub_with_count(current_user)
 
   .float-end.small{style: "margin-top: -0.6rem;"}
-    .d-inline-block.grid-sort
+    .d-inline-block.sites-menu
       =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Filter options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
         -if params[:access]
@@ -19,13 +19,13 @@
           Access
         =bi_icon('funnel', fill: '#666')
       .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
-        =render 'filter_link_group', param_name: 'access', filter_options: [ 'hub listed', 'public', 'private' ]
+        =filter_link_group :access
 
-    .d-inline-block.grid-sort
+    .d-inline-block.sites-menu
       =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Sort options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
-        Sort: #{@sort_by}
-        =bi_icon(@is_desc ? 'sort-up' : 'sort-down', fill: '#666')
+        Sort: #{sort_by}
+        =bi_icon(sort_bi_icon, fill: '#666')
       .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
         =sort_link 'name',    :asc,  'dropdown-item'
         =sort_link 'kind',    :desc, 'dropdown-item'

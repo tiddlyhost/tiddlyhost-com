@@ -109,25 +109,6 @@ module ApplicationHelper
     link_to(title, github_history_url(sha||title), {target: '_blank'}.reverse_merge(opts))
   end
 
-  def known_filter_params
-    self.class.const_get("::#{controller_name.classify}Controller::FILTER_PARAMS")
-  end
-
-  def sort_url(new_sort)
-    params.permit(known_filter_params).merge(s: new_sort)
-  end
-
-  def clear_search_url
-    params.permit(known_filter_params).merge(q: nil)
-  end
-
-  # Preserve the other sorting and filter optiosn when searching
-  def hidden_filter_params
-    safe_join(known_filter_params.map do |p|
-      hidden_field_tag p, params[p] if params[p] && p != :search
-    end.compact)
-  end
-
   # See also lib/bootstrap_paginate_renderer.rb
   def will_paginate(coll_or_options = nil, options = {})
     if coll_or_options.is_a? Hash

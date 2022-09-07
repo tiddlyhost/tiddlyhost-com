@@ -40,6 +40,8 @@ class AdminController < ApplicationController
     @title = "Data"
   end
 
+  include SortAndFilterLinkHelper
+
   SORT_OPTIONS = {
     accesses: 'access_count',
     blobmb: 'active_storage_blobs.byte_size',
@@ -78,21 +80,52 @@ class AdminController < ApplicationController
     owner
     version
     kind
-  ]
+  ].freeze
 
-  # s = sort
-  # q = search (query)
-  FILTER_PARAMS = %i[
-    s
-    q
-    user
-    owned
-    saved
-    private
-    hub
-    no_stub
-    kind
-  ]
+  FILTER_PARAMS = {
+    owned: {
+      '1' => { title: 'owned', filter: ->(r){ r.where.not(user_id: nil) } },
+      '0' => { title: 'unowned', filter: ->(r){ r.where(user_id: nil) } },
+    },
+
+    saved: {
+      '1' => { title: 'saved', filter: ->(r){ r.where.not(save_count: 0) } },
+      '0' => { title: 'unsaved', filter: ->(r){ r.where(save_count: 0) } },
+    },
+
+    private: {
+      '1' => { title: 'private', filter: ->(r){ r.where.not(is_private: false ) } },
+      '0' => { title: 'public', filter: ->(r){ r.where(is_private: false) } },
+    },
+
+    hub: {
+      '1' => { title: 'hub', filter: ->(r){ r.where.not(is_searchable: false) } },
+      '0' => { title: 'non-hub', filter: ->(r){ r.where(is_searchable: false) } },
+    },
+
+    no_stub: {
+      '1' => { title: 'non-stub', filter: ->(r){ r.no_stubs } },
+      '0' => { title: 'stub', filter: ->(r){ r.stubs } },
+    },
+
+    new_pass: {
+      '1' => { title: 'new password', filter: ->(r){ r.where.not(password_digest: nil) } },
+      '0' => { title: 'legacy password', filter: ->(r){ r.where(password_digest: nil) } },
+    },
+
+    kind: {
+      filter: ->(r, kind){ r.where(tw_kind: kind) },
+    },
+
+    user: {
+      # See filter_by_user_maybe below
+    },
+
+    q: {
+      filter: ->(r, search){ r.admin_search_for(search) },
+    },
+
+  }.freeze
 
   def users
     render_records User.left_joins(:sites, :tspot_sites).group(:id)
@@ -140,52 +173,25 @@ class AdminController < ApplicationController
 
   private
 
+  def default_sort
+    case action_name
+    when 'tspot_sites'
+      :lastupdate_desc
+    else
+      :created_desc
+    end
+  end
+
   def render_records(records)
     @title = action_name.titleize
     @records = records
 
-    # Filter by user
-    if @user = User.find_by_id(params[:user])
-      if action_name == 'users'
-        @records = @records.where(id: @user.id)
-        @title = "#{@user.username_or_email}'s Details"
-      else
-        @records = @records.where(user: @user)
-        @title = "#{@user.username_or_email}'s #{@title}"
-      end
-    end
-
     # Filtering
-    @records = @records.where.not(user_id: nil) if params[:owned] == '1'
-    @records = @records.where(user_id: nil) if params[:owned] == '0'
-
-    @records = @records.where.not(save_count: 0) if params[:saved] == '1'
-    @records = @records.where(save_count: 0) if params[:saved] == '0'
-
-    @records = @records.where(is_private: true) if params[:private] == '1'
-    @records = @records.where(is_private: false) if params[:private] == '0'
-
-    @records = @records.where(is_searchable: true) if params[:hub] == '1'
-    @records = @records.where(is_searchable: false) if params[:hub] == '0'
-
-    @records = @records.no_stubs if params[:no_stub] == '1'
-    @records = @records.stubs if params[:no_stub] == '0'
-
-    @records = @records.where.not(password_digest: nil) if params[:new_pass] == '1'
-    @records = @records.where(password_digest: nil) if params[:new_pass] == '0'
-
-    @records = @records.where(tw_kind: params[:kind]) if params[:kind].present?
-
-    @search = params[:q]
-    @records = @records.admin_search_for(@search) if @search.present?
+    filter_by_user_maybe
+    @records = filter_results(@records)
 
     # Sorting
-    @sort_by = (params[:s].dup || default_sort)
-    @is_desc = @sort_by.sub!(/_desc$/, '')
-    null_always_last = NULL_ALWAYS_LAST.include?(@sort_by)
-    sort_field = SORT_OPTIONS[@sort_by.to_sym]
-    desc_sql = @is_desc ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
-    @records = @records.order(Arel.sql("#{sort_field} #{desc_sql}")) if sort_field
+    @records = @records.order(Arel.sql(sort_sql))
 
     # Pagination
     @records = @records.paginate(page: params[:page], per_page: 15)
@@ -193,12 +199,17 @@ class AdminController < ApplicationController
     render action: :paginated_records
   end
 
-  def default_sort
-    case action_name
-    when 'tspot_sites'
-      'lastupdate_desc'
-    else
-      'created_desc'
+  def filter_by_user_maybe
+    @user = params[:user].present? && User.find_by_id(params[:user])
+    if @user
+      case action_name
+      when 'users'
+        @records = @records.where(id: @user.id)
+        @title = "#{@user.username_or_email}'s Details"
+      else
+        @records = @records.where(user: @user)
+        @title = "#{@user.username_or_email}'s #{@title}"
+      end
     end
   end
 
