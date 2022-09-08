@@ -360,6 +360,11 @@ s3-snapshot-and-prune: s3-backup s3-local-timestamped-copy s3-backup-and-prune
 show-backups:
 	@du -h $(BACKUPS_DIR)
 
+show-latest-db-backup:
+	@NEWEST=$$( ls -t $(DB_BACKUPS) | head -1 ) && \
+	  ls -l $(DB_BACKUPS)/$$NEWEST && \
+	  zcat $(DB_BACKUPS)/$$NEWEST/dbdump | head
+
 # Example usage:
 #   make s3-extract FILEKEY=bc1viib59bbw3cpqvvd2x7dnth9b
 s3-extract:
