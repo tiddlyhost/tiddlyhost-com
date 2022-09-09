@@ -262,14 +262,14 @@ prod-assets:
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties
 	$(DC) -f docker-compose-prod.yml build app
 
-fast-build-prod:
+fast-build-prod: prod-assets build-info
 	$(DC) -f docker-compose-prod.yml build app
 
 push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost
 
 build-push:          tests build-prod push-prod
-full-build-deploy:   cleanup build-base build-push full-deploy
+build-full-deploy:   build-push full-deploy
 build-deploy:        build-push deploy-app
 fast-build-deploy:   build-push fast-upgrade
 faster-build-deploy: build-push faster-upgrade
