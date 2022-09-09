@@ -276,6 +276,7 @@ body.simple-layout {
         padding: 3px 8px;
         margin: 0 2px;
         white-space: nowrap;
+        border-radius: var(--bs-pagination-border-radius);
     }
 
     .page-item:hover .page-link {
