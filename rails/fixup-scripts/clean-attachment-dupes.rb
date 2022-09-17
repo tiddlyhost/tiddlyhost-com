@@ -20,8 +20,10 @@ else
   'tiddlywiki_file'
 end
 
+attachment_info = ->(a) { "#{a.name} #{a.id} #{a.created_at} blob #{a.blob.id} #{a.blob.key} #{a.blob.created_at}" }
+
 sites_with_dupes =
-  ActiveStorage::Attachment.where(name: attachment_name).
+  ActiveStorage::Attachment.unscoped.where(name: attachment_name).
     group(:record_type, :record_id).count.
     map{ |type_and_id, count| type_and_id if count > 1}.compact.
     map{ |record_type, record_id| self.class.const_get(record_type).find(record_id) }
@@ -31,20 +33,20 @@ if sites_with_dupes.empty?
 
 else
   sites_with_dupes.each do |s|
-    puts "#{s.class.name} #{s.id} #{s.name}"
+    # Show the blob key so you can sanity check that the right one is going to be kept
+    puts "#{s.class.name} #{s.id} #{s.name} #{s.blob.key}"
 
-    # Sort the attachments so the most recently created one is first
-    attachments = ActiveStorage::Attachment.where(name: attachment_name, record_type: s.class.name, record_id: s.id).
-      to_a.sort_by{ |a| a.blob.created_at }.reverse
+    # Because of the default scope added to ActiveStorage::Attachment this should be sorted newest first already
+    attachments = ActiveStorage::Attachment.where(name: attachment_name, record_type: s.class.name, record_id: s.id).to_a
 
     # Keep the most recent one since it's presumably the latest save
     attachments[0..0].each do |a|
-      puts " - KEEP #{a.name} #{a.id} #{a.blob.key} #{a.blob.created_at}"
+      puts " - KEEP #{attachment_info.call(a)}"
     end
 
     # Delete the others (maybe)
     attachments[1..].each do |a|
-      puts " - DUPE #{a.name} #{a.id} #{a.blob.key} #{a.blob.created_at}"
+      puts " - DUPE #{attachment_info.call(a)}"
 
       # Do it..
       a.destroy if ENV['REALLY'] == '1'
