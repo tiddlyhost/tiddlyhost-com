@@ -211,7 +211,6 @@ EMPTY_DIR=rails/tw_content/empties
 download-empties:
 	@mkdir -p $(EMPTY_DIR)
 	@$(PLAY) ansible/fetch_empties.yml
-	@$(MAKE) -s empty-versions
 
 # Now that we have Feather Wiki included in ansible/fetch_empties
 # this isn't used regularly, but keep it in case I ever want to
