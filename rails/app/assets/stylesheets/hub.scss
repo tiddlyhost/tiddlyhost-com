@@ -35,12 +35,12 @@ h1 {
 .hub, .sites-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 4rem;
+    gap: 7rem;
 
     .site {
         vertical-align: top;
-        width: 14em;
-        margin: 0 0 1rem 0; // gap should handle the spacing
+        width: 12em;
+        margin: 0; // gap should handle the spacing
 
         .description {
             margin-left: 0.25em;
@@ -74,7 +74,7 @@ h1 {
             margin: 0.25em 0;
 
             img {
-                width: 100%;
+                width: 95%;
                 border: 1px solid #ddd;
             }
         }
