@@ -26,7 +26,7 @@ sites_with_dupes =
   ActiveStorage::Attachment.unscoped.where(name: attachment_name).
     group(:record_type, :record_id).count.
     map{ |type_and_id, count| type_and_id if count > 1}.compact.
-    map{ |record_type, record_id| self.class.const_get(record_type).find(record_id) }
+    map{ |record_type, record_id| self.class.const_get(record_type).find_by_id(record_id) }.compact
 
 if sites_with_dupes.empty?
   puts "No dupes found."
