@@ -362,7 +362,10 @@ show-backups:
 show-latest-db-backup:
 	@NEWEST=$$( ls -t $(DB_BACKUPS) | head -1 ) && \
 	  ls -l $(DB_BACKUPS)/$$NEWEST && \
-	  zcat $(DB_BACKUPS)/$$NEWEST/dbdump | head
+	  zcat $(DB_BACKUPS)/$$NEWEST/dbdump | wc -l && \
+	  zcat $(DB_BACKUPS)/$$NEWEST/dbdump | head && \
+	  echo . && echo . && echo . && \
+	  zcat $(DB_BACKUPS)/$$NEWEST/dbdump | tail -4
 
 # Example usage:
 #   make s3-extract FILEKEY=bc1viib59bbw3cpqvvd2x7dnth9b
