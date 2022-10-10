@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
+    get '/thumb.png', to: 'tiddlywiki#thumb_png'
 
     post '/', to: 'tiddlywiki#upload_save'
     put '/', to: 'tiddlywiki#put_save'
@@ -112,6 +113,7 @@ Rails.application.routes.draw do
       options '/', to: 'tiddlyspot#options'
       get '/favicon.ico', to: 'tiddlyspot#favicon'
       get '/download', to: 'tiddlyspot#download'
+      get '/thumb.png', to: 'tiddlywiki#thumb_png'
 
       post '/store.cgi', to: 'tiddlyspot#save'
       post '/store.php', to: 'tiddlyspot#save'

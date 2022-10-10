@@ -4,8 +4,8 @@ class TiddlyspotController < ApplicationController
 
   include SubdomainCommon
 
-  before_action :find_site, only: [:serve, :download, :save]
-  before_action :authenticate, only: [:serve, :download], if: :auth_required?
+  before_action :find_site, only: [:serve, :download, :thumb_png, :save]
+  before_action :authenticate, only: [:serve, :download, :thumb_png], if: :auth_required?
 
   skip_before_action :verify_authenticity_token, only: [:save, :options]
 
@@ -30,6 +30,12 @@ class TiddlyspotController < ApplicationController
 
   def favicon
     send_favicon('favicon-tiddlyspot.ico')
+  end
+
+  def thumb_png
+    return head 404 unless @site.thumbnail.present?
+
+    send_data @site.thumbnail.download, type: 'image/png', disposition: 'inline'
   end
 
   def save

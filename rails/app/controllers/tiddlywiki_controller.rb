@@ -86,6 +86,12 @@ class TiddlywikiController < ApplicationController
     send_favicon(@site.favicon_asset_name)
   end
 
+  def thumb_png
+    return site_not_available unless site_visible? && @site.thumbnail.present?
+
+    send_data @site.thumbnail.download, type: 'image/png', disposition: 'inline'
+  end
+
   def download
     return site_not_available unless site_downloadable?
 
