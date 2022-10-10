@@ -391,7 +391,7 @@ openstack-reboot-hard:
 #----------------------------------------------------------
 
 prod-info:
-	@curl https://tiddlyhost.com/build-info.txt
+	@-curl https://tiddlyhost.com/build-info.txt
 
 #----------------------------------------------------------
 JS_MATH_DOWNLOADS=http://www.math.union.edu/~dpvc/jsmath/download
