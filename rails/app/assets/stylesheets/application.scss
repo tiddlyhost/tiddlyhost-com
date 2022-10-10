@@ -6,7 +6,8 @@
 @import "home";
 
 // https://gka.github.io/palettes/#/15|d|5c7cd9||1|1
-$nav_bg_color: #3c60b9;
+$nav_bg_color: #50548c;
+$prod_nav_bg_color: #3c60b9;
 $hilight_bg_color: #d5e0f9;
 
 $contrast_color: #29AE4A;
@@ -37,6 +38,9 @@ $contrast_color: #29AE4A;
     }
 }
 
+.navbar.navbar-prod {
+    background-color: $prod_nav_bg_color;
+}
 
 .dropdown-item {
     svg.bi {

@@ -73,4 +73,9 @@ class ApplicationController < ActionController::Base
     ThostLogger.thost_logger.info(msg, request)
   end
 
+  def navbar_prod
+    'navbar-prod' if request.domain =~ /(tiddlyspot|tiddlyhost)\.com$/
+  end
+  helper_method :navbar_prod
+
 end
