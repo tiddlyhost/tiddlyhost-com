@@ -22,7 +22,7 @@ module WithThumbnail
   # This is expensive since it spins up a headless chromium
   #
   def update_thumbnail_now
-    png = Grover.new(file_download, grover_opts).to_png
+    png = Grover.new(file_download, **grover_opts).to_png
     update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
   end
 
