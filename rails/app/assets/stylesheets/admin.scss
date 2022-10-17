@@ -2,11 +2,16 @@
 .stats {
     margin-left: 1rem;
     .card {
+        border-radius: 0px;
+        border-top-width: 0px;
+        border-left-width: 0px;
+        border-color: #ccc;
         min-width: 7rem;
         display: inline-block;
         .card-body {
             .big {
                 font-size: 120%;
+                color: #555;
                 display: inline;
             }
             .medium {

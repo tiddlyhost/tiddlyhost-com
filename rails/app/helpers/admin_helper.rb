@@ -40,14 +40,14 @@ module AdminHelper
     end
   end
 
-  def card_color(title)
+  def card_color(title, value)
     case title.downcase
     when /users/, /active/
       '#ffe'
     when /tspots/
       '#efe'
     when /dupe/
-      '#fff6f2'
+      '#ffeee8' if value > 0
     when /sites/
       '#eef8ff'
     end
