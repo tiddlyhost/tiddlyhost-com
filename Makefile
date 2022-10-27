@@ -1,3 +1,4 @@
+MAKEFLAGS+=--no-print-directory
 
 # Show a list of available tasks
 _help:
@@ -14,12 +15,37 @@ _help:
 USER_ID ?= $(shell id -u)
 GROUP_ID ?= $(shell id -g)
 
+#----------------------------------------------------------
+
+# The idea here is that I want to pin the base image in Dockerfile.base
+# for reproducibility but also have an easy way to keep it updated when
+# a new version is available.
+#
+DOCKER_FILE=docker/Dockerfile.base
+RUBY_TAG=3.1-slim
+
 pull-ruby:
-	$(D) pull ruby:3.1-slim
+	$(D) pull ruby:$(RUBY_TAG)
+
+check-digest:
+	@\
+	export BASE_IMAGE_WITH_DIGEST="$$( \
+	  $(D) image inspect ruby:3.1-slim --format '{{index .RepoDigests 0}}' | sed 's/ruby@/ruby:$(RUBY_TAG)@/' )" && \
+	export REQUIRED="FROM $${BASE_IMAGE_WITH_DIGEST}" && \
+	export CURRENT=$$( grep -E '^FROM' $(DOCKER_FILE) ) && \
+	\
+	if [[ "$$REQUIRED" == "$$CURRENT" ]]; then \
+	  echo "$${CURRENT} is correct for ruby:$(RUBY_TAG)"; \
+	else \
+	  echo "Please update $(DOCKER_FILE) as follows:" && \
+	  echo "-$${CURRENT}" && \
+	  echo "+$${REQUIRED}" && \
+	  exit 1; \
+	fi
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
-build-base: cleanup pull-ruby
+build-base: cleanup pull-ruby check-digest
 	$(DC) build --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
