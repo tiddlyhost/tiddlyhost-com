@@ -45,6 +45,14 @@ stop:
 start:
 	sudo service thost start
 
+patch:
+	sudo dnf update --security
+	@echo "** Consider if a reboot is needed"
+
+update:
+	sudo dnf update
+	@echo "** Consider if a reboot is needed"
+
 showdupes:
 	$(DCC) 'bin/rails runner fixup-scripts/clean-attachment-dupes.rb'
 
