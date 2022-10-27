@@ -44,3 +44,9 @@ stop:
 
 start:
 	sudo service thost start
+
+showdupes:
+	$(DCC) 'bin/rails runner fixup-scripts/clean-attachment-dupes.rb'
+
+cleandupes:
+	$(DCC) 'env REALLY=1 bin/rails runner fixup-scripts/clean-attachment-dupes.rb'
