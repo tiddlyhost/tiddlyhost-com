@@ -15,7 +15,7 @@
       url: https://classic.tiddlywiki.com/empty.html
 
     - name: feather
-      url: https://feather.wiki/builds/FeatherWiki_Tern.html
+      url: https://feather.wiki/builds/FeatherWiki_Warbler.html
 
     empties_dir: ../rails/tw_content/empties
 

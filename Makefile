@@ -242,7 +242,7 @@ download-empties:
 # this isn't used regularly, but keep it in case I ever want to
 # build my own Feather Wiki empty for some reason.
 #
-FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Tern.html
+FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Warbler.html
 FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
 $(FEATHER_EMPTY): $(FEATHER_BUILD)
 	@mkdir -p $(EMPTY_DIR)
