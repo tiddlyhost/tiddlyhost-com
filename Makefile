@@ -136,7 +136,7 @@ db-stop:
 	$(DC) stop
 
 rstart: db-start
-	@cd rails && rails s
+	@cd rails && bundle install && rails s
 
 rtest: db-start
 	@cd rails && rails t
