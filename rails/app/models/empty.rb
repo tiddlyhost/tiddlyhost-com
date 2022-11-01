@@ -5,14 +5,14 @@ class Empty < ApplicationRecord
   scope :enabled, ->{ where(enabled: true) }
 
   def self.for_select
-    enabled.order(:id).to_a.select(&:present?)
+    enabled.order(:display_order).to_a.select(&:file_present?)
   end
 
   def th_file
     ThFile.from_empty(name)
   end
 
-  def present?
+  def file_present?
     ThFile.empty_file_present?(name)
   end
 
@@ -30,6 +30,11 @@ class Empty < ApplicationRecord
 
   def long_title
     "#{title} (#{th_file.tiddlywiki_version})#{' - Recommended' if is_default?}"
+  end
+
+  def long_tooltip
+    pretty_link_text = info_link.sub(%r{^https?://}, '').sub(%r{/$}, '')
+    %{#{tooltip} Source: <a href="#{info_link}" target="_blank">#{pretty_link_text} ⇗</a>}
   end
 
   def self.versions

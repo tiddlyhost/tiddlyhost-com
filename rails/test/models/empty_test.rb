@@ -13,11 +13,11 @@ class EmptyTest < ActiveSupport::TestCase
 
   test "empty file present" do
     empty = Empty.find_by_name('classic')
-    assert empty.present?
+    assert empty.file_present?
 
     # Since there's no foobar.html in the empties dir...
     empty.update(name: 'foobar')
-    refute empty.present?
+    refute empty.file_present?
   end
 
 end

@@ -1,0 +1,37 @@
+//
+// For showing/hiding the basic vs extended list of types when creating a site
+//
+.type-chooser {
+
+    .longer-link {
+        @extend .ps-2;
+        font-size: 75%;
+    }
+
+    > div {
+        // Extra options are not visible
+        &.longer-only {
+            display: none !important;
+        }
+    }
+
+    &.longer {
+        // Extra options are visible
+        > div {
+            &.longer-only {
+                display: block !important;
+            }
+        }
+
+        // Show more link is not visible
+        .longer-link {
+            display: none;
+        }
+    }
+}
+
+// Fixme: Doesn't really belong here
+.popover-body {
+    // Slightly less space than the defaults
+    @extend .py-2;
+}

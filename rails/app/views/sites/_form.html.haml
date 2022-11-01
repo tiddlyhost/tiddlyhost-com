@@ -12,9 +12,13 @@
               %li= message
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
-      =f.label :name, @site.new_record? ? 'Choose a name' : 'Name'
+      =f.label :name
       =f.text_field :name, class: 'form-control', maxlength: 63, autofocus: @site.new_record?
       %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
+
+    -if @site.new_record?
+      =render layout: 'field_wrapper' do
+        =render 'type_chooser', f: f
 
     =render layout: 'field_wrapper' do
       .form-check
@@ -41,22 +45,6 @@
       .form-text Optional. A comma delimited list of tags.
 
     =render layout: 'advanced_wrapper' do
-      -if @site.new_record?
-        .px-2.pt-0.pb-4
-          =f.label :empty_id, 'TiddlyWiki version'
-          =f.select(:empty_id,
-            options_from_collection_for_select(@empties_for_select, :id, :long_title, @site.empty_id || Empty.default_id),
-            {}, class: 'form-control')
-
-          .form-text.pt-2
-            =kind_link 'tw5'
-            also known as TiddlyWiki 5, is the default and the recommended choice.
-          .form-text
-            =kind_link 'classic'
-            refers to the original version of TiddlyWiki which stopped receiving updates around 2011.
-          .form-text
-            =kind_link 'feather'
-            is a simple, lightweight wiki with WYSIWYG and Markdown support.
 
       =render layout: 'field_wrapper' do
         .form-check
@@ -64,7 +52,7 @@
           =f.label :enable_put_saver, 'Enable put saver', class: 'form-check-label'
         .form-text
           Save to Tiddlyhost using the 'put' saver instead of the legacy 'upload' saver.
-          Not recommended unless you're using a TiddlyWiki 5.2.3 prerelease.
+          Not recommended unless you're using TiddlyWiki 5.2.3 or higher.
           Will be automatically checked for FeatherWiki.
 
       =render 'site_common/allow_in_iframe', f: f

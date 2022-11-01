@@ -1,0 +1,13 @@
+
+=content_tag :a,
+  role: "button",
+  tabindex: "0",
+  "data-bs-toggle" => "popover",
+  "data-bs-placement" => "right",
+  "data-bs-content" => html_content,
+  style: "cursor: help;" do
+  =bi_icon 'question-circle',
+    width: "0.9em",
+    height: "0.9em",
+    fill: "#999",
+    style: "display: inline; margin-left: 0.2em;"

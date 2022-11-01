@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_17_185011) do
+ActiveRecord::Schema.define(version: 2022_11_03_223233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,10 @@ ActiveRecord::Schema.define(version: 2022_05_17_185011) do
     t.string "title"
     t.string "description"
     t.boolean "enabled"
+    t.integer "display_order", default: 100
+    t.boolean "primary", default: false
+    t.string "info_link"
+    t.string "tooltip"
   end
 
   create_table "pay_charges", force: :cascade do |t|

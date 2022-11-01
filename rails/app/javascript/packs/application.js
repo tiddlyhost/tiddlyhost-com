@@ -54,7 +54,6 @@ $(document).ready(function(){
     $('#upload-submit').prop('value', 'Upload file \"' + fileName + '\"').show();
   });
 
-
   // Trick to set cursor position to the end of the text in the search box
   $("#search_box").each(function(){
     var search_box = $(this);
@@ -62,5 +61,28 @@ $(document).ready(function(){
     search_box.val('');
     search_box.val(orig_text);
   })
+
+  // Highlight the selected radio button by adding the selected class to
+  // its parent div and removing it from the other options' parent divs.
+  // See also _nice_radio.scss.
+  //
+  $('.nice-radio-container input:radio').on('click', function(){
+    $(this).closest('.nice-radio-container').find('> div').removeClass('selected');
+    $(this).closest('div').addClass('selected');
+  });
+
+  // For the "More options" link when creating a site.
+  // See also the type_chooser scss and partial.
+  //
+  $('.longer-link').on('click', function(e){
+    $('.type-chooser').toggleClass('longer');
+    e.preventDefault();
+  });
+
+  // Enable boostrap popovers
+  //
+  $('.enable-tooltips a[data-bs-toggle="popover"]').
+    on('click', function(e){ e.preventDefault(); }).
+    popover({ "trigger":"focus", "html":true });
 
 });
