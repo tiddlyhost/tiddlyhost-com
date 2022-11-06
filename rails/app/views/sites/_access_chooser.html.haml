@@ -1,0 +1,45 @@
+.nice-radio-container.access-chooser.enable-tooltips
+
+  =f.label nil do
+    Access
+
+  -%w[ public private hub_listed ].each do |choice|
+    -is_selected = @site.send("access_#{choice}?")
+
+    %div{class: ('selected' if is_selected)}
+      =label_tag do
+        =radio_button_tag "_access_choice", choice, is_selected, class: 'me-1', style: "margin-left: -0.3em;"
+
+        .title
+          =access_icon(choice, style: "margin-right: 0;")
+          =choice.humanize
+
+        -case choice when "public"
+          =render 'popover_help',
+            html_content: "Best for content you'd like to be able to share with others."
+          .description
+            Your site will be accessible on the internet and viewable by anyone
+
+        -when "private"
+          =render 'popover_help',
+            html_content: "Best for private notes and content that you don't want to be visible on the internet."
+          .description
+            -if controller_name == "tspot_sites"
+              Your site will require a password to access
+            -else
+              Your site will be accessible to you only
+
+        -when "hub_listed"
+          =render 'popover_help',
+            html_content: "Best for showcasing interesting, well maintained sites for people to discover. Note that the name, description and tags will be searchable in the Tiddlyhost Hub."
+          .description
+            Your site will be accessible on the internet and also be listed and searchable in the
+            =link_to('Tiddlyhost Hub', '/hub', target: "_blank")
+
+  -#
+  -# "_access_choice" is not a real attribute of the site record but these
+  -# two are. There is some javascript in application.js that sets these
+  -# when the user clicks one of the _access_choice options above.
+  -#
+  =f.hidden_field :is_private
+  =f.hidden_field :is_searchable

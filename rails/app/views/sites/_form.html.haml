@@ -21,28 +21,17 @@
         =render 'type_chooser', f: f
 
     =render layout: 'field_wrapper' do
-      .form-check
-        =f.check_box :is_private, class: 'form-check-input private-checkbox'
-        =f.label :is_private, 'Private', class: 'form-check-label'
-      .form-text
-        Make the site private, rather than publicly viewable.
-
-    =render layout: 'field_wrapper' do
-      .form-check
-        =f.check_box :is_searchable, class: 'form-check-input hub-checkbox'
-        =f.label :is_searchable, 'Hub listed', class: 'form-check-label'
-      .form-text
-        Include this site in the #{link_to 'Tiddlyhost Hub', '/hub', target: '_blank'}.
+      =render 'access_chooser', f: f
 
     =render layout: 'field_wrapper' do
       =f.label :description
       =f.text_area :description, class: 'form-control'
-      .form-text Optional. A short description of the site.
+      .form-text Optional. A short description of the site, visible in Tiddlyhost Hub for hub listed sites.
 
     =render layout: 'field_wrapper' do
       =f.label :tag_list, 'Tags'
       =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
-      .form-text Optional. A comma delimited list of tags.
+      .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
 
     =render layout: 'advanced_wrapper' do
 

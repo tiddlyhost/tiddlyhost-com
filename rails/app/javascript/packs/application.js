@@ -79,6 +79,16 @@ $(document).ready(function(){
     e.preventDefault();
   });
 
+  // For the access choice radio buttons on the site form.
+  // Set the hidden "real" boolean fields based on which one is clicked.
+  // We're expecting one of "public", "private" and "hub_listed".
+  //
+  $('input:radio[name="_access_choice"]').on('change', function(){
+    var choice = $(this).val();
+    $("input#site_is_private, input#tspot_site_is_private").val(choice == "private");
+    $("input#site_is_searchable, input#tspot_site_is_searchable").val(choice == "hub_listed");
+  })
+
   // Enable boostrap popovers
   //
   $('.enable-tooltips a[data-bs-toggle="popover"]').

@@ -205,4 +205,18 @@ module SiteCommon
     URI(url).hostname
   end
 
+  # Three methods used in app/views/sites/_access_chooser
+  #
+  def access_public?
+    is_public? && !hub_listed?
+  end
+
+  def access_private?
+    is_private?
+  end
+
+  def access_hub_listed?
+    hub_listed?
+  end
+
 end

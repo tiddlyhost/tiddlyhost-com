@@ -27,12 +27,30 @@ module SitesHelper
   end
 
   def site_access(site)
-    if site.is_searchable? && site.is_public?
-      bi_icon('search-heart', fill: '#6c757d') + 'Hub listed'
-    elsif site.is_public?
-      bi_icon('eye', fill: '#6c757d') + 'Public'
-    else site.is_private?
-      bi_icon('eye-slash', fill: '#6c757d') + 'Private'
+    access_type = if site.access_hub_listed?
+      "hub_listed"
+    elsif site.access_public?
+      "public"
+    else site.access_private?
+      "private"
+    end
+
+    access_icon(access_type) + access_type.humanize
+  end
+
+  def access_icon(access_type, opts={})
+    opts = {
+      fill: '#6c757d',
+      height: '0.95em',
+      width: '0.95em',
+    }.merge(opts)
+
+    case access_type when "hub_listed"
+      bi_icon('search-heart', opts)
+    when "public"
+      bi_icon('eye', opts)
+    when "private"
+      bi_icon('eye-slash', opts)
     end
   end
 
