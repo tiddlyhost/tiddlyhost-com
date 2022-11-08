@@ -37,8 +37,16 @@ module SiteCommon
     scope :owned_by, ->(user) { where(user_id: user.id) }
 
     scope :search_for, ->(search_text) {
-      where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
-      or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)) }
+          where("#{table_name}.name        ILIKE CONCAT('%',?,'%')", search_text).
+      or( where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text) ).
+      or( search_tags(search_text) )
+    }
+
+    scope :search_tags, ->(search_text) {
+      search_words = search_text.split(/\s+/)
+      ids = tagged_with(search_words, any: true).pluck(:id)
+      where("#{table_name}.id" => ids)
+    }
 
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
 
