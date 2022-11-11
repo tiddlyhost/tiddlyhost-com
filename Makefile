@@ -139,7 +139,7 @@ rstart: db-start
 	@cd rails && bundle install && rails s
 
 rtest: db-start
-	@cd rails && rails t
+	@cd rails && bundle install && rails t
 
 #----------------------------------------------------------
 
