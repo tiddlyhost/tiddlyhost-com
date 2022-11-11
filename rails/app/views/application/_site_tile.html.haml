@@ -3,11 +3,11 @@
 .site{id: site.name}
   -if site.thumbnail.present?
     .thumb-container
-      =link_to site.url, target: '_blank' do
+      =link_to site.url, target: site.long_name do
         =image_tag rails_storage_proxy_path(site.thumbnail)
 
   .name{title: site.long_name}
-    =site_link site
+    =site_link site, target: site.long_name
 
   -if mode == "home"
     -# Show the actions menu

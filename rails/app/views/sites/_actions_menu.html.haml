@@ -7,11 +7,11 @@
     -if is_tspot
       =link_to(edit_tspot_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
       =link_to(download_tspot_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
-      =link_to(site.url, class: 'btn btn-light', target: '_blank', title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+      =link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
     -else
       =link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
       =link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
-      =link_to(site.url, class: 'btn btn-light', target: '_blank', title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+      =link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
 
   %button.btn.btn-light(type="button" data-bs-toggle="dropdown"
     aria-haspopup="true" aria-expanded="false"
@@ -29,7 +29,7 @@
           data: { confirm: "The thumbnail may take some time to generate. Click OK then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
 
       =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
-      =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
+      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
       .dropdown-divider
       =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
       .dropdown-divider
@@ -46,7 +46,7 @@
           data: { confirm: "The thumbnail may take some time to generate. Click okay then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
 
       =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
-      =link_to(site.url, class: 'dropdown-item', target: '_blank') { bi_icon('box-arrow-up-right') + 'View' }
+      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
       .dropdown-divider
       =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
       .dropdown-divider
