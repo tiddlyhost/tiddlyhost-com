@@ -6,6 +6,11 @@ class Site < ApplicationRecord
   # user may have uploaded a different type of TiddlyWiki.)
   belongs_to :empty
 
+  # Will be set if the site was created as a clone of another site
+  # (Beware the original site might have been deleted, so the association
+  # could return nil even if the id field is present.)
+  belongs_to :cloned_from, optional: true, class_name: :Site
+
   # The timestamps can be a few milliseconds apart, so that's why we need the interval
   # Todo: blob_created_at would be a more useful timestamp to use here than updated_at.
   scope :never_updated,         -> { where("AGE(sites.updated_at, sites.created_at) <= INTERVAL '0.5 SECOND'") }

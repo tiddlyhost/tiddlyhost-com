@@ -6,6 +6,7 @@
     -unless params[:kind]
       %th= sort_link 'Kind'
     %th= sort_link 'Empty'
+    %th= sort_link 'Clone'
     %th= sort_link 'Version'
     %th= sort_link 'Description', :asc
     -unless params[:private]
@@ -34,6 +35,7 @@
       -unless params[:kind]
         %td= site.tw_kind
       %td= site.empty.name
+      %td= site.cloned_from ? admin_site_link(site.cloned_from) : site.cloned_from_id
       %td= site.tw_version
       %td.nowrap.text-truncated{style: 'max-width: 8em;'}
         =span_with_title site.description

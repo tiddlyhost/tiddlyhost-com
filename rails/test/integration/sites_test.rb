@@ -88,6 +88,28 @@ class SitesTest < CapybaraIntegrationTest
     # * Test coverage for saving a site with invalid content.
   end
 
+  test "cloning form" do
+    visit new_site_path(clone: 'mysite')
+    assert_selector 'h2', text: "Clone site"
+    assert_selector 'label', text: "Cloning from"
+    assert_selector 'b', text: "mysite"
+    assert_no_selector 'label[for="site_empty_id_1"]'
+    # See also test/controllers/sites_controller_test.rb for
+    # some coverage of the submit
+
+    # When the clone isn't found
+    visit new_site_path(clone: 'notmysite')
+    assert_selector 'h2', text: "Create site"
+    assert_selector 'label', text: "Type"
+    assert_selector 'label[for="site_empty_id_1"]'
+
+    # ..which is the same as regular create
+    visit new_site_path
+    assert_selector 'h2', text: "Create site"
+    assert_selector 'label', text: "Type"
+    assert_selector 'label[for="site_empty_id_1"]'
+  end
+
   test "non-existent sites" do
     non_existent_site = 'http://bbar.example.com/'
 

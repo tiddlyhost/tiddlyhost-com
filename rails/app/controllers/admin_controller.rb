@@ -45,6 +45,7 @@ class AdminController < ApplicationController
   SORT_OPTIONS = {
     accesses: 'access_count',
     blobmb: 'active_storage_blobs.byte_size',
+    clone: 'cloned_from_id',
     created: 'created_at',
     createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',
@@ -80,6 +81,7 @@ class AdminController < ApplicationController
     owner
     version
     kind
+    clone
   ].freeze
 
   FILTER_PARAMS = {

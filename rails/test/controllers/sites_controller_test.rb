@@ -16,12 +16,47 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create site" do
+  test "should create and also clone site" do
     assert_difference('Site.count') do
       post sites_url, params: { site: { name: 'foo', is_private: "0", empty_id: 1 } }
+      assert_redirected_to sites_url
     end
 
-    assert_redirected_to sites_url
+    # Smoke test
+    new_site = Site.find_by_name('foo')
+    assert_equal new_site, Site.last
+    assert_match "Copyright (c) 2004-2007, Jeremy Ruston", new_site.file_download[0..2000]
+    assert new_site.is_public?
+    assert_equal 1, new_site.empty_id
+
+    # Tweak the content so we can check the clone really happen
+    new_site.content_upload(new_site.file_download.gsub("Jeremy", "Jermolene"))
+
+    assert_difference('Site.count') do
+      post sites_url, params: { clone: new_site.name, site: { name: 'bar', is_private: "0", empty_id: 1 } }
+      assert_redirected_to sites_url
+    end
+
+    cloned_site = Site.find_by_name('bar')
+    assert_equal new_site, cloned_site.cloned_from
+    assert new_site.is_public?
+
+    # Confirm the content came from the site that was cloned
+    assert_match "Copyright (c) 2004-2007, Jermolene Ruston", cloned_site.file_download[0..2000]
+
+    # See also test/integration/sites_test.rb
+  end
+
+  test "cant clone someone elses site" do
+    sign_in users(:mary)
+    assert_no_difference('Site.count') do
+      e = assert_raises(ActiveRecord::RecordNotFound) do
+        # 'mysite' is owned by bobby
+        post sites_url, params: { clone: 'mysite', site: { name: 'bar', is_private: "0" } }
+      end
+      # Todo maybe: Could give a more specific error message on bogus clone attempts
+      assert_equal "Couldn't find Empty without an ID", e.to_s
+    end
   end
 
   test "should show site" do

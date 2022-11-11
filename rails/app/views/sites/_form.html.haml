@@ -18,7 +18,18 @@
 
     -if @site.new_record?
       =render layout: 'field_wrapper' do
-        =render 'type_chooser', f: f
+        -if @site_to_clone
+          -# Show details about the site being cloned
+          =f.label nil, "Cloning from"
+          =render 'site_tile_clone', site: @site_to_clone
+          -# Pass the value through
+          =hidden_field_tag(:clone, @site_to_clone.name)
+          -# Copy the empty id too, which is innaccurate but preferrable to leaving it blank
+          =f.hidden_field(:empty_id, value: @site_to_clone.empty_id)
+
+        -else
+          -# Show list of empties to choose from
+          =render 'type_chooser', f: f
 
     =render layout: 'field_wrapper' do
       =render 'access_chooser', f: f

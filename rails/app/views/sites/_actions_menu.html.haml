@@ -48,6 +48,7 @@
       =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
       =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
       .dropdown-divider
+      =link_to(new_site_path(clone: site.name), class: 'dropdown-item') { bi_icon('files') + 'Clone' }
       =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
       .dropdown-divider
       =link_to(site, method: :delete, class: 'dropdown-item',

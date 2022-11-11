@@ -3,6 +3,7 @@ class SitesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_site, except: [:index, :new, :create, :view_toggle]
   before_action :set_empties_list, only: [:new, :create]
+  before_action :set_site_to_clone, only: [:new, :create]
 
   include SortAndFilterLinkHelper
 
@@ -89,10 +90,16 @@ class SitesController < ApplicationController
   # POST /sites
   # POST /sites.json
   def create
-    @empty = Empty.find(site_params_for_create[:empty_id])
+    if @site_to_clone
+      initial_content = @site_to_clone.file_download
+    else
+      empty = Empty.find(site_params_for_create[:empty_id])
+      initial_content = empty.html
+    end
 
-    @site = Site.new(
-      site_params_for_create.merge(SiteCommon.attachment_params(@empty.html)))
+    @site = Site.new(site_params_for_create.merge(
+      SiteCommon.attachment_params(initial_content)).merge(
+        {cloned_from_id: @site_to_clone&.id}))
 
     respond_to do |format|
       if @site.save
@@ -179,5 +186,13 @@ class SitesController < ApplicationController
       require(:site).
       permit(:tiddlywiki_file).
       merge(SiteCommon.attachment_params(new_content))
+  end
+
+  # Sets @site_to_clone which will be nil if there's no clone param or if the
+  # site to clone from isn't found. Note you can only clone your own site.
+  #
+  def set_site_to_clone
+    site_to_clone_name = params.permit(:clone)[:clone]
+    @site_to_clone = current_user.sites.find_by_name(site_to_clone_name) if site_to_clone_name.present?
   end
 end
