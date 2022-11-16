@@ -1,9 +1,16 @@
 
 =render layout: 'field_wrapper' do
-  .form-check
+  .form-check.enable-tooltips
     =f.check_box :allow_in_iframe, class: 'form-check-input'
-    =f.label :allow_in_iframe, 'Allow inside an iframe', class: 'form-check-label'
-  .form-text
-    Removes the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options"
-    style="text-decoration: none;" target="_blank">X-Frame-Options header</a>.
-    It's safer to leave this unchecked unless you particularly need it.
+
+    =f.label :allow_in_iframe, class: 'form-check-label' do
+      Allow site to be loaded inside an iframe
+
+      =render 'popover_help',
+        html_content: ' |
+          When this is set the default <a |
+          href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options" |
+          target="_blank">X-Frame-Options</a> deny header will be suppressed. |
+          Beware that sites loaded inside iframes may be vulnerable to |
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Clickjacking">click-jacking</a> |
+          attacks.' |
