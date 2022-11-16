@@ -33,6 +33,9 @@ dlog:
 dlogf:
 	$(DC) logs -f
 
+dwatch:
+	@sudo watch -n1 docker ps -a
+
 status:
 	sudo service thost status
 
