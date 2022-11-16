@@ -163,12 +163,6 @@ module SiteCommon
     SiteCommon::KIND_LOGOS[tw_kind] if tw_kind
   end
 
-  # FeatherWiki sites should always use the put saver
-  #
-  def enable_put_saver?
-    is_feather? || super
-  end
-
   def is_compressed?
     blob_content_type == COMPRESSED_CONTENT_TYPE
   end

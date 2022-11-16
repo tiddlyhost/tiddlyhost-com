@@ -45,17 +45,8 @@
       .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
 
     =render layout: 'advanced_wrapper' do
-
-      =render layout: 'field_wrapper' do
-        .form-check
-          =f.check_box :enable_put_saver, class: 'form-check-input', checked: @site.enable_put_saver?, disabled: @site.is_feather?
-          =f.label :enable_put_saver, 'Enable put saver', class: 'form-check-label'
-        .form-text
-          Save to Tiddlyhost using the 'put' saver instead of the legacy 'upload' saver.
-          Not recommended unless you're using TiddlyWiki 5.2.3 or higher.
-          Will be automatically checked for FeatherWiki.
-
       =render 'site_common/allow_in_iframe', f: f
+      =render 'save_method_prefs', f: f
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       =f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'

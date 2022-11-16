@@ -170,14 +170,14 @@ class SitesController < ApplicationController
   def site_params_for_create
     params.
       require(:site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :enable_put_saver, :empty_id).
+      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :prefer_put_saver, :prefer_upload_saver, :empty_id).
       merge(user_id: current_user.id)
   end
 
   def site_params_for_update
     params.
       require(:site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :enable_put_saver)
+      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :prefer_put_saver, :prefer_upload_saver)
   end
 
   def site_params_for_upload

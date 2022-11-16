@@ -38,10 +38,10 @@ class ThFile < TwFile
     from_file(empty_path(empty_type))
   end
 
-  def apply_tiddlyhost_mods(site_name, for_download: false, enable_put_saver: false, signed_in_user: nil)
+  def apply_tiddlyhost_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
     if is_tw5?
 
-      upload_url = if for_download || enable_put_saver
+      upload_url = if for_download || use_put_saver
         # Clear $:/UploadURL for downloads so the save button in the downloaded
         # file will not try to use upload.js. It should use another save
         # method, probably download to file.

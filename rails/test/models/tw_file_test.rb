@@ -62,7 +62,7 @@ class TwFileTest < ActiveSupport::TestCase
       assert_nil tw.get_site_name
     end
 
-    ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite', enable_put_saver: true).tap do |tw|
+    ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite', use_put_saver: true).tap do |tw|
       {
         '$:/UploadURL' => '',
         '$:/UploadWithUrlOnly' => 'yes',

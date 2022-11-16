@@ -138,6 +138,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       site = new_site_helper(name: site_name, user: site_user,
         tiddlers: site_tiddlers, empty_content: File.read(empty_file))
 
+      # Todo: clean this up
+      site.update(prefer_put_saver: false, prefer_upload_saver: true)
+
       # So we can compare them later after the save happened
       original_blob_key = site.blob.key
       original_size = site.raw_byte_size
@@ -177,7 +180,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         # Same thing again but using the put saver
         # (compatible with TW5 only)
 
-        site.update(enable_put_saver: true)
+        site.update(prefer_put_saver: true, prefer_upload_saver: false)
         prev_blob_key = site.blob.key
 
         new_content = site.th_file.
@@ -208,6 +211,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "upload save requires auth" do
+    @site.update(prefer_upload_saver: true)
+    refute @site.use_put_saver?
+
     new_content = @site.th_file.
       write_tiddlers({'NewTiddler'=>'Hi'}).to_html
 
@@ -223,10 +229,11 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "put save with etag check" do
+    assert @site.use_put_saver?
+
     new_content = @site.th_file.
       write_tiddlers({'NewTiddler'=>'Hi'}).to_html
 
-    @site.update(enable_put_saver: true)
     fetch_site_as_user
     etag = response.headers['ETag']
     assert_equal etag, @site.tw_etag
@@ -239,9 +246,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "put save will not overwrite" do
+    assert @site.use_put_saver?
     new_content = @site.th_file.
       write_tiddlers({'NewTiddler'=>'Hi'}).to_html
-    @site.update(enable_put_saver: true)
     put_save_site_as_user(user: @site.user, site: @site, content: new_content,
       headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
     assert_equal(
@@ -251,9 +258,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "put save requires auth" do
+    assert @site.use_put_saver?
     new_content = @site.th_file.
       write_tiddlers({'NewTiddler'=>'Hi'}).to_html
-    @site.update(enable_put_saver: true)
     put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
       headers: { 'If-Match' => 'whatever' }, expected_status: 403)
     assert_equal(
@@ -276,7 +283,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       th_file = ThFile.new(response.body)
 
       # Sanity checks
-      if site.enable_put_saver?
+      if site.use_put_saver?
         # Fixme: get_site_name can't work because $:/UploadURL isn't set
         #assert_equal site.name, th_file.get_site_name
         assert_equal '', th_file.tiddler_content('$:/UploadURL') if th_file.is_tw5?

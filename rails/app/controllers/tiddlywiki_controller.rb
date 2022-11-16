@@ -21,7 +21,7 @@ class TiddlywikiController < ApplicationController
     return site_not_available unless site_visible?
 
     # Convince TiddlyWiki it can use the put saver
-    dummy_webdav_header if request.options? && @site.enable_put_saver?
+    dummy_webdav_header if request.options? && @site.use_put_saver?
 
     etag_header
 

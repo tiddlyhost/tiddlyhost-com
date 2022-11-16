@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_11_180352) do
+ActiveRecord::Schema.define(version: 2022_11_16_150741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,9 +152,10 @@ ActiveRecord::Schema.define(version: 2022_11_11_180352) do
     t.integer "raw_byte_size"
     t.string "tw_version"
     t.boolean "allow_in_iframe", default: false
-    t.boolean "enable_put_saver", default: false
+    t.boolean "prefer_put_saver", default: false
     t.string "tw_kind"
     t.bigint "cloned_from_id"
+    t.boolean "prefer_upload_saver", default: false
     t.index ["cloned_from_id"], name: "index_sites_on_cloned_from_id"
     t.index ["empty_id"], name: "index_sites_on_empty_id"
     t.index ["name"], name: "index_sites_on_name", unique: true

@@ -133,7 +133,8 @@ class TspotSite < ApplicationRecord
     end
   end
 
-  def show_advanced_settings?
+  # True if any non-default advanced settings are present
+  def has_advanced_settings?
     return true if allow_in_iframe?
     false
   end

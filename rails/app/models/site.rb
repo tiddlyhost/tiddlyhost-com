@@ -62,7 +62,7 @@ class Site < ApplicationRecord
 
   def html_content(signed_in_user: nil)
     th_file.apply_tiddlyhost_mods(name,
-      signed_in_user: signed_in_user, enable_put_saver: enable_put_saver).to_html
+      signed_in_user: signed_in_user, use_put_saver: use_put_saver?).to_html
   end
 
   def json_data(opts={})
@@ -79,9 +79,35 @@ class Site < ApplicationRecord
     th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
   end
 
-  def show_advanced_settings?
-    return true if new_record? && empty_id && empty_id != Empty.default_id
-    return true if enable_put_saver? && !is_feather?
+  def use_put_saver?
+    # Feather wiki always uses put saver
+    return true if is_feather?
+
+    # Classic always uses upload saver
+    return false if is_classic?
+
+    # Use any user specified preferences from the site's advanced options
+    return false if prefer_upload_saver?
+    return true if prefer_put_saver?
+
+    # Otherwise use whatever the default is based on the version
+    default_to_put_saver?
+  end
+
+  # Any TiddlyWiki5 should work with the put saver, but there are some error
+  # message improvements in 5.2.3 that provide a marginally better UX when the
+  # save fails, so let's use the put saver by default from that version onwards
+  # and stick with the legacy upload saver for earler versions
+  DEFAULT_TO_PUT_SAVER_FROM_VERSION = "5.2.3".freeze
+
+  def default_to_put_saver?
+    # Use Gem::Version here to handle the comparison properly, e.g. so "5.10" > "5.9"
+    Gem::Version.new(tw_version) >= Gem::Version.new(DEFAULT_TO_PUT_SAVER_FROM_VERSION)
+  end
+
+  # True if any non-default advanced settings are present
+  def has_advanced_settings?
+    return true if is_tw5? && use_put_saver? != default_to_put_saver?
     return true if allow_in_iframe?
     false
   end
