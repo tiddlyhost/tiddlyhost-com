@@ -32,6 +32,9 @@
 
 // Fixme: Doesn't really belong here
 .popover-body {
-    // Slightly less space than the defaults
-    @extend .py-2;
+    // A little extra padding plus a shadow
+    @extend .px-4;
+    @extend .shadow;
+    // Fix square corners that become visible with the shadow
+    border-radius: 0.5rem;
 }
