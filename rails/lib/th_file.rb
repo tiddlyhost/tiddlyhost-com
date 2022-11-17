@@ -53,6 +53,7 @@ class ThFile < TwFile
         ""
       else
         # The url for uploads is the same as the site url
+        # Todo: Actually using just "/" would work just as well here I think
         Settings.subdomain_site_url(site_name)
       end
 
