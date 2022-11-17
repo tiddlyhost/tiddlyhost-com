@@ -3,11 +3,11 @@
   role: "button",
   tabindex: "0",
   "data-bs-toggle" => "popover",
-  "data-bs-placement" => "right",
+  "data-bs-placement" => local_assigns[:placement] || "right",
   "data-bs-content" => html_content,
   style: "cursor: help;" do
   =bi_icon 'question-circle',
-    width: "0.9em",
-    height: "0.9em",
-    fill: "#999",
+    width: local_assigns[:size] || "0.9em",
+    height: local_assigns[:size] || "0.9em",
+    fill: local_assigns[:fill] || "#999",
     style: "display: inline; margin-left: 0.2em;"

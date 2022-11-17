@@ -1,3 +1,4 @@
+-thing = @show_templates ? "Template" : "Site"
 
 %h1
   -if @tag.present?
@@ -10,22 +11,43 @@
   -else
     Tiddlyhost Hub
 
+  .ps-2.form-switch.text-muted.enable-tooltips{style: "font-size: 0.875rem; display: inline-block;"}
+    %label
+      -# The switch styled checkbox here is cosmetic only, it's behaving as link
+      -# Todo: Should be able to style a normal link to look the same and ditch the actual checkbox
+      <input class="form-check-input" type="checkbox" role="switch" #{@show_templates ? "checked" : ""}
+      style="margin-left: 0px; margin-bottom: 0.5em; margin-right: 0.1em; vertical-align: middle; width: 1.5em;"
+      onclick="window.location.href = '#{url_for(sort_filter_url(:t, @show_templates ? nil : '1'))}';">
+      Templates only
+    =render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
+      html_content: ' |
+        Templates are customized "empties" created by Tiddlyhost users |
+        and shared for use by others. They may contain general purpose enhancements and |
+        customizations or they may be designed for a particular specialized |
+        purpose.' |
+
+%p.small
+  -if @show_templates
+    Create a site using a template by clicking the clone button.
+  -else
+    Discover content created and shared by Tiddlyhost users.
+
 %p.text-muted{style: 'font-size: 95%'}
   -if @tag.present?
-    Sites tagged with
+    #{thing}s tagged with
     %b= @tag + '.'
   -elsif @user.present?
-    Sites created by Tiddlyhost user
+    #{thing}s created by Tiddlyhost user
     %b= @user.username + '.'
 
 %div{style: "margin-bottom: 2em;"}
   %ul.nav.nav-tabs
-    =hub_link_to('All sites', hub_all_url)
+    =hub_link_to("All #{thing.downcase}s", hub_all_url)
     -@tag_tabs.each do |tag|
       =hub_tag_link_to(tag)
 
 .page_info.text-muted
-  =page_entries_info(@sites, model: Site)
+  =page_entries_info(@sites, model: thing)
   ="tagged with #{@tag}" if @tag.present?
   ="matching '#{search_text}'" if search_text
 

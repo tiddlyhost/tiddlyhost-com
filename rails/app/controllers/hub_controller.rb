@@ -1,6 +1,8 @@
 class HubController < ApplicationController
   PER_PAGE = 18
 
+  before_action :set_show_templates
+
   def index
     render_hub
   end
@@ -23,9 +25,11 @@ class HubController < ApplicationController
   include SortAndFilterLinkHelper
 
   FILTER_PARAMS = {
-    q: {
-      # Searching is handled in HubQuery
-    }
+    # The hub filtering logic is done manually not by SortAndFilterLinkHelper
+    # so that's why these are empty. We just need the keys to exist so the link
+    # helpers can see them.
+    q: {}, # text search
+    t: {}, # template filter
   }.freeze
 
   # We don't do asc/desc sorting for the hub
@@ -55,12 +59,17 @@ class HubController < ApplicationController
       page: params[:page],
       per_page: PER_PAGE,
       sort_by: sort_opt[:field],
+      templates_only: @show_templates,
       tag: @tag,
       user: @user,
       search: search_text)
 
     # Render
     render action: :index
+  end
+
+  def set_show_templates
+    @show_templates = params[:t] == '1'
   end
 
 end

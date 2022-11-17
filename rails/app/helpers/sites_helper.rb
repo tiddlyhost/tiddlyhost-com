@@ -55,19 +55,21 @@ module SitesHelper
   end
 
   def hub_all_url
-    add_sort_param_maybe("/hub")
+    add_sort_and_template_params_maybe("/hub")
   end
 
   def hub_tag_url(tag_name)
-    add_sort_param_maybe("/hub/tag/#{ERB::Util.url_encode(tag_name)}")
+    add_sort_and_template_params_maybe("/hub/tag/#{ERB::Util.url_encode(tag_name)}")
   end
 
   def hub_user_url(username)
-    add_sort_param_maybe("/hub/user/#{ERB::Util.url_encode(username)}")
+    add_sort_and_template_params_maybe("/hub/user/#{ERB::Util.url_encode(username)}")
   end
 
-  def add_sort_param_maybe(url)
-    url += "?#{{ s: params[:s] }.to_query}" if controller_name == 'hub' && params[:s]
+  # Todo: Could this be replaced by something in SortAndFilterLinkHelper?
+  def add_sort_and_template_params_maybe(url)
+    sort_and_template_params = params.permit(:s, :t)
+    url += "?#{sort_and_template_params.to_query}" if sort_and_template_params.present?
     url
   end
 

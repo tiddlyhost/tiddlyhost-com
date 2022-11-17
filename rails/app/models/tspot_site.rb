@@ -21,6 +21,9 @@ class TspotSite < ApplicationRecord
   scope :owned, -> { where.not(user_id: nil) }
   scope :for_hub, -> { searchable.owned }
 
+  # No tspot sites can be templates
+  scope :templates_only, -> { where("1 = 2") }
+
   scope :no_stubs, -> { where.not(htpasswd: nil) }
   scope :stubs, -> { where(htpasswd: nil) }
 
@@ -131,6 +134,14 @@ class TspotSite < ApplicationRecord
       update(password_digest: original_digest)
       raise
     end
+  end
+
+  def clonable_by_user?(_)
+    false
+  end
+
+  def cloneable_by_public?
+    false
   end
 
   # True if any non-default advanced settings are present

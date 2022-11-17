@@ -24,6 +24,18 @@
           %span.mx-1.text-muted!= "&centerdot;"
           !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
 
+  -if mode == "hub"
+    -if site.cloneable_by_public?
+      -# Show a clone button
+      .float-end.enable-tooltips
+        =link_to(new_site_path(clone: site.name),
+          "data-bs-toggle"=>"tooltip",
+          "data-bs-placement"=>"right",
+          class: 'btn btn-sm btn-light', style: 'border-style: none;',
+          title: 'Create a new site using this template') do
+          =bi_icon('files', height: '1.2em', fill: '#777')
+          %div{style: "font-size: 55%; margin-top: -1px;"}Clone
+
   .description
     =span_with_title_truncated(site.description)
 

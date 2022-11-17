@@ -32,6 +32,8 @@
 
         %td.small.smaller
           =site_access(site)
+          -if site.cloneable_by_public?
+            (template)
 
         %td.small.smaller
           .views

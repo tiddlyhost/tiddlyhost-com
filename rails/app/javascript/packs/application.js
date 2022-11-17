@@ -89,10 +89,12 @@ $(document).ready(function(){
     $("input#site_is_searchable, input#tspot_site_is_searchable").val(choice == "hub_listed");
   })
 
-  // Enable boostrap popovers
+  // Enable boostrap popovers and tooltips
   //
   $('.enable-tooltips a[data-bs-toggle="popover"]').
     on('click', function(e){ e.preventDefault(); }).
     popover({ "trigger":"focus", "html":true });
+
+  $('.enable-tooltips a[data-bs-toggle="tooltip"]').tooltip();
 
 });

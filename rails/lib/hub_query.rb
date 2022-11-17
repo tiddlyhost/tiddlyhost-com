@@ -21,17 +21,18 @@ module HubQuery
       ])
   end
 
-  def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:, for_hub: true, extra_fields_in_select: [])
+  def self.paginated_sites(page:, per_page:, sort_by:, templates_only: false, tag:, user:, search:, for_hub: true, extra_fields_in_select: [])
     # Work with two separate queries
     qs = [
       Site.with_blob.select(
-        "'Site' AS type", :id, :name, :view_count, :created_at,
+        "'Site' AS type", :id, :name, :view_count, :created_at, :allow_public_clone,
         "active_storage_blobs.created_at AS blob_created_at",
         "RANDOM() as rand_sort",
         *extra_fields_in_select),
 
       TspotSite.with_blob.select(
         "'TspotSite' AS type", :id, :name, "access_count AS view_count", "NULL AS created_at",
+        "false as allow_public_clone",
         "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
         "RANDOM() as rand_sort",
         *extra_fields_in_select),
@@ -39,6 +40,7 @@ module HubQuery
 
     # Apply filters
     qs.map! { |q| q.for_hub } if for_hub
+    qs.map! { |q| q.templates_only } if templates_only
     qs.map! { |q| q.tagged_with(tag) } if tag.present?
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
     qs.map! { |q| q.search_for(search) } if search.present?

@@ -18,6 +18,8 @@ class Site < ApplicationRecord
 
   scope :for_hub, -> { searchable.updated_at_least_once }
 
+  scope :templates_only, -> { where(is_private: false, allow_public_clone: true) }
+
   validates :name,
     presence: true,
     uniqueness: true,
@@ -94,6 +96,18 @@ class Site < ApplicationRecord
     default_to_put_saver?
   end
 
+  def cloneable_by_user?(some_user)
+    # You can always clone your own site
+    return true if some_user && some_user == self.user
+
+    # You can clone a publicly cloneable site
+    is_public? && allow_public_clone?
+  end
+
+  def cloneable_by_public?
+    cloneable_by_user?(nil)
+  end
+
   # Any TiddlyWiki5 should work with the put saver, but there are some error
   # message improvements in 5.2.3 that provide a marginally better UX when the
   # save fails, so let's use the put saver by default from that version onwards
@@ -108,6 +122,7 @@ class Site < ApplicationRecord
   # True if any non-default advanced settings are present
   def has_advanced_settings?
     return true if is_tw5? && use_put_saver? != default_to_put_saver?
+    return true if allow_public_clone?
     return true if allow_in_iframe?
     false
   end

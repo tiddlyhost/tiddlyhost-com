@@ -43,6 +43,7 @@
       .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
 
     =render layout: 'advanced_wrapper' do
+      =render 'public_clone', f: f
       =render 'site_common/allow_in_iframe', f: f
       =render 'save_method_prefs', f: f
 

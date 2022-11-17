@@ -13,6 +13,8 @@
       %th= sort_link 'Private?'
     -unless params[:hub]
       %th= sort_link 'Hub?'
+    -unless params[:template]
+      %th= sort_link 'Template?'
     %th= sort_link 'IFrames?'
     %th= sort_link 'Put?'
     %th= sort_link 'Upload?'
@@ -44,6 +46,8 @@
         %td= bool_text site.is_private?
       -unless params[:hub]
         %td= bool_text site.is_searchable?
+      -unless params[:template]
+        %td= bool_text site.allow_public_clone?
       %td= bool_text site.allow_in_iframe?
       %td= bool_text site.prefer_put_saver?
       %td= bool_text site.prefer_upload_saver?

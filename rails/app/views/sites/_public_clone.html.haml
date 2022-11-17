@@ -1,0 +1,11 @@
+=render layout: 'field_wrapper' do
+  .form-check.enable-tooltips
+    =f.check_box :allow_public_clone, class: 'form-check-input'
+    =f.label :allow_public_clone, class: 'form-check-label' do
+      Make this site available as a template for others to clone.
+
+      =render 'popover_help',
+        html_content: 'This is intended to be used for sharing customized "editions" |
+          of TiddlyWiki that could be used by other Tiddlyhost users as a template |
+          for creating new sites. Hub-listed sites with this option set will be listed |
+          in the Tiddlyhost Hub <a href="/hub?t=1" target="_blank">templates view</a>.' |

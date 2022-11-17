@@ -171,14 +171,19 @@ class SitesController < ApplicationController
   def site_params_for_create
     params.
       require(:site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :prefer_put_saver, :prefer_upload_saver, :empty_id).
+      permit(
+        :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
+        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone,
+        :empty_id).
       merge(user_id: current_user.id)
   end
 
   def site_params_for_update
     params.
       require(:site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :prefer_put_saver, :prefer_upload_saver)
+      permit(
+        :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
+        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone)
   end
 
   def site_params_for_upload
@@ -194,6 +199,8 @@ class SitesController < ApplicationController
   #
   def set_site_to_clone
     site_to_clone_name = params.permit(:clone)[:clone]
-    @site_to_clone = current_user.sites.find_by_name(site_to_clone_name) if site_to_clone_name.present?
+    site_to_clone_maybe = Site.find_by_name(site_to_clone_name) if site_to_clone_name.present?
+    @site_to_clone = site_to_clone_maybe if site_to_clone_maybe&.cloneable_by_user?(current_user)
   end
+
 end

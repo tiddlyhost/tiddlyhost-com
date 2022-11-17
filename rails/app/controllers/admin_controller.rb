@@ -69,6 +69,7 @@ class AdminController < ApplicationController
     hub: 'is_searchable',
     rawmb: 'raw_byte_size',
     sites: 'COUNT(sites.id)',
+    template: 'allow_public_clone',
     tspotsites: 'COUNT(tspot_sites.id)',
     upload: 'prefer_upload_saver',
     username: "NULLIF(username, '')",
@@ -104,6 +105,11 @@ class AdminController < ApplicationController
     hub: {
       '1' => { title: 'hub', filter: ->(r){ r.where.not(is_searchable: false) } },
       '0' => { title: 'non-hub', filter: ->(r){ r.where(is_searchable: false) } },
+    },
+
+    template: {
+      '1' => { title: 'template', filter: ->(r){ r.where.not(allow_public_clone: false) } },
+      '0' => { title: 'non-template', filter: ->(r){ r.where(allow_public_clone: false) } },
     },
 
     no_stub: {
