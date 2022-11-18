@@ -8,6 +8,7 @@ module SiteCommon
     include WithThumbnail
     include WithAccessCount
     include AdminSearchable
+    include SafeModeUrls
 
     # Optional is needed only for TspotSite records
     # Site records always have a user
