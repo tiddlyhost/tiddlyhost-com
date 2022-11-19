@@ -18,6 +18,10 @@ module WithAccessCount
     gentle_increment_count(:view_count)
   end
 
+  def increment_clone_count
+    gentle_increment_count(:clone_count)
+  end
+
   private
 
   def gentle_touch_timestamp(field_name)

@@ -35,14 +35,13 @@ class HubController < ApplicationController
   # We don't do asc/desc sorting for the hub
   SORT_OPTIONS = {
     v: { title: 'view count', field: 'view_count DESC' },
+    cl: { title: 'clone count', field: 'clone_count DESC' },
     u: { title: 'recently updated', field: 'blob_created_at DESC NULLS LAST' },
     c: { title: 'recently created', field: 'created_at DESC NULLS LAST' },
     a: { title: 'name a-z', field: 'name ASC' },
     z: { title: 'name z-a', field: 'name DESC' },
     r: { title: 'random', field: 'rand_sort' },
   }.freeze
-
-  DEFAULT_SORT = :v
 
   private
 
@@ -70,6 +69,10 @@ class HubController < ApplicationController
 
   def set_show_templates
     @show_templates = params[:t] == '1'
+  end
+
+  def default_sort
+    @show_templates ? :cl : :v
   end
 
 end

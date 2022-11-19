@@ -46,6 +46,7 @@ class AdminController < ApplicationController
     accesses: 'access_count',
     blobmb: 'active_storage_blobs.byte_size',
     clone: 'cloned_from_id',
+    clones: 'clone_count',
     created: 'created_at',
     createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',

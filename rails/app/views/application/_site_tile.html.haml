@@ -35,6 +35,8 @@
           title: 'Create a new site using this template') do
           =bi_icon('files', height: '1.2em', fill: '#777')
           %div{style: "font-size: 55%; margin-top: -1px;"}Clone
+        %div{style: "font-size: 60%; text-align: center; font-weight: bold;"}
+          =site.clone_count
 
   .description
     =span_with_title_truncated(site.description)

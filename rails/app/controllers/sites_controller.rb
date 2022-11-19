@@ -106,6 +106,11 @@ class SitesController < ApplicationController
       if @site.save
         @site.update_thumbnail_later
 
+        # Only count clones by other users
+        if @site_to_clone && @site_to_clone.user != current_user
+          @site_to_clone.increment_clone_count
+        end
+
         format.html { redirect_to sites_url }
         # format.json { render :show, status: :created, location: @site }
       else
