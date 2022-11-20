@@ -10,6 +10,11 @@
       =link_to_user_hub_with_count(current_user)
 
   .float-end.small{style: "margin-top: -0.6rem;"}
+    .d-inline-block
+      =link_to new_site_path, class: 'btn btn-sm btn-light text-muted ps-1' do
+        =bi_icon('plus', fill: '#666', style: 'margin-right: -5px; margin-left: 0px;')
+        Create
+
     .d-inline-block.sites-menu
       =link_to("#", class: 'ms-2 btn btn-light btn-sm text-muted', title: 'Filter options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
@@ -58,6 +63,15 @@
 
 
 .mx-2.my-4(style="line-height: 3em;")
-  =link_to 'Create site', new_site_path, class: 'btn btn-primary me-3'
+  =link_to new_site_path, class: 'btn btn-light me-3' do
+    =bi_icon('plus-lg', fill: '#555', style: "margin-right: -4px;")
+    Create from scratch
+
+  =link_to '/hub?t=1', class: 'btn btn-light me-3' do
+    =bi_icon('files', fill: '#555', style: "margin-right: -1px;")
+    Create from template
+
   -if Settings.tiddlyspot_enabled?
-    =link_to 'Claim Tiddlyspot site', { controller: :tspot_sites, action: :claim_form }, class: 'btn btn-secondary', style: 'opacity: 65%'
+    =link_to({ controller: :tspot_sites, action: :claim_form }, class: 'btn btn-light') do
+      =bi_icon('flag', fill: '#555', style: "margin-right: -1px;")
+      Claim Tiddlyspot site
