@@ -97,9 +97,10 @@ class SitesController < ApplicationController
       initial_content = empty.html
     end
 
-    @site = Site.new(site_params_for_create.merge(
-      SiteCommon.attachment_params(initial_content)).merge(
-        {cloned_from_id: @site_to_clone&.id}))
+    create_attrs = site_params_for_create.merge(SiteCommon.attachment_params(initial_content))
+    create_attrs.merge!({cloned_from_id: @site_to_clone.id, empty_id: @site_to_clone.empty_id}) if @site_to_clone
+
+    @site = Site.new(create_attrs)
 
     respond_to do |format|
       if @site.save
