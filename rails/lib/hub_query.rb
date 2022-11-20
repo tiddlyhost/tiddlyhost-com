@@ -63,13 +63,22 @@ module HubQuery
 
   end
 
-  def self.most_used_tags
-    # Find just the records for sites that are visible in the hub
+  def self.most_used_tags(for_templates: false)
+    # We want tags from just the sites that are visible in the hub
+
+    from_sites = Site.searchable.updated_at_least_once
+    from_tspot_sites = TspotSite.searchable
+
+    if for_templates
+      from_sites = from_sites.where(allow_public_clone: true)
+      from_tspot_sites = from_tspot_sites.where("1 = 0")
+    end
+
     tagging = ActsAsTaggableOn::Tagging.where(
-      taggable_id: Site.searchable.updated_at_least_once.pluck(:id),
+      taggable_id: from_sites.pluck(:id),
       taggable_type: 'Site'
     ).or(ActsAsTaggableOn::Tagging.where(
-      taggable_id: TspotSite.searchable.pluck(:id),
+      taggable_id: from_tspot_sites.pluck(:id),
       taggable_type: 'TspotSite'
     ))
 

@@ -48,7 +48,7 @@ class HubController < ApplicationController
   def render_hub
     # Show a few popular tags in the tab bar.
     # (It's not the best UX for tag based site discovery, but good enough for now.)
-    @tag_tabs = HubQuery.most_used_tags.first(Settings.hub_tag_tab_count)
+    @tag_tabs = HubQuery.most_used_tags(for_templates: @show_templates).first(Settings.hub_tag_tab_count)
 
     # If there's a particular tag selected, show that in the tab bar also
     @tag_tabs = @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
