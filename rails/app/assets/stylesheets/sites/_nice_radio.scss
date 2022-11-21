@@ -18,6 +18,13 @@
             background-color: #f6f7f8;
         }
 
+        // So you can avoid the hover effect for a div that doesn't have
+        // a radio button but still needs to be inside the container
+        &.no-hover:hover {
+            border-left-color: transparent;
+            background-color: transparent;
+        }
+
         &.selected:hover {
             background-color: #f0f6ff;
         }

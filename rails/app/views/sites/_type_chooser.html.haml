@@ -26,3 +26,10 @@
 
         .description
           =empty.description
+
+  .no-hover.longer-only.ms-3.small
+    =link_to "Create from a template", "/hub?t=1"
+    =render 'popover_help',
+      html_content: "You can also create a site by selecting a community |
+        created template and cloning it. This link takes you to the list |
+        of available templates." |
