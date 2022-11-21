@@ -112,6 +112,10 @@ class User < ApplicationRecord
     is_superuser?
   end
 
+  def is_tiddlyhost?
+    email == Settings.tiddlyhost_account_email
+  end
+
   # The default is set in config/initializers/devise
   def timeout_in
     return 12.hours if is_admin?

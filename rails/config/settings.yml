@@ -6,6 +6,7 @@ defaults:
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
   faq_url: https://github.com/simonbaird/tiddlyhost/wiki/FAQ
   create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
+  tiddlyhost_account_email: tiddlyhost@gmail.com
   devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
   support_email: simon.baird@gmail.com
   support_email_name: Simon Baird
