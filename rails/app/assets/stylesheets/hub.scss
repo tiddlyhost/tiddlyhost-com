@@ -35,19 +35,18 @@ h1 {
 .hub, .sites-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 7rem;
+    gap: 6rem;
 
     .site {
         vertical-align: top;
-        width: 12em;
+        width: 13rem;
         margin: 0; // gap should handle the spacing
 
         .description {
             margin-left: 0.25em;
-            font-size: 85%;
-            display: -webkit-box;
-            -webkit-line-clamp: 3; // number of lines to show
-            -webkit-box-orient: vertical;
+            font-size: 75%;
+            line-height: 1.6em;
+            max-height: 8em; // line-height * 5
             overflow: hidden;
             color: #555;
         }
@@ -74,7 +73,7 @@ h1 {
             margin: 0.25em 0;
 
             img {
-                width: 95%;
+                width: 11.5rem;
                 border: 1px solid #ddd;
             }
         }
@@ -106,9 +105,8 @@ h1 {
             margin: 2px;
             font-size: 90%;
 
-            display: -webkit-box;
-            -webkit-line-clamp: 5; // number of lines to show
-            -webkit-box-orient: vertical;
+            line-height: 1em;
+            max-height: 3.5em; // line-height * 3 plus some padding idk
             overflow: hidden;
         }
 
