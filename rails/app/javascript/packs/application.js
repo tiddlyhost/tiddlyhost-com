@@ -43,6 +43,11 @@ $(document).ready(function(){
   $('form.new_site input#site_name').on('keyup', limitChars);
   $('form.edit_user input#user_username').on('keyup', limitChars);
 
+  // The name field is autofocussed on site creation.
+  // Also make it selected since it will be a randomly generated
+  // site name the user will probably want to replace.
+  $('input#site_name[autofocus="autofocus"]').select();
+
   // If user checks 'private', automatically uncheck 'hub listed'
   // If user checks 'hub listed', automatically uncheck 'private'
   $('.private-checkbox').on('change', function(){ if ($(this).prop('checked')) { $('.hub-checkbox'    ).prop('checked', false); } });

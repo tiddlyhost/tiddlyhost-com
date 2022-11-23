@@ -76,7 +76,7 @@ class SitesController < ApplicationController
 
   # GET /sites/new
   def new
-    @site = Site.new
+    @site = Site.new(name: RandomName.generate)
   end
 
   # GET /sites/1/edit

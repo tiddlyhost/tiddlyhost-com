@@ -51,6 +51,9 @@ gem 'bootstrap-email'
 # For thumbnails and screenshots
 gem 'grover'
 
+# For adjective-noun generated site names
+gem 'spicy-proton'
+
 # For payments
 gem 'pay', '~> 3.0'
 gem 'stripe', '>= 2.8', '< 6.0'
