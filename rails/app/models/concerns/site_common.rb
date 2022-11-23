@@ -187,6 +187,12 @@ module SiteCommon
     Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks.from_now, &blk)
   end
 
+  # Remove Feather Wiki variant prefix, e.g. "Warbler_1.5.0" -> "1.5.0"
+  def tw_version_short
+    return tw_version unless is_feather?
+    tw_version&.sub(/^[A-Za-z]+_/, '')
+  end
+
   # For use with the TW site, not the site record itself
   def tw_etag
     blob.checksum

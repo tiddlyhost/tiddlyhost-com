@@ -19,7 +19,7 @@
       .small{style: "margin-left: 1px; margin-top: 3px;"}
         =kind_logo(site)
         -if site.tw_version
-          =site.tw_version
+          =site.tw_version_short
         -if site.raw_byte_size
           %span.mx-1.text-muted!= "&centerdot;"
           !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
