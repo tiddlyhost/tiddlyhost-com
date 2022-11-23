@@ -12,12 +12,13 @@ class AdminController < ApplicationController
     @total_site_bytes = ActiveStorage::Blob.sum(:byte_size)
 
     @user_count = User.count
-    @never_signed_in_users = User.where(sign_in_count: 0).count
-    @signed_in_once_users = User.where(sign_in_count: 1).count
+    @never_signed_in_users = User.signed_in_never.count
+    @signed_in_once_users = User.signed_in_once.count
 
-    @active_weekly = User.where('last_sign_in_at > ?', 1.week.ago).count
-    @active_monthly = User.where('last_sign_in_at > ?', 1.month.ago).count
-    @active_daily = User.where('last_sign_in_at > ?', 1.day.ago).count
+    active_users = User.signed_in_more_than_once
+    @active_daily = active_users.active_day.count
+    @active_weekly = active_users.active_week.count
+    @active_monthly = active_users.active_month.count
 
     @site_count = Site.count
     @never_updated_sites = Site.never_updated.count

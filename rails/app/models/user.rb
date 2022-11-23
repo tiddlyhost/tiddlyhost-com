@@ -47,6 +47,15 @@ class User < ApplicationRecord
       message: "'%{value}' is not allowed. Please choose a different username.",
     }
 
+  scope :signed_in_never,          ->        { where(sign_in_count: 0) }
+  scope :signed_in_once,           ->        { where(sign_in_count: 1) }
+  scope :signed_in_more_than,      ->(times) { where('sign_in_count > ?', times) }
+  scope :signed_in_more_than_once, ->        { signed_in_more_than(1) }
+  scope :signed_in_since,          ->(time)  { where('current_sign_in_at >= ?', time) }
+  scope :active_day,               ->        { signed_in_since(1.day.ago) }
+  scope :active_week,              ->        { signed_in_since(1.week.ago) }
+  scope :active_month,             ->        { signed_in_since(1.month.ago) }
+
   def username_or_name
     username.presence || name
   end
