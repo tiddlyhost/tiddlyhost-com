@@ -46,17 +46,7 @@
 
   -if mode == "hub"
     .owner
-      -if site.user.use_gravatar?
-        =gravatar_image(site.user, size: 14)
-      -else
-        =bi_icon('person-fill', style: 'margin-right:-3px;')
-      -if site.user.has_username?
-        %span{title: site.user.name}
-          =link_to site.user.username, hub_user_url(site.user.username)
-      -else
-        =site.user.name
-      -if site.user.is_tiddlyhost?
-        =bi_icon('patch-check-fill', width: '1.1em', height: '1.1em', fill: '#198754', style: 'opacity: 90%; margin-left: 1px;')
+      =render 'site_owner', user: site.user
 
       %span.views
         =views_and_updated_text(site).html_safe

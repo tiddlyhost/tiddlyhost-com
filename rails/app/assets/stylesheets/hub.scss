@@ -30,6 +30,29 @@ h1 {
     margin-right: 0;
 }
 
+.site-tile-owner {
+    color: #555;
+
+    a {
+        text-decoration: none;
+    }
+
+    span.views {
+        margin-left: 0.1em;
+        color: #999;
+        font-size: 70%;
+    }
+
+    svg.bi {
+        opacity: 30%;
+    }
+
+    .gravatar {
+        margin-top: -2px;
+        border-radius: 50%;
+    }
+}
+
 // The same classes and partial are used for both the hub
 // index and the sites index in grid view
 .hub, .sites-grid {
@@ -82,22 +105,7 @@ h1 {
             font-size: 75%;
             margin-top: 0.5em;
             margin-left: 0.25em;
-            color: #555;
-
-            span.views {
-                margin-left: 0.1em;
-                color: #999;
-                font-size: 70%;
-            }
-
-            svg.bi {
-                opacity: 30%;
-            }
-
-            .gravatar {
-                margin-top: -2px;
-                border-radius: 50%;
-            }
+            @extend .site-tile-owner;
         }
 
         .site-tags {
