@@ -12,11 +12,11 @@
     Explore
 
   .ps-2.form-switch.text-muted.enable-tooltips{style: "font-size: 0.875rem; display: inline-block;"}
-    %label
+    %label{style: "cursor: pointer;"}
       -# The switch styled checkbox here is cosmetic only, it's behaving as link
       -# Todo: Should be able to style a normal link to look the same and ditch the actual checkbox
       <input class="form-check-input" type="checkbox" role="switch" #{@show_templates ? "checked" : ""}
-      style="margin-left: 0px; margin-bottom: 0.5em; margin-right: 0.1em; vertical-align: middle; width: 1.5em;"
+      style="margin-left: 0px; margin-bottom: 0.5em; margin-right: 0.1em; vertical-align: middle; width: 1.5em; cursor: pointer;"
       onclick="window.location.href = '#{url_for(sort_filter_url(:t, @show_templates ? nil : '1'))}';">
       Templates only
     =render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
