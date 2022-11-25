@@ -92,7 +92,7 @@ $(document).ready(function(){
     var choice = $(this).val();
     $("input#site_is_private, input#tspot_site_is_private").val(choice == "private");
     $("input#site_is_searchable, input#tspot_site_is_searchable").val(choice == "hub_listed");
-  })
+  });
 
   // Enable boostrap popovers and tooltips
   //
@@ -101,5 +101,30 @@ $(document).ready(function(){
     popover({ "trigger":"focus", "html":true });
 
   $('.enable-tooltips a[data-bs-toggle="tooltip"]').tooltip();
+
+  // For show/hide password visibility
+  $('.passwd-btn').on('click', function(e){
+    var inputGroup = $(this).closest('.input-group');
+    var passwdInput = inputGroup.find('input')
+
+    if (passwdInput.attr('type') == 'password') {
+      // Currently hidden, make it visible
+      passwdInput.attr('type', 'text');
+    }
+    else {
+      // Currently visible, make it hidden
+      passwdInput.attr('type', 'password');
+    }
+
+    // Switch the two button icons
+    inputGroup.find('.passwd-btn-icon').toggle()
+
+    // Save the user a click
+    passwdInput.focus();
+
+    // Not sure if this is needed here, but probably
+    // harmless either way
+    e.preventDefault();
+  });
 
 });

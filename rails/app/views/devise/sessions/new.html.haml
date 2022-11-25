@@ -10,7 +10,15 @@
 
     =render layout: 'field_wrapper', locals: { pb: 'pb-2' } do
       =f.label :password
-      =f.password_field :password, autocomplete: 'current-password', class: 'form-control'
+      .input-group
+        =f.password_field :password, autocomplete: 'current-password', class: 'form-control'
+
+        -# Toggle password visiblity button
+        .button.input-group-text.passwd-btn{style: 'cursor: pointer;'}
+          %span.passwd-btn-icon
+            =bi_icon('eye')
+          %span.passwd-btn-icon{style: 'display: none;'}
+            =bi_icon('eye-slash')
 
     -if devise_mapping.rememberable?
       .form-check.px-3.pb-4
