@@ -19,12 +19,12 @@ class SettingsTest < ActiveSupport::TestCase
     end
 
     {
-      nil => [true, false, false, false],
-      non_admin_user => [true, true, false, false],
-      admin_user => [true, true, true, false],
+      nil => [true, false, false, false, false],
+      non_admin_user => [true, true, false, false, false],
+      admin_user => [true, true, true, false, true],
 
     }.each do |user, expected|
-      actual = %i[foo bar baz quux].map{ |f| Settings.feature_enabled?(f, user) }
+      actual = %i[foo bar baz quux site_history].map{ |f| Settings.feature_enabled?(f, user) }
       assert_equal(expected, actual)
     end
 

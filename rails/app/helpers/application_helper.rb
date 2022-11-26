@@ -66,10 +66,10 @@ module ApplicationHelper
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
   end
 
-  def nice_timestamp(timestamp)
+  def nice_timestamp(timestamp, brief: false)
     return '-' unless timestamp
     content_tag :span, title: timestamp.to_s do
-      "#{time_ago_in_words(timestamp)} ago"
+      brief ? brief_time_ago_in_words(timestamp) : "#{time_ago_in_words(timestamp)} ago"
     end
   end
 

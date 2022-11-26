@@ -167,4 +167,9 @@ class TspotSite < ApplicationRecord
     true
   end
 
+  # No site history for tspot sites
+  def keep_count
+    1
+  end
+
 end

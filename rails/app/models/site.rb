@@ -58,12 +58,23 @@ class Site < ApplicationRecord
     @_th_file ||= ThFile.new(file_download)
   end
 
+  def th_file_for_blob_id(blob_id)
+    ThFile.new(file_download(blob_id))
+  end
+
   def looks_valid?
     th_file.looks_valid?
   end
 
   def html_content(signed_in_user: nil)
     th_file.apply_tiddlyhost_mods(name,
+      signed_in_user: signed_in_user, use_put_saver: use_put_saver?).to_html
+  end
+
+  def html_content_for_blob_id(blob_id, signed_in_user: nil)
+    th_file_for_blob_id(blob_id).apply_tiddlyhost_mods(name,
+      # Note: There might be some tricky edge cases around the value of use_put_saver?
+      # here since it's based on the current site, not the specific version being fetched
       signed_in_user: signed_in_user, use_put_saver: use_put_saver?).to_html
   end
 
@@ -79,6 +90,11 @@ class Site < ApplicationRecord
 
   def download_content(local_core: false)
     th_file.apply_tiddlyhost_mods(name, for_download: true, local_core: local_core).to_html
+  end
+
+  def download_content_for_blob_id(blob_id)
+    # Todo maybe: Consider the local core option here
+    ThFile.new(file_download(blob_id)).apply_tiddlyhost_mods(name, for_download: true).to_html
   end
 
   # Could be more clever here and try to read it from the script src,
@@ -151,6 +167,19 @@ class Site < ApplicationRecord
 
   def is_tspot?
     false
+  end
+
+  # If site history is enabled then keep many saves otherwise
+  # only keep one. See also app/jobs/prune_attachments_job.
+  def keep_count
+    return 100 if site_history_enabled?
+    1
+  end
+
+  private
+
+  def site_history_enabled?
+    Settings.feature_enabled?(:site_history, user)
   end
 
 end

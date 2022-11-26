@@ -74,6 +74,14 @@ Rails.application.routes.draw do
         patch :upload
 
         post :create_thumbnail
+
+        # Related to save history
+        get :history
+        get "view_version/:blob_id", action: "view_version"
+        get "download_version/:blob_id", action: "download_version"
+        post "restore_version/:blob_id", action: "restore_version"
+        post "discard_version/:blob_id", action: "discard_version"
+
       end
     end
 

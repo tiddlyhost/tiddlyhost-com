@@ -2,10 +2,12 @@
 .d-flex.mt-1{style: "overflow: hidden;"}
   .ms-1.p-1
     -if site.thumbnail.present?
-      =image_tag(rails_storage_proxy_path(site.thumbnail), style: "border: 1px solid #ddd; width: 6em;")
+      =link_to site.url, target: site.long_name do
+        =image_tag(rails_storage_proxy_path(site.thumbnail), style: "border: 1px solid #ddd; width: 6em;")
 
   .p-1.flex-fill
-    %b{style: "color: var(--bs-gray-600);"}= site.name
+    =link_to site.url, target: site.long_name, style: "color: var(--bs-gray-600); text-decoration: none; font-weight: bold;" do
+      =site.name
     %span.ps-2.text-muted{style: "font-size: 75%;"}
       -if site.user == current_user
         -# Cloning your own site

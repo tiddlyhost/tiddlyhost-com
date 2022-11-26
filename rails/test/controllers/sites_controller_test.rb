@@ -3,7 +3,8 @@ require "test_helper"
 class SitesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @site = sites(:mysite)
-    sign_in users(:bobby)
+    @user = users(:bobby)
+    sign_in @user
   end
 
   test "should get index" do
@@ -105,4 +106,54 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to sites_url
   end
+
+  test "site history access" do
+    @site.content_upload("hey")
+
+    # Can't access
+    get history_site_url(@site)
+    assert_response :not_found
+
+    # Can access when admin
+    @user.update(plan_id: Plan.find_by_name("superuser").id)
+    get history_site_url(@site)
+    assert_response :success
+  end
+
+  def get_blob_ids(site)
+    site.saved_content_files.order("created_at DESC").pluck(:blob_id)
+  end
+
+  test "site history" do
+    @user.update(plan_id: Plan.find_by_name("superuser").id)
+    @site.content_upload("hey1")
+    @site.content_upload("hey2")
+    @site.content_upload("hey3")
+    assert_equal "hey3", @site.file_download
+
+    blob_ids = get_blob_ids(@site)
+    assert_equal 3, blob_ids.count
+
+    get history_site_url(@site)
+    assert_response :success
+
+    # Restore an old version
+    post "/sites/#{@site.id}/restore_version/#{blob_ids.last}"
+    assert_redirected_to history_site_url(@site)
+
+    # Confirm the site was updated
+    assert_equal "hey1", @site.reload.file_download
+    blob_ids = get_blob_ids(@site)
+    assert_equal 4, blob_ids.count
+
+    # Discard an old version
+    post "/sites/#{@site.id}/discard_version/#{blob_ids.last}"
+    assert_redirected_to history_site_url(@site)
+
+    # Confirm the last blob was removed
+    new_blob_ids = get_blob_ids(@site)
+    assert_equal 3, new_blob_ids.count
+    assert_equal blob_ids[0..-2], new_blob_ids
+  end
+
 end

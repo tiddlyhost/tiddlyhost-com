@@ -40,6 +40,17 @@ module WithSavedContent
     @_current_content ||= saved_content_files.order('created_at DESC').limit(1).first || tiddlywiki_file
   end
 
+  # Returns zero for sites with a tiddlywiki_file only which is unexpected, but
+  # I want to minimize effort on backwards compatibility with the older schema.
+  def saved_version_count
+    saved_content_files.count
+  end
+
+  # For use when extracting a specific version of a site its save history
+  def specific_saved_content_file(blob_id)
+    saved_content_files.where(blob_id: blob_id).first
+  end
+
   # Make sure the cached current_content is cleared on reload
   # (Primarily for testing, but probably a good idea regardless.)
   def reload
@@ -89,10 +100,26 @@ module WithSavedContent
   end
 
   # Used by Site records and TspotSite records that have been saved.
-  def file_download
+  def file_download(blob_id=nil)
+    # Don't bother to cache older versions of the site
+    return uncached_file_download(blob_id) if blob_id
+
+    # Do cache the latest version of the site
     blob_cache(:file_download) do
-      WithSavedContent.decompress_html(current_content.download)
+      uncached_file_download
     end
+  end
+
+  def uncached_file_download(blob_id=nil)
+    if blob_id
+      # The exact version as specified by the blob id
+      downloaded_content = specific_saved_content_file(blob_id)&.download
+    else
+      # The latest version
+      downloaded_content = current_content.download
+    end
+
+    WithSavedContent.decompress_html(downloaded_content) unless downloaded_content.nil?
   end
 
   # params_userfile should be an ActionDispatch::Http::UploadedFile
@@ -132,10 +159,6 @@ module WithSavedContent
   # For use with the TW site, not the site record itself
   def tw_etag
     blob.checksum
-  end
-
-  def keep_count
-    1
   end
 
   def prune_attachments_later

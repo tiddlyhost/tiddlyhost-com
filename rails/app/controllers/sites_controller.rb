@@ -7,6 +7,8 @@ class SitesController < ApplicationController
 
   include SortAndFilterLinkHelper
 
+  include SiteHistory
+
   SORT_OPTIONS = {
     compressed: 'size',
     kind: 'tw_kind',

@@ -23,6 +23,7 @@
     %th= sort_link 'Accesses'
     %th= sort_link 'Saves'
     %th= sort_link 'Clones'
+    %th= 'Versions'
     -unless @user
       %th= sort_link 'Owner'
     %th= 'Storage key'
@@ -58,6 +59,7 @@
       %td= site.access_count
       %td= site.save_count
       %td= site.clone_count
+      %td= site.saved_version_count
       -unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
       %td= link_to(site.blob_key, action: :raw_download, id: site.id)

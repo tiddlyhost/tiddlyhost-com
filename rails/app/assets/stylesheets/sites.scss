@@ -108,3 +108,32 @@ table.sites {
 .clear-left {
     clear: left;
 }
+
+table.history-table {
+    thead {
+        font-size: 75%;
+        color: #aaa;
+        th {
+            border-bottom-width: 0px;
+        }
+    }
+
+    tbody {
+        td {
+            // Makes the action button look more in line with the text
+            vertical-align: middle;
+            font-size: 85%;
+
+            .btn-light {
+                background-color: transparent;
+            }
+
+            // Fixme: This is restoring some defaults and probably wouldn't
+            // be needed if things were being done properly here...
+            .btn-light:hover, .btn-light.show {
+                background-color: var(--bs-btn-active-bg);
+                border-color: var(--bs-btn-active-border-color);
+            }
+        }
+    }
+}

@@ -15,6 +15,7 @@
     %th= sort_link 'Accesses'
     -unless params[:saved] == '0'
       %th= sort_link 'Saves'
+    %th= 'Versions'
     -unless @user
       %th= sort_link 'Owner', :asc
     -unless params[:saved] == '0'
@@ -43,6 +44,7 @@
       %td= site.access_count
       -unless params[:saved] == '0'
         %td= site.save_count
+      %td= site.saved_version_count
       -unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       -unless params[:saved] == '0'

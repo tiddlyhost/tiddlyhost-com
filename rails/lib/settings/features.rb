@@ -6,4 +6,9 @@ module Settings::Features
     user&.is_admin?
   end
 
+  def site_history_enabled?(user=nil)
+    # Later: users with a subscription
+    user&.is_admin?
+  end
+
 end

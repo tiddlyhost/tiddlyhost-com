@@ -1,0 +1,96 @@
+=render layout: 'form_wrapper',
+  locals: { heading: "Save history for '#{@site.name}'", intro_text: kind_summary(@site) } do
+
+  .my-3
+    =render 'site_tile_clone', mode: 'home', site: @site
+
+  %table.table.history-table.mt-4
+    %thead
+      %tr.enable-tooltips
+        %th #
+        %th Timestamp
+        %th Saved
+        %th
+          Size
+          =render 'popover_help', html_content: "This column shows the compressed size which smaller than the site's actual size."
+
+        %th
+          Checksum
+          =render 'popover_help', html_content: "Identical checksums indicate identical saved versions."
+
+        %th.text-end.pe-3 Actions
+
+    %tbody
+      -@site.saved_content_files.order('created_at DESC').each_with_index do |f, i|
+        -is_current = (f.blob_id == @current_blob_id)
+
+        -if is_current
+          %tr
+            %td.pt-4{colspan: 6}
+              %b Current version:
+
+        %tr
+          %td
+            #{i+1}.
+
+          %td
+            #{f.blob.created_at}
+
+          %td
+            #{nice_timestamp f.blob.created_at, brief: true}
+
+          %td
+            =as_megabytes(f.blob.byte_size)
+            MB
+
+          %td
+            -# Not the real checksum, we just want a way to
+            -# notice when two versions are identical
+            =Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
+
+          %td.text-end.pe-3
+            -if is_current
+              -# Regular actions menu for convenience
+              =render 'actions_menu', site: @site, is_tspot: @site.is_tspot?, menu_only: true, history_mode: true
+
+            -else
+              -# Actions for previous saved version
+              %button.btn.btn-light.btn-sm(type="button" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"
+                style="border-color: transparent !important;" title="Actions")
+                =bi_icon('three-dots', fill: '#212529', style: 'margin-right: 0px;')
+
+              .dropdown-menu.dropdown-menu-end
+                =link_to("/sites/#{@site.id}/view_version/#{f.blob_id}", class: 'dropdown-item', target: '_blank') do
+                  =bi_icon('box-arrow-up-right') + 'View'
+
+                =link_to("/sites/#{@site.id}/download_version/#{f.blob_id}", class: 'dropdown-item') do
+                  =bi_icon('download') + 'Download'
+
+                .dropdown-divider
+
+                =link_to("/sites/#{@site.id}/restore_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
+                  data: { confirm: "Are you sure you want to replace the site's current content with this older version?" }) do
+                  =bi_icon('file-earmark-arrow-up') + 'Restore as current version'
+
+                .dropdown-divider
+
+                =link_to("/sites/#{@site.id}/discard_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
+                  data: { confirm: "Are you sure you want to discard this saved version?" }) do
+                  =bi_icon('trash') + 'Discard'
+
+        -if is_current
+          -if @saved_version_count > 1
+            %tr
+              %td.pt-4{colspan: 6}
+                %b Older versions:
+          -else
+            %tr
+              %td.p-4{colspan: 6, style: "border-bottom-width: 0px;"}
+                %i.text-muted <br><br>No older versions found.
+
+
+  -if @saved_version_count > @keep_count - 10
+    .p-3.text-muted.small
+      %i
+        Note that only newest #{@keep_count} versions will be kept. Once there are more than #{@keep_count}, the oldest saved versions will be deleted.

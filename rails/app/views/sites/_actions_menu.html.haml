@@ -40,6 +40,10 @@
 
     -else
       =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
+
+      -if feature_enabled?(:site_history) && !local_assigns[:history_mode] && site.saved_version_count > 0
+        =link_to(history_site_path(site), class: 'dropdown-item') { bi_icon('clock-history') + 'Save history' }
+
       .dropdown-divider
 
       -# I want to only show this on the grid view, hence the menu_only check here
@@ -47,6 +51,13 @@
         =link_to(create_thumbnail_site_path(site), class: 'dropdown-item', method: :post,
           data: { confirm: "The thumbnail may take some time to generate. Click okay then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
         .dropdown-divider
+
+      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
+
+      -if safe_mode_url = site.safe_mode_url
+        =link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
+
+      .dropdown-divider
 
       -if site.is_tw5x?
         =link_to(download_site_path(site), class: 'dropdown-item',
@@ -58,17 +69,17 @@
           =bi_icon('download') + 'Download with local core'
 
         =link_to(download_core_js_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download core javascript file' }
-        .dropdown-divider
 
       -else
         =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
 
-      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
-      -if safe_mode_url = site.safe_mode_url
-        =link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
       .dropdown-divider
+
       =link_to(new_site_path(clone: site.name), class: 'dropdown-item') { bi_icon('files') + 'Clone' }
       =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
-      .dropdown-divider
-      =link_to(site, method: :delete, class: 'dropdown-item',
-        data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }
+
+      -# (Don't allow deleting the entire site from the history page)
+      -unless local_assigns[:history_mode]
+        .dropdown-divider
+        =link_to(site, method: :delete, class: 'dropdown-item',
+          data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }

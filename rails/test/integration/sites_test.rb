@@ -92,7 +92,7 @@ class SitesTest < CapybaraIntegrationTest
     visit new_site_path(clone: 'mysite')
     assert_selector 'h2', text: "Clone site"
     assert_selector 'label', text: "Cloning from"
-    assert_selector 'b', text: "mysite"
+    assert_selector 'form a', text: "mysite"
     assert_no_selector 'label[for="site_empty_id_1"]'
     # See also test/controllers/sites_controller_test.rb for
     # some coverage of the submit
