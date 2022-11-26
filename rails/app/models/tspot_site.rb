@@ -80,7 +80,7 @@ class TspotSite < ApplicationRecord
       name: fetched_site.name,
       is_private: fetched_site.is_private?,
       htpasswd: fetched_site.htpasswd_file,
-      tiddlywiki_file: SiteCommon.attachable_hash(fetched_site.html_file),
+      tiddlywiki_file: WithSavedContent.attachable_hash(fetched_site.html_file),
       created_ip: ip_address&.to_s,
     }
   end

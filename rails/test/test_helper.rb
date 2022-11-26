@@ -49,7 +49,7 @@ class ActionDispatch::IntegrationTest
     tw_html = th_file.write_tiddlers(tiddlers).to_html
 
     Site.create!({ name: name, empty_id: empty.id, user_id: user.id }.
-      merge(SiteCommon.attachment_params(tw_html)))
+      merge(WithSavedContent.attachment_params(tw_html)))
   end
 
 end

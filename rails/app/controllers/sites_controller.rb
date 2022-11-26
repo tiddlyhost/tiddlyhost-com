@@ -97,7 +97,7 @@ class SitesController < ApplicationController
       initial_content = empty.html
     end
 
-    create_attrs = site_params_for_create.merge(SiteCommon.attachment_params(initial_content))
+    create_attrs = site_params_for_create.merge(WithSavedContent.attachment_params(initial_content))
     create_attrs.merge!({cloned_from_id: @site_to_clone.id, empty_id: @site_to_clone.empty_id}) if @site_to_clone
 
     @site = Site.new(create_attrs)
@@ -196,7 +196,7 @@ class SitesController < ApplicationController
     params.
       require(:site).
       permit(:tiddlywiki_file).
-      merge(SiteCommon.attachment_params(new_content))
+      merge(WithSavedContent.attachment_params(new_content))
   end
 
   # Sets @site_to_clone which will be nil if there's no clone param or if the
