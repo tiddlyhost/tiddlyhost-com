@@ -34,6 +34,11 @@ class TwFile
     @doc = Nokogiri::HTML(html_content) do |config|
       config.options |= Nokogiri::XML::ParseOptions::HUGE
     end
+
+    # Avoid ridiculously long inspect output
+    def @doc.inspect
+      super.truncate(2500, separator: ',')
+    end
   end
 
   def self.from_file(file_name)
