@@ -26,13 +26,24 @@ location = /index.xml { return 404; }
 client_max_body_size 200m;
 
 #
-# In production this is volume mounting #{Rails.root}/public from the
+# In production this is a volume mounting #{Rails.root}/public from the
 # rails app container. If the request matches a static file there, serve
 # it directly, otherwise pass the request through to rails. (In development
-# it won't exist so everything will be passed through to rails.)
+# it won't exist so everything will be passed through to rails. Todo maybe:
+# change that.)
 #
 root /opt/rails-static;
+
 location / {
+  # Static assets served directly
+  try_files $uri @app;
+}
+
+# The more specific match should take precedence over the above
+location ~ ^/(tiddlywikicore-|assets/) {
+  # Static assets served directly that can be cached forever
+  expires max;
+  add_header Cache-Control "public";
   try_files $uri @app;
 }
 

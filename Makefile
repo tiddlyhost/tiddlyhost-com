@@ -261,6 +261,33 @@ empty-versions:
 
 #----------------------------------------------------------
 
+TW5_DIR=../TiddlyWiki5
+TW5_OUTPUT=$(TW5_DIR)/output/external-core
+EXTERNAL_CORE_EMPTY_NAME=tw5x
+
+clean-external-core-files:
+	rm -rf $(TW5_OUTPUT)
+
+# Do some work to build these files from source.
+# Maybe in future they will be built automatically and
+# made available somewhere.
+#
+create-external-core-files-%: clean-external-core-files
+	cd $(TW5_DIR) && git reset --hard && git checkout v$* && \
+	  node tiddlywiki.js editions/empty \
+	    --output $(TW5_OUTPUT) \
+	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.js]]' 'text/plain' \
+	    --rendertiddler '$$:/core/save/offline-external-js' 'empty.html' 'text/plain'
+
+external-core-files-%: create-external-core-files-%
+	cp $(TW5_OUTPUT)/tiddlywikicore-$*.js rails/public/tiddlywikicore-$*.js
+	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME).html
+	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME)/$*.html
+
+external-core-files: external-core-files-5.2.3
+
+#----------------------------------------------------------
+
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
 CERTS_DIR=docker/certs
