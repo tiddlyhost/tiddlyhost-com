@@ -45,85 +45,93 @@ class ThFile < TwFile
     self
   end
 
+  def apply_tw5_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
+    upload_url = if for_download || use_put_saver
+      # Clear $:/UploadURL for downloads so the save button in the downloaded
+      # file will not try to use upload.js. It should use another save
+      # method, probably download to file.
+      #
+      # Todo: Consider if we should do that also when signed_in_user is nil.
+      #
+      # Clear $:/UploadURL when using the put saver otherwise TW will
+      # prioritize the upload saver
+      ""
+    else
+      # The url for uploads is the same as the site url
+      # Todo: Actually using just "/" would work just as well here I think
+      Settings.subdomain_site_url(site_name)
+    end
+
+    if !for_download && signed_in_user
+      # Provide a way for TiddlyWiki files to detect when
+      # they're being viewed by their owner
+      status_is_logged_in = 'yes'
+
+      # Seems like a useful idea to expose the user also
+      status_user_name = signed_in_user
+
+    else
+      # The readonly plugin might user this to hide tiddler edit buttons, etc.
+      status_is_logged_in = 'no'
+
+      # Clear this when downloading or if it's not your site
+      status_user_name = ''
+    end
+
+    write_tiddlers({
+      # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
+      '$:/UploadURL' => upload_url,
+
+      # Set this otherwise TiddlyWiki won't consider upload.js usable unless there
+      # is a username and password present.
+      # (Not needed for put saver but should be harmless.)
+      '$:/UploadWithUrlOnly' => 'yes',
+
+      # Autosave is nice, but I'm thinking we should start with it off to generate
+      # a little less traffic.
+      '$:/config/AutoSave' => 'no',
+
+      # Provide a way for TiddlyWikis to detect when they're able to be saved
+      '$:/status/IsLoggedIn' => status_is_logged_in,
+      '$:/status/UserName' => status_user_name,
+    })
+
+    # Add a prefix to the core js src url for external core TiddlyWikis
+    inject_external_core_url_prefix if is_external_core?
+  end
+
+  def apply_classic_mods(site_name)
+    # We don't want to hard code the site url in the plugin, but we also don't
+    # want to hard code the domain name and port etc since they're different
+    # in different environments. This is clever way to deal with that.
+    site_url = Settings.subdomain_site_url("' + siteName + '")
+
+    write_tiddlers({
+      'ThostUploadPlugin' => {
+        text: plugin_content(:thost_upload_plugin, site_name: site_name, site_url: site_url),
+        tags: 'systemConfig',
+        modifier: 'TiddlyHost',
+      }
+    })
+
+    # This could be a regular tiddler, but let's make it a shadow tiddler just to be cool.
+    # Will be clickable when viewing the plugin since we used 'TiddlyHost' as the modifier above.
+    # (I'm using camel case intentionally here despite the usual spelling of Tiddlyhost.)
+    write_shadow_tiddlers({
+      'TiddlyHost' => {
+        text: "[[Tiddlyhost|#{Settings.main_site_url}]] is a hosting service for ~TiddlyWiki.",
+        modifier: 'TiddlyHost',
+      }
+    })
+  end
+
   def apply_tiddlyhost_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
     if is_tw5?
-
-      upload_url = if for_download || use_put_saver
-        # Clear $:/UploadURL for downloads so the save button in the downloaded
-        # file will not try to use upload.js. It should use another save
-        # method, probably download to file.
-        #
-        # Todo: Consider if we should do that also when signed_in_user is nil.
-        #
-        # Clear $:/UploadURL when using the put saver otherwise TW will
-        # prioritize the upload saver
-        ""
-      else
-        # The url for uploads is the same as the site url
-        # Todo: Actually using just "/" would work just as well here I think
-        Settings.subdomain_site_url(site_name)
-      end
-
-      if !for_download && signed_in_user
-        # Provide a way for TiddlyWiki files to detect when
-        # they're being viewed by their owner
-        status_is_logged_in = 'yes'
-
-        # Seems like a useful idea to expose the user also
-        status_user_name = signed_in_user
-
-      else
-        # The readonly plugin might user this to hide tiddler edit buttons, etc.
-        status_is_logged_in = 'no'
-
-        # Clear this when downloading or if it's not your site
-        status_user_name = ''
-      end
-
-      write_tiddlers({
-        # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
-        '$:/UploadURL' => upload_url,
-
-        # Set this otherwise TiddlyWiki won't consider upload.js usable unless there
-        # is a username and password present.
-        # (Not needed for put saver but should be harmless.)
-        '$:/UploadWithUrlOnly' => 'yes',
-
-        # Autosave is nice, but I'm thinking we should start with it off to generate
-        # a little less traffic.
-        '$:/config/AutoSave' => 'no',
-
-        # Provide a way for TiddlyWikis to detect when they're able to be saved
-        '$:/status/IsLoggedIn' => status_is_logged_in,
-        '$:/status/UserName' => status_user_name,
-      })
-
-      # Add a prefix to the core js src url for external core TiddlyWikis
-      inject_external_core_url_prefix if is_external_core?
+      apply_tw5_mods(site_name,
+        for_download: for_download, use_put_saver: use_put_saver, signed_in_user: signed_in_user)
 
     elsif is_classic?
-      # We don't want to hard code the site url in the plugin, but we also don't
-      # want to hard code the domain name and port etc since they're different
-      # in different environments. This is clever way to deal with that.
-      site_url = Settings.subdomain_site_url("' + siteName + '")
-
-      write_tiddlers({
-        'ThostUploadPlugin' => {
-          text: plugin_content(:thost_upload_plugin, site_name: site_name, site_url: site_url),
-          tags: 'systemConfig',
-          modifier: 'TiddlyHost',
-        }
-      })
-
-      # This could be a regular tiddler, but let's make it a shadow tiddler just to be cool.
-      # Will be clickable when viewing the plugin since we used 'TiddlyHost' as the modifier above.
-      # (I'm using camel case intentionally here despite the usual spelling of Tiddlyhost.)
-      write_shadow_tiddlers({
-        'TiddlyHost' => {
-          text: "[[Tiddlyhost|#{Settings.main_site_url}]] is a hosting service for ~TiddlyWiki.",
-          modifier: 'TiddlyHost',
-        }
-      })
+      apply_classic_mods(site_name)
 
     else # FeatherWiki
       # No hackery for FeatherWiki currently
