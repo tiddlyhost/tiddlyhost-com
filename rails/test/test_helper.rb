@@ -11,9 +11,6 @@ def for_all_empties
     Dir["#{kind_dir}/*.html"].each do |empty_file|
       tw_kind = File.basename(kind_dir)
 
-      # Temporary hackery for the tw5x
-      tw_kind.sub!('tw5x', 'tw5')
-
       tw_version = File.basename(empty_file, '.html')
       yield(empty_file, tw_kind, tw_version)
     end

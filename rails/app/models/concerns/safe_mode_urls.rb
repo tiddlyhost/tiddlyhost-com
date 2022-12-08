@@ -7,7 +7,7 @@ module SafeModeUrls
 
   def safe_mode_url
     case tw_kind
-    when "tw5"
+    when "tw5", "tw5x"
       url + TW5_SUFFIX
 
     when "classic"

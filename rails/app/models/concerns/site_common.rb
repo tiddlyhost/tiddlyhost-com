@@ -45,18 +45,23 @@ module SiteCommon
 
   KINDS = {
     'tw5'     => 'TiddlyWiki',
+    'tw5x'    => 'TiddlyWiki (External Core)',
     'classic' => 'TiddlyWiki Classic',
     'feather' => 'Feather Wiki',
   }.freeze
 
   KIND_LOGOS = {
     'tw5'     => 'tw5-icon.ico',
+    'tw5x'    => 'tw5x-icon.ico',
     'classic' => 'classic-icon.ico',
     'feather' => 'feather-icon.svg',
   }.freeze
 
+  # (These are not currently used)
   KIND_URLS = {
     'tw5'     => 'https://tiddlywiki.com/',
+     # Todo: Think of a better url for tw5x
+    'tw5x'    => CGI.escape('https://tiddlywiki.com/#:[[Using the external JavaScript template]] HelloThere'),
     'classic' => 'https://classic.tiddlywiki.com/',
     'feather' => 'https://feather.wiki/',
   }.freeze

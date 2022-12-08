@@ -52,7 +52,13 @@ class TwFile
   def self.light_get_kind_and_version(html_content)
     # For TW5
     match = html_content.match(/^<meta name="tiddlywiki-version" content="([a-zA-Z0-9\-\._]+)"/m)
-    return ['tw5', match[1]] if match
+    if match
+      if html_content.match(/^<script src=".*tiddlywikicore.*\.js" onerror="alert/m)
+        return ['tw5x', match[1]]
+      else
+        return ['tw5', match[1]]
+      end
+    end
 
     # For classic
     match = html_content.match(
@@ -91,9 +97,14 @@ class TwFile
     get_meta('application-name') == 'Feather Wiki'
   end
 
+  def is_external_core?
+    doc.at_xpath("/html/script[contains(@src, 'tiddlywikicore')]").present?
+  end
+
   def kind
     return 'feather' if is_feather?
     return 'classic' if is_classic?
+    return 'tw5x' if is_external_core?
     'tw5'
   end
 
