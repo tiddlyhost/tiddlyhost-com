@@ -97,8 +97,12 @@ class TwFile
     get_meta('application-name') == 'Feather Wiki'
   end
 
+  def external_core_script_tag
+    doc.at_xpath("/html/script[contains(@src, 'tiddlywikicore')]")
+  end
+
   def is_external_core?
-    doc.at_xpath("/html/script[contains(@src, 'tiddlywikicore')]").present?
+    external_core_script_tag.present?
   end
 
   def kind

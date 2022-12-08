@@ -38,6 +38,13 @@ class ThFile < TwFile
     from_file(empty_path(empty_type))
   end
 
+  def inject_external_core_url_prefix
+    script = external_core_script_tag
+    src = script['src']
+    script['src'] = "#{Settings.main_site_url}/#{src}" unless src.match?(%r{^https?://})
+    self
+  end
+
   def apply_tiddlyhost_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
     if is_tw5?
 
@@ -91,6 +98,9 @@ class ThFile < TwFile
         '$:/status/UserName' => status_user_name,
       })
 
+      # Add a prefix to the core js src url for external core TiddlyWikis
+      inject_external_core_url_prefix if is_external_core?
+
     elsif is_classic?
       # We don't want to hard code the site url in the plugin, but we also don't
       # want to hard code the domain name and port etc since they're different
@@ -117,8 +127,10 @@ class ThFile < TwFile
 
     else # FeatherWiki
       # No hackery for FeatherWiki currently
-      self
+
     end
+
+    self
   end
 
   def plugin_content(plugin_name, erb_vars)
