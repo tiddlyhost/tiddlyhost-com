@@ -27,9 +27,12 @@
           =nav_link_to "Home", root_path
           =nav_link_to "Explore", '/hub'
 
-        %ul.navbar-nav.mb-auto
           -if user_is_admin?
-            =nav_link_to "Admin", admin_path, style: 'margin-right: 0.4rem;'
+            =nav_link_to "Admin", admin_path, style: 'opacity: 10%;'
+
+        %ul.navbar-nav.mb-auto
+          =nav_link_to bi_icon('plus', fill: "white", height: "1.9em", width: "1.9em", style: "opacity: 90%;"),
+            new_site_path, li_class: 'd-none d-sm-block'
 
           %li.nav-item.dropdown
             %a.nav-link.dropdown-toggle#navbarDropdown(role="button"

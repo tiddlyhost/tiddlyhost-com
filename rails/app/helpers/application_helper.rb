@@ -10,8 +10,9 @@ module ApplicationHelper
       (controller_name == 'admin' && link == '/admin')
 
     icon = opts.delete(:icon)
+    li_class = opts.delete(:li_class)
 
-    content_tag :li, class: 'nav-item' do
+    content_tag :li, class: ['nav-item', li_class] do
       link_to link, opts.merge(class: "flex-column nav-link#{' active' if is_active}") do
         safe_join([bi_icon(icon), title].compact)
       end
