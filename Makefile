@@ -261,26 +261,43 @@ empty-versions:
 
 #----------------------------------------------------------
 
+TW5_REPO=git@github.com:Jermolene/TiddlyWiki5.git
 TW5_DIR=../TiddlyWiki5
 TW5_OUTPUT=$(TW5_DIR)/output/external-core
+
+TW5_UGLIFY_REPO=git@github.com:flibbles/tw5-uglify.git
+TW5_UGLIFY_DIR=../tw5-uglify
+
 EXTERNAL_CORE_EMPTY_NAME=tw5x
 
 clean-external-core-files:
 	rm -rf $(TW5_OUTPUT)
 
+$(TW5_DIR):
+	mkdir -p $(TW5_DIR) && cd $(TW5_DIR) && git clone $(TW5_REPO) .
+
+$(TW5_UGLIFY_DIR):
+	mkdir -p $(TW5_UGLIFY_DIR) && cd $(TW5_UGLIFY_DIR) && git clone $(TW5_UGLIFY_REPO) .
+
 # Do some work to build these files from source.
 # Maybe in future they will be built automatically and
 # made available somewhere.
 #
-create-external-core-files-%: clean-external-core-files
+create-external-core-files-%: $(TW5_DIR) $(TW5_UGLIFY_DIR) clean-external-core-files
 	cd $(TW5_DIR) && git reset --hard && git checkout v$* && \
 	  node tiddlywiki.js editions/empty \
 	    --output $(TW5_OUTPUT) \
-	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.js]]' 'text/plain' \
-	    --rendertiddler '$$:/core/save/offline-external-js' 'empty.html' 'text/plain'
+	    --rendertiddler '$$:/core/save/offline-external-js' 'empty.html' 'text/plain' && \
+	  export TIDDLYWIKI_PLUGIN_PATH=$(TW5_UGLIFY_DIR) && \
+	  node tiddlywiki.js +plugins/plugins/uglify editions/empty \
+	    --output $(TW5_OUTPUT) \
+	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.min.js]]' 'text/plain'
+# Todo maybe: Uglify the empty as well
 
 external-core-files-%: create-external-core-files-%
-	cp $(TW5_OUTPUT)/tiddlywikicore-$*.js rails/public/tiddlywikicore-$*.js
+	# Use the .min.js uglified version
+	cp $(TW5_OUTPUT)/tiddlywikicore-$*.min.js rails/public/tiddlywikicore-$*.js
+	# Copy the empty to two places
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME).html
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME)/$*.html
 
