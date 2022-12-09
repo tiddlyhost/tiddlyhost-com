@@ -3,6 +3,7 @@
   %tr
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
+    %th
     -unless params[:kind]
       %th= sort_link 'Kind'
     %th= sort_link 'Version'
@@ -30,6 +31,7 @@
     %tr
       %td= site.id
       %td= admin_site_link site
+      %td= render 'thumbnail_link', site: site
       -unless params[:kind]
         %td= site.tw_kind
       %td= site.tw_version
