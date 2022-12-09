@@ -22,7 +22,15 @@ module WithThumbnail
   # This is expensive since it spins up a headless chromium
   #
   def update_thumbnail_now
-    png = Grover.new(file_download, **grover_opts).to_png
+    # So thumbnails work in my local dev environment
+    core_url_prefix = Rails.env.development? ? Settings.prod_main_site_url : Settings.main_site_url
+
+    # Similar to inject_external_core_url_prefix but probably uses less memory
+    use_html = file_download.
+      sub(/(<script src=")(tiddlywikicore-[\d\.]+.js")/, "\\1#{core_url_prefix}/\\2")
+
+    png = Grover.new(use_html, **grover_opts).to_png
+
     update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
   end
 
