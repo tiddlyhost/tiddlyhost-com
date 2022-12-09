@@ -16,13 +16,7 @@
 
     .small.m-1
       =site_access(site)
-      .small{style: "margin-left: 1px; margin-top: 3px;"}
-        =kind_logo(site)
-        -if site.tw_version
-          =site.tw_version_short
-        -if site.raw_byte_size
-          %span.mx-1.text-muted!= "&centerdot;"
-          !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
+      =render 'site_kind_info', site: site
 
   .description
     -if mode == "hub" && site.cloneable_by_public?
@@ -40,13 +34,16 @@
 
     =span_with_title(site.description)
 
-  -unless site.tag_list.empty?
-    .site-tags
-      =clickable_site_tags(site)
-
   -if mode == "hub"
+    .pt-1{style: 'font-size: 70%; opacity: 0.7; margin-left: 3px;'}
+      =render 'site_kind_info', site: site
+
     .owner
       =render 'site_owner', user: site.user
 
       %span.views
         =views_and_updated_text(site).html_safe
+
+  -unless site.tag_list.empty?
+    .site-tags.pt-1
+      =clickable_site_tags(site)
