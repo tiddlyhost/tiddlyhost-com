@@ -44,8 +44,8 @@ module SiteCommon
   end
 
   KINDS = {
-    'tw5'     => 'TiddlyWiki',
-    'tw5x'    => 'TiddlyWiki (External Core)',
+    'tw5'     => 'TiddlyWiki (self-contained)',
+    'tw5x'    => 'TiddlyWiki (external core)',
     'classic' => 'TiddlyWiki Classic',
     'feather' => 'Feather Wiki',
   }.freeze
