@@ -144,8 +144,10 @@ class SitesController < ApplicationController
   def upload
     # (Could consider combining this with update, but for now it's separate)
     respond_to do |format|
+      # Todo: Should probably use @site.content_upload here
       if @site.update(site_params_for_upload)
         @site.increment_save_count
+        @site.prune_attachments_later
         @site.update_thumbnail_later
 
         format.html { redirect_to sites_url, notice: 'Upload to site was successfully completed.' }
@@ -200,7 +202,7 @@ class SitesController < ApplicationController
     new_content = params[:site][:tiddlywiki_file].read
     params.
       require(:site).
-      permit(:tiddlywiki_file).
+      permit(:saved_content_files).
       merge(WithSavedContent.attachment_params(new_content))
   end
 

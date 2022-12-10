@@ -3,18 +3,38 @@ module WithSavedContent
   extend ActiveSupport::Concern
 
   included do
-    # Will be present for all sites except never-saved tspot sites
+    # The new way to store site contents, replacing tiddlywiki_file.
+    # Site saves now append a new attachment to this list.
+    has_many_attached :saved_content_files
+
+    # This field will no longer be written to, but will still be read
+    # for sites that have nothing yet saved to saved_content_files.
     has_one_attached :tiddlywiki_file
 
-    # Set allow_nil here though it's only needed for TspotSite records
-    # that have never been saved
-    delegate :blob, to: :tiddlywiki_file, allow_nil: true
+    # Set allow_nil here though it's only needed for "stub" tspot sites.
+    # (Todo: Remove allow_nil in future once those are gone.)
+    # Note that current_content here is a method not an association.
+    delegate :blob, to: :current_content, allow_nil: true
 
     delegate :byte_size, :key, :created_at, :content_type,
       to: :blob, prefix: true, allow_nil: true
 
+    # FIXME: This needs to use saved_content_file_attachment somehow or hub queries will not work
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
 
+  end
+
+  # Use the newest attachment from saved_content_files if it's present
+  # otherwise fall back to the attachment in tiddlywiki_file
+  def current_content
+    @_current_content ||= saved_content_files.order('created_at DESC').limit(1).first || tiddlywiki_file
+  end
+
+  # Make sure the cached current_content is cleared on reload
+  # (Primarily for testing, but probably a good idea regardless.)
+  def reload
+    @_current_content = nil
+    super
   end
 
   COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
@@ -50,15 +70,18 @@ module WithSavedContent
       tw_kind: tw_kind,
       tw_version: tw_version,
 
-      # This is the actual attachment
-      tiddlywiki_file: attachable_hash(new_content),
+      # It will append since our config has replace_on_assign_to_many set to false
+      saved_content_files: [attachable_hash(new_content)],
+
+      # The old way:
+      #tiddlywiki_file: attachable_hash(new_content),
     }
   end
 
   # Used by Site records and TspotSite records that have been saved.
   def file_download
     blob_cache(:file_download) do
-      WithSavedContent.decompress_html(tiddlywiki_file.download)
+      WithSavedContent.decompress_html(current_content.download)
     end
   end
 
@@ -71,6 +94,9 @@ module WithSavedContent
   # field is enough to make rails handle the new attachment upload
   def content_upload(new_content)
     update(WithSavedContent.attachment_params(new_content))
+
+    # See below
+    prune_attachments_later
 
     # See app/models/concerns/with_thumbnail
     update_thumbnail_later
@@ -96,6 +122,25 @@ module WithSavedContent
   # For use with the TW site, not the site record itself
   def tw_etag
     blob.checksum
+  end
+
+  def keep_count
+    1
+  end
+
+  def prune_attachments_later
+    PruneAttachmentsJob.perform_later(self.class.name, self.id)
+  end
+
+  def prune_attachments_now
+    # No pruning unless saved_content_files attachments are present
+    return unless saved_content_files.attached?
+
+    # Remove older attachments, keep the newest
+    saved_content_files.order("created_at DESC").offset(keep_count).each(&:purge)
+
+    # Clean up any legacy attachment
+    tiddlywiki_file.purge if tiddlywiki_file.attached?
   end
 
 end

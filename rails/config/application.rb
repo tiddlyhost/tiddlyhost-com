@@ -71,5 +71,8 @@ module App
     # See lib/logger_with_domain.rb
     config.middleware.insert_before(Rails::Rack::Logger, LoggerWithDomain)
     config.middleware.delete(Rails::Rack::Logger)
+
+    # We want to append to has_many_attached rather than replace them all
+    config.active_storage.replace_on_assign_to_many = false
   end
 end
