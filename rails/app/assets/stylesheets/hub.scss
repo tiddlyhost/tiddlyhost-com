@@ -99,6 +99,18 @@ h1 {
                 width: 11.5rem;
                 border: 1px solid #ddd;
             }
+
+            .image-placeholder {
+                width: 11.5rem;
+                height: 7.64rem;
+                margin: 0px;
+                border: 1px solid #e6e6e6;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #f4f4f4;
+                font-size: 75%;
+            }
         }
 
         .owner {

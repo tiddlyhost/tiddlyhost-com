@@ -1,10 +1,13 @@
 -is_tspot = site.is_a?(TspotSite)
 
 .site{id: site.name}
-  -if site.thumbnail.present?
-    .thumb-container
-      =link_to site.url, target: site.long_name do
+  .thumb-container
+    =link_to site.url, target: site.long_name do
+      -if site.thumbnail.present?
         =image_tag rails_storage_proxy_path(site.thumbnail)
+      -else
+        .image-placeholder{title: "Preview image not yet available"}
+          =bi_icon('image', fill: '#ddd')
 
   .name{title: site.long_name}
     =site_link site, target: site.long_name
