@@ -77,8 +77,18 @@ class Site < ApplicationRecord
     end
   end
 
-  def download_content
-    th_file.apply_tiddlyhost_mods(name, for_download: true).to_html
+  def download_content(local_core: false)
+    th_file.apply_tiddlyhost_mods(name, for_download: true, local_core: local_core).to_html
+  end
+
+  # Could be more clever here and try to read it from the script src,
+  # but let's keep it simple to begin with.
+  def core_js_name
+    "tiddlywikicore-#{tw_version}.js"
+  end
+
+  def core_js_content
+    File.read("#{Rails.root}/public/#{core_js_name}")
   end
 
   def use_put_saver?

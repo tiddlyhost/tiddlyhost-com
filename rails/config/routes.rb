@@ -69,6 +69,7 @@ Rails.application.routes.draw do
 
       member do
         get :download
+        get :download_core_js
         get :upload_form
         patch :upload
 

@@ -45,7 +45,17 @@ class ThFile < TwFile
     self
   end
 
-  def apply_tw5_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
+  # Actually I'm expecting this to be a noop generally since TiddlyWiki
+  # uses the local relative src when saving. However it might do something
+  # significant if the TiddlyWiki itself had a custom coreURL defined.
+  def strip_external_core_url_prefix
+    script = external_core_script_tag
+    src = script['src']
+    script['src'] = File.basename(src)
+    self
+  end
+
+  def apply_tw5_mods(site_name, for_download: false, local_core: false, use_put_saver: false, signed_in_user: nil)
     upload_url = if for_download || use_put_saver
       # Clear $:/UploadURL for downloads so the save button in the downloaded
       # file will not try to use upload.js. It should use another save
@@ -97,7 +107,13 @@ class ThFile < TwFile
     })
 
     # Add a prefix to the core js src url for external core TiddlyWikis
-    inject_external_core_url_prefix if is_external_core?
+    if is_external_core?
+      if local_core
+        strip_external_core_url_prefix
+      else
+        inject_external_core_url_prefix
+      end
+    end
   end
 
   def apply_classic_mods(site_name)
@@ -125,10 +141,10 @@ class ThFile < TwFile
     })
   end
 
-  def apply_tiddlyhost_mods(site_name, for_download: false, use_put_saver: false, signed_in_user: nil)
+  def apply_tiddlyhost_mods(site_name, for_download: false, local_core: false, use_put_saver: false, signed_in_user: nil)
     if is_tw5?
       apply_tw5_mods(site_name,
-        for_download: for_download, use_put_saver: use_put_saver, signed_in_user: signed_in_user)
+        for_download: for_download, local_core: local_core, use_put_saver: use_put_saver, signed_in_user: signed_in_user)
 
     elsif is_classic?
       apply_classic_mods(site_name)

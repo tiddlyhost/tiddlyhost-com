@@ -46,8 +46,23 @@
       -if !site.thumbnail.present? && local_assigns[:menu_only]
         =link_to(create_thumbnail_site_path(site), class: 'dropdown-item', method: :post,
           data: { confirm: "The thumbnail may take some time to generate. Click okay then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
+        .dropdown-divider
 
-      =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+      -if site.is_tw5x?
+        =link_to(download_site_path(site), class: 'dropdown-item',
+          data: { confirm: "Note: The downloaded TiddlyWiki will require internet access to load its core javascript. Choose the local core option if you need it to work without internet access." }) do
+          =bi_icon('download') + 'Download'
+
+        =link_to(download_site_path(site, mode: 'local_core'), class: 'dropdown-item',
+          data: { confirm: "Note: You must also download the core javascript file to use the downloaded TiddlyWiki." }) do
+          =bi_icon('download') + 'Download with local core'
+
+        =link_to(download_core_js_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download core javascript file' }
+        .dropdown-divider
+
+      -else
+        =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+
       =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
       -if safe_mode_url = site.safe_mode_url
         =link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
