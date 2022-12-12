@@ -320,7 +320,7 @@ deploy-scripts:
 refresh-prerelease:
 	$(PLAY) ansible/deploy.yml --tags=refresh-prerelease
 
-deploy-app: prod-info
+deploy-app:
 	$(PLAY) ansible/deploy.yml --tags=app
 
 deploy-app-bootstrap:
@@ -333,10 +333,10 @@ deploy-cleanup:
 deploy-foo:
 	$(PLAY) ansible/deploy.yml --tags=foo --diff
 
-fast-upgrade: prod-info
+fast-upgrade:
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
 
-faster-upgrade: prod-info
+faster-upgrade:
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
 
 #----------------------------------------------------------
@@ -416,8 +416,13 @@ openstack-reboot-hard:
 
 #----------------------------------------------------------
 
+PROD_INFO_URL=https://tiddlyhost.com/build-info.txt
 prod-info:
-	@-curl https://tiddlyhost.com/build-info.txt
+	@echo '## Prod build info'
+	@-curl -s $(PROD_INFO_URL)
+	@echo ''
+	@echo '## Diff to prod'
+	@-git diff --color=always $$(curl -s $(PROD_INFO_URL) | grep 'sha:' | cut -d: -f2) | less -REXS
 
 #----------------------------------------------------------
 JS_MATH_DOWNLOADS=http://www.math.union.edu/~dpvc/jsmath/download
