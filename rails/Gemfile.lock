@@ -115,6 +115,7 @@ GEM
       warden (~> 1.2.3)
     devise-security (0.17.0)
       devise (>= 4.3.0)
+    docile (1.4.0)
     erubi (1.11.0)
     ffi (1.15.5)
     globalid (1.0.0)
@@ -229,6 +230,12 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     spicy-proton (2.1.15)
       bindata (~> 2.3)
     sprockets (4.1.1)
@@ -295,6 +302,7 @@ DEPENDENCIES
   rexml
   sass-rails (>= 6)
   selenium-webdriver
+  simplecov
   spicy-proton
   stripe (>= 2.8, < 6.0)
   tzinfo-data

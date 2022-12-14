@@ -193,6 +193,9 @@ devel-dump-secrets:
 test:
 	$(DCC) 'bin/rails test:all'
 
+coverage:
+	$(DCC) 'env COVERAGE=1 bin/rails test:all'
+
 tests: test
 
 onetest:
