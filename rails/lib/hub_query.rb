@@ -8,35 +8,72 @@
 #
 module HubQuery
 
+  # The blob from saved_content_files association association is preferred over
+  # the blob from the tiddlywiki_file association. Generally only one or the
+  # other would be present, but the coalesce would work correctly if they were
+  # both found. Beware the order of the left_joins in the with_blobs_for_query
+  # scope influences the table names and virtual table names required here.
+  #
+  # To debug:
+  #   puts Site.with_blobs_for_query.to_sql.gsub(/(LEFT)/, "\n \\1").gsub(/(ON|AND)/, "\n  \\1")
+  #
+  def self.blob_coalesce(col_name)
+    "COALESCE(active_storage_blobs.#{col_name}, blobs_active_storage_attachments.#{col_name})"
+  end
+
   def self.sites_for_user(user, sort_by:)
     # Not really paginated or hub related...
     # Todo: Cap site count per user or do pagination
     paginated_sites(
       page: nil, per_page: 1000, sort_by: sort_by, tag: nil, user: user, search: nil, for_hub: false,
       extra_fields_in_select: [
-        :tw_kind, :tw_version, :is_private, :is_searchable,
-        # Have a rough guess if it was never set
-        'COALESCE(raw_byte_size, active_storage_blobs.byte_size * 4) as raw_size',
-        'not is_searchable as not_searchable', 'active_storage_blobs.byte_size as size'
+        :tw_kind,
+        :tw_version,
+        :is_private,
+        :is_searchable,
+        # Have a rough guess if it was never set, (for sites not saved since we started recording raw_byte_size)
+        "COALESCE(raw_byte_size, #{blob_coalesce('byte_size')} * 4) AS raw_size",
+        'not is_searchable AS not_searchable',
+        "#{blob_coalesce('byte_size')} AS size",
       ])
   end
 
   def self.paginated_sites(page:, per_page:, sort_by:, templates_only: false, tag:, user:, search:, for_hub: true, extra_fields_in_select: [])
-    # Work with two separate queries
+    # Work with two separate queries, one for each model
     qs = [
-      Site.with_blob.select(
-        "'Site' AS type", :id, :name, :view_count, :created_at, :allow_public_clone, :clone_count,
-        "active_storage_blobs.created_at AS blob_created_at",
-        "RANDOM() as rand_sort",
-        *extra_fields_in_select),
+      #
+      # The blob joins can create multiple rows per site since there might
+      # be multiple attachments. The distinct collapses them down to one row
+      # per site, and the `blob_created_at DESC` (hopefully) means the row with
+      # the newest blob is the one that is kept, which is exactly what is needed.
+      #
+      Site.with_blobs_for_query.select(
+        "DISTINCT ON (type, id) " +
+        "'Site' AS type",
+        :id,
+        :name,
+        :view_count,
+        :created_at,
+        :allow_public_clone,
+        :clone_count,
+        "#{blob_coalesce('created_at')} AS blob_created_at",
+        "RANDOM() AS rand_sort",
+        *extra_fields_in_select
+      ),
 
-      TspotSite.with_blob.select(
-        "'TspotSite' AS type", :id, :name, "access_count AS view_count", "NULL AS created_at",
-        "false as allow_public_clone",
-        "0 as clone_count",
-        "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
-        "RANDOM() as rand_sort",
-        *extra_fields_in_select),
+      TspotSite.with_blobs_for_query.select(
+        "DISTINCT ON (type, id) " +
+        "'TspotSite' AS type",
+        :id,
+        :name,
+        "access_count AS view_count",
+        "NULL AS created_at",
+        "false AS allow_public_clone",
+        "0 AS clone_count",
+        "CASE WHEN save_count = 0 THEN NULL ELSE #{blob_coalesce('created_at')} END AS blob_created_at",
+        "RANDOM() AS rand_sort",
+        *extra_fields_in_select
+      ),
     ]
 
     # Apply filters
@@ -48,9 +85,11 @@ module HubQuery
 
     # Return paginated collection
     WillPaginate::Collection.create(page||1, per_page) do |pager|
-      # Combine the two queries with a union and paginate the combined results
+      # Combine the two queries with a union and paginate the combined results.
+      # (The blob_created_at sort is important for the SELECT DISTINCT ON above.
+      # The idea is the row selected for the distinct will be the most recent one.)
       sql = qs.map(&:to_sql).join(" UNION ") +
-        " ORDER BY #{sort_by} LIMIT #{pager.per_page} OFFSET #{pager.offset}"
+        " ORDER BY #{sort_by}, blob_created_at DESC LIMIT #{pager.per_page} OFFSET #{pager.offset}"
 
       # A mixed list of Site & TspotSite records
       results = ActiveRecord::Base.connection.execute(sql).pluck('type', 'id').map do |s_type, s_id|

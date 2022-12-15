@@ -19,8 +19,13 @@ module WithSavedContent
     delegate :byte_size, :key, :created_at, :content_type,
       to: :blob, prefix: true, allow_nil: true
 
-    # FIXME: This needs to use saved_content_file_attachment somehow or hub queries will not work
-    scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
+    # Used in hub_query, which uses coalesce to pick out the relevant blob
+    scope :with_blobs_for_query, ->{
+      # New schema
+      left_joins(saved_content_files_attachments: :blob).
+        # Deprecated schema
+        left_joins(tiddlywiki_file_attachment: :blob)
+    }
 
   end
 

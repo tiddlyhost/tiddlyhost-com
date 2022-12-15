@@ -22,29 +22,7 @@ def for_all_empties
   end
 end
 
-class ActiveSupport::TestCase
-  # Run tests in parallel with specified workers
-  # (Simplecov doesn't handle parallel workers, so skip when running coverage tests)
-  parallelize(workers: :number_of_processors) unless ENV['COVERAGE'] == '1'
-
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
-end
-
-class ActionDispatch::IntegrationTest
-  # Particularly for sign_in and sign_out methods
-  include Devise::Test::IntegrationHelpers
-
-  setup do
-    host! Settings.url_defaults[:host]
-  end
-
-  def mock_helper
-    mock = Minitest::Mock.new
-    yield mock if block_given?
-    mock
-  end
-
+module NewSiteHelper
   def new_site_helper(name:, user:, empty: :tw5, tiddlers: {}, empty_content: nil)
     empty = Empty.find_by_name(empty)
     th_file = empty.th_file
@@ -57,6 +35,35 @@ class ActionDispatch::IntegrationTest
 
     Site.create!({ name: name, empty_id: empty.id, user_id: user.id }.
       merge(WithSavedContent.attachment_params(tw_html)))
+  end
+
+end
+
+class ActiveSupport::TestCase
+  include NewSiteHelper
+
+  # Run tests in parallel with specified workers
+  # (Simplecov doesn't handle parallel workers, so skip when running coverage tests)
+  parallelize(workers: :number_of_processors) unless ENV['COVERAGE'] == '1'
+
+  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  fixtures :all
+end
+
+class ActionDispatch::IntegrationTest
+  # Particularly for sign_in and sign_out methods
+  include Devise::Test::IntegrationHelpers
+
+  include NewSiteHelper
+
+  setup do
+    host! Settings.url_defaults[:host]
+  end
+
+  def mock_helper
+    mock = Minitest::Mock.new
+    yield mock if block_given?
+    mock
   end
 
 end
