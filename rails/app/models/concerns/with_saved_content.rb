@@ -15,13 +15,9 @@ module WithSavedContent
 
     scope :with_blob, -> { left_joins(tiddlywiki_file_attachment: :blob) }
 
-    scope :compressed,   -> { with_blob.where(active_storage_blobs: { content_type: COMPRESSED_CONTENT_TYPE   }) }
-    scope :uncompressed, -> { with_blob.where(active_storage_blobs: { content_type: UNCOMPRESSED_CONTENT_TYPE }) }
-
   end
 
   COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
-  UNCOMPRESSED_CONTENT_TYPE = 'text/html'.freeze
 
   def self.compress_html(raw_html)
     Zlib::Deflate.deflate(raw_html)
@@ -62,8 +58,7 @@ module WithSavedContent
   # Used by Site records and TspotSite records that have been saved.
   def file_download
     blob_cache(:file_download) do
-      raw_download = tiddlywiki_file.download
-      is_compressed? ? WithSavedContent.decompress_html(raw_download) : raw_download
+      WithSavedContent.decompress_html(tiddlywiki_file.download)
     end
   end
 
@@ -89,22 +84,6 @@ module WithSavedContent
   def blob_cache(cache_type, tiddler_name=nil, &blk)
     blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
     Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
-  end
-
-  def is_compressed?
-    blob_content_type == COMPRESSED_CONTENT_TYPE
-  end
-
-  # Re-save a site in order to compress it, but preserve the blob created
-  # timestamp. I used it to bulk-convert all sites to compressed format.
-  # (Probably not useful any more since all sites are now compressed.)
-  #
-  def ensure_compressed
-    return if is_compressed?
-
-    original_timestamp = blob_created_at
-    content_upload(file_download)
-    blob.update_column(:created_at, original_timestamp)
   end
 
   # Currently only used by TspotSite but define it here anyway.
