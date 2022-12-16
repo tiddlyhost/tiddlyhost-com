@@ -30,4 +30,34 @@ class SettingsTest < ActiveSupport::TestCase
 
   end
 
+  def with_mocked_grant_feature_data(user_list)
+    stubbed = ->(*args) do
+      assert_equal args, [:grant_feature, :foo_bar]
+      user_list
+    end
+
+    Settings.stub(:secrets, stubbed) do
+      yield
+    end
+  end
+
+  test "manually granted feature access" do
+    {
+      ["bobby@tables.com"] => true,
+      ["mary@tables.com"] => false,
+      [1] => true,
+      [2] => false,
+      [] => false,
+      nil => false,
+
+    }.each do |user_list, expected|
+      with_mocked_grant_feature_data(user_list) do
+        assert_equal(
+          expected,
+          Settings.feature_enabled?(:foo_bar, users(:bobby)),
+          "Unexpected result for #{user_list.inspect}")
+      end
+    end
+  end
+
 end

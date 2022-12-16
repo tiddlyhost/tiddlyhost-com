@@ -93,9 +93,16 @@ class Settings
     self.build_info["sha"][0...length]
   end
 
-  def self.feature_enabled?(feature_name, user=nil)
-    method_name = "#{feature_name}_enabled?"
-    !!(Settings::Features.respond_to?(method_name) && Settings::Features.send(method_name, user))
+  def self.feature_enabled?(feature_name, user)
+    # A way to grant access to particular users manually
+    if user
+      grant_list = Settings.secrets(:grant_feature, feature_name.to_sym)
+      return true if grant_list&.include?(user.id) || grant_list&.include?(user.email)
+    end
+
+    # Otherwise use methods defined in lib/settings/features
+    enabled_method_name = "#{feature_name}_enabled?"
+    !!(Settings::Features.respond_to?(enabled_method_name) && Settings::Features.send(enabled_method_name, user))
   end
 
 end
