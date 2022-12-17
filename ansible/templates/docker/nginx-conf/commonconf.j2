@@ -40,7 +40,7 @@ location / {
 }
 
 # The more specific match should take precedence over the above
-location ~ ^/(tiddlywikicore-|assets/) {
+location ~ ^/(assets/|packs/|tiddlywikicore-|) {
   # Let nginx know it can use the static gz files
   gzip_static on;
   # Static assets served directly that can be cached forever

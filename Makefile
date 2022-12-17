@@ -338,7 +338,7 @@ build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 prod-assets:
-	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:precompile"
+	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:clean assets:precompile"
 
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties gzip-core-js-files
 	$(DC) -f docker-compose-prod.yml build app
