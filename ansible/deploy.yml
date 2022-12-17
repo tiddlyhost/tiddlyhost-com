@@ -29,9 +29,8 @@
 
   - name: Add repo for docker-ce
     command:
-      cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+      cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo warn=no
       creates: /etc/yum.repos.d/docker-ce.repo
-      warn: false
     tags:
     - deps
 
