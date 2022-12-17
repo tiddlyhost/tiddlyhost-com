@@ -5,6 +5,7 @@ rails/storage
 rails/tw_content/empties/prerelease.html
 rails/node_modules/
 rails/public/assets/
+rails/public/tiddlywikicore-*.gz
 rails/public/packs/
 rails/public/packs-test/
 rails/public/jsMath/

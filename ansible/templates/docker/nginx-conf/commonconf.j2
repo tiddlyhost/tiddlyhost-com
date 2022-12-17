@@ -41,6 +41,8 @@ location / {
 
 # The more specific match should take precedence over the above
 location ~ ^/(tiddlywikicore-|assets/) {
+  # Let nginx know it can use the static gz files
+  gzip_static on;
   # Static assets served directly that can be cached forever
   expires max;
   add_header Cache-Control "public";

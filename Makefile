@@ -308,6 +308,13 @@ external-core-files: \
   external-core-files-5.2.3 \
   external-core-files-5.2.4
 
+# Run this at build time since I don't want to check in the gzipped files
+gzip-core-js-files:
+	@for f in $$( ls rails/public/tiddlywikicore-*.js ); do \
+	  gzip -c $$f > $$f.gz; \
+	  echo Created $$f.gz; \
+	done
+
 #----------------------------------------------------------
 
 # Generate an SSL cert
@@ -333,7 +340,7 @@ build-info:
 prod-assets:
 	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:precompile"
 
-build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties
+build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties gzip-core-js-files
 	$(DC) -f docker-compose-prod.yml build app
 
 fast-build-prod: prod-assets build-info
