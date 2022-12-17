@@ -7,6 +7,7 @@
 
 START_DIR={{ home_dir }}
 DOCKER_COMPOSE=/usr/local/bin/docker-compose
+DOCKER=/usr/bin/docker
 
 start() {
     $DOCKER_COMPOSE up --detach
@@ -16,6 +17,13 @@ stop() {
     # The --volumes option is so that the rails-static volume is removed on
     # shutdown. It will be recreated again on startup which is what we want.
     $DOCKER_COMPOSE down --volumes
+}
+
+stop-web() {
+    # Should be faster since the db and cache containers stay up
+    $DOCKER_COMPOSE rm --stop --force web app
+    # Make sure the rails-static volume is refreshed
+    $DOCKER volume rm th_rails_static
 }
 
 cd $START_DIR
@@ -34,12 +42,17 @@ case "$1" in
         start
         ;;
 
+    reload)
+        stop-web
+        start
+        ;;
+
     status)
         $DOCKER_COMPOSE ps --services --filter status=running
         ;;
 
     *)
-        echo "Usage: $0 {start|stop|status|restart}"
+        echo "Usage: $0 {start|stop|status|restart|reload}"
         ;;
 
 esac

@@ -110,6 +110,7 @@ shell:
 EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
 D=docker
 DC=docker-compose
+DC_PROD=docker-compose -f docker-compose-prod.yml
 DCC=-$(DC) $(EXEC_OR_RUN) app bash -c
 
 join:
@@ -205,22 +206,22 @@ onetest:
 
 # (Use these if you want to run the prod container locally)
 shell-prod: local-config prod-secrets prod-prerelease
-	-$(DC) -f docker-compose-prod.yml run --rm app bash
+	-$(DC_PROD) run --rm app bash
 
 join-prod:
-	-$(DC) -f docker-compose-prod.yml exec app bash -c bash
+	-$(DC_PROD) exec app bash -c bash
 
 start-prod: local-config prod-secrets prod-prerelease
-	-$(DC) -f docker-compose-prod.yml up
+	-$(DC_PROD) up
 
 #----------------------------------------------------------
 
 # Stop and remove containers, clean up unused images
 cleanup:
 	$(DC) stop
-	$(DC) -f docker-compose-prod.yml stop
+	$(DC_PROD) stop
 	$(DC) rm -f
-	$(DC) -f docker-compose-prod.yml rm -f
+	$(DC_PROD) rm -f
 	$(D) image prune -f
 
 ## FIXME: I don't think this works any more since switching to the new email format
@@ -341,20 +342,22 @@ prod-assets:
 	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:clean assets:precompile"
 
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties gzip-core-js-files
-	$(DC) -f docker-compose-prod.yml build app
+	$(DC_PROD) build app
 
 fast-build-prod: prod-assets build-info
-	$(DC) -f docker-compose-prod.yml build app
+	$(DC_PROD) build app
 
 push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost
 
-build-push:          tests build-prod push-prod
-build-full-deploy:   build-push full-deploy
-build-deploy:        build-push deploy-app
-fast-build-deploy:   build-push fast-upgrade
-faster-build-deploy: build-push faster-upgrade
-fastest-build-deploy: fast-build-prod push-prod faster-upgrade
+# Fixme: There are too many options here...
+build-push:            tests build-prod push-prod
+build-full-deploy:     build-push full-deploy
+build-deploy:          build-push deploy-app
+build-upgrade:         build-push upgrade
+fast-build-upgrade:    build-push fast-upgrade
+faster-build-upgrade:  build-push faster-upgrade
+fastest-build-upgrade: fast-build-prod push-prod faster-upgrade
 
 ifdef LIMIT
   LIMIT_OPT=-l $(LIMIT)
@@ -389,11 +392,14 @@ deploy-cleanup:
 deploy-foo:
 	$(PLAY) ansible/deploy.yml --tags=foo --diff
 
+upgrade:
+	$(PLAY) ansible/deploy.yml --tags=app --extra-var fast_restart=true
+
 fast-upgrade:
-	$(PLAY) ansible/deploy.yml --tags=fast-upgrade
+	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --extra-var fast_restart=true
 
 faster-upgrade:
-	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration
+	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration --extra-var fast_restart=true
 
 #----------------------------------------------------------
 

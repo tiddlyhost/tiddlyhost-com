@@ -358,10 +358,23 @@
     - fast-upgrade
     - refresh-prerelease
 
+  # This is slower because it shuts down all four containers and
+  # brings them back up again
   - name: Start/restart service
     systemd:
       name: "{{ service_name }}"
       state: restarted
+    when: not fast_restart
+    tags:
+    - app
+    - fast-upgrade
+
+  # This is faster because it restarts the rails container only
+  - name: Restart/upgrade rails container
+    systemd:
+      name: "{{ service_name }}"
+      state: reloaded
+    when: fast_restart
     tags:
     - app
     - fast-upgrade
