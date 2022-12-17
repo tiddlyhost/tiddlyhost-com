@@ -105,4 +105,8 @@ class Settings
     !!(Settings::Features.respond_to?(enabled_method_name) && Settings::Features.send(enabled_method_name, user))
   end
 
+  def self.feature_list
+    (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map{|m| m.to_s.sub(/_enabled\?/, '').to_sym}).uniq.sort
+  end
+
 end

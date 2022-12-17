@@ -61,6 +61,12 @@ module ApplicationHelper
     bool_val ? true_text : false_text
   end
 
+  def bool_icon(bool_val)
+    bool_val ?
+      bi_icon('check-circle', fill: "green") :
+      bi_icon('dash-circle-dotted', fill: "#aaa")
+  end
+
   def as_megabytes(bytes, precision: 2)
     return '-' if bytes.nil?
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
