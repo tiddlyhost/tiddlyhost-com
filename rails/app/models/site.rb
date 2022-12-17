@@ -66,16 +66,16 @@ class Site < ApplicationRecord
     th_file.looks_valid?
   end
 
-  def html_content(signed_in_user: nil)
+  def html_content(is_logged_in: false)
     th_file.apply_tiddlyhost_mods(name,
-      signed_in_user: signed_in_user, use_put_saver: use_put_saver?).to_html
+      is_logged_in: is_logged_in, use_put_saver: use_put_saver?).to_html
   end
 
-  def html_content_for_blob_id(blob_id, signed_in_user: nil)
+  def html_content_for_blob_id(blob_id, is_logged_in: false)
     th_file_for_blob_id(blob_id).apply_tiddlyhost_mods(name,
       # Note: There might be some tricky edge cases around the value of use_put_saver?
       # here since it's based on the current site, not the specific version being fetched
-      signed_in_user: signed_in_user, use_put_saver: use_put_saver?).to_html
+      is_logged_in: is_logged_in, use_put_saver: use_put_saver?).to_html
   end
 
   def json_data(opts={})

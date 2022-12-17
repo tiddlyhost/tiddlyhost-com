@@ -18,8 +18,8 @@ module SiteHistory
   end
 
   def view_version
-    render html: @site.html_content_for_blob_id(@blob_id,
-      signed_in_user: current_user.username_or_email).html_safe
+    # (Not sure what's best for is_logged_in here but it probably doesn't matter much)
+    render html: @site.html_content_for_blob_id(@blob_id, is_logged_in: true).html_safe
   end
 
   def download_version

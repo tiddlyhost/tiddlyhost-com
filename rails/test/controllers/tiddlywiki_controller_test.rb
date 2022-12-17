@@ -299,7 +299,6 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         # Status tiddlers when signed in
         is_owner = (user == site.user)
         assert_equal(is_owner ? 'yes' : 'no', th_file.tiddler_content('$:/status/IsLoggedIn'))
-        assert_equal(is_owner ? user.username : '', th_file.tiddler_content('$:/status/UserName'))
       end
 
       th_file

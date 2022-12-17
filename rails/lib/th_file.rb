@@ -55,13 +55,13 @@ class ThFile < TwFile
     self
   end
 
-  def apply_tw5_mods(site_name, for_download: false, local_core: false, use_put_saver: false, signed_in_user: nil)
+  def apply_tw5_mods(site_name, for_download: false, local_core: false, use_put_saver: false, is_logged_in: false)
     upload_url = if for_download || use_put_saver
       # Clear $:/UploadURL for downloads so the save button in the downloaded
       # file will not try to use upload.js. It should use another save
       # method, probably download to file.
       #
-      # Todo: Consider if we should do that also when signed_in_user is nil.
+      # Todo: Consider if we should do that also when is_logged_in is nil.
       #
       # Clear $:/UploadURL when using the put saver otherwise TW will
       # prioritize the upload saver
@@ -72,20 +72,15 @@ class ThFile < TwFile
       Settings.subdomain_site_url(site_name)
     end
 
-    if !for_download && signed_in_user
+    if !for_download && is_logged_in
       # Provide a way for TiddlyWiki files to detect when
       # they're being viewed by their owner
       status_is_logged_in = 'yes'
-
-      # Seems like a useful idea to expose the user also
-      status_user_name = signed_in_user
 
     else
       # The readonly plugin might user this to hide tiddler edit buttons, etc.
       status_is_logged_in = 'no'
 
-      # Clear this when downloading or if it's not your site
-      status_user_name = ''
     end
 
     write_tiddlers({
@@ -103,7 +98,6 @@ class ThFile < TwFile
 
       # Provide a way for TiddlyWikis to detect when they're able to be saved
       '$:/status/IsLoggedIn' => status_is_logged_in,
-      '$:/status/UserName' => status_user_name,
     })
 
     # Add a prefix to the core js src url for external core TiddlyWikis
@@ -141,10 +135,10 @@ class ThFile < TwFile
     })
   end
 
-  def apply_tiddlyhost_mods(site_name, for_download: false, local_core: false, use_put_saver: false, signed_in_user: nil)
+  def apply_tiddlyhost_mods(site_name, for_download: false, local_core: false, use_put_saver: false, is_logged_in: false)
     if is_tw5?
       apply_tw5_mods(site_name,
-        for_download: for_download, local_core: local_core, use_put_saver: use_put_saver, signed_in_user: signed_in_user)
+        for_download: for_download, local_core: local_core, use_put_saver: use_put_saver, is_logged_in: is_logged_in)
 
     elsif is_classic?
       apply_classic_mods(site_name)

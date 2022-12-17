@@ -33,8 +33,7 @@ class TiddlywikiController < ApplicationController
 
     update_view_count_and_access_timestamp
 
-    signed_in_user = current_user.username_or_email if user_owns_site?
-    render html: @site.html_content(signed_in_user: signed_in_user).html_safe
+    render html: @site.html_content(is_logged_in: user_owns_site?).html_safe
   end
 
   def json_content
