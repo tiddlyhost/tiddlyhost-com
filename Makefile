@@ -305,9 +305,12 @@ external-core-files-%: create-external-core-files-%
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME).html
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME)/$*.html
 
+# Should be no need to rebuild older versions
+#  external-core-files-5.2.3 \
+#  external-core-files-5.2.4 \
+#
 external-core-files: \
-  external-core-files-5.2.3 \
-  external-core-files-5.2.4
+  external-core-files-5.2.5
 
 # Run this at build time since I don't want to check in the gzipped files
 gzip-core-js-files:
