@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# Bash script showing how to use curl to save to a Tiddlyhost site.
+#
+# Example usage:
+#   ./thost-uploader yoursite newcontent.html youremail@example.com yourpassword
+#
+# To avoid including your password in scripts, you could do something like
+# this for example:
+#   echo yourpassword > ~/.thostpass
+#   chmod 600 ~/.thostpass
+#
+# Then:
+#   ./thost-uploader yoursite newcontent.html youremail@example.com $(cat ~/.thostpass)
+#
+
+show_usage() {
+  echo Usage:
+  echo "  $0 <sitename> <tiddlywikifile> <email> <password>"
+  exit 1
+}
+
+SITE=$1
+FILE=$2
+EMAIL=$3
+PASSWD=$4
+
+DOWNLOAD_DIR=${DOWNLOAD_DIR:-.}
+mkdir -p $DOWNLOAD_DIR
+
+[[ -z "$SITE" ]] && show_usage
+[[ -z "$FILE" ]] && show_usage
+[[ -z "$EMAIL" ]] && show_usage
+[[ -z "$PASSWD" ]] && show_usage
+
+[[ ! -r "$FILE" ]] && echo "Can't read file $FILE!" && exit 1
+
+TIDDLYHOST=tiddlyhost.com
+SIGN_IN=https://$TIDDLYHOST/users/sign_in
+COOKIES=$(mktemp)
+CURL="curl -s --cookie-jar $COOKIES --cookie $COOKIES"
+
+# Read authenticity_token
+TOKEN=$( $CURL $SIGN_IN | grep '"csrf-token"' | cut -d'"' -f4 )
+
+# Log in
+$CURL -X POST $SIGN_IN \
+  -d "authenticity_token=$TOKEN" \
+  -d "user[email]=$EMAIL" \
+  -d "user[password]=$PASSWD" \
+  > /dev/null
+
+# Confirm that auth worked
+OK=$( $CURL -I "https://$TIDDLYHOST/sites" | head -1 | grep '200 OK' )
+[[ -z "$OK" ]] && echo "Authentication failed." && exit 1
+
+# Download a copy just in case something goes wrong
+$CURL "https://$SITE.$TIDDLYHOST/download" -o $DOWNLOAD_DIR/$SITE.$(date +%Y%m%d%H%M%S).backup.html
+
+# Now upload the new TiddlyWiki file
+OK=$( $CURL -i -X PUT --data-binary "@$FILE" \
+  -H "Content-Type: text/html;charset=UTF-8" \
+  "https://$SITE.$TIDDLYHOST/" | grep '204 No Content')
+
+# 204 means it worked
+if [[ -z "$OK" ]]; then
+  echo "Upload failed." && exit 1
+else
+  echo "Uploaded $FILE to https://$SITE.$TIDDLYHOST/"
+fi
+
+# Clean up
+rm $COOKIES
