@@ -90,17 +90,21 @@ module HubQuery
 
     # Return paginated collection
     WillPaginate::Collection.create(page||1, per_page) do |pager|
-      # Combine the two queries with a union and paginate the combined results.
-      sql = qs.map(&:to_sql).map{|q|"( #{q} )"}.join(" UNION ") +
-        "ORDER BY #{sort_by} LIMIT #{pager.per_page} OFFSET #{pager.offset}"
+      # Combine the two queries with a union and apply the sorting
+      full_query_sql = qs.map(&:to_sql).map{|q|"( #{q} )"}.join(" UNION ") + "ORDER BY #{sort_by}"
 
-      # A mixed list of Site & TspotSite records
-      results = ActiveRecord::Base.connection.execute(sql).pluck('type', 'id').map do |s_type, s_id|
+      # For paginated results
+      paged_query_sql = "#{full_query_sql} LIMIT #{pager.per_page} OFFSET #{pager.offset}"
+
+      # Returns a mix of Site & TspotSite records
+      results = ActiveRecord::Base.connection.execute(paged_query_sql).pluck('type', 'id').map do |s_type, s_id|
         const_get(s_type).find(s_id)
       end
-
       pager.replace(results)
-      pager.total_entries = qs.map{ |q| q.count(:id) }.sum
+
+      # Find the total result count
+      result_count = ActiveRecord::Base.count_by_sql("select count(*) from (#{full_query_sql}) as foo")
+      pager.total_entries = result_count
     end
 
   end
