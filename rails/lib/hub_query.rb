@@ -83,13 +83,16 @@ module HubQuery
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
     qs.map! { |q| q.search_for(search) } if search.present?
 
+    # The idea here is the row selected by the DISTINCT ON should be
+    # the most recent one, i.e. with the newest blob_created_at.
+    # 1, 2 here means the first two columns, i.e. type and id.
+    qs.map! { |q| q.order("1, 2, blob_created_at DESC") }
+
     # Return paginated collection
     WillPaginate::Collection.create(page||1, per_page) do |pager|
       # Combine the two queries with a union and paginate the combined results.
-      # (The blob_created_at sort is important for the SELECT DISTINCT ON above.
-      # The idea is the row selected for the distinct will be the most recent one.)
-      sql = qs.map(&:to_sql).join(" UNION ") +
-        " ORDER BY #{sort_by}, blob_created_at DESC LIMIT #{pager.per_page} OFFSET #{pager.offset}"
+      sql = qs.map(&:to_sql).map{|q|"( #{q} )"}.join(" UNION ") +
+        "ORDER BY #{sort_by} LIMIT #{pager.per_page} OFFSET #{pager.offset}"
 
       # A mixed list of Site & TspotSite records
       results = ActiveRecord::Base.connection.execute(sql).pluck('type', 'id').map do |s_type, s_id|
