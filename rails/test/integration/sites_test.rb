@@ -34,7 +34,7 @@ class SitesTest < CapybaraIntegrationTest
     assert site.looks_valid?
 
     # Visit the site and confirm it looks like a TiddlyWiki
-    click_on "bar.example.com"
+    click_on "bar"
     assert_is_tiddlywiki
 
     # Sign out and confirm the site is still available
@@ -171,7 +171,7 @@ class SitesTest < CapybaraIntegrationTest
 
     # Back to the sites index after update
     assert_current_path '/sites'
-    assert_selector "a", text: "foo.example.com"
+    assert_selector 'a[href="http://foo.example.com"]', text: "foo"
   end
 
   test "uploading a site" do

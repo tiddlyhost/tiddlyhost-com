@@ -80,7 +80,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's visible
     visit '/sites'
-    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com'
+    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
 
     # Disown it
     click_on "Disown"
@@ -101,7 +101,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's visible
     visit '/sites'
-    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com'
+    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
 
     # Delete it
     click_on "Delete"
