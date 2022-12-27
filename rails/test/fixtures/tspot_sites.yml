@@ -18,3 +18,7 @@ mulder:
 privatestuff:
   id: 5
   name: privatestuff
+deletedsite:
+  id: 7
+  name: deletedsite
+  deleted: true

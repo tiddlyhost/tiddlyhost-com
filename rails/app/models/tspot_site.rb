@@ -27,6 +27,8 @@ class TspotSite < ApplicationRecord
   scope :no_stubs, -> { where.not(htpasswd: nil) }
   scope :stubs, -> { where(htpasswd: nil) }
 
+  scope :not_deleted, -> { where(deleted: false) }
+
   # The TspotFetcher class knows how to fetch a site from the
   # dreamhost bucket. It can also determine if the site is public
   # or private, and can fetch the htpasswd file for auth checks.
@@ -102,7 +104,7 @@ class TspotSite < ApplicationRecord
   # the fetcher to populate its content and metadata.
   #
   def self.find_and_populate(site_name, ip_address=nil)
-    find_by_name(site_name)&.ensure_destubbed(ip_address)
+    not_deleted.find_by_name(site_name)&.ensure_destubbed(ip_address)
   end
 
   def use_legacy_password?

@@ -71,6 +71,12 @@ class TspotSitesController < ApplicationController
     redirect_to sites_path
   end
 
+  # POST /tspot_sites/1/delete
+  def delete
+    @site.update(deleted: true)
+    redirect_to sites_path
+  end
+
   # GET /tspot_sites/1/change_password
   def change_password
   end

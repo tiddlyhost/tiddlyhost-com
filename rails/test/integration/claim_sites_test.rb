@@ -86,9 +86,31 @@ class ClaimSitesTest < CapybaraIntegrationTest
     click_on "Disown"
     assert_current_path '/sites'
 
-    # Confirm it's no longer visible# and it was really disowned
+    # Confirm it's no longer visible and it was really disowned
     assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com', count: 0
     assert_nil site.reload.user
   end
+
+  test "delete" do
+    # User bobby owns a site
+    site = TspotSite.find_by_name('mysite')
+    site.update!(user: users(:bobby))
+
+    # Make it so there's only one delete link for convenience
+    Site.find_by_name('mysite').update(user: users(:mary))
+
+    # Confirm it's visible
+    visit '/sites'
+    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com'
+
+    # Delete it
+    click_on "Delete"
+    assert_current_path '/sites'
+
+    # Confirm it's no longer visible and it was really deleted
+    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com', count: 0
+    assert site.reload.deleted?
+  end
+
 
 end

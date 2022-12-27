@@ -21,6 +21,14 @@ class TspotSiteTest < ActiveSupport::TestCase
     assert stub_site.is_stub?
   end
 
+  test "deleting" do
+    refute @site.deleted?
+    assert TspotSite.not_deleted.include?(@site)
+
+    @site.update(deleted: true)
+    refute TspotSite.not_deleted.include?(@site)
+  end
+
   def assert_legacy_password(passwd=@old_passwd)
     assert_nil @site.password_digest
     assert @site.use_legacy_password?

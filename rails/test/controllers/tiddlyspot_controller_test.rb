@@ -19,15 +19,10 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
   def mocked_site(name)
     host! "#{name}.#{Settings.tiddlyspot_host}"
 
-    if TspotSite.find_by_name(name)
-      mock = mock_helper do |m|
-        m.expect(:name, name)
-        m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
-        m.expect(:html_file, 'some site html')
-      end
-    else
-      # Non-existing sites don't need to mock a fetcher
-      mock = nil
+    mock = mock_helper do |m|
+      m.expect(:name, name)
+      m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
+      m.expect(:html_file, 'some site html')
     end
 
     yield mock if block_given?
@@ -126,11 +121,16 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
-  test "viewing a site that doesn't exist" do
-    mock = mocked_site('notexist')
+  test "viewing site that was deleted" do
+    host! "deletedsite.#{Settings.tiddlyspot_host}"
+    get '/'
+    assert_404
+  end
 
-    with_mocked_site(mock) { get '/' }
-    assert_404(mock)
+  test "viewing a site that doesn't exist" do
+    host! "notexist.#{Settings.tiddlyspot_host}"
+    get '/'
+    assert_404
   end
 
   test "viewing a stubbed site will cause it to be populated" do
@@ -165,7 +165,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_mock mock
   end
 
-  def assert_404(mock)
+  def assert_404(mock=nil)
     assert_response 404
     assert_select 'h1', '404 Not Found', response.body
     assert_mock mock if mock

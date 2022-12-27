@@ -47,7 +47,7 @@ module HubQuery
       # per site, and the `blob_created_at DESC` (hopefully) means the row with
       # the newest blob is the one that is kept, which is exactly what is needed.
       #
-      Site.with_blobs_for_query.select(
+      Site.with_blobs_for_query.not_deleted.select(
         "DISTINCT ON (type, id) " +
         "'Site' AS type",
         :id,
@@ -61,7 +61,7 @@ module HubQuery
         *extra_fields_in_select
       ),
 
-      TspotSite.with_blobs_for_query.select(
+      TspotSite.with_blobs_for_query.not_deleted.select(
         "DISTINCT ON (type, id) " +
         "'TspotSite' AS type",
         :id,

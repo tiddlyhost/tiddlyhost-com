@@ -20,6 +20,9 @@ class Site < ApplicationRecord
 
   scope :templates_only, -> { where(is_private: false, allow_public_clone: true) }
 
+  # For compatibility with tspot sites
+  scope :not_deleted, -> { all }
+
   validates :name,
     presence: true,
     uniqueness: true,
@@ -166,6 +169,10 @@ class Site < ApplicationRecord
   end
 
   def is_tspot?
+    false
+  end
+
+  def deleted?
     false
   end
 

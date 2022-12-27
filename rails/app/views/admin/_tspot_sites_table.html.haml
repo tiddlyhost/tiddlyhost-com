@@ -26,6 +26,8 @@
     %th= sort_link 'Last update'
     %th= sort_link 'Created IP'
     %th= sort_link 'Created'
+    -unless params[:deleted]
+      %th= sort_link 'Deleted'
 
 %tbody
   -@records.each do |site|
@@ -55,3 +57,5 @@
       %td= nice_timestamp site.blob_created_at
       %td= site.created_ip
       %td= nice_timestamp site.created_at
+      -unless params[:deleted]
+        %td= bool_text site.deleted?

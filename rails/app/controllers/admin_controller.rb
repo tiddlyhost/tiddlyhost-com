@@ -132,6 +132,11 @@ class AdminController < ApplicationController
       '0' => { title: 'legacy password', filter: ->(r){ r.where(password_digest: nil) } },
     },
 
+    deleted: {
+      '1' => { title: 'deleted', filter: ->(r){ r.where.not(deleted: false) } },
+      '0' => { title: 'not deleted', filter: ->(r){ r.where(deleted: false) } },
+    },
+
     kind: {
       filter: ->(r, kind){ r.where(tw_kind: kind) },
     },

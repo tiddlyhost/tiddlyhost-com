@@ -38,6 +38,10 @@
       =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
         data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
 
+      .dropdown-divider
+      =link_to(delete_tspot_site_path(site), method: :post, class: 'dropdown-item',
+        data: { confirm: "Beware there's no way to undo this action and there's no way to recreate the site once it has been deleted. Are you sure you want to delete '#{site.name}.tiddlyspot.com' forever?" }) { bi_icon('trash') + 'Delete' }
+
     -else
       =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
 

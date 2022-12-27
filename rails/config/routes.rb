@@ -97,6 +97,7 @@ Rails.application.routes.draw do
         member do
           get :download
           post :disown
+          post :delete
 
           get :change_password
           patch :change_password_submit
