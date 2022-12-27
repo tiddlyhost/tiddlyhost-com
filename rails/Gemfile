@@ -36,6 +36,9 @@ gem 'devise-security'
 # Pagination
 gem 'will_paginate'
 
+# Used in TspotSite for redirect url
+gem 'validate_url'
+
 # https://github.com/mbleigh/acts-as-taggable-on
 gem 'acts-as-taggable-on', '~> 7.0'
 

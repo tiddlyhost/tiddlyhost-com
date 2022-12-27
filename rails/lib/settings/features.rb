@@ -11,4 +11,9 @@ module Settings::Features
     user&.is_admin?
   end
 
+  def redirect_tspot_to_url_enabled?(user)
+    # Later: users with a subscription
+    user&.is_admin?
+  end
+
 end

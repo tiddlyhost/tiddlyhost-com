@@ -127,6 +127,34 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_404
   end
 
+  test "redirect to url" do
+    site = TspotSite.find_by_name('mysite')
+    site.content_upload("hey now")
+    site.update(redirect_to_url: 'http://some-url.example.com', is_private: false)
+
+    host! "mysite.#{Settings.tiddlyspot_host}"
+    get '/'
+    # Actually it is not redirected yet, because of the feature flag
+    assert_response :success
+
+    # Enable the feature (in a clunky way)
+    # Todo: Should have a good way to stub feature flags
+    site.update(user_id: 1)
+    site.user.update(plan_id: 2)
+
+    host! "mysite.#{Settings.tiddlyspot_host}"
+    get '/'
+    assert_redirected_to 'http://some-url.example.com'
+  end
+
+  test "redirect to thost site" do
+    site = TspotSite.find_by_name('mysite')
+    site.update(redirect_to_site_id: 1)
+    host! "mysite.#{Settings.tiddlyspot_host}"
+    get '/'
+    assert_redirected_to 'http://mysite.example.com'
+  end
+
   test "viewing a site that doesn't exist" do
     host! "notexist.#{Settings.tiddlyspot_host}"
     get '/'

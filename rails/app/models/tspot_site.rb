@@ -7,6 +7,8 @@ class TspotSite < ApplicationRecord
   # This is the same as one of the default validations
   validates_confirmation_of :password, allow_blank: true
 
+  validates :redirect_to_url, url: { allow_blank: true }
+
   # This one is different. The allow_nil is added so we can update
   # sites with legacy passwords.
   validates_length_of :password, allow_nil: true,
@@ -14,6 +16,9 @@ class TspotSite < ApplicationRecord
     minimum: 6
 
   include SiteCommon
+
+  # Will be nil mostly. (Has no foreign key constraint.)
+  belongs_to :redirect_to_site, optional: true, class_name: 'Site'
 
   # Some duck typing for hub rendering
   alias_attribute :view_count, :access_count
@@ -150,6 +155,8 @@ class TspotSite < ApplicationRecord
   # True if any non-default advanced settings are present
   def has_advanced_settings?
     return true if allow_in_iframe?
+    return true if redirect_to_url.present?
+    return true if redirect_to_site_id.present?
     false
   end
 
@@ -167,6 +174,21 @@ class TspotSite < ApplicationRecord
 
   def is_tspot?
     true
+  end
+
+  def redirect_to
+    if redirect_to_site.present?
+      redirect_to_site.url
+
+    elsif redirect_tspot_to_url_enabled? && redirect_to_url.present?
+      redirect_to_url
+
+    end
+  end
+
+  # Todo: define this dynamically
+  def redirect_tspot_to_url_enabled?
+    Settings.feature_enabled?(:redirect_tspot_to_url, user)
   end
 
   # No site history for tspot sites

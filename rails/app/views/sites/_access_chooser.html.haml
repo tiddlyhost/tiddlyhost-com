@@ -3,6 +3,11 @@
   =f.label nil do
     Access
 
+  -if @site.redirect_to.present?
+    .form-text.m-1.no-hover.fw-bold
+      =bi_icon('exclamation-circle', fill: 'orange', style: 'margin-right: -1px;')
+      Note: A redirect is in effect for this site. See details in <i>Advanced settings</i> below.
+
   -%w[ public private hub_listed ].each do |choice|
     -is_selected = @site.send("access_#{choice}?")
 

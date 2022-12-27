@@ -110,7 +110,7 @@ class TspotSitesController < ApplicationController
   def site_params_for_update
     params.
       require(:tspot_site).
-      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe)
+      permit(:name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe, :redirect_to_site_id, :redirect_to_url)
   end
 
   def site_params_for_change_password

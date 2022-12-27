@@ -5,6 +5,7 @@ class TiddlyspotController < ApplicationController
   include SubdomainCommon
 
   before_action :find_site, only: [:serve, :download, :thumb_png, :save]
+  before_action :redirect_maybe, only: [:serve] # Todo: consider the others
   before_action :authenticate, only: [:serve, :download, :thumb_png], if: :auth_required?
 
   skip_before_action :verify_authenticity_token, only: [:save, :options]
@@ -64,6 +65,10 @@ class TiddlyspotController < ApplicationController
     @site_name = request.subdomain
     @site = TspotSite.find_and_populate(@site_name, request.ip)
     render :site_not_found, status: 404 unless @site
+  end
+
+  def redirect_maybe
+    redirect_to @site.redirect_to if @site.redirect_to.present?
   end
 
   def auth_required?

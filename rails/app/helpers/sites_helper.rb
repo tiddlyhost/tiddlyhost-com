@@ -27,7 +27,9 @@ module SitesHelper
   end
 
   def site_access(site)
-    access_type = if site.access_hub_listed?
+    access_type = if site.redirect_to.present?
+      "redirected"
+    elsif site.access_hub_listed?
       "hub_listed"
     elsif site.access_public?
       "public"
@@ -45,7 +47,9 @@ module SitesHelper
       width: '0.95em',
     }.merge(opts)
 
-    case access_type when "hub_listed"
+    case access_type when "redirected"
+      bi_icon('arrow-right-circle', opts)
+    when "hub_listed"
       bi_icon('search-heart', opts)
     when "public"
       bi_icon('eye', opts)

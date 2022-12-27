@@ -176,6 +176,10 @@ class Site < ApplicationRecord
     false
   end
 
+  def redirect_to
+    nil
+  end
+
   # If site history is enabled then keep many saves otherwise
   # only keep one. See also app/jobs/prune_attachments_job.
   def keep_count

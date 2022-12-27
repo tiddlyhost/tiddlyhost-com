@@ -254,6 +254,9 @@ GEM
     timeout (0.3.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    validate_url (1.0.15)
+      activemodel (>= 3.0.0)
+      public_suffix
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -308,6 +311,7 @@ DEPENDENCIES
   spicy-proton
   stripe (>= 2.8, < 6.0)
   tzinfo-data
+  validate_url
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)
