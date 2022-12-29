@@ -81,8 +81,12 @@ module WithSavedContent
     }
   end
 
-  def self.attachment_params(new_content)
+  # Todo: Refactor and make this less clunky. Perhaps make use of
+  # `saved_content_files.attach` which would be more typical.
+  #
+  def self.attachment_params(new_content, record=nil)
     tw_kind, tw_version = TwFile.light_get_kind_and_version(new_content)
+    current_attachables = record.present? ? record.saved_content_files.blobs : []
     {
       # Record the uncompressed size before it gets compressed
       raw_byte_size: new_content.bytesize,
@@ -91,8 +95,11 @@ module WithSavedContent
       tw_kind: tw_kind,
       tw_version: tw_version,
 
-      # It will append since our config has replace_on_assign_to_many set to false
-      saved_content_files: [attachable_hash(new_content)],
+      # We want to append the new attachment to the existing attachments. By default
+      # rails won't do that, so that's why we include the existing blobs here.
+      # (Reproduces the `replace_on_assign_to_many` config behavior from Rails 6)
+      #
+      saved_content_files: [*current_attachables, attachable_hash(new_content)],
 
       # The old way:
       #tiddlywiki_file: attachable_hash(new_content),
@@ -127,10 +134,8 @@ module WithSavedContent
     content_upload(params_userfile.read)
   end
 
-  # The tiddlywiki_file attribute is an attachment. Updating that
-  # field is enough to make rails handle the new attachment upload
   def content_upload(new_content)
-    update(WithSavedContent.attachment_params(new_content))
+    update(WithSavedContent.attachment_params(new_content, self))
 
     # See below
     prune_attachments_later

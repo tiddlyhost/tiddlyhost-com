@@ -34,7 +34,7 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal "some content", user_query.first.file_download
 
     # Save another attachment and still there is only one result
-    @site.update(saved_content_files: [WithSavedContent.attachable_hash("new content")])
+    @site.saved_content_files.attach([WithSavedContent.attachable_hash("new content")])
     assert_equal 1, user_query.count
     assert_equal "new content", user_query.first.file_download
 

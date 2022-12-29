@@ -108,11 +108,11 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   def upload_content(site, content)
-    site.update(saved_content_files: [WithSavedContent.attachable_hash(content)])
+    site.saved_content_files.attach([WithSavedContent.attachable_hash(content)])
   end
 
   def upload_legacy_content(site, content)
-    site.update(tiddlywiki_file: WithSavedContent.attachable_hash(content))
+    site.tiddlywiki_file.attach(WithSavedContent.attachable_hash(content))
   end
 
   test "attachment behavior" do

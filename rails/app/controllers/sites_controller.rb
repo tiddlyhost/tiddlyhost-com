@@ -205,7 +205,7 @@ class SitesController < ApplicationController
     params.
       require(:site).
       permit(:saved_content_files).
-      merge(WithSavedContent.attachment_params(new_content))
+      merge(WithSavedContent.attachment_params(new_content, @site))
   end
 
   # Sets @site_to_clone which will be nil if there's no clone param or if the
