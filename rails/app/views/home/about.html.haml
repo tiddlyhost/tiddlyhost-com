@@ -64,9 +64,30 @@
   %tr
     %td.p-1.pe-3.text-muted Built:
     %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
-  %tr
-    %td.p-1.pe-3.text-muted Branch:
-    %td.p-1= github_history_link_to(@build_info['branch'])
-  %tr
-    %td.p-1.pe-3.text-muted SHA:
-    %td.p-1= github_history_link_to(@build_info['short_sha'], @build_info['sha'])
+
+  -if feature_enabled?(:admin)
+    %tr
+      %td.p-1.pe-3.text-muted Branch:
+      %td.p-1= github_history_link_to(@build_info['branch'])
+
+    %tr
+      %td.p-1.pe-3.text-muted SHA:
+      %td.p-1= github_history_link_to(@build_info['short_sha'], @build_info['sha'])
+
+    %tr
+      %td.p-1.pe-3.text-muted Rails:
+      %td.p-1
+        =image_tag('rails-logo-sml.png', style: "height: 1.4em; width: 1.4em; margin-top: -4px;")
+        =Rails.gem_version
+
+    %tr
+      %td.p-1.pe-3.text-muted Ruby:
+      %td.p-1
+        =image_tag('ruby-logo-sml.png', style: "height: 1.2em; width: 1.2em; margin-right: 0.2em; margin-top: -4px;")
+        =RUBY_VERSION
+
+    %tr
+      %td.p-1.pe-3.text-muted Psql:
+      %td.p-1
+        =image_tag('psql-logo-sml.png', style: "height: 1.3em; width: 1.3em; margin-right: 0.1em;")
+        =ActiveRecord::Base.connection.select_value('SHOW SERVER_VERSION')
