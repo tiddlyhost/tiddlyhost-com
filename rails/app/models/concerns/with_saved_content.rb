@@ -135,7 +135,8 @@ module WithSavedContent
   end
 
   def content_upload(new_content)
-    update(WithSavedContent.attachment_params(new_content, self))
+    ok = update(WithSavedContent.attachment_params(new_content, self))
+    return if !ok
 
     # See below
     prune_attachments_later

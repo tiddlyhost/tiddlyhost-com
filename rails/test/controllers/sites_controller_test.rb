@@ -99,6 +99,31 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sites_url
   end
 
+  test "uploads" do
+    # Just so we can also confirm the save history is preserved when uploading
+    @site.content_upload("hey")
+    assert_nil @site.reload.tw_kind
+    assert_equal 1, @site.saved_version_count
+
+    # For something to upload, let's use a feather wiki empty
+    file_to_upload = fixture_file_upload(
+      "#{Rails.root}/tw_content/empties/feather.html", "text/html;charset=UTF-8")
+
+    # Do the upload
+    assert_enqueued_with(job: PruneAttachmentsJob) do
+      patch upload_site_url(@site), params: { site: { tiddlywiki_file: file_to_upload } }
+    end
+    assert_redirected_to sites_url
+
+    # Smoke test
+    assert_equal "feather", @site.reload.tw_kind
+    assert_equal 2, @site.saved_version_count
+
+    # It's tested elsewhere, but anyhow...
+    PruneAttachmentsJob.perform_now('Site', @site.id)
+    assert_equal 1, @site.reload.saved_version_count
+  end
+
   test "should destroy site" do
     assert_difference('Site.count', -1) do
       delete site_url(@site)

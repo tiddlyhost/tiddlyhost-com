@@ -144,13 +144,10 @@ class SitesController < ApplicationController
   # PATCH/PUT /sites/1/upload
   # PATCH/PUT /sites/1/upload.json
   def upload
-    # (Could consider combining this with update, but for now it's separate)
     respond_to do |format|
-      # Todo: Should probably use @site.content_upload here
-      if @site.update(site_params_for_upload)
+      new_content = params[:site][:tiddlywiki_file].read
+      if @site.content_upload(new_content)
         @site.increment_save_count
-        @site.prune_attachments_later
-        @site.update_thumbnail_later
 
         format.html { redirect_to sites_url, notice: 'Upload to site was successfully completed.' }
         # format.json { render :show, status: :ok, location: @site }
@@ -198,14 +195,6 @@ class SitesController < ApplicationController
       permit(
         :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
         :prefer_put_saver, :prefer_upload_saver, :allow_public_clone)
-  end
-
-  def site_params_for_upload
-    new_content = params[:site][:tiddlywiki_file].read
-    params.
-      require(:site).
-      permit(:saved_content_files).
-      merge(WithSavedContent.attachment_params(new_content, @site))
   end
 
   # Sets @site_to_clone which will be nil if there's no clone param or if the
