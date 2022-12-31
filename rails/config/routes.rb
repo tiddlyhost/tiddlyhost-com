@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     get 'admin/data'
     get 'admin/raw_download'
     get 'admin/csv_data'
+    get 'admin/boom'
 
     get 'hub', to: 'hub#index'
     get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }

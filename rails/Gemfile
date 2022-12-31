@@ -42,6 +42,9 @@ gem 'validate_url'
 # https://github.com/mbleigh/acts-as-taggable-on
 gem 'acts-as-taggable-on', '~> 9.0'
 
+# https://github.com/smartinez87/exception_notification
+gem 'exception_notification'
+
 # Why not...
 gem 'haml-rails'
 

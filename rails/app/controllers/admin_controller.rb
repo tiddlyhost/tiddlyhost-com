@@ -195,6 +195,10 @@ class AdminController < ApplicationController
     render inline: csv_data, content_type: "text/csv"
   end
 
+  def boom
+    raise "Boom!" if params[:boom]
+  end
+
   private
 
   def default_sort

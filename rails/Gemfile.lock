@@ -124,6 +124,9 @@ GEM
       devise (>= 4.3.0)
     docile (1.4.0)
     erubi (1.12.0)
+    exception_notification (4.5.0)
+      actionmailer (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -300,6 +303,7 @@ DEPENDENCIES
   dalli
   devise
   devise-security
+  exception_notification
   grover
   haml-rails
   jbuilder (~> 2.7)

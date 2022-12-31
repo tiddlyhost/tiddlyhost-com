@@ -76,6 +76,13 @@ Rails.application.configure do
     enable_starttls_auto: true,
   }
 
+  # Send error notifications via email
+  config.middleware.use ExceptionNotification::Rack, email: {
+    email_prefix: '[TH] ',
+    sender_address: Settings.secrets(:email_addresses, :exception_notification_sender),
+    exception_recipients: Settings.secrets(:email_addresses, :exception_notification_recipients),
+  }
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
