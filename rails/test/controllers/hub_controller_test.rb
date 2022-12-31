@@ -48,6 +48,11 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/hub'
   end
 
+  test "bogus sort values" do
+    get '/hub?s=bogus'
+    assert_response :success
+  end
+
   def assert_site_visible(site=@site)
     assert_select(".hub .site##{site.name}", count: 1)
   end

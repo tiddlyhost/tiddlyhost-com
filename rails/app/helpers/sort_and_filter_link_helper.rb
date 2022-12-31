@@ -164,7 +164,7 @@ module SortAndFilterLinkHelper
   DESC_SUFFIX = '_desc'
 
   def sort_opt
-    sort_options[sort_by.to_sym]
+    sort_options[sort_by.to_sym] || sort_options[default_sort_by.to_sym]
   end
 
   def sort_by
