@@ -224,4 +224,18 @@ class SiteTest < ActiveSupport::TestCase
     end
   end
 
+  test "thumbnail job scheduled" do
+    assert_enqueued_with(job: GenerateThumbnailJob) do
+      @site.content_upload("foo123")
+    end
+  end
+
+  test "thumbnail generation" do
+    @site.content_upload("foo123")
+    refute @site.thumbnail.present?
+    GenerateThumbnailJob.perform_now('Site', @site.id)
+    assert @site.reload.thumbnail.present?
+    assert_equal 'image/png', @site.thumbnail.blob.content_type
+  end
+
 end
