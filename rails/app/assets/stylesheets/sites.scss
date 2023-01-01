@@ -109,6 +109,51 @@ table.sites {
     clear: left;
 }
 
+.create-buttons {
+    line-height: 3em;
+
+    .btn-light {
+        font-size: 90%;
+        background-color: #fff;
+        border-color: #f1f2f3;
+        color: #666;
+        svg {
+            fill: #999;
+            height: 1em;
+            width: 1em;
+        }
+    }
+
+    .btn-light:hover, .btn-light:active {
+        background-color: #d3d4d5;
+        border-color: #c6c7c8;
+        color: #111;
+        svg { fill: green !important; }
+    }
+}
+
+.create-buttons, .sites-menu-container {
+    .bg-gradient {
+        // No gradient to start with since it's nearly white anyway
+        background-image: none;
+
+        // A gradient on hover
+        &:hover {
+            // Make it slightly less subtle than the default
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)) !important;
+            color: #555 !important;
+            svg { fill: #555; }
+        }
+
+        // Remove it when clicking
+        &:active, &.show {
+            background-image: none !important;
+            color: #444 !important;
+            svg { fill: #444; }
+        }
+    }
+}
+
 table.history-table {
     thead {
         font-size: 75%;
