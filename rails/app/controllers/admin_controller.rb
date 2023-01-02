@@ -29,19 +29,13 @@ class AdminController < ApplicationController
 
     @sites_with_new_attachments = Site.with_saved_content_files.count
     @sites_with_old_attachments = Site.with_tiddlywiki_file.count
-    @sites_with_both_attachments = Site.with_both_attachments.count
 
     @tspot_sites_with_new_attachments = TspotSite.with_saved_content_files.count
     @tspot_sites_with_old_attachments = TspotSite.with_tiddlywiki_file.count
-    @tspot_sites_with_both_attachments = TspotSite.with_both_attachments.count
 
     @tspot_site_count = TspotSite.no_stubs.count
     @owned_tspot_site_count = TspotSite.owned.count
     @saved_tspot_count = TspotSite.where.not(save_count: 0).count
-
-    # See also fixup-scripts/clean-attachment-dupes.rb
-    @dupe_attachments = ActiveStorage::Attachment.unscoped.where(name: 'tiddlywiki_file').
-      group(:record_type, :record_id).count.select{ |k, c| c > 1 }.count
 
   end
 

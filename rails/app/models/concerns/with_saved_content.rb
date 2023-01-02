@@ -30,7 +30,6 @@ module WithSavedContent
     # For inspecting and reporting purposes
     scope :with_saved_content_files, ->{ joins(saved_content_files_attachments: :blob) } # With new schema
     scope :with_tiddlywiki_file, ->{ joins(tiddlywiki_file_attachment: :blob) } # With legacy schema
-    scope :with_both_attachments, -> { with_saved_content_files.with_tiddlywiki_file } # Should be none
 
   end
 
