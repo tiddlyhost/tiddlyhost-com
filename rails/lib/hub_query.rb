@@ -14,6 +14,13 @@ module HubQuery
   # both found. Beware the order of the left_joins in the with_blobs_for_query
   # scope influences the table names and virtual table names required here.
   #
+  # TODO: Consider if we really need to join the blobs table. There is so much
+  # complexity here related to the 'distinct on' and picking out the latest blob,
+  # and the only real benefit is being able to access the blob's created at timestamp
+  # to know when the site was last saved. Actually the sites updated_at is almost as
+  # good so maybe it's not worth all the hoop jumping. Or we could add another
+  # timestamp for saved_at and have it touched only when a save happens.
+  #
   # To debug:
   #   puts Site.with_blobs_for_query.to_sql.gsub(/(LEFT)/, "\n \\1").gsub(/(ON|AND)/, "\n  \\1")
   #

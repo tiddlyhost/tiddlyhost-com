@@ -53,7 +53,6 @@ class AdminController < ApplicationController
 
   SORT_OPTIONS = {
     accesses: 'access_count',
-    blobmb: 'active_storage_blobs.byte_size',
     clone: 'cloned_from_id',
     clones: 'clone_count',
     created: 'created_at',
@@ -68,7 +67,7 @@ class AdminController < ApplicationController
     kind: 'tw_kind',
     lastaccess: 'accessed_at',
     lastsignin: 'last_sign_in_at',
-    lastupdate: 'active_storage_blobs.created_at',
+    lastupdate: 'updated_at',
     logins: 'sign_in_count',
     name: 'name',
     owner: 'COALESCE(users.username, users.email)',
@@ -156,13 +155,11 @@ class AdminController < ApplicationController
   end
 
   def sites
-    render_records Site.left_joins(
-      :user, :empty, :tiddlywiki_file_attachment, tiddlywiki_file_attachment: :blob)
+    render_records Site.left_joins(:user, :empty)
   end
 
   def tspot_sites
-    render_records TspotSite.left_joins(
-      :user, :tiddlywiki_file_attachment, tiddlywiki_file_attachment: :blob)
+    render_records TspotSite.left_joins(:user)
   end
 
   def raw_download
