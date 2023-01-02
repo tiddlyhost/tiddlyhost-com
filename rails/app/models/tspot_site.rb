@@ -83,14 +83,12 @@ class TspotSite < ApplicationRecord
   end
 
   def self.fetched_site_to_attrs(fetched_site, ip_address=nil)
-    {
+    WithSavedContent.attachment_params(fetched_site.html_file).merge({
       name: fetched_site.name,
       is_private: fetched_site.is_private?,
       htpasswd: fetched_site.htpasswd_file,
-      # (I think it's okay to continue to use the old schema here. This will be removed soon anyhow.)
-      tiddlywiki_file: WithSavedContent.attachable_hash(fetched_site.html_file),
       created_ip: ip_address&.to_s,
-    }
+    })
   end
 
   def fetcher_attrs
