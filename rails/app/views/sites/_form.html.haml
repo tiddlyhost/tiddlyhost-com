@@ -1,5 +1,5 @@
 
-=render layout: 'form_wrapper', locals: { heading: heading, intro_text: kind_summary(@site) } do
+=render layout: 'form_wrapper', locals: { heading: heading } do
 
   =form_for @site do |f|
 
@@ -10,6 +10,10 @@
           %ul
             -@site.errors.full_messages.each do |message|
               %li= message
+
+    -if !@site.new_record? && @site.thumbnail.present?
+      .m-2.mb-4
+        =render 'site_tile_clone', site: @site
 
     =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
       =f.label :name
