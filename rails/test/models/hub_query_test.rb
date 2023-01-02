@@ -53,12 +53,15 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 2, user_query.count
 
     # Sorting sanity
+    new_site.update(raw_byte_size: 101)
+    @site.update(raw_byte_size: 100)
     @site.update(is_private: true)
+
     {
       "created_at" => "mysite",
       "created_at desc" => "bananas",
       "name" => "bananas",
-      "size" => "mysite",
+      "raw_byte_size" => "mysite",
       "is_private desc" => "mysite",
       "is_private asc" => "bananas",
 

@@ -24,10 +24,8 @@ module HubQuery
         :tw_version,
         :is_private,
         :is_searchable,
-        # Have a rough guess if it was never set, (for sites not saved since we started recording raw_byte_size)
-        "COALESCE(raw_byte_size, active_storage_blobs.byte_size * 4) AS raw_size",
+        :raw_byte_size,
         'not is_searchable AS not_searchable',
-        "active_storage_blobs.byte_size AS size",
       ])
   end
 

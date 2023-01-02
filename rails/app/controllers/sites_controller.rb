@@ -17,7 +17,7 @@ class SitesController < ApplicationController
     version: %w[tw_kind tw_version],
     access: %w[not_searchable is_private],
     views: 'view_count',
-    size: 'raw_size',
+    size: 'raw_byte_size',
     origin: 'type,id',
   }.freeze
 
