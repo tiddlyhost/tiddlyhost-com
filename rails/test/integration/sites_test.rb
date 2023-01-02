@@ -82,7 +82,7 @@ class SitesTest < CapybaraIntegrationTest
     # Todo:
     # * The visit site testing should be split up and put elsewhere,
     #   probably tiddlywiki_controller_test.
-    # * ..which would be easier if sites(:mysite).tiddlywiki_file.download
+    # * ..which would be easier if sites(:mysite).current_content.download
     #   returned something, stubbed or otherwise.
     # * Test coverage for saving a site.
     # * Test coverage for saving a site with invalid content.

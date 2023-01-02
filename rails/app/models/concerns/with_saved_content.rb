@@ -3,13 +3,8 @@ module WithSavedContent
   extend ActiveSupport::Concern
 
   included do
-    # The new way to store site contents, replacing tiddlywiki_file.
-    # Site saves now append a new attachment to this list.
+    # Site saves append a new attachment to this list.
     has_many_attached :saved_content_files
-
-    # This field will no longer be written to, but will still be read
-    # for sites that have nothing yet saved to saved_content_files.
-    has_one_attached :tiddlywiki_file
 
     # Set allow_nil here though it's only needed for "stub" tspot sites.
     # (Todo: Remove allow_nil in future once those are gone.)
@@ -19,28 +14,15 @@ module WithSavedContent
     delegate :byte_size, :key, :created_at, :content_type,
       to: :blob, prefix: true, allow_nil: true
 
-    # Used in hub_query, which uses coalesce to pick out the relevant blob
-    scope :with_blobs_for_query, ->{
-      # New schema
-      left_joins(saved_content_files_attachments: :blob).
-        # Deprecated schema
-        left_joins(tiddlywiki_file_attachment: :blob)
-    }
-
-    # For inspecting and reporting purposes
-    scope :with_saved_content_files, ->{ joins(saved_content_files_attachments: :blob) } # With new schema
-    scope :with_tiddlywiki_file, ->{ joins(tiddlywiki_file_attachment: :blob) } # With legacy schema
-
+    # Used in hub_query
+    scope :with_blobs_for_query, ->{ left_joins(saved_content_files_attachments: :blob) }
   end
 
-  # Use the newest attachment from saved_content_files if it's present
-  # otherwise fall back to the attachment in tiddlywiki_file
+  # Use the newest attachment from saved_content_files
   def current_content
-    @_current_content ||= saved_content_files.order('created_at DESC').limit(1).first || tiddlywiki_file
+    @_current_content ||= saved_content_files.order('created_at DESC').limit(1).first
   end
 
-  # Returns zero for sites with a tiddlywiki_file only which is unexpected, but
-  # I want to minimize effort on backwards compatibility with the older schema.
   def saved_version_count
     saved_content_files.count
   end
@@ -99,9 +81,6 @@ module WithSavedContent
       # (Reproduces the `replace_on_assign_to_many` config behavior from Rails 6)
       #
       saved_content_files: [*current_attachables, attachable_hash(new_content)],
-
-      # The old way:
-      #tiddlywiki_file: attachable_hash(new_content),
     }
   end
 
@@ -171,14 +150,8 @@ module WithSavedContent
   end
 
   def prune_attachments_now
-    # No pruning unless saved_content_files attachments are present
-    return unless saved_content_files.attached?
-
     # Remove older attachments, keep the newest
     saved_content_files.order("created_at DESC").offset(keep_count).each(&:purge)
-
-    # Clean up any legacy attachment
-    tiddlywiki_file.purge if tiddlywiki_file.attached?
   end
 
 end

@@ -21,13 +21,8 @@
   =render 'stat_card', title: 'Public sites',         count: @public_count, total: @site_count
   =render 'stat_card', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
   =render 'stat_card', title: 'Hub sites',            count: @searchable_count, total: @site_count
-  %br
-  =render 'stat_card', title: 'Old attach sites',   count: @sites_with_old_attachments, total: @site_count
-  =render 'stat_card', title: 'New attach sites',   count: @sites_with_new_attachments, total: @site_count
 
   -if Settings.tiddlyspot_enabled?
     %br
-    =render 'stat_card', title: 'Old attach tspots',   count: @tspot_sites_with_old_attachments, total: @tspot_site_count
-    =render 'stat_card', title: 'New attach tspots',   count: @tspot_sites_with_new_attachments, total: @tspot_site_count
     =render 'stat_card', title: 'Owned tspots',   count: @owned_tspot_site_count, total: @tspot_site_count
     =render 'stat_card', title: 'Saved tspots',   count: @saved_tspot_count, total: @tspot_site_count

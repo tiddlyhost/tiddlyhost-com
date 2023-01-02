@@ -7,26 +7,12 @@
 # WillPaginate::Collection and some creative hackery... :)
 #
 module HubQuery
-
-  # The blob from saved_content_files association association is preferred over
-  # the blob from the tiddlywiki_file association. Generally only one or the
-  # other would be present, but the coalesce would work correctly if they were
-  # both found. Beware the order of the left_joins in the with_blobs_for_query
-  # scope influences the table names and virtual table names required here.
-  #
   # TODO: Consider if we really need to join the blobs table. There is so much
   # complexity here related to the 'distinct on' and picking out the latest blob,
   # and the only real benefit is being able to access the blob's created at timestamp
   # to know when the site was last saved. Actually the sites updated_at is almost as
   # good so maybe it's not worth all the hoop jumping. Or we could add another
   # timestamp for saved_at and have it touched only when a save happens.
-  #
-  # To debug:
-  #   puts Site.with_blobs_for_query.to_sql.gsub(/(LEFT)/, "\n \\1").gsub(/(ON|AND)/, "\n  \\1")
-  #
-  def self.blob_coalesce(col_name)
-    "COALESCE(active_storage_blobs.#{col_name}, blobs_active_storage_attachments.#{col_name})"
-  end
 
   def self.sites_for_user(user, sort_by:)
     # Not really paginated or hub related...
@@ -39,9 +25,9 @@ module HubQuery
         :is_private,
         :is_searchable,
         # Have a rough guess if it was never set, (for sites not saved since we started recording raw_byte_size)
-        "COALESCE(raw_byte_size, #{blob_coalesce('byte_size')} * 4) AS raw_size",
+        "COALESCE(raw_byte_size, active_storage_blobs.byte_size * 4) AS raw_size",
         'not is_searchable AS not_searchable',
-        "#{blob_coalesce('byte_size')} AS size",
+        "active_storage_blobs.byte_size AS size",
       ])
   end
 
@@ -63,7 +49,7 @@ module HubQuery
         :created_at,
         :allow_public_clone,
         :clone_count,
-        "#{blob_coalesce('created_at')} AS blob_created_at",
+        "active_storage_blobs.created_at AS blob_created_at",
         "RANDOM() AS rand_sort",
         *extra_fields_in_select
       ),
@@ -77,7 +63,7 @@ module HubQuery
         "NULL AS created_at",
         "false AS allow_public_clone",
         "0 AS clone_count",
-        "CASE WHEN save_count = 0 THEN NULL ELSE #{blob_coalesce('created_at')} END AS blob_created_at",
+        "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
         "RANDOM() AS rand_sort",
         *extra_fields_in_select
       ),

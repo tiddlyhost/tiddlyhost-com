@@ -111,65 +111,19 @@ class SiteTest < ActiveSupport::TestCase
     site.saved_content_files.attach([WithSavedContent.attachable_hash(content)])
   end
 
-  def upload_legacy_content(site, content)
-    site.tiddlywiki_file.attach(WithSavedContent.attachable_hash(content))
-  end
-
   test "attachment behavior" do
     # To begin with, site has no content (which is not a
     # realistic scenario, but it's what we have in fixtures.)
-    refute @site.tiddlywiki_file.attached?
     refute @site.saved_content_files.attached?
 
     # Upload some content
     upload_content(@site, "foo123")
-
-    # The old schema is not touched
-    refute @site.tiddlywiki_file.attached?
 
     # The new schema has an attachment now
     assert @site.saved_content_files.attached?
 
     # Sanity check the content
     assert_equal "foo123", @site.file_download
-  end
-
-  test "attachment behavior with tiddlywiki_file" do
-    # Simulate a "legacy" site with an attachment in tiddlywiki_file
-    upload_legacy_content(@site, "bar234")
-    assert @site.tiddlywiki_file.attached?
-    refute @site.saved_content_files.attached?
-
-    # The legacy content is used as expected
-    assert_equal "bar234", @site.file_download
-
-    # Upload to saved_content_files the legacy content is ignored
-    upload_content(@site, "baz345")
-    assert @site.saved_content_files.attached?
-    assert_equal "baz345", @site.reload.file_download
-
-    # ...even though the legacy content is still there
-    assert @site.tiddlywiki_file.attached?
-
-    # Uploading again should append to saved_content_files
-    upload_content(@site, "boop7")
-    assert_equal "boop7", @site.reload.file_download
-    assert_equal 2, @site.saved_content_files.count
-
-    upload_content(@site, "boop8")
-    upload_content(@site, "boop9")
-    assert_equal "boop9", @site.reload.file_download
-    assert_equal 4, @site.saved_content_files.count
-
-    # Pruning the old versions does what we expect
-    @site.prune_attachments_now
-    assert_equal 1, @site.saved_content_files.count
-
-    # It cleans up the legacy attachment as well
-    refute @site.tiddlywiki_file.attached?
-
-    # The latest content is the one kept
-    assert_equal "boop9", @site.reload.file_download
   end
 
   test "prune attachments respects keep count" do
