@@ -224,15 +224,18 @@ cleanup:
 	$(DC_PROD) rm -f
 	$(D) image prune -f
 
-## FIXME: I don't think this works any more since switching to the new email format
-# Use this when you sign up a new user
-signup-link:
-	@$(DCC) 'cat log/development.log | grep "Confirm my account" | tail -1 | cut -d\" -f2'
+#----------------------------------------------------------
 
-## FIXME: I don't think this works any more since switching to the new email format
-# Use this when you click "Forgot password"
+# Get the email confirmation link when you sign up a new user locally.
+# Grep them in the plain text part of the email.
+#
+signup-link:
+	@$(DCC) 'grep "tiddlyhost.local/users/confirmation?confirmation_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
+
+# Get the reset password link after clicking "Forgot your password?" locally
+#
 forgot-link:
-	@$(DCC) 'cat log/development.log | grep "Change my password" | tail -1 | cut -d\" -f2'
+	@$(DCC) 'grep "tiddlyhost.local/users/password/edit?reset_password_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
 
 #----------------------------------------------------------
 
