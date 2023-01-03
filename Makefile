@@ -56,11 +56,12 @@ fast-build-base:
 rails-init:
 	mkdir -p docker/postgresql-data
 	mkdir -p docker/bundle
+	mkdir -p node_modules
 	$(DC) run --rm app bash -c "\
 	  bin/bundle install && \
-	  echo n | bin/bundle exec rails webpacker:install && \
-	  bin/bundle exec rails db:create && \
-	  bin/bundle exec rails db:migrate"
+	  bin/rails yarn:install && \
+	  bin/rails db:create && \
+	  bin/rails db:migrate"
 
 #----------------------------------------------------------
 
