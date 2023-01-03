@@ -45,7 +45,7 @@ services:
     container_name: th_db
     environment:
       # (Only used when the container sets up a brand new db IIUC)
-      POSTGRES_PASSWORD: notsecure123
+      POSTGRES_PASSWORD: postgres
     # So we can use localhost for the rails db when running
     # on bare metal rather than in the app container
     ports:

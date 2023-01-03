@@ -52,7 +52,7 @@ services:
     restart: always
     environment:
       # (For a brand new fresh deploy you should put the real password here)
-      POSTGRES_PASSWORD: notsecure123
+      POSTGRES_PASSWORD: postgres
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
 

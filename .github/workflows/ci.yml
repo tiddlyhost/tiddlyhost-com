@@ -1,0 +1,44 @@
+
+name: Tiddlyhost CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: rails
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: rails
+          bundler-cache: true
+
+      - name: Install node modules
+        run: |
+          mkdir ../node_modules
+          bin/rails yarn:install
+
+      - name: Create database
+        run: bin/rails db:create
+
+      - name: Run tests
+        run: bin/rails test
