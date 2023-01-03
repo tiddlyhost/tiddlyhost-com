@@ -199,6 +199,9 @@ devel-dump-secrets:
 test:
 	$(DCC) 'bin/rails test:all'
 
+test-ci:
+	$(DC) run --rm app bash -c "bin/rails test:all"
+
 coverage:
 	$(DCC) 'env COVERAGE=1 bin/rails test:all'
 
@@ -352,7 +355,20 @@ build-info:
 prod-assets:
 	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:clean assets:precompile"
 
+# Create a throwaway key and secret because rails will not start without one.
+# See https://github.com/rails/rails/issues/32947
+#
+prod-assets-ci:
+	-$(DC) run --rm --no-deps app bash -c "\
+	  EDITOR=: bin/rails credentials:edit && \
+	  RAILS_ENV=production bin/rails assets:clean assets:precompile"
+
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties gzip-core-js-files
+	$(DC_PROD) build app
+
+# FIXME: js-math download is broken
+# FIXME: download-empties requires ansible
+build-prod-ci: bundle-install bundle-clean prod-assets-ci build-info gzip-core-js-files
 	$(DC_PROD) build app
 
 fast-build-prod: prod-assets build-info
