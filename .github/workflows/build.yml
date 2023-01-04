@@ -1,0 +1,29 @@
+
+name: Tiddlyhost Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Show user id
+        run: echo USER_ID=$(id -u) GROUP_ID=1000
+
+      - name: Build base image
+        run: USER_ID=$(id -u) GROUP_ID=1000 make fast-build-base
+
+      - name: Setup rails
+        # FIXME: no need do the migrate
+        run: make rails-init
+
+      - name: Run tests
+        run: make test
+
+      # TODO: get prod build to work
