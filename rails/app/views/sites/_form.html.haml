@@ -11,7 +11,7 @@
             -@site.errors.full_messages.each do |message|
               %li= message
 
-    -if !@site.new_record? && @site.thumbnail.present?
+    -if !@site.new_record? && @site.thumbnail.present? && @site.valid?
       .m-2.mb-4
         =render 'site_tile_clone', site: @site
 
