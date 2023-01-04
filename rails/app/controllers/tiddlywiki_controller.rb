@@ -182,10 +182,10 @@ class TiddlywikiController < ApplicationController
   def site_not_available
     @status_code, @status_message = site_not_available_status
 
-    # Send an empty body for favicon and download actions
-    return head @status_code if action_name != "serve"
+    # Send an empty body if it's probably not going to be visible
+    return head @status_code if action_name != "serve" || request.head? || request.options? || !request.format.html?
 
-    # When serving the site, send the "not available" page
+    # Otherwise send the "not available" page
     render :site_not_available, status: @status_code, layout: 'simple'
   end
 

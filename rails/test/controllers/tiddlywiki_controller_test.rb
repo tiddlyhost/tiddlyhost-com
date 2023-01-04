@@ -99,6 +99,15 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "options request when signed out doesnt error" do
+    @site.update!(is_private: true)
+    host! @site.host
+
+    options '/', headers: { 'Accept' => 'application/json' }
+    assert_response :unauthorized
+    assert_equal "", response.body
+  end
+
   test "sign in redirect" do
     @site.update!(is_private: true)
     host! @site.host
