@@ -1,0 +1,37 @@
+#
+# Builds the Tiddlyhost container image and pushes it.
+# Also runs the test suite using the base container image.
+#
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        # See https://github.com/actions/checkout/pull/1067
+        # Switch back to the standard default in future when that gets merged.
+        uses: simonbaird/checkout@no-progress-option
+        #uses: actions/checkout@v3
+        with:
+          show-progress: false
+
+      - name: Build base image
+        run: USER_ID=$(id -u) GROUP_ID=1000 make fast-build-base
+
+      - name: Setup rails
+        run: make rails-init-ci
+
+      - name: Run tests
+        run: make test-ci
+
+      - name: Build main image
+        run: make build-prod-ci
+
+      # TODO:
+      #- name: Push image

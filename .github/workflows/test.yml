@@ -1,6 +1,8 @@
-
-name: Tiddlyhost CI
-
+#
+# Sets up ruby and dependencies directly on the ubuntu-latest
+# image and then runs the test suite
+#
+name: Test
 on:
   workflow_dispatch:
 
@@ -24,7 +26,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        # See https://github.com/actions/checkout/pull/1067
+        # Switch back to the standard default in future when that gets merged.
+        uses: simonbaird/checkout@no-progress-option
+        #uses: actions/checkout@v3
+        with:
+          show-progress: false
 
       - name: Install ruby and gems
         uses: ruby/setup-ruby@v1
