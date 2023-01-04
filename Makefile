@@ -158,7 +158,7 @@ bundle-install:
 
 # Run bundle-update
 bundle-update:
-	-$(DC) run --rm --no-deps app bash -c "bin/bundle update"
+	-$(DC) run --rm --no-deps app bash -c "bin/bundle update --quiet"
 
 # Run bundle-clean
 bundle-clean:
@@ -170,7 +170,13 @@ yarn-install:
 
 # Run yarn upgrade
 yarn-upgrade:
-	-$(DC) run --rm --no-deps app bash -c "bin/yarn upgrade"
+	-$(DC) run --rm --no-deps app bash -c "bin/yarn upgrade --silent --no-progress"
+
+# Update deps and make a commit
+LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
+deps-update: bundle-update yarn-upgrade
+	git add $(LOCK_FILES)
+	git commit $(LOCK_FILES) -m 'Update ruby and node dependencies' -m 'Commit created with `make deps-update`'
 
 #----------------------------------------------------------
 
