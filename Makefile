@@ -52,16 +52,14 @@ build-base: cleanup pull-ruby check-digest
 fast-build-base:
 	$(DC) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
-# Set up your environment right after git clone
-rails-init:
-	mkdir -p docker/postgresql-data
-	mkdir -p docker/bundle
-	mkdir -p node_modules
-	$(DC) run --rm app bash -c "\
-	  bin/bundle install && \
-	  bin/rails yarn:install && \
-	  bin/rails db:create && \
-	  bin/rails db:migrate"
+# There's no need to run db:migrate for CI because the tests don't need it
+rails-init-ci:
+	mkdir -p docker/postgresql-data docker/bundle node_modules
+	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:create"
+
+# To set up your environment right after doing a git clone
+rails-init: rails-init-ci
+	$(DC) run --rm app bash -c "bin/rails db:migrate"
 
 #----------------------------------------------------------
 
