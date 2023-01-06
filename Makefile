@@ -374,7 +374,6 @@ build-prod: bundle-install bundle-clean prod-assets build-info js-math download-
 
 # FIXME:
 # - js-math download is broken
-# - build-info can't find a the tag
 build-prod-ci: prod-assets-ci build-info download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 

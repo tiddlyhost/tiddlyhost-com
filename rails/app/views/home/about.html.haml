@@ -54,21 +54,13 @@
     %td.p-1.pe-3.text-muted Version:
     %td.p-1= App::VERSION
   %tr
-    %td.p-1.pe-3.text-muted.align-top Empty versions:
-    %td.p-1.lh-lg
-      -@build_info['empties'].each do |e|
-        %span.me-1
-          =logo_for_kind(e[:kind])
-        =e[:version]
-        %br
-  %tr
     %td.p-1.pe-3.text-muted Built:
     %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
 
   -if feature_enabled?(:admin)
     %tr
-      %td.p-1.pe-3.text-muted Branch:
-      %td.p-1= github_history_link_to(@build_info['branch'])
+      %td.pt-4.p-1.pe-3.text-muted Branch:
+      %td.pt-4.p-1= github_history_link_to(@build_info['branch'])
 
     %tr
       %td.p-1.pe-3.text-muted SHA:
@@ -91,3 +83,12 @@
       %td.p-1
         =image_tag('psql-logo-sml.png', style: "height: 1.3em; width: 1.3em; margin-right: 0.1em;")
         =ActiveRecord::Base.connection.select_value('SHOW SERVER_VERSION')
+
+  %tr
+    %td.pt-4.p-1.pe-3.text-muted.align-top Empty versions:
+    %td.pt-4.p-1.lh-lg
+      -@build_info['empties'].each do |e|
+        %span.me-1
+          =logo_for_kind(e[:kind])
+        =e[:version]
+        %br
