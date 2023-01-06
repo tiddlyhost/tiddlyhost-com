@@ -8,7 +8,6 @@ class Settings
     "date" => "Wed May 4 12:41:58 PM EDT 2022",
     "sha" => "0123456789abcdef",
     "branch" => "devel",
-    "tag" => "v0.0.1",
   }
 
   SETTINGS = begin
