@@ -74,12 +74,6 @@ docker/secrets/credentials.yml.enc: docker/secrets
 
 prod-secrets: docker/secrets/master.key docker/secrets/credentials.yml.enc
 
-PROD_PRERELEASE=docker/config/prerelease.html
-$(PROD_PRERELEASE):
-	curl -s https://tiddlywiki.com/prerelease/empty.html -o $@
-
-prod-prerelease: $(PROD_PRERELEASE)
-
 #----------------------------------------------------------
 
 # Fun way to reuse the ansible templates to create local config
@@ -249,9 +243,23 @@ forgot-link:
 
 EMPTY_DIR=rails/tw_content/empties
 
-download-empties:
-	@mkdir -p $(EMPTY_DIR)
-	@$(PLAY) ansible/fetch_empties.yml
+EMPTY_URL_tw5=https://tiddlywiki.com/empty.html
+EMPTY_URL_feather=https://feather.wiki/builds/FeatherWiki_Warbler.html
+EMPTY_URL_classic=https://classic.tiddlywiki.com/empty.html
+EMPTY_URL_prerelease=https://tiddlywiki.com/prerelease/empty.html
+
+CURL_FETCH=curl -sL $(EMPTY_URL_$1) -o $(EMPTY_DIR)/$1.html
+
+download-empty-%: $(EMPTY_DIR)
+	$(call CURL_FETCH,$*)
+
+download-empties: download-empty-tw5 download-empty-feather download-empty-classic download-empty-prerelease
+
+PROD_PRERELEASE=docker/config/prerelease.html
+$(PROD_PRERELEASE): $(EMPTY_DIR)/prerelease.html
+	cp $< $@
+
+prod-prerelease: $(PROD_PRERELEASE)
 
 # Now that we have Feather Wiki included in ansible/fetch_empties
 # this isn't used regularly, but keep it in case I ever want to
@@ -260,7 +268,6 @@ download-empties:
 FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Warbler.html
 FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
 $(FEATHER_EMPTY): $(FEATHER_BUILD)
-	@mkdir -p $(EMPTY_DIR)
 	cp $? $@
 
 feather-empty: $(FEATHER_EMPTY)
@@ -362,14 +369,13 @@ prod-assets-ci:
 	  EDITOR=: bin/rails credentials:edit && \
 	  RAILS_ENV=production bin/rails assets:clean assets:precompile"
 
-build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empties gzip-core-js-files
+build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
 # FIXME:
 # - js-math download is broken
-# - download-empties requires ansible
 # - build-info can't find a the tag
-build-prod-ci: prod-assets-ci build-info gzip-core-js-files
+build-prod-ci: prod-assets-ci build-info download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
 fast-build-prod: prod-assets build-info
