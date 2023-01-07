@@ -372,9 +372,7 @@ prod-assets-ci:
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
-# FIXME:
-# - js-math download is broken
-build-prod-ci: prod-assets-ci build-info download-empty-prerelease gzip-core-js-files
+build-prod-ci: prod-assets-ci build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
 fast-build-prod: prod-assets build-info
@@ -520,28 +518,29 @@ prod-info:
 	@-git diff --color=always $$(curl -s $(PROD_INFO_URL) | grep 'sha:' | cut -d: -f2) | less -REXS
 
 #----------------------------------------------------------
-JS_MATH_DOWNLOADS=http://www.math.union.edu/~dpvc/jsmath/download
 JS_MATH_ZIP=jsMath-3.3g.zip
-JS_MATH_FONTS_ZIP=jsMath-fonts-1.2.zip
+JS_MATH_FONTS_ZIP=jsMath-fonts-1.3.zip
+
+JS_MATH_DOWNLOADS=https://sourceforge.net/projects/jsmath/files
 
 $(JS_MATH_ZIP):
-	@echo "Please download $(JS_MATH_DOWNLOADS)/$(JS_MATH_ZIP)"
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP)/download -o $(JS_MATH_ZIP)
 
 $(JS_MATH_FONTS_ZIP):
-	@echo "Please download $(JS_MATH_DOWNLOADS)/$(JS_MATH_FONTS_ZIP)"
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath%20Image%20Fonts/1.3/$(JS_MATH_FONTS_ZIP)/download -o $(JS_MATH_FONTS_ZIP)
 
-rails/public/jsMath/jsMath.js: ./$(JS_MATH_ZIP) ./$(JS_MATH_FONTS_ZIP)
-	@# For some reason the curl download doesn't work any more
-	@#curl -sO http://www.math.union.edu/~dpvc/jsmath/download/$(JS_MATH_ZIP)
-	@#curl -sO http://www.math.union.edu/~dpvc/jsmath/download/$(JS_MATH_FONTS_ZIP)
-	cd rails/public && unzip ../../$(JS_MATH_ZIP)
-	cd rails/public/jsMath && unzip ../../../$(JS_MATH_FONTS_ZIP)
+rails/public/jsMath/jsMath.js: $(JS_MATH_ZIP) $(JS_MATH_FONTS_ZIP)
+	cd rails/public && unzip -q ../../$(JS_MATH_ZIP)
+	cd rails/public/jsMath && unzip -q ../../../$(JS_MATH_FONTS_ZIP)
 	@touch rails/public/jsMath/jsMath.js # so make doesn't think it's stale
 
 js-math: rails/public/jsMath/jsMath.js
 
 js-math-clean:
 	rm -rf rails/public/jsMath
+
+js-math-purge: js-math-clean
+	rm -f $(JS_MATH_ZIP) $(JS_MATH_FONTS_ZIP)
 
 #----------------------------------------------------------
 
