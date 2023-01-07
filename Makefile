@@ -53,8 +53,11 @@ fast-build-base:
 	$(DC) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # There's no need to run db:migrate for CI because the tests don't need it
-rails-init-ci:
-	mkdir -p docker/postgresql-data docker/bundle node_modules
+# Todo: clean this up and explain things. It's actually preparing for the prod build
+VOL_MOUNTS=docker/bundle docker/log docker/config docker/secrets node_modules
+rails-init-ci: build-info js-math download-empty-prerelease gzip-core-js-files
+	mkdir -p docker/postgresql-data $(VOL_MOUNTS)
+	sudo chown $(USER_ID):$(GROUP_ID) -R rails $(VOL_MOUNTS)
 	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:create"
 
 # To set up your environment right after doing a git clone
@@ -372,7 +375,7 @@ prod-assets-ci:
 build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
-build-prod-ci: prod-assets-ci build-info js-math download-empty-prerelease gzip-core-js-files
+build-prod-ci: prod-assets-ci
 	$(DC_PROD) build app
 
 fast-build-prod: prod-assets build-info
