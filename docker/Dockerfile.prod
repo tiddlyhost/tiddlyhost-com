@@ -3,7 +3,7 @@
 #  make build-prod
 #  make start-prod
 #
-FROM base
+FROM sbaird/tiddlyhost-base:latest
 
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app

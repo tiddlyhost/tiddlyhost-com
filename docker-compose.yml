@@ -12,7 +12,7 @@ services:
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
 
   app:
-    image: base:latest
+    image: sbaird/tiddlyhost-base:latest
     container_name: th_app
     depends_on:
     - db
