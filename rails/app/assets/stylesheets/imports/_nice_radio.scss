@@ -8,25 +8,15 @@
 
         border-left: transparent solid 0.2rem;
 
-        &.selected {
-            border-left-color: $input-focus-border-color;
-            background-color: #f0f6ff;
-        }
+        &.selected { border-left-color: $input-focus-border-color; }
 
-        &:hover {
-            border-left-color: $input-focus-border-color;
-            background-color: #f6f7f8;
-        }
+        &:hover { border-left-color: $input-focus-border-color; }
 
         // So you can avoid the hover effect for a div that doesn't have
         // a radio button but still needs to be inside the container
         &.no-hover:hover {
             border-left-color: transparent;
             background-color: transparent;
-        }
-
-        &.selected:hover {
-            background-color: #f0f6ff;
         }
 
         label {
@@ -38,7 +28,6 @@
             .title {
                 display: inline;
                 font-weight: bold;
-                color: #666;
                 font-size: 95%;
             }
 
@@ -48,4 +37,18 @@
             }
         }
     }
+}
+
+[data-bs-theme="light"] .nice-radio-container > div {
+    &.selected { background-color: #f0f6ff; }
+    &:hover { background-color: #f6f7f8; }
+    &.selected:hover { background-color: #f0f6ff; }
+    label { .title { color: var(--bs-gray-600); } }
+}
+
+[data-bs-theme="dark"] .nice-radio-container > div {
+    &.selected { background-color: #324659; }
+    &:hover { background-color: var(--bs-gray-700); }
+    &.selected:hover { background-color: #324659; }
+    label { .title { color: var(--bs-gray-500); } }
 }

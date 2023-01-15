@@ -34,6 +34,9 @@
 .popover-body {
     // A little extra padding plus a shadow
     @extend .px-4;
+}
+
+[data-bs-theme="light"] .popover-body {
     @extend .shadow;
     // Fix square corners that become visible with the shadow
     border-radius: 0.5rem;

@@ -15,7 +15,7 @@ class SitesTest < CapybaraIntegrationTest
   test "creating and viewing a site" do
     # Create a site
     visit sites_url
-    click_on "Create site"
+    click_on "Create site", class: 'btn'
     fill_in "site_name", with: "bar"
     click_on "Create"
 

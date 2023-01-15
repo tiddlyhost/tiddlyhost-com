@@ -48,7 +48,7 @@
             -# notice when two versions are identical
             =Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
 
-          %td.text-end.pe-3
+          %td.text-end.pe-3.actions-menu-group
             -if is_current
               -# Regular actions menu for convenience
               =render 'actions_menu', site: @site, is_tspot: @site.is_tspot?, menu_only: true, history_mode: true
@@ -56,9 +56,8 @@
             -else
               -# Actions for previous saved version
               %button.btn.btn-light.btn-sm(type="button" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false"
-                style="border-color: transparent !important;" title="Actions")
-                =bi_icon('three-dots', fill: '#212529', style: 'margin-right: 0px;')
+                aria-haspopup="true" aria-expanded="false" title="Actions")
+                =bi_icon('three-dots')
 
               .dropdown-menu.dropdown-menu-end
                 =link_to("/sites/#{@site.id}/view_version/#{f.blob_id}", class: 'dropdown-item', target: '_blank') do

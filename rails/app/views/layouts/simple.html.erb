@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="<%= bs_theme %>">
   <head>
     <title><%= @title || "#{@status_code} #{@status_message}" %></title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -18,9 +18,6 @@
     <main>
       <%= yield %>
     </main>
-
-    <footer>
-    </footer>
 
   </body>
 </html>

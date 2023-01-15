@@ -81,19 +81,22 @@
     }
 }
 
-@mixin up   { content: "↑"; color: #666; padding-left: 1px; font-size: 90%; }
-@mixin down { content: "↓"; color: #666; padding-left: 1px; font-size: 90%; }
-@mixin both { content: "⇵"; color: #ddd; font-size: 80%; }
-@mixin sel  { content: "•"; color: #666; font-size: 100%; }
+@mixin up   { content: "↑"; opacity: 60%; padding-left: 1px; font-size: 90%; }
+@mixin down { content: "↓"; opacity: 60%; padding-left: 1px; font-size: 90%; }
+@mixin both { content: "⇵"; opacity: 20%; font-size: 80%; }
+@mixin sel  { content: "•"; opacity: 60%; font-size: 100%; }
 
 .table.admin, .table.sites {
     th {
-        color: #888;
+        @extend .text-muted;
+        opacity: 0.65;
         a {
-            color: #888;
+            @extend .text-muted;
+            opacity: 0.65;
+            color: var(--bs-body-color);
             text-decoration: none;
             white-space: nowrap;
-            &.asc, &.desc { color: #444; }
+            &.asc, &.desc { opacity: 1.0; }
 
             &:after {
                 display: inline-block;

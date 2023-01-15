@@ -1,8 +1,7 @@
 -#
 -# Todo: Some clean up here
 -#
-.btn-group.btn-group-sm
-
+.actions-menu-group
   -unless local_assigns[:menu_only]
     -if is_tspot
       =link_to(edit_tspot_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
@@ -15,8 +14,8 @@
 
   %button.btn.btn-light(type="button" data-bs-toggle="dropdown"
     aria-haspopup="true" aria-expanded="false"
-    style="border-top-right-radius: 0.2rem; border-bottom-right-radius: 0.2rem;#{" border-color: transparent !important;" if local_assigns[:menu_only]}" title="#{local_assigns[:menu_only] ? "Actions" : "More..."}")
-    =bi_icon('three-dots', fill: '#212529', style: 'margin-right: 0px;')
+    style="#{"border-color: transparent !important;" if local_assigns[:menu_only]}" title="#{local_assigns[:menu_only] ? "Actions" : "More..."}")
+    =bi_icon('three-dots', fill: '#212529')
 
   .dropdown-menu.dropdown-menu-end
     -if is_tspot

@@ -50,6 +50,8 @@ module AdminHelper
       '#ffeee8' if value > 0
     when /sites/
       '#eef8ff'
+    else
+      'var(--bs-gray-100)'
     end
   end
 

@@ -1,0 +1,66 @@
+//
+// Let's try to concentrate the mess here instead of having mess in many places.
+// It's possibly duplicating some bootstrap util classes, but that's okay.
+//
+
+.btn-primary {
+    --bs-btn-bg: hsl(152deg 60% 40%);
+    --bs-btn-border-color: hsl(152deg 50% 40%);
+    --bs-btn-hover-bg: hsl(152deg 60% 35%);
+    --bs-btn-hover-border-color: hsl(152deg 50% 35%);
+    --bs-btn-active-bg: hsl(152deg 60% 35%);
+    --bs-btn-active-border-color: hsl(152deg 50% 35%);
+    --bs-btn-disabled-bg: hsl(152deg 60% 35%);
+    --bs-btn-disabled-border-color: hsl(152deg 50% 35%);
+}
+
+[data-bs-theme="dark"] .btn-primary {
+    --bs-btn-bg: hsl(152deg 92% 28%);
+    --bs-btn-border-color: hsl(152deg 79% 30%);
+    --bs-btn-hover-bg: hsl(152deg 79% 30% / 80%);
+    --bs-btn-hover-border-color: hsl(152deg 79% 30% / 80%);
+    --bs-btn-active-bg: hsl(152deg 79% 30%);
+    --bs-btn-active-border-color: hsl(152deg 79% 30% / 80%);
+    --bs-btn-disabled-bg: hsl(152deg 79% 30%);
+    --bs-btn-disabled-border-color: hsl(152deg 79% 30% / 80%);
+}
+
+.th-text-90 {
+    font-size: 90%;
+}
+
+.th-text-small {
+    font-size: 85%;
+}
+
+.th-text-smaller {
+    font-size: 75%;
+}
+
+.th-text-tiny {
+    font-size: 65%;
+}
+
+a.th-text-deco-none, .th-text-deco-none a {
+    text-decoration: none;
+}
+
+.th-muted {
+    opacity: 65%;
+}
+
+.th-dim {
+    opacity: 50%;
+}
+
+.th-dimmer {
+    opacity: 40%;
+}
+
+[data-bs-theme="light"] .th-bg-jumbo { background-color: var(--bs-gray-200); }
+[data-bs-theme="dark"]  .th-bg-jumbo { background-color: var(--bs-gray-700); }
+
+svg.bi {
+    fill: var(--bs-body-color);
+    @extend .th-muted;
+}

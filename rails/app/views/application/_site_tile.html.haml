@@ -4,7 +4,7 @@
   .thumb-container
     =link_to site.url, target: site.long_name do
       -if site.thumbnail.present?
-        =image_tag rails_storage_proxy_path(site.thumbnail)
+        =image_tag rails_storage_proxy_path(site.thumbnail), class: 'thumbnail-large'
       -else
         .image-placeholder{title: "Preview image not yet available"}
           =bi_icon('image', fill: '#ddd')
@@ -28,7 +28,7 @@
         =link_to(new_site_path(clone: site.name),
           "data-bs-toggle"=>"tooltip",
           "data-bs-placement"=>"right",
-          class: 'btn btn-sm btn-light px-2 py-1 mx-1 my-0', style: 'border-style: none;',
+          class: 'clone-btn btn btn-sm px-2 py-1 mx-1 my-0', style: 'border-style: none;',
           title: 'Create a new site using this template') do
           =bi_icon('files', height: '1.2em', fill: '#777')
           %div{style: "font-size: 60%; margin-top: -1px;"}Clone
