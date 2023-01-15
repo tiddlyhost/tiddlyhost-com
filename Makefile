@@ -26,8 +26,6 @@ RUBY_TAG=3.1-slim
 
 pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
-
-check-digest:
 	@\
 	export BASE_IMAGE_WITH_DIGEST="$$( \
 	  $(D) image inspect ruby:3.1-slim --format '{{index .RepoDigests 0}}' | sed 's/ruby@/ruby:$(RUBY_TAG)@/' )" && \
@@ -37,15 +35,13 @@ check-digest:
 	if [[ "$$REQUIRED" == "$$CURRENT" ]]; then \
 	  echo "$${CURRENT} is correct for ruby:$(RUBY_TAG)"; \
 	else \
-	  echo "Please update $(DOCKER_FILE) as follows:" && \
-	  echo "-$${CURRENT}" && \
-	  echo "+$${REQUIRED}" && \
-	  exit 1; \
+	  sed -i "s/$${CURRENT}/$${REQUIRED}/" $(DOCKER_FILE) && \
+	  git commit $(DOCKER_FILE) -m 'Pull latest ruby-slim base image' -m 'Commit created with `make pull-ruby`'; \
 	fi
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
-build-base: cleanup pull-ruby check-digest
+build-base: cleanup
 	$(DC) build --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
