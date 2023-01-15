@@ -60,7 +60,22 @@ class TspotFetcher
   private
 
   def site_file(file_name)
-    fetch_key(site_key(file_name))
+    raw_string = fetch_key(site_key(file_name))
+
+    # Attempt to avoid "invalid byte sequence in UTF-8" failures, which I think
+    # are due to ISO-8859-1 encoded TiddylWiki files. I'm not confident that every
+    # file is ISO-8859-1 encoded though, so try to detect it rather than risk
+    # converting things that don't need converting.
+    #
+    # I'm expecting this to be mostly a noop for the .htpasswd and .htaccess files
+    # which I think do get detected as ISO-8859-1 by CharlockHolmes.
+    #
+    detected_encoding = CharlockHolmes::EncodingDetector.detect(raw_string)[:encoding]
+    if detected_encoding != 'UTF-8'
+      raw_string.force_encoding(detected_encoding).encode('UTF-8', detected_encoding)
+    else
+      raw_string
+    end
   end
 
   def site_key(file_name)

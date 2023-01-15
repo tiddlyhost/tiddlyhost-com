@@ -55,7 +55,7 @@ RUN \
     vim-tiny \
     #
     # Needed at build time to compile gems with native extensions
-    gcc g++ make libpq-dev \
+    gcc g++ make libpq-dev libicu-dev \
     #
     # For puppeteer
     google-chrome-stable chromium-sandbox libxss1 \
