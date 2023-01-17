@@ -31,6 +31,8 @@
             =nav_link_to "Admin", admin_path, style: 'opacity: 10%;'
 
         %ul.navbar-nav.mb-auto
+          =dark_mode_toggle_link
+
           =nav_link_to bi_icon('plus', fill: "white", height: "1.9em", width: "1.9em", style: "opacity: 90%;"),
             new_site_path, li_class: 'd-none d-sm-block'
 
@@ -57,4 +59,5 @@
           =nav_link_to "Sign up", new_user_registration_path
 
         %ul.navbar-nav.mb-auto
+          =dark_mode_toggle_link
           =nav_link_to "Log in", new_user_session_path

@@ -33,6 +33,15 @@ class HomeController < ApplicationController
     render_error_page(500, 'Internal Server Error')
   end
 
+  def mode_toggle
+    if cookies[:dark_mode].present?
+      cookies.delete(:dark_mode)
+    else
+      cookies[:dark_mode] = "1"
+    end
+    redirect_back fallback_location: root_path
+  end
+
   private
 
   def render_error_page(status_code, status_message)

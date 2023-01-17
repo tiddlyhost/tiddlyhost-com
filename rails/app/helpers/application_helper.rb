@@ -131,4 +131,16 @@ module ApplicationHelper
     super *[coll_or_options, options].compact
   end
 
+  def dark_mode_toggle_link
+    link_icon = bi_icon(dark_mode? ? 'sun' : 'moon-stars', class: 'th-dimmer')
+    link_text = "#{bs_theme(!dark_mode?).titleize} mode"
+
+    safe_join([
+      # For normal nav bar on larger screens
+      nav_link_to(link_icon, home_mode_toggle_path, title: link_text, li_class: 'd-none d-sm-block'),
+      # For burger menu on phone screens
+      nav_link_to(safe_join([link_icon, link_text]), home_mode_toggle_path, li_class: 'd-block d-sm-none')
+    ])
+  end
+
 end

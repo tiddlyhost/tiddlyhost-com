@@ -85,4 +85,14 @@ class ApplicationController < ActionController::Base
   end
   helper_method :navbar_prod
 
+  def dark_mode?
+    cookies[:dark_mode] == "1"
+  end
+  helper_method :dark_mode?
+
+  def bs_theme(is_dark=dark_mode?)
+     is_dark ? "dark" : "light"
+  end
+  helper_method :bs_theme
+
 end

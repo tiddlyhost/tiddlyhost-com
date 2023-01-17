@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
     get 'home/index'
     get 'home/after_registration'
+    get 'home/mode_toggle'
 
     get 'about', to: 'home#about'
     get 'donate', to: 'home#donate'
