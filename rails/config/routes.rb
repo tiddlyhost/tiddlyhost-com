@@ -51,13 +51,16 @@ Rails.application.routes.draw do
     get 'donate', to: 'home#donate'
 
     get 'admin', to: 'admin#index'
+
     get 'admin/users'
     get 'admin/sites'
     get 'admin/tspot_sites'
-    get 'admin/data'
+    get 'admin/etc'
+
     get 'admin/raw_download'
     get 'admin/csv_data'
     get 'admin/boom'
+    get 'admin/pool_stats'
 
     get 'hub', to: 'hub#index'
     get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }

@@ -33,10 +33,6 @@ class AdminController < ApplicationController
 
   end
 
-  def data
-    @title = "Data"
-  end
-
   include SortAndFilterLinkHelper
 
   SORT_OPTIONS = {
@@ -150,6 +146,9 @@ class AdminController < ApplicationController
     render_records TspotSite.left_joins(:user)
   end
 
+  def etc
+  end
+
   def raw_download
     klass = params[:tspot].present? ? TspotSite : Site
     site = klass.find(params[:id])
@@ -181,7 +180,11 @@ class AdminController < ApplicationController
   end
 
   def boom
-    raise "Boom!" if params[:boom]
+    raise "Boom!"
+  end
+
+  def pool_stats
+    render json: ActiveRecord::Base.connection.pool.stat.to_json
   end
 
   private
