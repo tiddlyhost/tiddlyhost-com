@@ -1,12 +1,12 @@
 @import "bootstrap/scss/bootstrap";
 
-@import "sites";
-@import "hub";
-@import "admin";
-@import "home";
+@import "imports/sites";
+@import "imports/hub";
+@import "imports/admin";
+@import "imports/home";
 
-@import "sites/_nice_radio";
-@import "sites/_type_chooser";
+@import "imports/_nice_radio";
+@import "imports/_type_chooser";
 
 // https://gka.github.io/palettes/#/15|d|5c7cd9||1|1
 $nav_bg_color: #50548c;
