@@ -36,7 +36,7 @@ pull-ruby:
 	  echo "$${CURRENT} is correct for ruby:$(RUBY_TAG)"; \
 	else \
 	  sed -i "s/$${CURRENT}/$${REQUIRED}/" $(DOCKER_FILE) && \
-	  git commit $(DOCKER_FILE) -m 'Pull latest ruby-slim base image' -m 'Commit created with `make pull-ruby`'; \
+	  git commit $(DOCKER_FILE) -m 'chore: Pull ruby-slim base image and update digest' -m 'Commit created with `make pull-ruby`'; \
 	fi
 
 # Build base docker image
@@ -167,7 +167,7 @@ yarn-upgrade:
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
 deps-update: bundle-update yarn-upgrade
 	git add $(LOCK_FILES)
-	git commit $(LOCK_FILES) -m 'Update ruby and node dependencies' -m 'Commit created with `make deps-update`'
+	git commit $(LOCK_FILES) -m 'chore: Update ruby gems and node modules' -m 'Commit created with `make deps-update`'
 
 #----------------------------------------------------------
 
