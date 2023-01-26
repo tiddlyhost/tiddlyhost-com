@@ -366,23 +366,13 @@ redo-cert: clear-cert cert
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-prod-assets:
-	-$(DC) run --rm --no-deps app bash -c "RAILS_ENV=production bin/rails assets:clean assets:precompile"
-
-# Create a throwaway key and secret because rails will not start without one.
-# See https://github.com/rails/rails/issues/32947
-prod-assets-ci:
-	-$(DC) run --rm --no-deps app bash -c "\
-	  EDITOR=: bin/rails credentials:edit && \
-	  RAILS_ENV=production bin/rails assets:clean assets:precompile"
-
-build-prod: bundle-install bundle-clean prod-assets build-info js-math download-empty-prerelease gzip-core-js-files
+build-prod: build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build app
 
-build-prod-ci: prod-assets-ci
+build-prod-ci:
 	$(DC_PROD) build app
 
-fast-build-prod: prod-assets build-info
+fast-build-prod: build-info
 	$(DC_PROD) build app
 
 push-prod:
