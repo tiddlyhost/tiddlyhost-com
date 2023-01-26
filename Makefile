@@ -225,13 +225,16 @@ start-prod: local-config prod-secrets prod-prerelease
 
 #----------------------------------------------------------
 
-# Stop and remove containers, clean up unused images
+# Stop and remove containers, clean up unused images and remove
+# the static files volume used by the prod container so to ensure
+# it gets recreated fresh on startup
 cleanup:
 	$(DC) stop
 	$(DC_PROD) stop
 	$(DC) rm -f
 	$(DC_PROD) rm -f
 	$(D) image prune -f
+	$(D) volume rm -f th_rails_static
 
 #----------------------------------------------------------
 
