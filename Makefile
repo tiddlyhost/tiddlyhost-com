@@ -171,6 +171,14 @@ deps-update: bundle-update yarn-upgrade
 
 #----------------------------------------------------------
 
+haml-lint-with-todo:
+	@cd rails && bundle exec haml-lint --config .haml-lint_todo.yml
+
+haml-lint:
+	@cd rails && bundle exec haml-lint
+
+#----------------------------------------------------------
+
 # View or edit encrypted secrets
 # (Beware this is not the same as --environment=production)
 #
