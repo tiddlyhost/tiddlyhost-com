@@ -351,7 +351,7 @@ gzip-core-js-files:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-CERTS_DIR=docker/certs
+CERTS_DIR=docker/letsencrypt/live/tiddlyhost.local
 cert: $(CERTS_DIR)/fullchain.pem
 
 $(CERTS_DIR)/fullchain.pem:

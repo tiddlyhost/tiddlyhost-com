@@ -9,10 +9,7 @@ services:
     - "80:80"
     - "443:443"
     volumes:
-    # Use this for testing the prod container locally:
-    #- ./docker/certs:/etc/letsencrypt/live/tiddlyhost.local:Z
     - ./docker/letsencrypt:/etc/letsencrypt:Z
-
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
     - rails-static:/opt/rails-static
 

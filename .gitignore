@@ -17,7 +17,7 @@ rails/config/credentials/development.yml.enc
 rails/.byebug_history
 rails/coverage
 node_modules/
-docker/certs
+docker/letsencrypt
 docker/nginx-conf
 docker/postgresql-data
 docker/log

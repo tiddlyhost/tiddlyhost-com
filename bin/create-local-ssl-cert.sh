@@ -7,8 +7,8 @@
 #
 set -e
 
-
 TARGET_DIR=$1
+mkdir -p "$TARGET_DIR"
 
 echo Creating self-signed SSL cert...
 
