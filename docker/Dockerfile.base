@@ -73,7 +73,7 @@ RUN \
   gem update --system --silent --no-document
 
 # Install script to help start rails
-COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin
+COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin/
 
 WORKDIR $APP_PATH
 USER $APP_USER

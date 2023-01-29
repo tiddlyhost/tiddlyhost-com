@@ -3,36 +3,37 @@
 #   make build-prod
 #
 # See Makefile for more details.
+# See also docker/Dockerfile.base
 #
 FROM sbaird/tiddlyhost-base:latest
 
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app
-ARG BUNDLE_PATH=/opt/bundle
-ARG NODE_MODULES_PATH=/opt/node_modules
 
+WORKDIR $APP_PATH
 USER $APP_USER
 
-ENV RAILS_ENV=production
-ENV RAILS_SERVE_STATIC_FILES=true
+ENV \
+  RAILS_ENV=production \
+  RAILS_SERVE_STATIC_FILES=true \
+  BUNDLE_WITHOUT=development:test
 
-# Copy the app into the container
-# Includes some static files placed under rails/public,
-# excludes items listed in .dockerignore
-COPY --chown=$APP_USER:$APP_USER rails $APP_PATH
+# Install ruby gems
+COPY --chown=$APP_USER:$APP_USER rails/Gemfile rails/Gemfile.lock ./
+RUN bundle install
 
-# Install dependencies
-RUN \
-  bundle config set --global without 'development test' && \
-  bin/bundle install && \
-  bin/yarn install --production
+# Install node modules
+COPY --chown=$APP_USER:$APP_USER rails/package.json rails/yarn.lock ./
+RUN ln -s ../node_modules && yarn install --production
+
+# Install the rails app, including some static files placed under rails/public,
+# excluding what's listed in .dockerignore
+COPY --chown=$APP_USER:$APP_USER rails ./
 
 # Compile assets
-# Create a throwaway key and secret because rails will not start
-# without one, see https://github.com/rails/rails/issues/32947
-RUN \
-  EDITOR=: bin/rails credentials:edit && \
-  bin/rails assets:clean assets:precompile
+# Create a throwaway key and secret because rails will not start without one, see
+# https://github.com/rails/rails/issues/32947 (Todo: Use SECRET_KEY_BASE_DUMMY=1 maybe?)
+RUN EDITOR=: bin/rails credentials:edit && bin/rails assets:clean assets:precompile
 
 # Start rails
 CMD /bin/start-rails.sh
