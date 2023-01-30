@@ -65,7 +65,11 @@ RUN \
     #
     # For puppeteer
     google-chrome-stable chromium-sandbox libxss1 \
-    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf
+    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf && \
+  #
+  # Tidy up
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man
 
 RUN \
   #
