@@ -30,6 +30,9 @@ RUN ln -s ../node_modules && yarn install --production
 # excluding what's listed in .dockerignore
 COPY --chown=$APP_USER:$APP_USER rails ./
 
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile --gemfile app/ lib/
+
 # Compile assets
 # Create a throwaway key and secret because rails will not start without one, see
 # https://github.com/rails/rails/issues/32947 (Todo: Use SECRET_KEY_BASE_DUMMY=1 maybe?)
