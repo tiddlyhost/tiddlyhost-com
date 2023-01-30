@@ -7,6 +7,8 @@ class Settings
   PLACEHOLDER_BUILD_INFO = {
     "date" => "Wed May 4 12:41:58 PM EDT 2022",
     "sha" => "0123456789abcdef",
+    "build_number" => 42,
+    "commit" => "Fix stuff",
     "branch" => "devel",
   }
 
@@ -90,6 +92,10 @@ class Settings
 
   def self.short_sha(length=7)
     self.build_info["sha"][0...length]
+  end
+
+  def self.app_version
+    "#{major_version}.#{build_info["build_number"]}-#{Settings.short_sha}"
   end
 
   def self.feature_enabled?(feature_name, user)

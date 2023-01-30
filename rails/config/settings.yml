@@ -17,6 +17,8 @@ defaults:
   hub_tag_tab_count: 6
   db_host: <%= is_in_container ? "db" : "localhost" %>
 
+  major_version: "1.1"
+
   #banner_message:
   #  :icon: exclamation-triangle
   #  :html: |
