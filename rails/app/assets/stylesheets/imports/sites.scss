@@ -1,6 +1,15 @@
 
-[data-bs-theme="light"] table.sites tr { border-color: var(--bs-gray-200); }
-[data-bs-theme="dark"] table.sites tr { border-color: #181822; }
+[data-bs-theme="light"] table.sites {
+    tr, img.thumbnail-small {
+        border-color: #ddd;
+    }
+}
+
+[data-bs-theme="dark"] table.sites {
+    tr, img.thumbnail-small {
+        border-color: #181822;
+    }
+}
 
 table.sites {
     margin-bottom: 1.5em;
@@ -54,6 +63,13 @@ table.sites {
             a {
                 text-decoration: none;
             }
+        }
+
+        img.thumbnail-small {
+            border-width: 1px;
+            border-style: solid;
+            width: 3em;
+            height: 2em;
         }
 
         .dropdown-item {
