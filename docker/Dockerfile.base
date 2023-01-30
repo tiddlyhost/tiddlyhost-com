@@ -16,7 +16,7 @@ ARG GROUP_ID
 # Just so they aren't hard coded below
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app
-ARG BUNDLE_PATH=/opt/bundle
+ARG _BUNDLE_PATH=/opt/bundle
 ARG NODE_MODULES_PATH=/opt/node_modules
 ARG APP_LOG_PATH=/var/log/app
 ARG CERT_PATH=/opt/certs
@@ -29,7 +29,7 @@ RUN \
   #
   # These will be volume mounts in the base image but regular dirs in the prod image
   mkdir -p $APP_PATH && chown -R $APP_USER:$APP_USER $APP_PATH && \
-  mkdir -p $BUNDLE_PATH && chown -R $APP_USER:$APP_USER $BUNDLE_PATH && \
+  mkdir -p $_BUNDLE_PATH && chown -R $APP_USER:$APP_USER $_BUNDLE_PATH && \
   mkdir -p $NODE_MODULES_PATH && chown -R $APP_USER:$APP_USER $NODE_MODULES_PATH && \
   #
   # This one is always a volume mount
@@ -86,7 +86,7 @@ USER $APP_USER
 COPY ./docker/dot_bash_aliases /home/$APP_USER/.bash_aliases
 
 # Writes to /home/$APP_USER/.bundle/config
-RUN bundle config set --global path '/opt/bundle'
+RUN bundle config set --global path $_BUNDLE_PATH
 
 # Make it easy to connect and do things in the container
 # See docker-compose for how we start rails
