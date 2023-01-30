@@ -72,7 +72,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.700.0)
+    aws-partitions (1.701.0)
     aws-sdk-core (3.170.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -81,7 +81,7 @@ GEM
     aws-sdk-kms (1.62.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.118.0)
+    aws-sdk-s3 (1.119.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
@@ -144,7 +144,7 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
-    haml_lint (0.43.0)
+    haml_lint (0.45.0)
       haml (>= 4.0, < 6.2)
       parallel (~> 1.10)
       rainbow
@@ -288,7 +288,7 @@ GEM
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.1)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
     validate_url (1.0.15)
@@ -358,7 +358,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.2.0p0
 
 BUNDLED WITH
-   2.4.3
+   2.4.5
