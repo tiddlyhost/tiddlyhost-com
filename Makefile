@@ -43,11 +43,11 @@ pull-ruby:
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base: cleanup
-	$(DC) build --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+	$(DC) build --progress plain --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
 fast-build-base:
-	$(DC) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # There's no need to run db:migrate for CI because the tests don't need it
 # Todo: clean this up and explain things. It's actually preparing for the prod build
@@ -371,13 +371,13 @@ build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-info js-math download-empty-prerelease gzip-core-js-files
-	$(DC_PROD) build app
+	$(DC_PROD) build --progress plain app
 
 build-prod-ci:
 	$(DC_PROD) build app
 
 fast-build-prod: build-info
-	$(DC_PROD) build app
+	$(DC_PROD) build --progress plain app
 
 push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost
