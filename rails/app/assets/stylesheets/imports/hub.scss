@@ -132,8 +132,10 @@ h1 {
             margin: 2px;
             font-size: 90%;
 
-            line-height: 1em;
-            max-height: 3.5em; // line-height * 3 plus some padding idk
+            line-height: 1.15em;
+            max-height: 4.1em;
+            // This is hand tweaked to be three lines of tags
+            // Fixme: Should try clamping by lines somehow
             overflow: hidden;
         }
 
@@ -217,24 +219,23 @@ h1 {
 }
 
 .site-tags {
-    line-height: 90%;
-
     a {
         text-decoration: none;
         font-size: 70%;
-        padding: 0.1em 0.3em;
-        margin-right:0.1em;
+        padding: 0.1em 0.5em;
+        border-radius: 1em;
+        opacity: 70%;
     }
 
 }
 
 [data-bs-theme="light"] .site-tags a {
-    color: #974;
-    background-color: #fea;
-    &:hover { background-color: #fd6; color: #841; }
+    color: rgba(0,0,0,0.7);
+    background-color: #fcda63;
+    &:hover { background-color: #f2bb00; color: black; }
 }
 [data-bs-theme="dark"] .site-tags a {
-    color: white;
-    background-color: #6a5400;
-    &:hover { background-color: #a17f00; }
+    color: black;
+    background-color: #b8900b;
+    &:hover { background-color: #e2af00; }
 }
