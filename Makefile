@@ -22,13 +22,14 @@ GROUP_ID ?= $(shell id -g)
 # a new version is available.
 #
 DOCKER_FILE=docker/Dockerfile.base
-RUBY_TAG=3.1-slim
+RUBY_VER=3.2
+RUBY_TAG=$(RUBY_VER)-slim
 
 pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
 	@\
 	export BASE_IMAGE_WITH_DIGEST="$$( \
-	  $(D) image inspect ruby:3.1-slim --format '{{index .RepoDigests 0}}' | sed 's/ruby@/ruby:$(RUBY_TAG)@/' )" && \
+	  $(D) image inspect ruby:$(RUBY_TAG) --format '{{index .RepoDigests 0}}' | sed 's/ruby@/ruby:$(RUBY_TAG)@/' )" && \
 	export REQUIRED="FROM $${BASE_IMAGE_WITH_DIGEST}" && \
 	export CURRENT=$$( grep -E '^FROM' $(DOCKER_FILE) ) && \
 	\
