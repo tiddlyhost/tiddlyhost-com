@@ -366,11 +366,27 @@ redo-cert: clear-cert cert
 
 #----------------------------------------------------------
 
+no-uncommitted-diffs:
+	@if ! git diff-index --quiet HEAD --; then \
+	  echo "Aborting due to uncommitted diffs!"; \
+	  git diff --numstat; \
+	  exit 1; \
+	fi
+
+no-uncommitted-rails-files:
+	@if [[ -n "$$( git status rails --porcelain )" ]]; then \
+	  echo "Aborting due to uncommitted files under rails directory!"; \
+	  git status rails --porcelain; \
+	  exit 1; \
+	fi
+
+# Avoid accidentally deploying junk
+build-ready: no-uncommitted-diffs no-uncommitted-rails-files
 
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-info js-math download-empty-prerelease gzip-core-js-files
+build-prod: build-ready build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build --progress plain app
 
 build-prod-ci:
