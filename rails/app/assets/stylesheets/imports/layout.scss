@@ -263,23 +263,11 @@ $hilight_bg_color: #d5e0f9;
         border-radius: var(--bs-pagination-border-radius);
     }
 
-    .page-item:hover .page-link {
-        background-color: $hilight_bg_color;
-        border-color: $hilight_bg_color;
-    }
-
-    .page-item.disabled:hover .page-link {
-        background-color: transparent;
-        border-color: transparent;
-    }
-
     .page-item.disabled .page-link {
         color: var(--bs-gray-600)
     }
 
     .page-link.active, .active > .page-link {
-        background-color: $hilight_bg_color;
-        border-color: $hilight_bg_color;
         color: var(--bs-pagination-color);
     }
 
@@ -287,6 +275,39 @@ $hilight_bg_color: #d5e0f9;
         color: var(--bs-gray-500);
         margin-right: 1px;
     }
+}
+
+[data-bs-theme="light"] .pagination {
+    .page-item:hover .page-link {
+        background-color: $hilight_bg_color;
+        border-color: $hilight_bg_color;
+    }
+    .page-link.active, .active > .page-link {
+        background-color:  $hilight_bg_color;
+        border-color:  $hilight_bg_color;
+        color: var(--bs-pagination-color);
+    }
+    .page-item.disabled:hover .page-link {
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+}
+[data-bs-theme="dark"] .pagination {
+    .page-item:hover .page-link {
+        background-color: var(--bs-gray-800);
+        border-color: var(--bs-gray-800);
+    }
+    .page-link.active, .active > .page-link {
+        background-color:  var(--bs-gray-800);
+        border-color:  var(--bs-gray-800);
+        color: var(--bs-pagination-color);
+    }
+    .page-item.disabled:hover .page-link {
+        background-color: transparent;
+        border-color: transparent;
+    }
+
 }
 
 [data-bs-theme="light"] {
