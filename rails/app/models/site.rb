@@ -180,11 +180,13 @@ class Site < ApplicationRecord
     nil
   end
 
-  # If site history is enabled then keep many saves otherwise
-  # only keep one. See also app/jobs/prune_attachments_job.
+  # If site history is enabled then keep many saves, otherwise keep just
+  # a few. Users won't be able to see them (for now at least), but would
+  # be nice if the save history is not entirely empty after subscribing.
+  # See also app/jobs/prune_attachments_job.
   def keep_count
     return 100 if site_history_enabled?
-    1
+    4
   end
 
   private

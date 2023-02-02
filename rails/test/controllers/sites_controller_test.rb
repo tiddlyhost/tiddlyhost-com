@@ -118,10 +118,6 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     # Smoke test
     assert_equal "feather", @site.reload.tw_kind
     assert_equal 2, @site.saved_version_count
-
-    # It's tested elsewhere, but anyhow...
-    PruneAttachmentsJob.perform_now('Site', @site.id)
-    assert_equal 1, @site.reload.saved_version_count
   end
 
   test "should destroy site" do
