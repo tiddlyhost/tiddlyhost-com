@@ -1,6 +1,5 @@
 // https://gka.github.io/palettes/#/15|d|5c7cd9||1|1
-$nav_bg_color: #50548c;
-$prod_nav_bg_color: #3c60b9;
+$nav_bg_color: #3c60b9;
 
 .banner-message {
     font-size: 75%;
@@ -32,9 +31,8 @@ $prod_nav_bg_color: #3c60b9;
     }
 }
 
-.navbar.navbar-prod {
-    background-color: $prod_nav_bg_color;
-}
+.navbar .navbar-brand img { transform: rotate(0.5turn); }
+.navbar.navbar-prod .navbar-brand img { transform: none; }
 
 .dropdown-item {
     svg.bi {
