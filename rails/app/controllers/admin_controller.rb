@@ -45,7 +45,7 @@ class AdminController < ApplicationController
     description: "NULLIF(sites.description, '')",
     email: 'email',
     empty: 'empties.name',
-    gravatar: 'use_gravatar',
+    gr: 'use_gravatar',
     id: 'id',
     iframes: 'allow_in_iframe',
     kind: 'tw_kind',
@@ -56,6 +56,9 @@ class AdminController < ApplicationController
     name: 'name',
     owner: 'COALESCE(users.username, users.email)',
     plan: 'plan_id',
+    # There's probably only one of these but it needs
+    # to be an aggregate due to the group by user.id
+    subscr: 'MAX(pay_subscriptions.processor_plan)',
     private: 'is_private',
     put: 'prefer_put_saver',
     saves: 'save_count',
@@ -77,6 +80,7 @@ class AdminController < ApplicationController
     version
     kind
     clone
+    subscr
   ].freeze
 
   FILTER_PARAMS = {
@@ -135,7 +139,7 @@ class AdminController < ApplicationController
   }.freeze
 
   def users
-    render_records User.left_joins(:sites, :tspot_sites).group(:id)
+    render_records User.left_joins(:sites, :tspot_sites).with_subscriptions.group(:id)
   end
 
   def sites

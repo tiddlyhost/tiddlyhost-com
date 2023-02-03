@@ -5,8 +5,9 @@
     %th= sort_link 'Name', :asc
     %th= sort_link 'Username', :asc
     %th= sort_link 'Email', :asc
-    %th= sort_link 'Gravatar?'
-    %th= sort_link 'Plan', :asc
+    %th= sort_link 'Gr'
+    %th= sort_link 'Type', :asc
+    %th= sort_link 'Subscr', :asc
     %th= sort_link 'Logins'
     %th= sort_link 'Sites'
     -if Settings.tiddlyspot_enabled?
@@ -27,6 +28,7 @@
           =link_to(gravatar_url(user.email), target: '_blank') do
             =gravatar_image(user, size: 18)
       %td= user.plan.name
+      %td= user.subscription_info.name
       %td= user.sign_in_count
       %td= link_to_user_sites(pluralize(user.sites.count, 'site'), user, action: :sites)
       -if Settings.tiddlyspot_enabled?
