@@ -49,17 +49,19 @@ build-base: cleanup
 fast-build-base:
 	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
-# There's no need to run db:migrate for CI because the tests don't need it
-# Todo: clean this up and explain things. It's actually preparing for the prod build
-VOL_MOUNTS=docker/bundle docker/log docker/config docker/secrets node_modules
-rails-init-ci: build-info js-math download-empty-prerelease gzip-core-js-files
-	mkdir -p docker/postgresql-data $(VOL_MOUNTS)
-	sudo chown $(USER_ID):$(GROUP_ID) -R rails $(VOL_MOUNTS)
-	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:create"
-
 # To set up your environment right after doing a git clone
-rails-init: rails-init-ci
-	$(DC) run --rm app bash -c "bin/rails db:setup"
+DB_VOL_MOUNT=docker/postgresql-data
+APP_VOL_MOUNTS=docker/bundle docker/log docker/config docker/secrets node_modules
+rails-init: build-info js-math download-empty-prerelease gzip-core-js-files
+	mkdir -p $(DB_VOL_MOUNT) $(APP_VOL_MOUNTS)
+	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:setup"
+
+# Identical to the above but with an extra chown command since the user id in
+# the container doesn't match the local user id when running in GitHub workflow
+rails-init-ci:
+	mkdir -p $(DB_VOL_MOUNT) $(APP_VOL_MOUNTS)
+	sudo chown $(USER_ID):$(GROUP_ID) -R rails $(APP_VOL_MOUNTS)
+	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:setup"
 
 #----------------------------------------------------------
 
