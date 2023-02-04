@@ -5,7 +5,7 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @admin = users(:mary)
-    @admin.update(plan: Plan.find_by_name('superuser'))
+    @admin.update(user_type: UserType.superuser)
   end
 
   test "unauthorized user" do

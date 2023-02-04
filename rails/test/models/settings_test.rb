@@ -4,7 +4,7 @@ class SettingsTest < ActiveSupport::TestCase
 
   test "feature enabled" do
     admin_user = User.find_by_id(1)
-    admin_user.update(plan: Plan.find_by_name('superuser'))
+    admin_user.update(user_type: UserType.superuser)
     assert admin_user.is_admin?
 
     non_admin_user = User.find_by_id(2)

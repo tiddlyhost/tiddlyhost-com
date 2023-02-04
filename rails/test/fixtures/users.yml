@@ -1,7 +1,7 @@
 ---
 bobby:
   id: 1
-  plan_id: 1
+  user_type_id: 1
   email: bobby@tables.com
   username: bobby
   encrypted_password: "$2a$12$7Vo3LPYma6We0nrvr.8iiewwdiir2g1BncZreaif3juRKLUZWOPMi"
@@ -25,7 +25,7 @@ bobby:
   updated_at: <%= 50.hours.ago %>
 mary:
   id: 2
-  plan_id: 1
+  user_type_id: 1
   email: mary@tables.com
   username: mary
   encrypted_password: "$2a$12$7Vo3LPYma6We0nrvr.8iiewwdiir2g1BncZreaif3juRKLUZWOPMi"

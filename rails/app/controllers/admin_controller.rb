@@ -55,7 +55,7 @@ class AdminController < ApplicationController
     logins: 'sign_in_count',
     name: 'name',
     owner: 'COALESCE(users.username, users.email)',
-    plan: 'plan_id',
+    type: 'user_type_id',
     # There's probably only one of these but it needs
     # to be an aggregate due to the group by user.id
     subscr: 'MAX(pay_subscriptions.processor_plan)',

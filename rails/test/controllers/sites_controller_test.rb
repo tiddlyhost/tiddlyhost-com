@@ -136,7 +136,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
 
     # Can access when admin
-    @user.update(plan_id: Plan.find_by_name("superuser").id)
+    @user.update(user_type: UserType.superuser)
     get history_site_url(@site)
     assert_response :success
   end
@@ -146,7 +146,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "site history" do
-    @user.update(plan_id: Plan.find_by_name("superuser").id)
+    @user.update(user_type: UserType.superuser)
     @site.content_upload("hey1")
     @site.content_upload("hey2")
     @site.content_upload("hey3")

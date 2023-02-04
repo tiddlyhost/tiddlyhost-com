@@ -11,7 +11,7 @@ defaults:
   devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
   support_email: simon.baird@gmail.com
   support_email_name: Simon Baird
-  default_plan_name: basic
+  default_user_type_name: basic
   default_empty_name: tw5
   minimum_password_length: 8
   hub_tag_tab_count: 6

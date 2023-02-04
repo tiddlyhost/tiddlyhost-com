@@ -18,10 +18,7 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable,
          :secure_validatable, email_validation: false
 
-  # Beware this is completely unrelated to subscription plans but it
-  # is used to classify admin/superuser users and maybe in future
-  # other types of users. Todo maybe: rename it to prevent confusion.
-  belongs_to :plan
+  belongs_to :user_type
 
   validates_presence_of :name
 
@@ -77,8 +74,9 @@ class User < ApplicationRecord
     unconfirmed_email.present?
   end
 
-  scope :with_plan,    ->(*plan_names) { where(    plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
-  scope :without_plan, ->(*plan_names) { where.not(plan_id: Plan.where(name: plan_names.map(&:to_s)).pluck(:id)) }
+  # Unused. Delete maybe?
+  scope :with_type,    ->(*type_names) { where(    user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
+  scope :without_type, ->(*type_names) { where.not(user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
 
   scope :search_for, ->(search_text) {
     where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
@@ -98,8 +96,8 @@ class User < ApplicationRecord
     site_blobs.sum(:byte_size)
   end
 
-  def has_plan?(plan_name)
-    plan.name == plan_name.to_s
+  def has_user_type?(user_type_name)
+    user_type.name == user_type_name.to_s
   end
 
   def has_username?
@@ -119,7 +117,7 @@ class User < ApplicationRecord
   end
 
   def is_superuser?
-    has_plan?(:superuser)
+    has_user_type?(:superuser)
   end
 
   def is_admin?

@@ -56,9 +56,9 @@ class UserSignupTest < CapybaraIntegrationTest
     # Confirm we are logged out
     assert page.has_css?(".jumbotron")
 
-    # New user has the basic plan
+    # New user has the basic user type
     user = User.find_by_email('tmctest@mail.com')
-    assert_equal 'basic', user.plan.name
+    assert_equal 'basic', user.user_type.name
 
   end
 

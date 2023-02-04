@@ -104,7 +104,7 @@ save button and confirm your site was able to be saved.
 To give your local user admin permissions, do the following:
 
     make console
-    User.first.update(plan_id: 2)
+    User.first.update(user_type_id: 2)
     exit
 
 Now reload the Tiddlyhost page in your browser and you should see the "Admin"

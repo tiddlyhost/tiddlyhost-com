@@ -6,8 +6,8 @@ class UserTest < ActiveSupport::TestCase
     @user = users(:bobby)
   end
 
-  test "user plans" do
-    assert_equal 'basic', @user.plan.name
+  test "user types" do
+    assert_equal 'basic', @user.user_type.name
   end
 
   test "username uniqueness" do

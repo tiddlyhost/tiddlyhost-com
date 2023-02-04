@@ -75,7 +75,7 @@ class SitesTest < CapybaraIntegrationTest
     assert_selector 'main p', text: "This private site"
 
     # But if mary becomes the admin user...
-    @mary.update(plan_id: Plan.find_by_name('superuser').id)
+    @mary.update(user_type: UserType.superuser)
     visit expected_url
     assert_is_tiddlywiki
 

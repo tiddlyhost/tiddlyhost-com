@@ -140,7 +140,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     # Enable the feature (in a clunky way)
     # Todo: Should have a good way to stub feature flags
     site.update(user_id: 1)
-    site.user.update(plan_id: 2)
+    site.user.update(user_type: UserType.superuser)
 
     host! "mysite.#{Settings.tiddlyspot_host}"
     get '/'
