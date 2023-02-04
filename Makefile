@@ -59,7 +59,7 @@ rails-init-ci: build-info js-math download-empty-prerelease gzip-core-js-files
 
 # To set up your environment right after doing a git clone
 rails-init: rails-init-ci
-	$(DC) run --rm app bash -c "bin/rails db:migrate"
+	$(DC) run --rm app bash -c "bin/rails db:setup"
 
 #----------------------------------------------------------
 
