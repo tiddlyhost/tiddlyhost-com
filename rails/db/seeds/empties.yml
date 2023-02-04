@@ -1,0 +1,69 @@
+#
+# puts Empty.order(:id).map(&:attributes).to_yaml
+#
+- id: 1
+  name: tw5
+  title: TiddlyWiki (self-contained)
+  description: The famous customizable personal wiki and non-linear notebook, with internal
+    core javascript
+  enabled: true
+  display_order: 10
+  primary: true
+  info_link: https://tiddlywiki.com/
+  tooltip: With an internal core plugin the site will be larger, loading and saving
+    will be slower, but the downloaded TiddlyWiki file will be usable offline even without
+    internet access.
+- id: 2
+  name: classic
+  title: TiddlyWiki Classic
+  description: The original old version of TiddlyWiki, retired from active development
+    in 2011
+  enabled: true
+  display_order: 30
+  primary: false
+  info_link: https://classic.tiddlywiki.com/
+  tooltip: Still receives the occasional maintenance update and is fully supported on
+    Tiddlyhost. Use for the nostalgia or to revive old TiddlyWikis in their original
+    form.
+- id: 3
+  name: tw5-json-store-test
+  title: New JSON store format pre-merge for test only
+  description: See https://github.com/simonbaird/tiddlyhost/issues/161
+  enabled: false
+  display_order: 100
+  primary: false
+  info_link:
+  tooltip:
+- id: 4
+  name: prerelease
+  title: TiddlyWiki prerelease build
+  description: The potentially unstable latest nightly build of TiddlyWiki
+  enabled: true
+  display_order: 40
+  primary: false
+  info_link: https://tiddlywiki.com/prerelease/
+  tooltip: Not recommended for serious use since it might have bugs or incomplete new
+    features. Use this to test or preview the next version of TiddlyWiki.
+- id: 5
+  name: feather
+  title: Feather Wiki
+  description: A new, modern, light-weight single-page wiki with Markdown and WYSIWYG
+    support
+  enabled: true
+  display_order: 20
+  primary: true
+  info_link: https://feather.wiki/
+  tooltip: The new kid on the block, Feather Wiki, weighs in at only 50 KB yet still
+    manages to support tagging, customizable styles, publish mode, and more.
+- id: 6
+  name: tw5x
+  title: TiddlyWiki (external core)
+  description: The famous customizable personal wiki and non-linear notebook, with external
+    core javascript
+  enabled: true
+  display_order: 12
+  primary: true
+  info_link: https://tiddlywiki.com/
+  tooltip: With the core plugin hosted externally the site will be smaller, loading
+    and saving will be faster, but the downloaded TiddlyWiki file won't work without
+    internet access.
