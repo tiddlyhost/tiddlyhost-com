@@ -70,6 +70,7 @@ class AdminController < ApplicationController
     upload: 'prefer_upload_saver',
     username: "NULLIF(username, '')",
     version: 'tw_version',
+    versions: 'COUNT(active_storage_blobs.id)',
     views: 'view_count',
   }.freeze
 
@@ -143,11 +144,11 @@ class AdminController < ApplicationController
   end
 
   def sites
-    render_records Site.left_joins(:user, :empty)
+    render_records Site.left_joins(:user, :empty).with_blobs_for_query.group(:id)
   end
 
   def tspot_sites
-    render_records TspotSite.left_joins(:user)
+    render_records TspotSite.left_joins(:user).with_blobs_for_query.group(:id)
   end
 
   def etc

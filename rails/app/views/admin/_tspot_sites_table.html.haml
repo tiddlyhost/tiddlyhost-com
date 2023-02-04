@@ -15,7 +15,7 @@
     %th= sort_link 'Accesses'
     -unless params[:saved] == '0'
       %th= sort_link 'Saves'
-    %th= 'Versions'
+    %th= sort_link 'Versions'
     -unless @user
       %th= sort_link 'Owner', :asc
     -unless params[:saved] == '0'
