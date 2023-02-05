@@ -39,7 +39,7 @@ class HomeController < ApplicationController
     else
       cookies[:dark_mode] = "1"
     end
-    redirect_back fallback_location: root_path
+    head 200
   end
 
   private

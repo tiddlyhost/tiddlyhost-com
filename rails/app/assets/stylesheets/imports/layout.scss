@@ -105,8 +105,6 @@ main {
     padding: 1em 1em 8em 1em;
 }
 
-// Fixme: Use vars...?
-
 [data-bs-theme="light"] {
     main {
         @extend .bg-light;
@@ -115,12 +113,16 @@ main {
     footer {
         background-color: var(--bs-gray-300);
     }
+
+    .mode-toggle-btn.sun-btn { display: none !important; }
 }
 
 [data-bs-theme="dark"] {
     footer {
         background-color: var(--bs-secondary-bg);
     }
+
+    .mode-toggle-btn.moon-stars-btn { display: none !important; }
 }
 
 footer {

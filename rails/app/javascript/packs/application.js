@@ -127,4 +127,18 @@ $(document).ready(function(){
     e.preventDefault();
   });
 
+  $('.mode-toggle-btn').on('click', function(e){
+    var currentTheme = $('html').attr('data-bs-theme');
+    var newTheme = currentTheme == "dark" ? "light" : "dark";
+    $('html').attr('data-bs-theme', newTheme)
+  });
+
+  const setTheme = function (theme) {
+    if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-bs-theme', 'dark')
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', theme)
+    }
+  }
+
 });

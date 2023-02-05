@@ -131,15 +131,26 @@ module ApplicationHelper
     super *[coll_or_options, options].compact
   end
 
-  def dark_mode_toggle_link
-    link_icon = bi_icon(dark_mode? ? 'sun' : 'moon-stars', class: 'th-dimmer')
-    link_text = "#{bs_theme(!dark_mode?).titleize} mode"
+  def _dark_mode_toggle_link(theme, screen_size)
+    icon_type = theme == :light ? "sun" : "moon-stars"
+    text = "#{theme.to_s.titleize} mode"
+    icon = bi_icon(icon_type)
 
+    # screen size :small is for when the burger menu is showing, e.g. on a phone
+    link_content = screen_size == :small ? safe_join([icon, text]) : icon
+    screen_size_class = screen_size == :small ? "d-block d-sm-none" : "d-none d-sm-block"
+
+    nav_link_to(link_content, home_mode_toggle_path, remote: true, title: text,
+      li_class: "#{screen_size_class} #{icon_type}-btn mode-toggle-btn")
+  end
+
+  def dark_mode_toggle_link
+    # Four buttons but only one will be visible at a time
     safe_join([
-      # For normal nav bar on larger screens
-      nav_link_to(link_icon, home_mode_toggle_path, title: link_text, li_class: 'd-none d-sm-block'),
-      # For burger menu on phone screens
-      nav_link_to(safe_join([link_icon, link_text]), home_mode_toggle_path, li_class: 'd-block d-sm-none')
+      _dark_mode_toggle_link(:light, :big),
+      _dark_mode_toggle_link(:dark, :big),
+      _dark_mode_toggle_link(:light, :small),
+      _dark_mode_toggle_link(:dark, :small),
     ])
   end
 
