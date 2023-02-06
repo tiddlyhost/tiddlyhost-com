@@ -31,7 +31,7 @@
     =link_to subscription_path, class: 'dropdown-item' do
       -if current_user.subscribed?
         =bi_icon('bag-check', style: "margin-left: 1px;")
-        Manage plan
+        Manage subscription
       -else
         =bi_icon('stars', style: "margin-left: 1px; margin-right: -2px;", class: "red-icon")
         Upgrade plan
