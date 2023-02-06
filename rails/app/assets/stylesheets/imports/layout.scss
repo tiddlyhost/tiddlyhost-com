@@ -106,27 +106,23 @@ main {
 }
 
 [data-bs-theme="light"] {
-    main {
-        @extend .bg-light;
-    }
-
-    footer {
-        background-color: var(--bs-gray-300);
-    }
-
+    main { @extend .bg-light; }
+    footer { background-color: var(--bs-gray-300); }
     .mode-toggle-btn.sun-btn { display: none !important; }
 }
 
 [data-bs-theme="dark"] {
-    footer {
-        background-color: var(--bs-secondary-bg);
-    }
-
+    footer { background-color: var(--bs-secondary-bg); }
     .mode-toggle-btn.moon-stars-btn { display: none !important; }
 }
 
-footer {
+@media (min-width: 576px) {
+    // So the body bg color doesn't show through after the footer
+    [data-bs-theme="light"] footer { box-shadow: 0 50vh 0 50vh var(--bs-gray-300); }
+    [data-bs-theme="dark"] footer { box-shadow: 0 50vh 0 50vh var(--bs-secondary-bg); }
+}
 
+footer {
     padding: 2em 1.2em 10em;
     font-size: 80%;
     .container-fluid {
@@ -157,8 +153,6 @@ footer {
         font-size: 1.2rem;
     }
 
-    /* trick so the body bg color doesn't show through after the footer */
-    box-shadow: 0 50vh 0 50vh #dee2e6;
 }
 
 [data-bs-theme="light"] h1 { color: var(--bs-gray-700); }
@@ -173,8 +167,8 @@ footer {
     white-space: nowrap;
 }
 
-body {
-}
+[data-bs-theme="light"] { @extend .bg-light; }
+[data-bs-theme="dark"] { background-color: var(--bs-gray-900); }
 
 body.simple-layout {
     header {
