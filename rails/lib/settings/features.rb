@@ -10,6 +10,10 @@ module Settings::Features
     user&.is_admin? || user&.subscribed?
   end
 
+  def site_history_preview_enabled?(user)
+    subscriptions_enabled?(user) && !site_history_enabled?(user)
+  end
+
   def subscriptions_enabled?(user=nil)
     # Hide subscriptions from non-admins until they're ready to launch
     user&.is_admin?

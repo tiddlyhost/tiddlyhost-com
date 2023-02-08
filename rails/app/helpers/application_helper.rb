@@ -154,4 +154,20 @@ module ApplicationHelper
     ])
   end
 
+  # Todo: Use this for all the menu links instead of just
+  # these ones from the site history page
+  #
+  SHARED_LINK_CONTENT = {
+    view: ['box-arrow-up-right', 'View'],
+    download: ['download', 'Download'],
+    restore: ['file-earmark-arrow-up', 'Restore as current version'],
+    discard: ['trash', 'Discard'],
+    upgrade: [['stars', class: "red-icon"], 'Upgrade plan'],
+  }
+
+  def link_content(key)
+    bi_icon_args, text = SHARED_LINK_CONTENT[key]
+    bi_icon(*Array.wrap(bi_icon_args)) + text
+  end
+
 end

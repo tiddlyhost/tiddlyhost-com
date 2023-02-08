@@ -3,8 +3,11 @@ module SiteHistory
   extend ActiveSupport::Concern
 
   included do
+    before_action :require_site_history_or_preview_enabled!,
+      only: [:history]
+
     before_action :require_site_history_enabled!,
-      only: [:history, :view_version, :download_version, :restore_version, :discard_version]
+      only: [:view_version, :download_version, :restore_version, :discard_version]
 
     before_action :set_blob_id,
       only: [:view_version, :download_version, :restore_version, :discard_version]
@@ -40,8 +43,12 @@ module SiteHistory
 
   private
 
+  def require_site_history_or_preview_enabled!
+    require_condition!(feature_enabled?(:site_history) || feature_enabled?(:site_history_preview))
+  end
+
   def require_site_history_enabled!
-    require_feature_enabled!(:site_history)
+    require_condition!(feature_enabled?(:site_history))
   end
 
   def set_blob_id

@@ -1,0 +1,36 @@
+%button.btn.btn-light.btn-sm(type="button" data-bs-toggle="dropdown"
+  aria-haspopup="true" aria-expanded="false" title="Actions")
+  =bi_icon('three-dots')
+
+.dropdown-menu.dropdown-menu-end
+  -if feature_enabled?(:site_history)
+    -#
+    -# User has access to the site history functionality
+    -#
+    =link_to(link_content(:view), "/sites/#{@site.id}/view_version/#{f.blob_id}", class: 'dropdown-item', target: '_blank')
+    =link_to(link_content(:download), "/sites/#{@site.id}/download_version/#{f.blob_id}", class: 'dropdown-item')
+    .dropdown-divider
+
+    =link_to(link_content(:restore), "/sites/#{@site.id}/restore_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
+      data: { confirm: "Are you sure you want to replace the site's current content with this older version?" })
+    .dropdown-divider
+
+    =link_to(link_content(:discard), "/sites/#{@site.id}/discard_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
+      data: { confirm: "Are you sure you want to discard this saved version?" })
+
+  -else
+    -#
+    -# User does not have access to the site history functionality. Show a
+    -# preview of the real menu with links to the subscription page.
+    -#
+    =link_to(link_content(:upgrade), "/subscription", class: 'dropdown-item')
+    .dropdown-divider
+
+    =link_to(link_content(:view), "/subscription", class: 'dropdown-item th-dimmer')
+    =link_to(link_content(:download), "/subscription", class: 'dropdown-item th-dimmer')
+    .dropdown-divider
+
+    =link_to(link_content(:restore), "/subscription", class: 'dropdown-item th-dimmer')
+    .dropdown-divider
+
+    =link_to(link_content(:discard), "/subscription", class: 'dropdown-item th-dimmer')

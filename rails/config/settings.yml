@@ -38,6 +38,11 @@ defaults:
       - Custom domain names
       - File Upload Plugin support
 
+  # How many versions of a site to keep
+  keep_counts:
+    :free: 4
+    :standard: 100
+
 development:
   url_defaults:
     :host: tiddlyhost.local

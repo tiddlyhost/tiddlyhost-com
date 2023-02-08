@@ -95,4 +95,11 @@ module SitesHelper
     end, ' ')
   end
 
+  def show_history_link?(site)
+    # Skip the link if the site hasn't been saved yet
+    return false unless site.save_count > 0
+
+    feature_enabled?(:site_history) || feature_enabled?(:site_history_preview)
+  end
+
 end

@@ -185,8 +185,8 @@ class Site < ApplicationRecord
   # be nice if the save history is not entirely empty after subscribing.
   # See also app/jobs/prune_attachments_job.
   def keep_count
-    return 100 if site_history_enabled?
-    4
+    return Settings.keep_counts[:standard] if site_history_enabled?
+    Settings.keep_counts[:free]
   end
 
   private

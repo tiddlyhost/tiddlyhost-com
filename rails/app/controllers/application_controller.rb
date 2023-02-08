@@ -57,11 +57,15 @@ class ApplicationController < ActionController::Base
     require_feature_enabled!(:admin)
   end
 
-  def require_feature_enabled!(feature_name)
-    return if feature_enabled?(feature_name)
+  def require_condition!(condition)
+    return if condition
     # 403 would be more accurate but let's pretend it's a 404
     @status_code, @status_message = 404, 'Not Found'
     render 'home/error_page', status: @status_code, layout: 'simple'
+  end
+
+  def require_feature_enabled!(feature_name)
+    require_condition!(feature_enabled?(feature_name))
   end
 
   # Used for serving custom favicons

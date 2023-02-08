@@ -44,7 +44,7 @@
     -else
       =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
 
-      -if feature_enabled?(:site_history) && !local_assigns[:history_mode] && site.saved_version_count > 0
+      -if show_history_link?(site) && !local_assigns[:history_mode]
         =link_to(history_site_path(site), class: 'dropdown-item') { bi_icon('clock-history') + 'Save history' }
 
       .dropdown-divider

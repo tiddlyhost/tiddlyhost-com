@@ -55,28 +55,7 @@
 
             -else
               -# Actions for previous saved version
-              %button.btn.btn-light.btn-sm(type="button" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" title="Actions")
-                =bi_icon('three-dots')
-
-              .dropdown-menu.dropdown-menu-end
-                =link_to("/sites/#{@site.id}/view_version/#{f.blob_id}", class: 'dropdown-item', target: '_blank') do
-                  =bi_icon('box-arrow-up-right') + 'View'
-
-                =link_to("/sites/#{@site.id}/download_version/#{f.blob_id}", class: 'dropdown-item') do
-                  =bi_icon('download') + 'Download'
-
-                .dropdown-divider
-
-                =link_to("/sites/#{@site.id}/restore_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
-                  data: { confirm: "Are you sure you want to replace the site's current content with this older version?" }) do
-                  =bi_icon('file-earmark-arrow-up') + 'Restore as current version'
-
-                .dropdown-divider
-
-                =link_to("/sites/#{@site.id}/discard_version/#{f.blob_id}", class: 'dropdown-item', method: :post,
-                  data: { confirm: "Are you sure you want to discard this saved version?" }) do
-                  =bi_icon('trash') + 'Discard'
+              =render 'history_actions_menu', f: f
 
         -if is_current
           -if @saved_version_count > 1
@@ -89,7 +68,15 @@
                 %i.text-muted <br><br>No older versions found.
 
 
-  -if @saved_version_count > @keep_count - 10
+  -if !feature_enabled?(:site_history)
+    .p-4
+      %i
+        Tiddlyhost will save and provide access to up to #{Settings.keep_counts[:standard]}
+        saved versions for Tiddlyhost subscribers.
+        =link_to("Upgrade your plan", "/subscription")
+        to access this feature.
+
+  -elsif @saved_version_count > @keep_count - 10
     .p-3.text-muted.small
       %i
         Note that only newest #{@keep_count} versions will be kept. Once there are more than #{@keep_count}, the oldest saved versions will be deleted.
