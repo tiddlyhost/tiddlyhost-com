@@ -50,6 +50,8 @@ Rails.application.routes.draw do
 
     get 'about', to: 'home#about'
     get 'donate', to: 'home#donate'
+    get 'privacy-policy', to: 'home#privacy_policy'
+    get 'terms-of-use', to: 'home#terms_of_use'
 
     get 'admin', to: 'admin#index'
 

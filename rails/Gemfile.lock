@@ -235,6 +235,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    redcarpet (3.6.0)
     regexp_parser (2.6.2)
     responders (3.1.0)
       actionpack (>= 5.2)
@@ -348,6 +349,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.0)
+  redcarpet (~> 3.6)
   rexml
   sass-rails (>= 6)
   selenium-webdriver

@@ -21,6 +21,12 @@ class HomeController < ApplicationController
   def donate
   end
 
+  def privacy_policy
+  end
+
+  def terms_of_use
+  end
+
   def error_404
     render_error_page(404, 'Not Found')
   end

@@ -67,3 +67,19 @@ svg.bi {
     fill: var(--bs-body-color);
     @extend .th-muted;
 }
+
+.policy-markdown {
+    margin-bottom: 3rem;
+    font-size: 90%;
+    max-width: 60em;
+    padding: 1em 2em;
+
+    h1, h2, h3 {
+        margin-top: 1.5rem;
+        font-weight: bold;
+    }
+
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.0rem; }
+    h3 { font-size: 0.9rem; }
+}
