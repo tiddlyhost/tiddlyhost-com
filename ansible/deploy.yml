@@ -86,8 +86,8 @@
       regexp: '^ExecStart'
       # Default line looks like this:
       #   ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-      # We're intending to insert the '-g /home/docker' option
-      line: "ExecStart=/usr/bin/dockerd -g /home/docker -H fd:// --containerd=/run/containerd/containerd.sock"
+      # We're intending to insert the '--data-root /home/docker' option
+      line: "ExecStart=/usr/bin/dockerd --data-root /home/docker -H fd:// --containerd=/run/containerd/containerd.sock"
     register: docker_config
     tags:
     - deps
