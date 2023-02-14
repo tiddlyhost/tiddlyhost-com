@@ -10,6 +10,7 @@ defaults:
   prod_main_site_url: https://tiddlyhost.com
   tiddlyhost_account_email: tiddlyhost@gmail.com
   devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
+  stripe_support_email: '"Tiddlyhost" <tiddlyhost@gmail.com>'
   support_email: simon.baird@gmail.com
   support_email_name: Simon Baird
   default_user_type_name: basic
