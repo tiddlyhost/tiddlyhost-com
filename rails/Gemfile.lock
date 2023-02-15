@@ -191,7 +191,7 @@ GEM
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
-    pay (3.0.24)
+    pay (6.3.1)
       rails (>= 6.0.0)
     pg (1.4.5)
     premailer (1.19.0)
@@ -286,7 +286,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stripe (5.55.0)
+    stripe (8.2.0)
     sysexits (1.2.0)
     temple (0.10.0)
     thor (1.2.1)
@@ -345,7 +345,7 @@ DEPENDENCIES
   net-imap
   net-pop
   net-smtp
-  pay (~> 3.0)
+  pay (~> 6.0)
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.0)
@@ -355,7 +355,7 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   spicy-proton
-  stripe (>= 2.8, < 6.0)
+  stripe (~> 8.0)
   tzinfo-data
   validate_url
   web-console (>= 4.1.0)

@@ -64,8 +64,8 @@ gem 'grover'
 gem 'spicy-proton'
 
 # For payments
-gem 'pay', '~> 3.0'
-gem 'stripe', '>= 2.8', '< 6.0'
+gem 'pay', '~> 6.0'
+gem 'stripe', '~> 8.0'
 
 # Needed after ruby 3.1 upgrade
 gem 'net-smtp', require: false
