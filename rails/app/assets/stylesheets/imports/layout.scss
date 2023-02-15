@@ -151,6 +151,11 @@ footer {
 
     h6 {
         font-size: 1.2rem;
+        a {
+            color: var(--bs-secondary-color) !important;
+            font-weight: normal !important;
+            &:hover { opacity: 100%; }
+        }
     }
 
 }

@@ -3,6 +3,8 @@
     clear: left;
     padding-left: 0px;
     padding-top: 1em;
+    margin-bottom: 3em;
+
     li {
         padding: 0.5em;
         margin-left: 0px;
@@ -11,10 +13,12 @@
         display: inline-block;
         margin-right: 1em;
         font-size: 110%;
+        border-radius: 0.25rem;
     }
-
-    margin-bottom: 3em;
 }
+
+[data-bs-theme="light"] .about-links li:hover { background-color: var(--bs-gray-200); }
+[data-bs-theme="dark"]  .about-links li:hover { background-color: var(--bs-gray-800); }
 
 .donate-button {
     display: inline-block;

@@ -4,6 +4,7 @@
 defaults:
   github_url: https://github.com/simonbaird/tiddlyhost
   issues_url: https://github.com/simonbaird/tiddlyhost/issues
+  docs_url: https://github.com/simonbaird/tiddlyhost/wiki
   faq_url: https://github.com/simonbaird/tiddlyhost/wiki/FAQ
   create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
   prod_main_site_url: https://tiddlyhost.com

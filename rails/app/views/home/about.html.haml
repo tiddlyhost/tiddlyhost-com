@@ -19,36 +19,58 @@
     Settings.create_issue_url, target: '_blank')
   or
   =support_mail_to(link_title: 'send an email to Simon') + '.'
+  See #{link_to "Support", "/support"} for more support options.
 
 %ul.about-links
   %li<
-    =link_to "#{Settings.github_url}/blob/main/LICENSE.md" do
-      =bi_icon('file-earmark-check')
-      License
-  %li<
-    =link_to Settings.github_url do
-      =bi_icon('gem')
-      Code
+    =link_to '/support' do
+      =bi_icon('life-preserver')
+      Support
+
   %li<
     =link_to Settings.faq_url do
       =bi_icon('patch-question')
-      FAQs
+      FAQ
+
   %li<
-    =link_to 'https://github.com/simonbaird/tiddlyhost/wiki/Journal' do
-      =bi_icon('journal-text')
-      Journal
-  %li<
-    =link_to 'https://tiddlyspot.blogspot.com/' do
-      =bi_icon('newspaper')
-      News
+    =link_to Settings.docs_url, target: '_blank' do
+      =bi_icon('file-text')
+      Documentation
+
   %li<
     =link_to 'https://twitter.com/tiddlyhost' do
       =bi_icon('twitter')
-      Tweets
+      Twitter
+
+  %li<
+    =link_to 'https://tiddlyspot.blogspot.com/' do
+      =bi_icon('newspaper')
+      Blog
+
+  %li<
+    =link_to '/terms-of-use' do
+      =bi_icon('file-earmark-text')
+      Terms of Use
+
+  %li<
+    =link_to '/privacy-policy' do
+      =bi_icon('file-earmark-text')
+      Privacy Policy
+
+  %li<
+    =link_to "#{Settings.github_url}/blob/main/LICENSE.md" do
+      =bi_icon('file-earmark-check')
+      Software License
+
+  %li<
+    =link_to Settings.github_url do
+      =bi_icon('gem')
+      Source Code
+
   %li<
     =link_to '/donate' do
       =bi_icon('piggy-bank')
-      Donations
+      Donations &amp; Sponsorship
 
 %table.m-2.p-1
   %tr
