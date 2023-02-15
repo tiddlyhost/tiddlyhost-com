@@ -21,6 +21,9 @@ class HomeController < ApplicationController
   def donate
   end
 
+  def support
+  end
+
   def privacy_policy
   end
 
