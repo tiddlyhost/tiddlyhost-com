@@ -74,5 +74,8 @@ module App
 
     # Deprecated in Rails 7 so let's not use it
     #config.active_storage.replace_on_assign_to_many = false
+
+    # Delayed job for background jobs
+    config.active_job.queue_adapter = :delayed_job
   end
 end

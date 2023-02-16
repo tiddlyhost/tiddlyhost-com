@@ -38,6 +38,27 @@ services:
       context: .
       dockerfile: docker/Dockerfile.prod
 
+  jobs:
+    image: sbaird/tiddlyhost:latest
+    container_name: th_jobs
+    restart: always
+    depends_on:
+    - db
+    - cache
+
+    volumes:
+    - ./docker/log:/var/log/app:Z
+    - ./docker/secrets/master.key:/opt/app/config/master.key:Z,ro
+    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:Z,ro
+    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:Z,ro
+
+    command: /bin/start-delayed-job.sh
+
+    security_opt:
+    # Todo: Figure out what syscalls chrome sandbox really needs
+    # and use an appropriate policy
+    - "seccomp:unconfined"
+
   cache:
     image: memcached
     container_name: th_cache

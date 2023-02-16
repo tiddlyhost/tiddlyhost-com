@@ -76,8 +76,8 @@ RUN \
   # Installs a newer version of bundle and bundler
   gem update --system --silent --no-document
 
-# Install script to help start rails
-COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh /bin/
+# Install scripts to start rails and delayed job
+COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh ./docker/start-delayed-job.sh /bin/
 
 WORKDIR $APP_PATH
 USER $APP_USER

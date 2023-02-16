@@ -116,8 +116,14 @@ GEM
     crass (1.0.6)
     css_parser (1.14.0)
       addressable
+    daemons (1.4.1)
     dalli (3.2.3)
     date (3.3.3)
+    delayed_job (4.1.11)
+      activesupport (>= 3.0, < 8.0)
+    delayed_job_active_record (4.1.7)
+      activerecord (>= 3.0, < 8.0)
+      delayed_job (>= 3.0, < 5)
     devise (4.8.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -334,7 +340,9 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   charlock_holmes
+  daemons
   dalli
+  delayed_job_active_record
   devise
   devise-security
   exception_notification
@@ -367,4 +375,4 @@ RUBY VERSION
    ruby 3.2.0p0
 
 BUNDLED WITH
-   2.4.6
+   2.4.7

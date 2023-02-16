@@ -23,6 +23,7 @@ services:
     - ./node_modules:/opt/node_modules:Z
     - ./docker/log:/var/log/app:Z
     command: /bin/start-rails.sh
+
     security_opt:
     # Todo: Figure out what syscalls chrome sandbox really needs
     # and use an appropriate policy
@@ -34,6 +35,26 @@ services:
       args:
       - USER_ID
       - GROUP_ID
+
+  jobs:
+    image: sbaird/tiddlyhost-base:latest
+    container_name: th_jobs
+    depends_on:
+    - db
+    - cache
+    volumes:
+    - ./rails:/opt/app:Z
+    - ./docker/bundle:/opt/bundle:Z
+    - ./node_modules:/opt/node_modules:Z
+    - ./docker/log:/var/log/app:Z
+    command: /bin/start-delayed-job.sh
+
+    security_opt:
+    # Todo: Figure out what syscalls chrome sandbox really needs
+    # and use an appropriate policy
+    - "seccomp:unconfined"
+
+    # It uses the same image as app so no need for build
 
   cache:
     image: memcached
