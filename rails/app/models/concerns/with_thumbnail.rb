@@ -9,12 +9,11 @@ module WithThumbnail
   # Todo:
   # - Can we at least set long-ish cache headers?
   # - Do we need to cache to reduce s3 traffic?
-  # - Per site or per user throttle or debounce maybe
 
-  # See app/jobs/generate_thumbnail_job
-  #
+  DEBOUNCE_WAIT = 2.minutes
+
   def update_thumbnail_later
-    GenerateThumbnailJob.perform_later(self.class.name, self.id)
+    GenerateThumbnailJob.set(wait: DEBOUNCE_WAIT).perform_later(self.class.name, self.id)
   end
 
   private
