@@ -22,16 +22,16 @@ dbshell:
 	$(DC) exec db bash
 
 log:
-	$(DCC) 'cat log/production.log'
-
-logf:
-	$(DCC) 'tail -f log/production.log'
-
-dlog:
 	$(DC) logs
 
-dlogf:
+logf:
 	$(DC) logs -f
+
+%-log:
+	$(DC) logs $*
+
+%-logf:
+	$(DC) logs -f $*
 
 dwatch:
 	@sudo watch -n1 docker ps -a
