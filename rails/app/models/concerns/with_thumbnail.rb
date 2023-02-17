@@ -16,6 +16,10 @@ module WithThumbnail
     GenerateThumbnailJob.set(wait: DEBOUNCE_WAIT).perform_later(self.class.name, self.id)
   end
 
+  def thumbnail_fresh?
+    thumbnail.present? && thumbnail.blob.created_at > current_content.blob.created_at
+  end
+
   private
 
   # This is expensive since it spins up a headless chromium
