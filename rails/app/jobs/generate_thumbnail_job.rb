@@ -8,4 +8,12 @@ class GenerateThumbnailJob < ApplicationJob
     # Todo: Clear out any other queued jobs for the same site
   end
 
+  def max_run_time
+    45.seconds
+  end
+
+  def max_attempts
+    1
+  end
+
 end
