@@ -102,4 +102,14 @@ module SitesHelper
     feature_enabled?(:site_history) || feature_enabled?(:site_history_preview)
   end
 
+  # It's an edge case, but when user has more saved sites than the keep
+  # count make them appear to be fading away. They will be hard removed
+  # as soon as the site next prunes it's files.
+  #
+  def fade_away_opacity(site, index)
+    how_far_under = index - site.keep_count
+    opac = 100 - 23 * (how_far_under + 3)
+    "opacity: #{opac.clamp(0,100)}%;"
+  end
+
 end

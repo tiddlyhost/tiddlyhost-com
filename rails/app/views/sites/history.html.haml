@@ -21,7 +21,7 @@
         %th.text-end.pe-3 Actions
 
     %tbody
-      -@site.saved_content_files.order('created_at DESC').each_with_index do |f, i|
+      -@site.saved_content_files.order('created_at DESC').limit(@site.keep_count+2).each_with_index do |f, i|
         -is_current = (f.blob_id == @current_blob_id)
 
         -if is_current
@@ -29,21 +29,22 @@
             %td.pt-4{colspan: 6}
               %b Current version:
 
+        - fade_opac = fade_away_opacity(@site, i) unless feature_enabled?(:site_history)
         %tr
-          %td
+          %td{style: fade_opac}
             #{i+1}.
 
-          %td
+          %td{style: fade_opac}
             #{f.blob.created_at}
 
-          %td
+          %td{style: fade_opac}
             #{nice_timestamp f.blob.created_at, brief: true}
 
-          %td
+          %td{style: fade_opac}
             =as_megabytes(f.blob.byte_size)
             MB
 
-          %td
+          %td{style: fade_opac}
             -# Not the real checksum, we just want a way to
             -# notice when two versions are identical
             =Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
