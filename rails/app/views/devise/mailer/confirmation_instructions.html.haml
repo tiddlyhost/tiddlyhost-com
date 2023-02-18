@@ -1,4 +1,4 @@
-=render 'salutation'
+=render 'salutation', user: @resource
 
 -if @resource.email_change_in_progress?
   -# Actually we're confirming an email address change
@@ -25,7 +25,7 @@
 
   =render 'button_link', link_text: 'Confirm account', link_url: confirmation_url(@resource, confirmation_token: @token)
 
-  =render 'show_email'
+  =render 'show_email', user: @resource
 
   %p.pt-5
     %small.text-gray-600
