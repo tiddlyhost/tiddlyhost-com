@@ -30,10 +30,13 @@
         </div>
         <div class="card-body">
           <% if @email_title.present? %><h1 class="h3 mb-2 mt-2"><%= @email_title %></h1><% end %>
-          <div class="space-y-3 p-2 pt-5">
+          <div class="space-y-3 p-2 py-5">
             <%= yield %>
           </div>
         </div>
+      </div>
+      <div class="container text-center">
+        <%= render 'layouts/mail_footer' %>
       </div>
     </div>
   </body>
