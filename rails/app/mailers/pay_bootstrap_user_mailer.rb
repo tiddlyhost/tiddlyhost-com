@@ -17,31 +17,45 @@ class PayBootstrapUserMailer < Pay::UserMailer
       attachments[params[:pay_charge].filename] = params[:pay_charge].receipt
     end
 
-    make_bootstrap_mail mail_arguments
+    @email_title = "Payment receipt"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def refund
-    make_bootstrap_mail mail_arguments
+    @email_title = "Refund processed"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_renewing
-    make_bootstrap_mail mail_arguments
+    @email_title = "Subscription renewal"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def payment_action_required
-    make_bootstrap_mail mail_arguments
+    @email_title = "Payment confirmation required"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_trial_will_end
-    make_bootstrap_mail mail_arguments
+    @email_title = "Subscription trial ending soon"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_trial_ended
-    make_bootstrap_mail mail_arguments
+    @email_title = "Subscription trial ended"
+    make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def payment_failed
-    make_bootstrap_mail mail_arguments
+    @email_title = "Payment declined"
+    make_bootstrap_mail tweak_subject mail_arguments
+  end
+
+  private
+
+  def tweak_subject(orig)
+    new_subject = "Tiddlyhost #{@email_title.downcase}"
+    orig.merge(subject: new_subject)
   end
 
 end

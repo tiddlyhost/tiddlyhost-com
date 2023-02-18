@@ -36,9 +36,9 @@ class PayBootstrapUserMailerPreview < ActionMailer::Preview
 
   # Fixme maybe: This doesn't work (I think) because
   # there's no controller for the pay/payments/:id route
-  #def payment_action_required
-  #  do_email :payment_action_required
-  #end
+  def payment_action_required
+    do_email :payment_action_required
+  end
 
   def subscription_trial_will_end
     do_email :subscription_trial_will_end

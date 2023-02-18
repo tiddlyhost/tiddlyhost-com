@@ -1,0 +1,18 @@
+id_1:
+  id: 1
+  owner_type: User
+  owner_id: 1
+  processor: stripe
+  processor_id:
+  default: true
+  data:
+  deleted_at:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-17 18:58:10.061940000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: Etc/UTC
+    time: 2023-02-17 18:58:10.061940000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-17 18:58:10.061940000 Z
+    zone: *1
+    time: 2023-02-17 18:58:10.061940000 Z

@@ -1,0 +1,14 @@
+
+%p
+  Your Tiddlyhost subscription renewal is happening soon.
+
+%p
+  This is a friendly reminder that your Tiddlyhost subscription will renew
+  automatically on #{l(params[:date].to_date, format: :long)}.
+
+%p
+  To manage your subscription click the link below.
+
+=render "devise/mailer/button_link", link_text: "Manage your subscription", link_url: "#{root_url}subscription"
+
+=render 'show_email'

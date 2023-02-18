@@ -1,0 +1,16 @@
+
+-# Not used currently
+
+%p
+  Your Tiddlyhost subscription trial period is ending soon.
+
+%p
+  This is a friendly reminder that your Tiddlyhost trial will be ending soon.
+
+%p
+  To ensure your subscription continues after the trial period, click the
+  link below and choose a subscription option.
+
+=render "devise/mailer/button_link", link_text: "Manage your subscription", link_url: "#{root_url}subscription"
+
+=render 'show_email'

@@ -1,0 +1,16 @@
+
+-# Not used currently afaict.
+
+%p
+  Extra confirmation is needed to process your payment.
+
+%p
+  Your Tiddlyhost subscription payment requires an additional confirmation.
+  Click the link below to confirm your subscription payment.
+
+-#
+  Fixme: Doesn't work since pay.payment_url doesn't exist
+  =render "devise/mailer/button_link", link_text: "Confirm your payment", link_url: pay.payment_url(params[:payment_intent_id])
+=render "devise/mailer/button_link", link_text: "Confirm your payment", link_url: '/fixme'
+
+=render 'show_email'

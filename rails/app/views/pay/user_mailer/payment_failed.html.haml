@@ -1,0 +1,11 @@
+
+%p
+  Your Tiddlyhost subscription payment was declined.
+
+%p
+  We were unable to charge your payment method for your Tiddlyhost subscription.
+  Please click the link below and update your billing information.
+
+=render "devise/mailer/button_link", link_text: "Update billing information", link_url: "#{root_url}subscription"
+
+=render 'show_email'

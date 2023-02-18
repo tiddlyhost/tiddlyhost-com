@@ -1,0 +1,49 @@
+---
+id_1:
+  id: 1
+  customer_id: 1
+  subscription_id: 15
+  processor_id: ch_3MbbzbLudQhYOkno0qG9CTDP
+  amount: 800
+  currency: usd
+  application_fee_amount:
+  amount_refunded: 0
+  metadata: {}
+  data:
+    brand: Visa
+    last4: '1111'
+    refunds: []
+    exp_year: '2028'
+    subtotal: 800
+    discounts: []
+    exp_month: '1'
+    invoice_id: in_1MbbzaLudQhYOknoy9LdAEbE
+    line_items:
+    - id: il_1MbbzaLudQhYOknoZxaNV4cX
+      amount: 800
+      price_id: price_1MWtiXLudQhYOknor7RGBmCE
+      quantity: 1
+      discounts: []
+      proration: false
+      period_end: '2023-03-15T03:49:14.000+00:00'
+      description: 1 × Tiddlyhost Standard (at $8.00 / month)
+      tax_amounts: []
+      unit_amount: 800
+      period_start: '2023-02-15T03:49:14.000+00:00'
+    period_end: '2023-02-15T03:49:14.000+00:00'
+    period_start: '2023-02-15T03:49:14.000+00:00'
+    amount_captured: 800
+    payment_intent_id: pi_3MbbzbLudQhYOkno0Pq8zzGo
+    total_tax_amounts: []
+    stripe_receipt_url: https://pay.stripe.com/receipts/invoices/CAcaFwoVYWNjdF8xSWdZWjhMdWRRaFlPa25vKL-ssZ8GMgaHIqjeW9Y6LBYhbPd-DL1fks0ct3lmG6zMdJevALvGVFEc3V_7XdX3B5PmhdbC42SVioMk?s=ap
+    payment_method_type: card
+    total_discount_amounts: []
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-15 03:49:15.000000000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: Etc/UTC
+    time: 2023-02-15 03:49:15.000000000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-15 03:49:19.347235000 Z
+    zone: *1
+    time: 2023-02-15 03:49:19.347235000 Z

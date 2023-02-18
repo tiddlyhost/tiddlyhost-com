@@ -1,0 +1,25 @@
+
+=render 'salutation'
+
+%p
+  Your Tiddlyhost subscription refund has been processed.
+
+%p
+  Please allow up to 7 business days for your refund to appear in your account.
+
+%pre{style: "font-size: 80%; padding: 0.5em 2em 0 2em;"}
+  :plain
+
+    -------------------------------------
+    RECEIPT - REFUND
+
+    Tiddlyhost Subscription Plan
+    Amount: #{params[:pay_charge].amount_refunded_with_currency}
+
+    Refunded to: #{params[:pay_charge].charged_to}
+    Transaction ID: #{params[:pay_charge].id}
+    Date: #{l params[:pay_charge].created_at}
+
+    --------------------------------------
+
+=render 'show_email'
