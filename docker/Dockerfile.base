@@ -83,7 +83,7 @@ WORKDIR $APP_PATH
 USER $APP_USER
 
 # Install some helpful bash aliases for use inside the container
-COPY ./docker/dot_bash_aliases /home/$APP_USER/.bash_aliases
+COPY ./docker/.bash_aliases ./docker/.irbrc /home/$APP_USER/
 
 # Writes to /home/$APP_USER/.bundle/config
 RUN bundle config set --global path $_BUNDLE_PATH
