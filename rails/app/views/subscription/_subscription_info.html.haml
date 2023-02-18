@@ -9,12 +9,17 @@
     =render 'pricing_card', plan: @subscription_info.name.downcase.to_sym, show_billing_portal_link: true
 
   -# A link to Stripe's billing portal
-  .row.row-cols-1.m-4.mt-1.text-center
+  .row.row-cols-1.m-4.text-center
     %big.w-100
       =link_to @portal_session.url do
         View billing details or cancel
-        =bi_icon('box-arrow-up-right', width: "0.9em", height: "0.9em", style: "margin-left: 0.5em;")
+      %br
+      %small.stripe-logo-link{style: "font-size: 70%;"}
+        (opens on
+        =render "stripe_logo"
+        \.com)
 
-  .row.row-cols-1.m-4.mt-1.text-center
+
+  .row.row-cols-1.m-5.text-center
     %big.w-100
       =link_to "Review subscription options", '/subscription/plans'

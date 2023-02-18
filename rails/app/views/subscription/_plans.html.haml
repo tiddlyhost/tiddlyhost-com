@@ -15,20 +15,31 @@
 
 -else
   %p
-    %big
+    %big.enable-tooltips
       Upgrading to a subscription plan gives you access to Tiddlyhost features not available to free plan users.
 
-      Billing is handled by
+      Tiddlyhost subscription billing is handled by
       =link_to 'https://stripe.com/', target: '_blank', title: "stripe.com", class: "stripe-logo-link" do
         =render 'stripe_logo'
+      =render 'popover_help',
+        html_content: ' |
+          <a href="https://stripe.com/" target="_blank">Stripe</a> |
+          is an easy to use and highly trusted platform for online payment handling, |
+          backed by strict industry standards for security and data protection. ' |
       \.
 
     .card
-      .card-body.p-2.ps-3.subscribed-message.text-center
+      .card-body.p-2.ps-3.subscribed-message.text-center.enable-tooltips
         %big
           You are currently using the <b class="th-slightly-muted">Tiddlyhost Free Plan</b>.
           To upgrade to <b class="th-slightly-muted">Tiddlyhost Standard</b> click
-          the <b class="th-slightly-muted">Subscribe Now</b> button below.
+          the <b class="th-slightly-muted">Subscribe Now</b>
+          =render 'popover_help',
+            html_content: ' |
+              The <b>Subscribe Now</b> button takes you to a |
+              <a href="https://stripe.com/" target="_blank">Stripe</a> page where |
+              you\'ll be able to provide payment details for a Tiddlyhost subscription. ' |
+          button below.
 
 .d-flex.mt-4.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
   =render 'pricing_card', plan: :free
