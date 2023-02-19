@@ -32,7 +32,15 @@ module WithThumbnail
     use_html = file_download.
       sub(/(<script src=")(tiddlywikicore-[\d\.]+.js")/, "\\1#{core_url_prefix}/\\2")
 
-    png = Grover.new(use_html, **grover_opts).to_png
+    grover = Grover.new(use_html, **grover_opts)
+
+    # For future debugging:
+    #Rails.logger.info(grover.send(:normalized_options, path: nil))
+    # {"viewport"=>{"width"=>1024, "height"=>680, "deviceScaleFactor"=>0.25},
+    #  "requestTimeout"=>30000, "convertTimeout"=>20000, "waitForTimeout"=>5000,
+    #  "waitUntil"=>"networkidle2"}
+
+    png = grover.to_png
 
     update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
   end
@@ -40,7 +48,7 @@ module WithThumbnail
   # See also config/initializers/grover
   #
   def grover_opts
-    case tw_kind
+    opts = case tw_kind
     when 'feather'
       {
         style_tag_options: [
@@ -53,6 +61,8 @@ module WithThumbnail
       {}
 
     end
+
+    opts
   end
 
   # See `find_or_build_blob` in
