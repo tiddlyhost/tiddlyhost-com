@@ -31,6 +31,12 @@ class AdminController < ApplicationController
     @owned_tspot_site_count = TspotSite.owned.count
     @saved_tspot_count = TspotSite.where.not(save_count: 0).count
 
+    @jobs_count = Delayed::Job.count
+
+    @jobs_running_count = Delayed::Job.where.not(locked_by: nil).count
+    @jobs_running_since = Delayed::Job.where.not(locked_by: nil).first&.locked_at
+    @jobs_running_sites = GenerateThumbnailJob.running_sites
+
   end
 
   include SortAndFilterLinkHelper

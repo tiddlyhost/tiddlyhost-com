@@ -3,8 +3,7 @@ class GenerateThumbnailJob < ApplicationJob
   queue_as :default
 
   def perform(model_name, site_id)
-    return unless model_name.in?(%w[ Site TspotSite ])
-    return unless site = model_name.safe_constantize&.find_by_id(site_id)
+    return unless site = GenerateThumbnailJob.from_model_name_and_id(model_name, site_id)
 
     # Fixme: Not sure why but there are some sites that choke the job
     # queue and somehow don't time out
@@ -28,6 +27,21 @@ class GenerateThumbnailJob < ApplicationJob
       where("handler like '%GenerateThumbnailJob\n%'").
       where("handler like '%  - #{model_name}\n%'").
       where("handler like '%  - #{site_id}\n%'")
+  end
+
+  # Help identify problematic sites
+  def self.running_sites
+    Delayed::Job.where.not(locked_by: nil).map do |j|
+      j.handler.scan(/^  - (\S+)$/).flatten
+    end.map do |model_name, site_id|
+      from_model_name_and_id(model_name, site_id)
+    end.compact
+  end
+
+  def self.from_model_name_and_id(model_name, site_id)
+    return unless model_name.in?(%w[ Site TspotSite ])
+    return unless site = model_name.safe_constantize&.find_by_id(site_id)
+    site
   end
 
   def max_run_time

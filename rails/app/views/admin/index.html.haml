@@ -26,3 +26,8 @@
     %br
     =render 'stat_card', title: 'Owned tspots',   count: @owned_tspot_site_count, total: @tspot_site_count
     =render 'stat_card', title: 'Saved tspots',   count: @saved_tspot_count, total: @tspot_site_count
+
+  %br
+  =render 'stat_card', title: 'Jobs in queue', count: @jobs_count
+  =render 'stat_card', title: 'Locked since', count: nice_timestamp(@jobs_running_since)
+  =render 'stat_card', title: 'Running now', count: safe_join(@jobs_running_sites.map{|s| site_link(s, link_title: "#{s.class.name}/#{s.id} ")}).presence || "None"
