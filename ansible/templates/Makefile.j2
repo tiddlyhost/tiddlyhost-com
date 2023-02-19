@@ -56,8 +56,16 @@ update:
 	sudo dnf update
 	@echo "** Consider if a reboot is needed"
 
-showdupes:
-	$(DCC) 'bin/rails runner fixup-scripts/clean-attachment-dupes.rb'
+#
+# For some reason the thumbnail generator job doesn't timeout like
+# it should. These are helpful until I figure out a better plan.
+#
+showpuppet:
+	@ps -eo pid,ppid,etime,cmd | grep /opt/node_modules/puppeteer | grep -v grep | awk '{print $$1, $$2, $$3}'
 
-cleandupes:
-	$(DCC) 'env REALLY=1 bin/rails runner fixup-scripts/clean-attachment-dupes.rb'
+killpuppet:
+	@ps -eo pid,ppid,etime,cmd | grep /opt/node_modules/puppeteer | grep -v grep | awk '{print $$1}' | tac | xargs kill
+
+# Expecting to see some defunct chrome processes
+showchrome:
+	@ps -eo pid,ppid,etime,cmd | grep chrome | grep -v grep | grep -v make
