@@ -205,6 +205,18 @@
     tags:
     - scripts
 
+    # The genenerate thumbnail job produces many defunct chrome
+    # processes. Restart once in a while to clean them up.
+  - name: Create a cron job to restart the jobs container
+    cron:
+      name: jobs container restart
+      user: root
+      job: "/usr/local/bin/docker-compose -f {{ home_dir }}/docker-compose.yml restart jobs"
+      minute: "10"
+      hour: "*/8"
+    tags:
+    - scripts
+
   - name: Create dir for certbot aws credentials
     become: no
     file:
