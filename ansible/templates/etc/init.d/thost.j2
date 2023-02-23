@@ -21,7 +21,7 @@ stop() {
 
 stop-web() {
     # Should be faster since the db and cache containers stay up
-    $DOCKER_COMPOSE rm --stop --force web app
+    $DOCKER_COMPOSE rm --stop --force web app jobs
     # Make sure the rails-static volume is refreshed
     $DOCKER volume rm th_rails_static
 }
