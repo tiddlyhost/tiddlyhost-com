@@ -2,16 +2,14 @@
 .stats {
     margin-left: 1rem;
     .card {
+        @extend .th-slightly-muted;
         border-radius: 0px;
-        border-top-width: 0px;
-        border-left-width: 0px;
-        border-color: #ccc;
+        border-style: none;
         min-width: 7rem;
         display: inline-block;
         .card-body {
             .big {
                 font-size: 120%;
-                color: #555;
                 display: inline;
             }
             .medium {
@@ -21,9 +19,7 @@
             }
             .label {
                 font-size: 75%;
-                color: #555;
                 margin-top: -0.6em;
-                color: #888;
                 padding-left: 0.2em;
             }
             padding: 0.8rem 0.5rem 0.7rem 1.2rem;
@@ -34,6 +30,7 @@
     }
 
     .card.big {
+        @extend .th-muted;
         min-width: 5rem;
         .card-body {
             .big {
@@ -43,11 +40,25 @@
                 margin-top: -1.2em;
                 padding-left: 0.5em;
                 font-weight: bold;
-                color: #999;
             }
         }
     }
 
+}
+
+[data-bs-theme="light"] .stats .card {
+    &.green .card-body { background-color: #cec; }
+    &.blue .card-body { background-color: #cde; }
+    &.yellow .card-body { background-color: #eec; }
+    &.red .card-body { background-color: #ecc; }
+    &.plain .card-body { background-color: #ddd; }
+}
+[data-bs-theme="dark"] .stats .card {
+    &.green .card-body { background-color: #252; }
+    &.blue .card-body { background-color: #235; }
+    &.yellow .card-body { background-color: #552; }
+    &.red .card-body { background-color: #522; }
+    &.plain .card-body { background-color: #555; }
 }
 
 .user-links {

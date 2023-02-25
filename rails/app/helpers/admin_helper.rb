@@ -40,18 +40,17 @@ module AdminHelper
     end
   end
 
-  def card_color(title, value)
+  def card_color(title, value, alert=false)
+    return 'red' if alert
     case title.downcase
     when /users/, /active/
-      '#ffe'
+      'yellow'
     when /tspots/
-      '#efe'
-    when /dupe/
-      '#ffeee8' if value > 0
+      'green'
     when /sites/
-      '#eef8ff'
+      'blue'
     else
-      'var(--bs-gray-100)'
+      'plain'
     end
   end
 

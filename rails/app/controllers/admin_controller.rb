@@ -36,6 +36,7 @@ class AdminController < ApplicationController
     @jobs_running_count = Delayed::Job.where.not(locked_by: nil).count
     @jobs_running_since = Delayed::Job.where.not(locked_by: nil).first&.locked_at
     @jobs_running_sites = GenerateThumbnailJob.running_sites
+    @jobs_alert = @jobs_running_since && @jobs_running_since < 10.minutes.ago
 
   end
 
