@@ -438,6 +438,9 @@ deploy-app-bootstrap:
 deploy-cleanup:
 	$(PLAY) ansible/deploy.yml --tags=cleanup
 
+deploy-secrets:
+	$(PLAY) ansible/deploy.yml --tags=secrets
+
 # If you want to run selected tasks givem them the foo tag
 deploy-foo:
 	$(PLAY) ansible/deploy.yml --tags=foo --diff
@@ -450,6 +453,9 @@ fast-upgrade:
 
 faster-upgrade:
 	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration --extra-var fast_restart=true
+
+restart-jobs:
+	$(PLAY) ansible/restart.yml -e restart_list=jobs
 
 #----------------------------------------------------------
 

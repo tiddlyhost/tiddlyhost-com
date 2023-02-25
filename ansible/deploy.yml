@@ -335,6 +335,7 @@
       mode: "0400"
     tags:
     - app
+    - secrets
 
   - name: Copy encrypted credentials file
     become: no
@@ -344,6 +345,7 @@
       mode: "0400"
     tags:
     - app
+    - secrets
 
   - name: Copy init script
     template:

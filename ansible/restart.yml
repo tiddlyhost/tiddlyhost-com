@@ -1,0 +1,13 @@
+
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+  # Override as needed
+  - restart_list: "{{ jobs }}"
+
+  tasks:
+  - name: Restart
+    command:
+      cmd: /usr/local/bin/docker-compose -f {{ home_dir }}/docker-compose.yml restart {{ restart_list }}
