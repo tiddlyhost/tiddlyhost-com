@@ -15,8 +15,7 @@ module Settings::Features
   end
 
   def subscriptions_enabled?(user=nil)
-    # Hide subscriptions from non-admins until they're ready to launch
-    user&.is_admin?
+    true
   end
 
   def redirect_tspot_to_url_enabled?(user)

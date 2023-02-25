@@ -131,14 +131,23 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
   test "site history access" do
     @site.content_upload("hey")
 
-    # Can't access
-    get history_site_url(@site)
-    assert_response :not_found
+    Settings::Features.stub(:site_history_enabled?, false) do
+      Settings::Features.stub(:site_history_preview_enabled?, false) do
+        # Can't access
+        get history_site_url(@site)
+        assert_response :not_found
+      end
 
-    # Can access when admin
-    @user.update(user_type: UserType.superuser)
-    get history_site_url(@site)
-    assert_response :success
+      Settings::Features.stub(:site_history_preview_enabled?, true) do
+        get history_site_url(@site)
+        assert_response :success
+      end
+    end
+
+    Settings::Features.stub(:site_history_enabled?, true) do
+      get history_site_url(@site)
+      assert_response :success
+    end
   end
 
   def get_blob_ids(site)
@@ -157,6 +166,12 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
 
     get history_site_url(@site)
     assert_response :success
+
+    Settings::Features.stub(:site_history_enabled?, false) do
+      # Restore an old version when feature is not enabled
+      post "/sites/#{@site.id}/restore_version/#{blob_ids.last}"
+      assert_response :not_found
+    end
 
     # Restore an old version
     post "/sites/#{@site.id}/restore_version/#{blob_ids.last}"
