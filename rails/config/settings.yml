@@ -34,11 +34,12 @@ defaults:
       - Create public and private TiddlyWiki & Feather Wiki sites
     :standard:
       :features:
-      - View and recover previous versions of your sites with the save history feature
+      - Redirect claimed Tiddlyspot sites to any url
+      - View and recover previous versions of your sites with the <b>save history</b> feature
     :premium:
       :features:
       - Custom domain names
-      - File Upload Plugin support
+      - Externally hosted images and PDFs
 
   # How many versions of a site to keep
   keep_counts:
