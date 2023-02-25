@@ -1,5 +1,5 @@
 =render layout: 'form_wrapper',
-  locals: { heading: "Save history for '#{@site.name}'", intro_text: kind_summary(@site) } do
+  locals: { heading: "Save history for '#{@site.name}'"} do
 
   .my-3
     =render 'site_tile_clone', mode: 'home', site: @site
