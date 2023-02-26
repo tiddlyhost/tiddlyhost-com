@@ -67,6 +67,11 @@ module ApplicationHelper
       bi_icon('dash-circle-dotted', fill: "#aaa")
   end
 
+  def storage_bytes(bytes)
+    number_to_human_size(bytes, precision: 5, significant: true, delimiter: ",")
+  end
+
+  # Fixme: use number_to_human_size here too
   def as_megabytes(bytes, precision: 2)
     return '-' if bytes.nil?
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)

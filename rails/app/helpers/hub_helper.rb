@@ -8,11 +8,20 @@ module HubHelper
     hub_link_to(bi_icon(:tag) + tag_name, hub_tag_url(tag_name))
   end
 
+  # Fixme: Use rails' helper number_to_human
   def nice_view_count(view_count)
-    return view_count.to_s if view_count < 1000
+    if view_count < 1_000
+      view_count.to_s
 
-    precision = view_count > 10000 ? 0 : 1
-    "#{number_with_precision(view_count.to_f/1000, precision: precision)}K"
+    elsif view_count < 1_000_000
+      precision = view_count > 10_000 ? 0 : 1
+      "#{number_with_precision(view_count.to_f/1_000, precision: precision)}K"
+
+    else
+      precision = view_count > 10_000_000 ? 0 : 1
+      "#{number_with_precision(view_count.to_f/1_000_000, precision: precision)}M"
+
+    end
   end
 
   def views_and_updated_text(hub_site)
