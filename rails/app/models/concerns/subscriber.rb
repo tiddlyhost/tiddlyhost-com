@@ -18,6 +18,10 @@ module Subscriber
         where("pay_subscriptions.status IS NULL OR pay_subscriptions.status = 'active'")
     }
 
+    scope :with_subscriptions_active, -> {
+      with_subscriptions.where(pay_subscriptions: {status: 'active'}).select('distinct users.id')
+    }
+
     # Uncomment to help test UI for unsubcribed user
     #def subscribed?; false; end
   end

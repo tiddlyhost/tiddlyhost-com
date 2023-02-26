@@ -7,11 +7,13 @@ class AdminController < ApplicationController
   def index
     @title = 'Stats'
 
-    @view_count = Site.sum(:view_count)
+    @view_count = Site.sum(:access_count)
     @tspot_view_count = TspotSite.sum(:access_count)
     @total_site_bytes = ActiveStorage::Blob.sum(:byte_size)
 
     @user_count = User.count
+    @subscription_count = User.with_subscriptions_active.count
+
     @never_signed_in_users = User.signed_in_never.count
     @signed_in_once_users = User.signed_in_once.count
 

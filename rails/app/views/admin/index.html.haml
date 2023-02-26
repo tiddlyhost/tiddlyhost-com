@@ -4,23 +4,30 @@
 =render 'tabs'
 
 .stats
-  =render 'stat_card', title: 'Users',   count: @user_count, big: true
-  =render 'stat_card', title: 'Sites',   count: @site_count, big: true
+  =render 'stat_card', title: 'Users',         count: @user_count, big: true
+  =render 'stat_card', title: 'Subscriptions', count: @subscription_count, big: true
+  =render 'stat_card', title: 'Sites',         count: @site_count, big: true
+  =render 'stat_card', title: 'Site views',    count: @view_count, big: true
+
   -if Settings.tiddlyspot_enabled?
-    =render 'stat_card', title: 'Tspots', count: @tspot_site_count, big: true
-  =render 'stat_card', title: 'Storage', count: "#{as_megabytes(@total_site_bytes, precision: 0)} MB", big: true
+    =render 'stat_card', title: 'Tspots',      count: @tspot_site_count, big: true
+    =render 'stat_card', title: 'Tspot views', count: @tspot_view_count, big: true
+
+  =render 'stat_card', title: 'Storage',       count: "#{as_megabytes(@total_site_bytes, precision: 0)} MB", big: true
   %br
+
   =render 'stat_card', title: 'Active daily',          count: @active_daily, total: @user_count
   =render 'stat_card', title: 'Active weekly',         count: @active_weekly, total: @user_count
   =render 'stat_card', title: 'Active monthly',        count: @active_monthly, total: @user_count
   =render 'stat_card', title: 'Signed in once users',  count: @signed_in_once_users, total: @user_count
   =render 'stat_card', title: 'Never signed in users', count: @never_signed_in_users, total: @user_count
   %br
-  =render 'stat_card', title: 'Never updated sites',  count: @never_updated_sites, total: @site_count
-  =render 'stat_card', title: 'Private sites',        count: @private_count, total: @site_count
-  =render 'stat_card', title: 'Public sites',         count: @public_count, total: @site_count
-  =render 'stat_card', title: 'Public non-hub sites', count: @public_non_searchable_count, total: @site_count
-  =render 'stat_card', title: 'Hub sites',            count: @searchable_count, total: @site_count
+
+  =render 'stat_card', title: 'Never updated sites',   count: @never_updated_sites, total: @site_count
+  =render 'stat_card', title: 'Private sites',         count: @private_count, total: @site_count
+  =render 'stat_card', title: 'Public sites',          count: @public_count, total: @site_count
+  =render 'stat_card', title: 'Public non-hub sites',  count: @public_non_searchable_count, total: @site_count
+  =render 'stat_card', title: 'Hub sites',             count: @searchable_count, total: @site_count
 
   -if Settings.tiddlyspot_enabled?
     %br

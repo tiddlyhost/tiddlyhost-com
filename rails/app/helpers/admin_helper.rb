@@ -43,11 +43,11 @@ module AdminHelper
   def card_color(title, value, alert=false)
     return 'red' if alert
     case title.downcase
-    when /users/, /active/
+    when /users/, /active/, /subscriptions/
       'yellow'
-    when /tspots/
+    when /tspot/
       'green'
-    when /sites/
+    when /site/
       'blue'
     else
       'plain'
