@@ -1,12 +1,16 @@
 
 =render layout: 'form_wrapper', locals: { heading: 'Manage subscription' } do
 
-  .p-2
+  .p-2.mt-4.text-center
     %big
-      You are currently subscribed to the <b>Tiddlyhost #{@subscription_info.name} Plan</b>.
+      You are subscribed to the <b>Tiddlyhost #{@subscription_info.name} Plan</b>.
 
   .d-flex.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
     =render 'pricing_card', plan: @subscription_info.name.downcase.to_sym, show_billing_portal_link: true
+
+  .p-3.text-center
+    %big
+      =subscription_renew_text(@subscription)
 
   -# A link to Stripe's billing portal
   .row.row-cols-1.m-4.text-center

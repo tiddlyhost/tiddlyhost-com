@@ -30,10 +30,22 @@ module SubscriptionHelper
     if !subscription&.status == "active"
       "inactive"
     elsif subscription.ends_at
-      "ends in #{distance_of_time_in_words(Date.today, subscription.ends_at.to_date)}"
+      "ends in #{subscription_when(subscription.ends_at)}"
     else
-      "renews in #{distance_of_time_in_words(Date.today, subscription.current_period_end.to_date)}"
+      "renews in #{subscription_when(subscription.current_period_end)}"
     end
+  end
+
+  def subscription_renew_text(subscription)
+    if subscription.ends_at.present?
+      "Your subscription ends in #{subscription_when(subscription.ends_at)}."
+    else
+      "Your next payment is in #{subscription_when(subscription.current_period_end)}."
+    end
+  end
+
+  def subscription_when(ts)
+    distance_of_time_in_words(Date.today, ts.to_date)
   end
 
 end
