@@ -10,28 +10,28 @@
     %th= sort_link 'Subscr', :asc
     %th= sort_link 'Logins'
     %th= sort_link 'Sites'
-    -if Settings.tiddlyspot_enabled?
+    - if Settings.tiddlyspot_enabled?
       %th= sort_link 'Tspot Sites'
     %th= sort_link 'Current sign in'
     %th= sort_link 'Last sign in'
     %th= sort_link 'Created'
 
 %tbody
-  -@records.each do |user|
+  - @records.each do |user|
     %tr
       %td= user.id
       %td= link_to_user(user.name, user)
       %td= link_to_user(user.username, user)
       %td= link_to_user(user.email, user)
       %td
-        -if user.use_gravatar?
-          =link_to(gravatar_url(user.email), target: '_blank') do
-            =gravatar_image(user, size: 18)
+        - if user.use_gravatar?
+          = link_to(gravatar_url(user.email), target: '_blank') do
+            = gravatar_image(user, size: 18)
       %td= user.user_type.name
       %td= user.subscription_info.name
       %td= user.sign_in_count
       %td= link_to_user_sites(pluralize(user.sites.count, 'site'), user, action: :sites)
-      -if Settings.tiddlyspot_enabled?
+      - if Settings.tiddlyspot_enabled?
         %td= link_to_user_sites(pluralize(user.tspot_sites.count, 'tspot'), user, action: :tspot_sites)
       %td= nice_timestamp user.current_sign_in_at
       %td= nice_timestamp user.last_sign_in_at

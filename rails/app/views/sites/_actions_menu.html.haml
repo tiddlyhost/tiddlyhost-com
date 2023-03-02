@@ -2,87 +2,87 @@
 -# Todo: Some clean up here
 -#
 .actions-menu-group
-  -unless local_assigns[:menu_only]
-    -if is_tspot
-      =link_to(edit_tspot_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
-      =link_to(download_tspot_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
-      =link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
-    -else
-      =link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
-      =link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
-      =link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+  - unless local_assigns[:menu_only]
+    - if is_tspot
+      = link_to(edit_tspot_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
+      = link_to(download_tspot_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
+      = link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+    - else
+      = link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
+      = link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
+      = link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
 
   %button.btn.btn-light(type="button" data-bs-toggle="dropdown"
     aria-haspopup="true" aria-expanded="false"
     style="#{"border-color: transparent !important;" if local_assigns[:menu_only]}" title="#{local_assigns[:menu_only] ? "Actions" : "More..."}")
-    =bi_icon('three-dots', fill: '#212529')
+    = bi_icon('three-dots', fill: '#212529')
 
   .dropdown-menu.dropdown-menu-end
-    -if is_tspot
-      =link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
+    - if is_tspot
+      = link_to(edit_tspot_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
       .dropdown-divider
 
       -# I want to only show this on the grid view, hence the menu_only check here
-      -if !site.thumbnail.present? && local_assigns[:menu_only]
-        =link_to(create_thumbnail_tspot_site_path(site), class: 'dropdown-item', method: :post,
+      - if !site.thumbnail.present? && local_assigns[:menu_only]
+        = link_to(create_thumbnail_tspot_site_path(site), class: 'dropdown-item', method: :post,
           data: { confirm: "The thumbnail may take some time to generate. Click OK then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
 
-      =link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
-      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
-      -if safe_mode_url = site.safe_mode_url
-        =link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
+      = link_to(download_tspot_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+      = link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
+      - if safe_mode_url = site.safe_mode_url
+        = link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
       .dropdown-divider
-      =link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
+      = link_to(change_password_tspot_site_path(site), class: 'dropdown-item') { bi_icon('person-check') + 'Change password' }
       .dropdown-divider
-      =link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
+      = link_to(disown_tspot_site_path(site), method: :post, class: 'dropdown-item',
         data: { confirm: "Are you sure you want to give up ownership of '#{site.name}.tiddlyspot.com'?" }) { bi_icon('file-earmark-minus') + 'Disown' }
 
       .dropdown-divider
-      =link_to(delete_tspot_site_path(site), method: :post, class: 'dropdown-item',
+      = link_to(delete_tspot_site_path(site), method: :post, class: 'dropdown-item',
         data: { confirm: "Beware there's no way to undo this action and there's no way to recreate the site once it has been deleted. Are you sure you want to delete '#{site.name}.tiddlyspot.com' forever?" }) { bi_icon('trash') + 'Delete' }
 
-    -else
-      =link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
+    - else
+      = link_to(edit_site_path(site), class: 'dropdown-item') { bi_icon('sliders') + 'Settings' }
 
-      -if show_history_link?(site) && !local_assigns[:history_mode]
-        =link_to(history_site_path(site), class: 'dropdown-item') { bi_icon('clock-history') + 'Save history' }
+      - if show_history_link?(site) && !local_assigns[:history_mode]
+        = link_to(history_site_path(site), class: 'dropdown-item') { bi_icon('clock-history') + 'Save history' }
 
       .dropdown-divider
 
       -# I want to only show this on the grid view, hence the menu_only check here
-      -if !site.thumbnail.present? && local_assigns[:menu_only]
-        =link_to(create_thumbnail_site_path(site), class: 'dropdown-item', method: :post,
+      - if !site.thumbnail.present? && local_assigns[:menu_only]
+        = link_to(create_thumbnail_site_path(site), class: 'dropdown-item', method: :post,
           data: { confirm: "The thumbnail may take some time to generate. Click okay then wait a few moments and reload the page." } ) { bi_icon('camera') + 'Create thumbnail' }
         .dropdown-divider
 
-      =link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
+      = link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
 
-      -if safe_mode_url = site.safe_mode_url
-        =link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
+      - if safe_mode_url = site.safe_mode_url
+        = link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
 
       .dropdown-divider
 
-      -if site.is_tw5x?
-        =link_to(download_site_path(site), class: 'dropdown-item',
+      - if site.is_tw5x?
+        = link_to(download_site_path(site), class: 'dropdown-item',
           data: { confirm: "Note: The downloaded TiddlyWiki will require internet access to load its core javascript. Choose the local core option if you need it to work without internet access." }) do
-          =bi_icon('download') + 'Download'
+          = bi_icon('download') + 'Download'
 
-        =link_to(download_site_path(site, mode: 'local_core'), class: 'dropdown-item',
+        = link_to(download_site_path(site, mode: 'local_core'), class: 'dropdown-item',
           data: { confirm: "Note: You must also download the core javascript file to use the downloaded TiddlyWiki." }) do
-          =bi_icon('download') + 'Download with local core'
+          = bi_icon('download') + 'Download with local core'
 
-        =link_to(download_core_js_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download core javascript file' }
+        = link_to(download_core_js_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download core javascript file' }
 
-      -else
-        =link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
+      - else
+        = link_to(download_site_path(site), class: 'dropdown-item') { bi_icon('download') + 'Download' }
 
       .dropdown-divider
 
-      =link_to(new_site_path(clone: site.name), class: 'dropdown-item') { bi_icon('files') + 'Clone' }
-      =link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
+      = link_to(new_site_path(clone: site.name), class: 'dropdown-item') { bi_icon('files') + 'Clone' }
+      = link_to(upload_form_site_path(site), class: 'dropdown-item') { bi_icon('upload') + 'Upload' }
 
       -# (Don't allow deleting the entire site from the history page)
-      -unless local_assigns[:history_mode]
+      - unless local_assigns[:history_mode]
         .dropdown-divider
-        =link_to(site, method: :delete, class: 'dropdown-item',
+        = link_to(site, method: :delete, class: 'dropdown-item',
           data: { confirm: "Are you sure you want to delete '#{site.name}'?" }) { bi_icon('trash') + 'Delete' }

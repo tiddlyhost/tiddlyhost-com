@@ -1,29 +1,29 @@
 
-=render layout: 'form_wrapper', locals: { heading: 'Manage subscription' } do
+= render layout: 'form_wrapper', locals: { heading: 'Manage subscription' } do
 
   .p-2.mt-4.text-center
     %big
       You are subscribed to the <b>Tiddlyhost #{@subscription_info.name} Plan</b>.
 
   .d-flex.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
-    =render 'pricing_card', plan: @subscription_info.name.downcase.to_sym, show_billing_portal_link: true
+    = render 'pricing_card', plan: @subscription_info.name.downcase.to_sym, show_billing_portal_link: true
 
   .p-3.text-center
     %big
-      =subscription_renew_text(@subscription)
+      = subscription_renew_text(@subscription)
 
   -# A link to Stripe's billing portal
   .row.row-cols-1.m-4.text-center
     %big.w-100
-      =link_to @portal_session.url do
+      = link_to @portal_session.url do
         View billing details or cancel
       %br
       %small.stripe-logo-link{style: "font-size: 70%;"}
         (opens on
-        =render "stripe_logo"
+        = render "stripe_logo"
         \.com)
 
 
   .row.row-cols-1.m-5.text-center
     %big.w-100
-      =link_to "Review subscription options", '/subscription/plans'
+      = link_to "Review subscription options", '/subscription/plans'

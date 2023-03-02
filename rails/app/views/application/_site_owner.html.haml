@@ -1,13 +1,13 @@
--if user.use_gravatar?
-  =gravatar_image(user, size: 14)
--else
-  =bi_icon('person-fill', style: 'margin-right:-3px; margin-left: -1px;')
+- if user.use_gravatar?
+  = gravatar_image(user, size: 14)
+- else
+  = bi_icon('person-fill', style: 'margin-right:-3px; margin-left: -1px;')
 
--if user.has_username?
+- if user.has_username?
   %span{title: user.name}
-    =link_to user.username, hub_user_url(user.username)
--else
-  =user.name
+    = link_to user.username, hub_user_url(user.username)
+- else
+  = user.name
 
--if user.is_tiddlyhost?
-  =bi_icon('patch-check-fill', width: '1.1em', height: '1.1em', fill: '#198754', style: 'opacity: 90%; margin-left: 1px;')
+- if user.is_tiddlyhost?
+  = bi_icon('patch-check-fill', width: '1.1em', height: '1.1em', fill: '#198754', style: 'opacity: 90%; margin-left: 1px;')

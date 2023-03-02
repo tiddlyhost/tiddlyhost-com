@@ -1,35 +1,35 @@
 
 .nice-radio-container.type-chooser.enable-tooltips.shorter
 
-  =f.label nil do
+  = f.label nil do
     Type
-    =link_to "Show more types", "#", class: 'longer-link'
+    = link_to "Show more types", "#", class: 'longer-link'
 
-  -@empties_for_select.each_with_index do |empty, i|
+  - @empties_for_select.each_with_index do |empty, i|
 
     -# The first one is selected by default
     %div{class: [i == 0 ? 'selected' : '', empty.primary? ? '' : 'longer-only']}
 
-      =f.label :empty_id, empty.id, value: empty.id do
+      = f.label :empty_id, empty.id, value: empty.id do
 
-        =f.radio_button :empty_id, empty.id, checked: i == 0, class: 'me-1', style: "margin-left: -0.3em;"
+        = f.radio_button :empty_id, empty.id, checked: i == 0, class: 'me-1', style: "margin-left: -0.3em;"
 
-        =logo_for_kind empty.kind
+        = logo_for_kind empty.kind
 
         .title
-          =empty.title
+          = empty.title
 
         %small.text-muted{style: "font-size: 80%;"}
           (#{empty.tiddlywiki_version})
 
-        =render 'popover_help', html_content: empty.long_tooltip
+        = render 'popover_help', html_content: empty.long_tooltip
 
         .description
-          =empty.description
+          = empty.description
 
   .no-hover.longer-only.ms-3.small
-    =link_to "Create from a template", "/hub?t=1"
-    =render 'popover_help',
+    = link_to "Create from a template", "/hub?t=1"
+    = render 'popover_help',
       html_content: "You can also create a site by selecting a community |
         created template and cloning it. This link takes you to the list |
         of available templates." |

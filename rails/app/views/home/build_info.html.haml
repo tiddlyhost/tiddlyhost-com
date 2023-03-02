@@ -2,25 +2,25 @@
 %h1 Build Info
 
 %table.table
-  -@build_info.each do |key, val|
-    -next if key == 'tag'
+  - @build_info.each do |key, val|
+    - next if key == 'tag'
     %tr
       %td.label= key.titleize
       %td
-        -case when key == 'commit'
-          =github_history_link_to("#{val} (#{@short_sha})", @sha)
+        - case when key == 'commit'
+          = github_history_link_to("#{val} (#{@short_sha})", @sha)
 
-        -when key == 'branch'
-          =github_history_link_to(val, val)
+        - when key == 'branch'
+          = github_history_link_to(val, val)
 
-        -when key == 'sha'
-          =@short_sha
+        - when key == 'sha'
+          = @short_sha
 
-        -when val.is_a?(Hash)
-          -val.each do |hash_key, hash_val|
+        - when val.is_a?(Hash)
+          - val.each do |hash_key, hash_val|
             %div
               %div{style: 'display: inline-block; min-width: 10em; padding-right: 1em; white-space: nowrap;'}= "#{hash_key}:"
-              =hash_val
+              = hash_val
 
-        -else
-          =val
+        - else
+          = val

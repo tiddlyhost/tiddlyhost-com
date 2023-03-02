@@ -1,35 +1,35 @@
 
-=render layout: 'form_wrapper', locals: { heading: 'Log in',
+= render layout: 'form_wrapper', locals: { heading: 'Log in',
   intro_text: "Need an account? Go to #{link_to "sign up", new_user_registration_path}."} do
 
-  =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
 
-    =render layout: 'field_wrapper' do
-      =f.label :email
-      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :email
+      = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
 
-    =render layout: 'field_wrapper', locals: { pb: 'pb-2' } do
-      =f.label :password
+    = render layout: 'field_wrapper', locals: { pb: 'pb-2' } do
+      = f.label :password
       .input-group
-        =f.password_field :password, autocomplete: 'current-password', class: 'form-control',
+        = f.password_field :password, autocomplete: 'current-password', class: 'form-control',
           style: 'border-radius: 0.375rem; padding-right: 2.8rem;'
 
         -# Toggle password visiblity button
         .button.input-group-text.passwd-btn{
           style: 'cursor: pointer; background-color: transparent; border-style: none; margin-left: -3.07em; z-index: 5; opacity: 0.3;'}
           %span.passwd-btn-icon
-            =bi_icon('eye')
+            = bi_icon('eye')
           %span.passwd-btn-icon{style: 'display: none;'}
-            =bi_icon('eye-slash')
+            = bi_icon('eye-slash')
 
-    -if devise_mapping.rememberable?
+    - if devise_mapping.rememberable?
       .form-check.px-3.pb-4
-        =f.check_box :remember_me
-        =f.label :remember_me
+        = f.check_box :remember_me
+        = f.label :remember_me
 
-    =render layout: 'field_wrapper' do
-      -if params[:s]
-        =f.hidden_field :site_redir, value: params[:s]
-      =f.submit 'Log in', class: 'btn btn-primary'
+    = render layout: 'field_wrapper' do
+      - if params[:s]
+        = f.hidden_field :site_redir, value: params[:s]
+      = f.submit 'Log in', class: 'btn btn-primary'
 
-    =render 'devise/shared/links'
+    = render 'devise/shared/links'

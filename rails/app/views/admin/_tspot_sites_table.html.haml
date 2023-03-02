@@ -4,21 +4,21 @@
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
     %th
-    -unless params[:kind]
+    - unless params[:kind]
       %th= sort_link 'Kind'
     %th= sort_link 'Version'
-    -unless params[:private]
+    - unless params[:private]
       %th= sort_link 'Private?'
-    -unless params[:hub]
+    - unless params[:hub]
       %th= sort_link 'Hub?'
     %th= sort_link 'IFrames?'
     %th= sort_link 'Accesses'
-    -unless params[:saved] == '0'
+    - unless params[:saved] == '0'
       %th= sort_link 'Saves'
     %th= sort_link 'Versions'
-    -unless @user
+    - unless @user
       %th= sort_link 'Owner', :asc
-    -unless params[:saved] == '0'
+    - unless params[:saved] == '0'
       %th= 'Storage key'
       %th= sort_link 'Raw (MB)'
       %th= 'Blob (MB)'
@@ -26,30 +26,30 @@
     %th= sort_link 'Last update'
     %th= sort_link 'Created IP'
     %th= sort_link 'Created'
-    -unless params[:deleted]
+    - unless params[:deleted]
       %th= sort_link 'Deleted'
 
 %tbody
-  -@records.each do |site|
+  - @records.each do |site|
     %tr
       %td= site.id
       %td= admin_site_link site
       %td= render 'thumbnail_link', site: site
-      -unless params[:kind]
+      - unless params[:kind]
         %td= site.tw_kind
       %td= site.tw_version
-      -unless params[:private]
+      - unless params[:private]
         %td= bool_text site.is_private?
-      -unless params[:hub]
+      - unless params[:hub]
         %td= bool_text site.is_searchable?
       %td= bool_text site.allow_in_iframe?
       %td= site.access_count
-      -unless params[:saved] == '0'
+      - unless params[:saved] == '0'
         %td= site.save_count
       %td= site.saved_version_count
-      -unless @user
+      - unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
-      -unless params[:saved] == '0'
+      - unless params[:saved] == '0'
         %td= link_to(site.blob_key, action: :raw_download, id: site.id, tspot: 1) if site.blob
         %td= as_megabytes site.raw_byte_size
         %td= as_megabytes site.blob_byte_size
@@ -57,5 +57,5 @@
       %td= nice_timestamp site.blob_created_at
       %td= site.created_ip
       %td= nice_timestamp site.created_at
-      -unless params[:deleted]
+      - unless params[:deleted]
         %td= bool_text site.deleted?

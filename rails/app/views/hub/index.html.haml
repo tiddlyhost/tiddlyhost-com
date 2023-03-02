@@ -1,14 +1,14 @@
--thing = @show_templates ? "Template" : "Site"
+- thing = @show_templates ? "Template" : "Site"
 
 %h1
-  -if @tag.present?
-    =bi_icon('tag') + @tag
-  -elsif @user.present?
-    -if @user.use_gravatar?
-      =gravatar_image(@user, size: 35) + @user.name
-    -else
-      =bi_icon('person-fill') + @user.name
-  -else
+  - if @tag.present?
+    = bi_icon('tag') + @tag
+  - elsif @user.present?
+    - if @user.use_gravatar?
+      = gravatar_image(@user, size: 35) + @user.name
+    - else
+      = bi_icon('person-fill') + @user.name
+  - else
     Explore
 
   .ps-2.form-switch.text-muted.enable-tooltips{style: "font-size: 0.875rem; display: inline-block;"}
@@ -19,7 +19,7 @@
       style="margin-left: 0px; margin-bottom: 0.5em; margin-right: 0.1em; vertical-align: middle; width: 1.5em; cursor: pointer;"
       onclick="window.location.href = '#{url_for(sort_filter_url(:t, @show_templates ? nil : '1'))}';">
       Templates only
-    =render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
+    = render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
       html_content: ' |
         Templates are customized "empties" created by Tiddlyhost users |
         and shared for use by others. They may contain general purpose enhancements and |
@@ -27,41 +27,41 @@
         purpose.' |
 
 %p.small
-  -if @show_templates
+  - if @show_templates
     Create a site using a template by clicking the clone button.
-  -else
+  - else
     Discover content created and shared by Tiddlyhost users.
 
 %p.text-muted{style: 'font-size: 95%'}
-  -if @tag.present?
+  - if @tag.present?
     #{thing}s tagged with
     %b= @tag + '.'
-  -elsif @user.present?
+  - elsif @user.present?
     #{thing}s created by Tiddlyhost user
     %b= @user.username + '.'
 
 %div{style: "margin-bottom: 2em;"}
   %ul.nav.nav-tabs
-    =hub_link_to("All #{thing.downcase}s", hub_all_url)
-    -@tag_tabs.each do |tag|
-      =hub_tag_link_to(tag)
+    = hub_link_to("All #{thing.downcase}s", hub_all_url)
+    - @tag_tabs.each do |tag|
+      = hub_tag_link_to(tag)
 
 .page_info.text-muted
-  =page_entries_info(@sites, model: thing)
-  ="tagged with #{@tag}" if @tag.present?
-  ="matching '#{search_text}'" if search_text
+  = page_entries_info(@sites, model: thing)
+  = "tagged with #{@tag}" if @tag.present?
+  = "matching '#{search_text}'" if search_text
 
   %span.sort-by
     Sort by:
-    =link_to(sort_opt[:title], "#", class: 'dropdown-toggle', role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+    = link_to(sort_opt[:title], "#", class: 'dropdown-toggle', role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
     .dropdown-menu.hub-menu{'aria-labelledby': 'dropdownMenuLink'}
-      -sort_options.keys.each do |k|
-        =simple_sort_link k
+      - sort_options.keys.each do |k|
+        = simple_sort_link k
 
-  =render 'search_box'
+  = render 'search_box'
 
 .hub
-  -@sites.each do |site|
-    =render 'site_tile', site: site, mode: 'hub'
+  - @sites.each do |site|
+    = render 'site_tile', site: site, mode: 'hub'
 
-=will_paginate(@sites)
+= will_paginate(@sites)

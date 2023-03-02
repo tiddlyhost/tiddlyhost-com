@@ -1,50 +1,50 @@
 
-=render layout: 'form_wrapper', locals: { heading: heading, intro_text: kind_summary(@site) } do
+= render layout: 'form_wrapper', locals: { heading: heading, intro_text: kind_summary(@site) } do
 
-  =form_for @site do |f|
+  = form_for @site do |f|
 
-    -if @site.errors.any?
-      =render layout: 'field_wrapper' do
+    - if @site.errors.any?
+      = render layout: 'field_wrapper' do
         .alert.alert-danger
           %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
           %ul
-            -@site.errors.full_messages.each do |message|
+            - @site.errors.full_messages.each do |message|
               %li= message
 
-    =render layout: 'field_wrapper' do
+    = render layout: 'field_wrapper' do
       .form-text.text-muted
         (Currently it's not possible to rename Tiddlyspot sites.)
 
-    =render layout: 'field_wrapper' do
-      =render 'sites/access_chooser', f: f
+    = render layout: 'field_wrapper' do
+      = render 'sites/access_chooser', f: f
 
-    =render layout: 'field_wrapper' do
-      =f.label :description
-      =f.text_area :description, class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :description
+      = f.text_area :description, class: 'form-control'
       %small.form-text.text-muted Optional. A short description of the site.
 
-    =render layout: 'field_wrapper' do
-      =f.label :tag_list, 'Tags'
-      =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
+    = render layout: 'field_wrapper' do
+      = f.label :tag_list, 'Tags'
+      = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       %small.form-text.text-muted Optional. A comma delimited list of tags.
 
-    =render layout: 'advanced_wrapper' do
+    = render layout: 'advanced_wrapper' do
 
-      =render layout: 'field_wrapper' do
-        =f.label :redirect_to_site_id, 'Redirect to one of your Tiddlyhost sites'
-        =f.select :redirect_to_site_id, current_user.sites.map{|s|[s.name, s.id]}, { include_blank: true }, { class: 'form-select' }
+      = render layout: 'field_wrapper' do
+        = f.label :redirect_to_site_id, 'Redirect to one of your Tiddlyhost sites'
+        = f.select :redirect_to_site_id, current_user.sites.map{|s|[s.name, s.id]}, { include_blank: true }, { class: 'form-select' }
         %small.form-text.text-muted
           Visitors to this site will be redirected to the specified Tiddlyhost site. Leave blank to not redirect.
 
-      -if @site.redirect_tspot_to_url_enabled?
-        =render layout: 'field_wrapper' do
-          =f.label :redirect_to_url, 'Redirect to any URL'
-          =f.text_field :redirect_to_url, class: 'form-control'
+      - if @site.redirect_tspot_to_url_enabled?
+        = render layout: 'field_wrapper' do
+          = f.label :redirect_to_url, 'Redirect to any URL'
+          = f.text_field :redirect_to_url, class: 'form-control'
           %small.form-text.text-muted
             All visitors to this site will be redirected to the specified URL. Leave blank to not redirect. (Ignored if redirect to Tiddlyhost site is set above.)
 
-      =render 'site_common/allow_in_iframe', f: f
+      = render 'site_common/allow_in_iframe', f: f
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
-      =f.submit 'Update', class: 'btn btn-primary'
-      =link_to 'Cancel', sites_path, class: 'mx-4'
+    = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
+      = f.submit 'Update', class: 'btn btn-primary'
+      = link_to 'Cancel', sites_path, class: 'mx-4'

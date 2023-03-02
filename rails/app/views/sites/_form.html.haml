@@ -1,56 +1,56 @@
 
-=render layout: 'form_wrapper', locals: { heading: heading } do
+= render layout: 'form_wrapper', locals: { heading: heading } do
 
-  =form_for @site do |f|
+  = form_for @site do |f|
 
-    -if @site.errors.any?
-      =render layout: 'field_wrapper' do
+    - if @site.errors.any?
+      = render layout: 'field_wrapper' do
         .alert.alert-danger
           %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
           %ul
-            -@site.errors.full_messages.each do |message|
+            - @site.errors.full_messages.each do |message|
               %li= message
 
-    -if !@site.new_record? && @site.thumbnail.present? && @site.valid?
+    - if !@site.new_record? && @site.thumbnail.present? && @site.valid?
       .m-2.mb-4
-        =render 'site_tile_clone', site: @site
+        = render 'site_tile_clone', site: @site
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
-      =f.label :name
-      =f.text_field :name, class: 'form-control', maxlength: 63, autofocus: @site.new_record?
+    = render layout: 'field_wrapper', locals: { pt: 'pt-2' } do
+      = f.label :name
+      = f.text_field :name, class: 'form-control', maxlength: 63, autofocus: @site.new_record?
       %small.form-text.text-muted Lower case letters, numbers, and non-leading, non-trailing '-' chars are allowed.
 
-    -if @site.new_record?
-      =render layout: 'field_wrapper' do
-        -if @site_to_clone
+    - if @site.new_record?
+      = render layout: 'field_wrapper' do
+        - if @site_to_clone
           -# Show details about the site being cloned
-          =f.label nil, "Cloning from"
-          =render 'site_tile_clone', site: @site_to_clone
+          = f.label nil, "Cloning from"
+          = render 'site_tile_clone', site: @site_to_clone
           -# Pass the value through
-          =hidden_field_tag(:clone, @site_to_clone.name)
+          = hidden_field_tag(:clone, @site_to_clone.name)
 
-        -else
+        - else
           -# Show list of empties to choose from
-          =render 'type_chooser', f: f
+          = render 'type_chooser', f: f
 
-    =render layout: 'field_wrapper' do
-      =render 'access_chooser', f: f
+    = render layout: 'field_wrapper' do
+      = render 'access_chooser', f: f
 
-    =render layout: 'field_wrapper' do
-      =f.label :description
-      =f.text_area :description, class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :description
+      = f.text_area :description, class: 'form-control'
       .form-text Optional. A short description of the site, visible in Tiddlyhost Hub for hub listed sites.
 
-    =render layout: 'field_wrapper' do
-      =f.label :tag_list, 'Tags'
-      =f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
+    = render layout: 'field_wrapper' do
+      = f.label :tag_list, 'Tags'
+      = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
 
-    =render layout: 'advanced_wrapper' do
-      =render 'public_clone', f: f
-      =render 'site_common/allow_in_iframe', f: f
-      =render 'save_method_prefs', f: f
+    = render layout: 'advanced_wrapper' do
+      = render 'public_clone', f: f
+      = render 'site_common/allow_in_iframe', f: f
+      = render 'save_method_prefs', f: f
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
-      =f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
-      =link_to 'Cancel', sites_path, class: 'mx-4'
+    = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
+      = f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
+      = link_to 'Cancel', sites_path, class: 'mx-4'

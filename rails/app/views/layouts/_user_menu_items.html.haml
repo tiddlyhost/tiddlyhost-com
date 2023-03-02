@@ -3,37 +3,37 @@
   Account
   %br
   %b.ps-1
-    =link_to edit_user_registration_path do
-      -if current_user.use_gravatar?
-        =gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
-      -else
-        =bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
-      =current_user.username_or_email
+    = link_to edit_user_registration_path do
+      - if current_user.use_gravatar?
+        = gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
+      - else
+        = bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
+      = current_user.username_or_email
 
 %li
-  =link_to edit_user_registration_path, class: 'dropdown-item' do
-    =bi_icon('person-square', fill: "#444", style: "margin-left: 2px;")
+  = link_to edit_user_registration_path, class: 'dropdown-item' do
+    = bi_icon('person-square', fill: "#444", style: "margin-left: 2px;")
     Manage account
 
--if feature_enabled?(:subscriptions)
+- if feature_enabled?(:subscriptions)
   %li.dropdown-divider
 
   %li.dropdown-item-text
     Plan
     %br
     %b.ps-1
-      =link_to subscription_path, class: "plan-#{current_user.subscription_info.name}-fg" do
-        -if current_user.subscribed?
-          =bi_icon('check2-circle', style: "margin-left: 1px; margin-right: -2px;")
+      = link_to subscription_path, class: "plan-#{current_user.subscription_info.name}-fg" do
+        - if current_user.subscribed?
+          = bi_icon('check2-circle', style: "margin-left: 1px; margin-right: -2px;")
         Tiddlyhost #{current_user.subscription_info.name}
 
   %li
-    =link_to subscription_path, class: 'dropdown-item' do
-      -if current_user.subscribed?
-        =bi_icon('bag-check', style: "margin-left: 1px;")
+    = link_to subscription_path, class: 'dropdown-item' do
+      - if current_user.subscribed?
+        = bi_icon('bag-check', style: "margin-left: 1px;")
         Manage subscription
-      -else
-        =bi_icon('stars', style: "margin-left: 1px; margin-right: -2px;", class: "red-icon")
+      - else
+        = bi_icon('stars', style: "margin-left: 1px; margin-right: -2px;", class: "red-icon")
         Upgrade plan
 
 %li.dropdown-divider
@@ -42,21 +42,21 @@
   Sites
   %br
   %b.ps-2
-    =link_to sites_path do
+    = link_to sites_path do
       #{current_user.all_sites.count}
       sites
       (#{as_megabytes(current_user.total_storage_bytes)} MB)
   %br
 
 %li
-  =link_to sites_path, class: 'dropdown-item' do
-    =bi_icon('sliders')
+  = link_to sites_path, class: 'dropdown-item' do
+    = bi_icon('sliders')
     Manage sites
 
 
 %li.dropdown-divider{style: "margin-bottom: 1.5em;"}
 
 %li
-  =link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
-    =bi_icon('box-arrow-left')
+  = link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do
+    = bi_icon('box-arrow-left')
     Log out

@@ -12,53 +12,53 @@
     %th Actions
 
   %tbody
-    -@filtered_sites.each do |site|
-      -is_tspot = site.is_a?(TspotSite)
+    - @filtered_sites.each do |site|
+      - is_tspot = site.is_a?(TspotSite)
       %tr
         %td.small
           .sitelink= site_pretty_link(site, name: site.name, target: site.long_name)
-          -if site.description.present?
+          - if site.description.present?
             .description= span_with_title(site.description)
-          -unless site.tag_list.empty?
+          - unless site.tag_list.empty?
             .site-tags= clickable_site_tags(site)
 
         %td{style: "text-align: right; padding: 0.3em 1em;"}
-          -if site.thumbnail.present?
-            =link_to site.url, target: site.long_name do
-              =image_tag rails_storage_proxy_path(site.thumbnail), class: "thumbnail-small"
+          - if site.thumbnail.present?
+            = link_to site.url, target: site.long_name do
+              = image_tag rails_storage_proxy_path(site.thumbnail), class: "thumbnail-small"
 
         %td.small.pt-2
-          =kind_logo(site)
+          = kind_logo(site)
 
         %td.small
-          -if site.tw_version
-            =site.tw_version_short
-          -else
+          - if site.tw_version
+            = site.tw_version_short
+          - else
             .text-muted -
 
         %td.small.smaller
-          =site_access(site)
-          -if site.cloneable_by_public?
+          = site_access(site)
+          - if site.cloneable_by_public?
             (template)
 
         %td.small.smaller
           .views
-            -if is_tspot
-              =site.access_count
-            -else
-              =site.view_count
+            - if is_tspot
+              = site.access_count
+            - else
+              = site.view_count
 
         %td.small.smaller
-          -if site.raw_byte_size
+          - if site.raw_byte_size
             !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
-          -else
+          - else
             .text-muted -
 
         %td.small.smaller
-          -if is_tspot
-            =nice_timestamp(site.save_count > 0 && site.blob_created_at)
-          -else
-            =nice_timestamp(site.blob_created_at)
+          - if is_tspot
+            = nice_timestamp(site.save_count > 0 && site.blob_created_at)
+          - else
+            = nice_timestamp(site.blob_created_at)
 
         %td
-          =render 'actions_menu', site: site, is_tspot: is_tspot
+          = render 'actions_menu', site: site, is_tspot: is_tspot

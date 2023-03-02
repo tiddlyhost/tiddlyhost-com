@@ -1,15 +1,15 @@
 
 %p.text-center
   %small.text-gray-500{style: "font-size: 80%;"}
-    =link_to "Home", "#{root_url}", class: "text-gray-500"
+    = link_to "Home", "#{root_url}", class: "text-gray-500"
     &nbsp; | &nbsp;
-    =link_to "Terms&nbsp;of&nbsp;use".html_safe, "#{root_url}terms-of-use", class: "text-gray-500"
+    = link_to "Terms&nbsp;of&nbsp;use".html_safe, "#{root_url}terms-of-use", class: "text-gray-500"
     &nbsp; | &nbsp;
-    =link_to "Privacy&nbsp;policy".html_safe, "#{root_url}privacy-policy", class: "text-gray-500"
+    = link_to "Privacy&nbsp;policy".html_safe, "#{root_url}privacy-policy", class: "text-gray-500"
     &nbsp; | &nbsp;
-    =link_to "Support", "#{root_url}support", class: "text-gray-500"
+    = link_to "Support", "#{root_url}support", class: "text-gray-500"
 
 %p.text-center
   %small.text-gray-500{style: "font-size: 60%;"}
     %br
-    =link_to "Version #{App::VERSION}", "#{root_url}about", class: "text-gray-400"
+    = link_to "Version #{App::VERSION}", "#{root_url}about", class: "text-gray-400"

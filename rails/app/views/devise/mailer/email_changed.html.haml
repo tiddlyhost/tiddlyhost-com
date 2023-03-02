@@ -1,7 +1,7 @@
 -#
 -# Possibly unused..?
 -#
--if @resource&.unconfirmed_email?
+- if @resource&.unconfirmed_email?
   %p
     Your Tiddlyhost account email address is being changed
     from <b>#{@resource.email}</b> to <b>#{@resource.unconfirmed_email}</b>.
@@ -9,7 +9,7 @@
   %p
     Confirmation of the new email address is required to verify the change.
 
--else
+- else
   %p
     Your Tiddlyhost account email address has been successfully
     changed to <b>#{@resource.email}</b>.

@@ -1,7 +1,7 @@
 -#
 -# Possibly unused..?
 -#
-=render 'salutation', user: @resource
+= render 'salutation', user: @resource
 
 %p
   Your Tiddlyhost account has been locked due to an excessive number of unsuccessful login attempts.
@@ -9,6 +9,6 @@
 %p
   To unlock your account click the 'Unlock account' link below.
 
-=render 'button_link', link_text: 'Unlock account', link_url: unlock_url(@resource, unlock_token: @token)
+= render 'button_link', link_text: 'Unlock account', link_url: unlock_url(@resource, unlock_token: @token)
 
-=render 'show_email', user: @resource
+= render 'show_email', user: @resource

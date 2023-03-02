@@ -1,12 +1,12 @@
 
-=render layout: 'form_wrapper', locals: { heading: "Upload to site '#{@site.name}'" } do
+= render layout: 'form_wrapper', locals: { heading: "Upload to site '#{@site.name}'" } do
 
-  =form_for(@site, url: { action: :upload, id: @site.id }) do |f|
+  = form_for(@site, url: { action: :upload, id: @site.id }) do |f|
 
-    =render layout: 'field_wrapper', locals: { pb: 'pb-4' } do
+    = render layout: 'field_wrapper', locals: { pb: 'pb-4' } do
       %b.small.text-danger
         %big
-          =bi_icon('exclamation-triangle', fill: '#dc3545', style: 'margin-right: -2px;')
+          = bi_icon('exclamation-triangle', fill: '#dc3545', style: 'margin-right: -2px;')
         Proceed carefully!
 
       .small
@@ -14,24 +14,24 @@
         file you upload now.
         %br
         You may want to
-        =link_to(download_site_path(@site)) { bi_icon('download') + 'download' }
+        = link_to(download_site_path(@site)) { bi_icon('download') + 'download' }
         a copy of your site first in case something goes wrong.
 
-    =render layout: 'field_wrapper' do
+    = render layout: 'field_wrapper' do
       %label.btn.btn-secondary{for: 'site_tiddlywiki_file'}
         Choose file to upload
 
       -# It is hidden for cosmetic reasons. Clicking the label
       -# above activates the file select dialog.
-      =f.file_field(:tiddlywiki_file, style: 'display: none;')
+      = f.file_field(:tiddlywiki_file, style: 'display: none;')
 
-      -confirmation_text = ["Are you sure you want to replace site '#{@site.name}' with",
+      - confirmation_text = ["Are you sure you want to replace site '#{@site.name}' with",
         "the TiddlyWiki file you're about to upload?",
         "This operation cannot be undone."].join("\n")
 
       -# Also hidden to begin with but will be shown once a file is selected.
       -# See the code in app/javascript/packs/application.js.
-      =f.submit("Upload", data: { confirm: confirmation_text }, id: 'upload-submit',
+      = f.submit("Upload", data: { confirm: confirmation_text }, id: 'upload-submit',
         style: 'display: none; margin-left: 1em;', class: "form-submit btn btn-primary")
 
-      =link_to 'Cancel', sites_url, style: 'margin-left: 1em;'
+      = link_to 'Cancel', sites_url, style: 'margin-left: 1em;'

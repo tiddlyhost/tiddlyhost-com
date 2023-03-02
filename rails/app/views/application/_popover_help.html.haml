@@ -1,12 +1,12 @@
 
-=content_tag :a,
+= content_tag :a,
   role: "button",
   tabindex: "0",
   "data-bs-toggle" => "popover",
   "data-bs-placement" => local_assigns[:placement] || "right",
   "data-bs-content" => html_content,
   style: "cursor: help;" do
-  =bi_icon 'question-circle',
+  = bi_icon 'question-circle',
     width: local_assigns[:size] || "0.9em",
     height: local_assigns[:size] || "0.9em",
     fill: local_assigns[:fill] || "#999",

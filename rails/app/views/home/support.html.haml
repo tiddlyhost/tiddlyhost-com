@@ -10,15 +10,15 @@
 
   %ul
     %li
-      =link_to Settings.create_issue_url, target: '_blank' do
+      = link_to Settings.create_issue_url, target: '_blank' do
         Report an issue in GitHub
 
     %li
-      =link_to Settings.create_issue_url, target: '_blank' do
+      = link_to Settings.create_issue_url, target: '_blank' do
         Suggest a feature in GitHub
 
     %li
-      =mail_to Settings.support_email do
+      = mail_to Settings.support_email do
         Send an email
 
   %p
@@ -27,7 +27,7 @@
     see if there's an issue filed already for your problem.
 
     See also the
-    =link_to "Wiki", "https://github.com/simonbaird/tiddlyhost/wiki"
+    = link_to "Wiki", "https://github.com/simonbaird/tiddlyhost/wiki"
     and the
     #{link_to "FAQ", "https://github.com/simonbaird/tiddlyhost/wiki/FAQ"}.
     (Improved documentation for Tiddlyhost is planned for the future.)

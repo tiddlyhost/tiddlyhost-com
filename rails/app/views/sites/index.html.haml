@@ -1,72 +1,72 @@
 
 %h1 Your sites
 
--if @sites.empty?
+- if @sites.empty?
   %p Click 'Create site' below to create your first TiddlyWiki site.
 
--else
-  -if current_user.has_hub_link?
+- else
+  - if current_user.has_hub_link?
     .th-text-deco-none.th-text-smaller.m-3.mt-2.pt-1
-      =link_to_user_hub_with_count(current_user)
+      = link_to_user_hub_with_count(current_user)
 
   .float-end.sites-menu-container.small{style: "margin-top: -0.6rem;"}
     .d-inline-block.sites-menu
-      =link_to("#", class: 'ms-2 btn btn-sm', title: 'Filter options',
+      = link_to("#", class: 'ms-2 btn btn-sm', title: 'Filter options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
-        -if params[:access]
+        - if params[:access]
           Access: #{params[:access]}
-        -else
+        - else
           Access
-        =bi_icon('funnel', fill: '#666')
+        = bi_icon('funnel', fill: '#666')
       .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
-        =filter_link_group :access
+        = filter_link_group :access
 
     .d-inline-block.sites-menu
-      =link_to("#", class: 'ms-2 btn btn-sm', title: 'Sort options',
+      = link_to("#", class: 'ms-2 btn btn-sm', title: 'Sort options',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
         Sort: #{sort_by}
-        =bi_icon(sort_bi_icon, fill: '#666')
+        = bi_icon(sort_bi_icon, fill: '#666')
       .dropdown-menu{'aria-labelledby': 'dropdownMenuLink'}
-        =sort_link 'name',    :asc,  'dropdown-item'
-        =sort_link 'kind',    :desc, 'dropdown-item'
-        =sort_link 'version', :desc, 'dropdown-item'
-        =sort_link 'access',  :asc,  'dropdown-item'
-        =sort_link 'views',   :desc, 'dropdown-item'
-        =sort_link 'size',    :desc, 'dropdown-item'
-        =sort_link 'updated', :desc, 'dropdown-item'
-        -if @sites.any?(&:is_tspot?)
-          =sort_link 'origin', :asc, 'dropdown-item'
+        = sort_link 'name',    :asc,  'dropdown-item'
+        = sort_link 'kind',    :desc, 'dropdown-item'
+        = sort_link 'version', :desc, 'dropdown-item'
+        = sort_link 'access',  :asc,  'dropdown-item'
+        = sort_link 'views',   :desc, 'dropdown-item'
+        = sort_link 'size',    :desc, 'dropdown-item'
+        = sort_link 'updated', :desc, 'dropdown-item'
+        - if @sites.any?(&:is_tspot?)
+          = sort_link 'origin', :asc, 'dropdown-item'
 
     .d-inline-block.sites-menu
-      =link_to({controller: :sites, action: :view_toggle}.merge(params.permit(:access,:s)), class: "m-1 btn btn-sm", title: @grid_view ? 'List view' : 'Grid view') do
+      = link_to({controller: :sites, action: :view_toggle}.merge(params.permit(:access,:s)), class: "m-1 btn btn-sm", title: @grid_view ? 'List view' : 'Grid view') do
         View:
-        =bi_icon(@grid_view ? 'list-ul' : 'grid', fill: '#666')
+        = bi_icon(@grid_view ? 'list-ul' : 'grid', fill: '#666')
 
   .ps-1.ms-2.mb-3.th-text-small
-    -if @filtered_site_count != @site_count
+    - if @filtered_site_count != @site_count
       Showing #{@filtered_site_count} #{params[:access]} sites of #{pluralize(@site_count, 'site')} total.
-      =link_to('Clear filter', sites_path, style: 'text-decoration: none;') + "."
-    -else
-      =pluralize(@site_count, 'site') + ","
-    =as_megabytes(@total_storage_bytes)
+      = link_to('Clear filter', sites_path, style: 'text-decoration: none;') + "."
+    - else
+      = pluralize(@site_count, 'site') + ","
+    = as_megabytes(@total_storage_bytes)
     MB storage used.
 
-  -if @grid_view
-    =render 'grid_view'
-  -else
-    =render 'list_view'
+  - if @grid_view
+    = render 'grid_view'
+  - else
+    = render 'list_view'
 
 
 .create-buttons.mx-2.my-4.py-2
-  =link_to new_site_path, class: 'btn me-3' do
-    =bi_icon('plus-lg', style: "margin-right: 1px;")
+  = link_to new_site_path, class: 'btn me-3' do
+    = bi_icon('plus-lg', style: "margin-right: 1px;")
     Create site
 
-  =link_to '/hub?t=1', class: 'btn me-3' do
-    =bi_icon('files')
+  = link_to '/hub?t=1', class: 'btn me-3' do
+    = bi_icon('files')
     Create from template
 
-  -if Settings.tiddlyspot_enabled?
-    =link_to({ controller: :tspot_sites, action: :claim_form }, class: 'btn') do
-      =bi_icon('flag')
+  - if Settings.tiddlyspot_enabled?
+    = link_to({ controller: :tspot_sites, action: :claim_form }, class: 'btn') do
+      = bi_icon('flag')
       Claim Tiddlyspot site

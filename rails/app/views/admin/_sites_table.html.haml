@@ -4,17 +4,17 @@
     %th= sort_link 'Id', :asc
     %th= sort_link 'Name', :asc
     %th
-    -unless params[:kind]
+    - unless params[:kind]
       %th= sort_link 'Kind'
     %th= sort_link 'Empty'
     %th= sort_link 'Clone'
     %th= sort_link 'Version'
     %th= sort_link 'Description', :asc
-    -unless params[:private]
+    - unless params[:private]
       %th= sort_link 'Private?'
-    -unless params[:hub]
+    - unless params[:hub]
       %th= sort_link 'Hub?'
-    -unless params[:template]
+    - unless params[:template]
       %th= sort_link 'Template?'
     %th= sort_link 'IFrames?'
     %th= sort_link 'Put?'
@@ -24,7 +24,7 @@
     %th= sort_link 'Saves'
     %th= sort_link 'Clones'
     %th= sort_link 'Versions'
-    -unless @user
+    - unless @user
       %th= sort_link 'Owner'
     %th= 'Storage key'
     %th= sort_link 'Raw (MB)'
@@ -34,23 +34,23 @@
     %th= sort_link 'Created'
 
 %tbody
-  -@records.each do |site|
+  - @records.each do |site|
     %tr
       %td= site.id
       %td= admin_site_link site
       %td= render 'thumbnail_link', site: site
-      -unless params[:kind]
+      - unless params[:kind]
         %td= site.tw_kind
       %td= site.empty.name
       %td= site.cloned_from ? admin_site_link(site.cloned_from) : site.cloned_from_id
       %td= site.tw_version
       %td.nowrap.text-truncated{style: 'max-width: 8em;'}
-        =span_with_title site.description
-      -unless params[:private]
+        = span_with_title site.description
+      - unless params[:private]
         %td= bool_text site.is_private?
-      -unless params[:hub]
+      - unless params[:hub]
         %td= bool_text site.is_searchable?
-      -unless params[:template]
+      - unless params[:template]
         %td= bool_text site.allow_public_clone?
       %td= bool_text site.allow_in_iframe?
       %td= bool_text site.prefer_put_saver?
@@ -60,7 +60,7 @@
       %td= site.save_count
       %td= site.clone_count
       %td= site.saved_version_count
-      -unless @user
+      - unless @user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
       %td= link_to(site.blob_key, action: :raw_download, id: site.id)
       %td= as_megabytes site.raw_byte_size

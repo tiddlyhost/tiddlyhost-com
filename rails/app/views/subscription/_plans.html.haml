@@ -2,26 +2,26 @@
 %h2 Subscription Plans
 
 %p.mt-3
--if @subscribed
+- if @subscribed
   .card
     .card-body.p-2.ps-3.subscribed-message
       %big
         You are currently subscribed to the <b>Tiddlyhost #{@subscription_info.name}</b> subscription plan.
         Use
-        =link_to '/subscription', style: "text-decoration: none;" do
-          =bi_icon('bag-check', fill: '#0d5eed', style: 'margin-right: -2px;')
+        = link_to '/subscription', style: "text-decoration: none;" do
+          = bi_icon('bag-check', fill: '#0d5eed', style: 'margin-right: -2px;')
           Manage subscription
         to view or change your subscription.
 
--else
+- else
   %p
     %big.enable-tooltips
       Upgrading to a subscription plan gives you access to Tiddlyhost features not available to free plan users.
 
       Tiddlyhost subscription billing is handled by
-      =link_to 'https://stripe.com/', target: '_blank', title: "stripe.com", class: "stripe-logo-link" do
-        =render 'stripe_logo'
-      =render 'popover_help',
+      = link_to 'https://stripe.com/', target: '_blank', title: "stripe.com", class: "stripe-logo-link" do
+        = render 'stripe_logo'
+      = render 'popover_help',
         html_content: ' |
           <a href="https://stripe.com/" target="_blank">Stripe</a> |
           is an easy to use and highly trusted platform for online payment handling, |
@@ -34,7 +34,7 @@
           You are currently using the <b class="th-slightly-muted">Tiddlyhost Free Plan</b>.
           To upgrade to <b class="th-slightly-muted">Tiddlyhost Standard</b> click
           the <b class="th-slightly-muted">Subscribe Now</b>
-          =render 'popover_help',
+          = render 'popover_help',
             html_content: ' |
               The <b>Subscribe Now</b> button takes you to a |
               <a href="https://stripe.com/" target="_blank">Stripe</a> page where |
@@ -42,6 +42,6 @@
           button below.
 
 .d-flex.mt-4.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
-  =render 'pricing_card', plan: :free
-  =render 'pricing_card', plan: :standard
-  =render 'pricing_card', plan: :premium
+  = render 'pricing_card', plan: :free
+  = render 'pricing_card', plan: :standard
+  = render 'pricing_card', plan: :premium

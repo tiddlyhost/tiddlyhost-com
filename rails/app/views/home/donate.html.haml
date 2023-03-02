@@ -10,17 +10,17 @@
 
     %p
       Click the buttons below to donate or sponsor via
-      =link_to('PayPal', "https://www.paypal.com/", target: '_blank') + ','
-      =link_to('Github Sponsors', "https://github.com/sponsors", target: '_blank') + ','
+      = link_to('PayPal', "https://www.paypal.com/", target: '_blank') + ','
+      = link_to('Github Sponsors', "https://github.com/sponsors", target: '_blank') + ','
       or #{link_to 'Buy Me a Coffee', "https://www.buymeacoffee.com/"}.
 
     .pt-3
       .donate-button
-        =render 'paypal_donate_button'
+        = render 'paypal_donate_button'
 
       .donate-button{style: 'margin-top: 1.9em;'}
-        =render 'github_sponsor_button'
+        = render 'github_sponsor_button'
 
       .donate-button{style: 'margin-top: 1.9em; padding-left:4px;'}
-        =link_to "https://www.buymeacoffee.com/simonbaird", title: 'Buy Me a Coffee', target: '_blank' do
-          =image_tag "coffee.svg", style: "width: 120px;"
+        = link_to "https://www.buymeacoffee.com/simonbaird", title: 'Buy Me a Coffee', target: '_blank' do
+          = image_tag "coffee.svg", style: "width: 120px;"

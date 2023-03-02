@@ -1,21 +1,21 @@
 
 %h2= @title
 
-=render 'tabs'
+= render 'tabs'
 
-=render 'user_info' if @user
+= render 'user_info' if @user
 
--unless @user && action_name == "users"
+- unless @user && action_name == "users"
   .admin-filter
     .group Filter:
-    =render "#{action_name}_filter"
-    =render 'search_box'
+    = render "#{action_name}_filter"
+    = render 'search_box'
 
 .admin-paginate= will_paginate(@records)
 .admin-page-info= pagination_info(@records)
 
 %table.admin.table.table-sm.table-striped
-  =render "#{action_name}_table"
+  = render "#{action_name}_table"
 
 .admin-paginate= will_paginate(@records)
 .admin-page-info= pagination_info(@records)

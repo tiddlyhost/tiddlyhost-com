@@ -1,25 +1,25 @@
--if @site.is_tw5? || @site.new_record?
+- if @site.is_tw5? || @site.new_record?
 
-  =render layout: 'field_wrapper' do
+  = render layout: 'field_wrapper' do
     .form-check.enable-tooltips
-      =f.check_box :prefer_upload_saver, class: 'form-check-input'
-      =f.label :prefer_upload_saver, class: 'form-check-label' do
+      = f.check_box :prefer_upload_saver, class: 'form-check-input'
+      = f.label :prefer_upload_saver, class: 'form-check-label' do
         Use the legacy "upload" saver for TiddlyWiki versions 5.2.3 and higher
 
-        =render 'popover_help',
+        = render 'popover_help',
           html_content: 'By default the put saver will be used for TiddlyWiki |
             versions 5.2.3 and higher. Check this if you prefer to instead use the |
             upload saver for those TiddlyWiki versions. See also <a |
             href="https://github.com/simonbaird/tiddlyhost/wiki/About-the-two-different-save-methods" |
             target="_blank">this FAQ</a>.' |
 
-  =render layout: 'field_wrapper' do
+  = render layout: 'field_wrapper' do
     .form-check.enable-tooltips
-      =f.check_box :prefer_put_saver, class: 'form-check-input'
-      =f.label :prefer_put_saver, class: 'form-check-label' do
+      = f.check_box :prefer_put_saver, class: 'form-check-input'
+      = f.label :prefer_put_saver, class: 'form-check-label' do
         Use the "put" saver for TiddlyWiki versions 5.2.2 and lower
 
-        =render 'popover_help',
+        = render 'popover_help',
           html_content: 'By default the upload saver will be used for TiddlyWiki |
             versions 5.2.2. and lower. Check this if you prefer to instead use the "put" saver for |
             those TiddlyWiki versions. See also <a |

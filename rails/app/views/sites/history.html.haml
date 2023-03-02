@@ -1,8 +1,8 @@
-=render layout: 'form_wrapper',
+= render layout: 'form_wrapper',
   locals: { heading: "Save history for '#{@site.name}'"} do
 
   .my-3
-    =render 'site_tile_clone', mode: 'home', site: @site
+    = render 'site_tile_clone', mode: 'home', site: @site
 
   %table.table.history-table.mt-4
     %thead
@@ -12,19 +12,19 @@
         %th Saved
         %th
           Size
-          =render 'popover_help', html_content: "This column shows the compressed size which smaller than the site's actual size."
+          = render 'popover_help', html_content: "This column shows the compressed size which smaller than the site's actual size."
 
         %th
           Checksum
-          =render 'popover_help', html_content: "Identical checksums indicate identical saved versions."
+          = render 'popover_help', html_content: "Identical checksums indicate identical saved versions."
 
         %th.text-end.pe-3 Actions
 
     %tbody
-      -@site.saved_content_files.order('created_at DESC').limit(@site.keep_count+2).each_with_index do |f, i|
-        -is_current = (f.blob_id == @current_blob_id)
+      - @site.saved_content_files.order('created_at DESC').limit(@site.keep_count+2).each_with_index do |f, i|
+        - is_current = (f.blob_id == @current_blob_id)
 
-        -if is_current
+        - if is_current
           %tr
             %td.pt-4{colspan: 6}
               %b Current version:
@@ -41,43 +41,43 @@
             #{nice_timestamp f.blob.created_at, brief: true}
 
           %td{style: fade_opac}
-            =as_megabytes(f.blob.byte_size)
+            = as_megabytes(f.blob.byte_size)
             MB
 
           %td{style: fade_opac}
             -# Not the real checksum, we just want a way to
             -# notice when two versions are identical
-            =Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
+            = Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
 
           %td.text-end.pe-3.actions-menu-group
-            -if is_current
+            - if is_current
               -# Regular actions menu for convenience
-              =render 'actions_menu', site: @site, is_tspot: @site.is_tspot?, menu_only: true, history_mode: true
+              = render 'actions_menu', site: @site, is_tspot: @site.is_tspot?, menu_only: true, history_mode: true
 
-            -else
+            - else
               -# Actions for previous saved version
-              =render 'history_actions_menu', f: f
+              = render 'history_actions_menu', f: f
 
-        -if is_current
-          -if @saved_version_count > 1
+        - if is_current
+          - if @saved_version_count > 1
             %tr
               %td.pt-4{colspan: 6}
                 %b Older versions:
-          -else
+          - else
             %tr
               %td.p-4{colspan: 6, style: "border-bottom-width: 0px;"}
                 %i.text-muted <br><br>No older versions found.
 
 
-  -if !feature_enabled?(:site_history)
+  - if !feature_enabled?(:site_history)
     .p-4
       %i
         Tiddlyhost will save and provide access to up to #{Settings.keep_counts[:standard]}
         saved versions for Tiddlyhost subscribers.
-        =link_to("Upgrade your plan", "/subscription")
+        = link_to("Upgrade your plan", "/subscription")
         to access this feature.
 
-  -elsif @saved_version_count > @keep_count - 10
+  - elsif @saved_version_count > @keep_count - 10
     .p-3.text-muted.small
       %i
         Note that only newest #{@keep_count} versions will be kept. Once there are more than #{@keep_count}, the oldest saved versions will be deleted.

@@ -1,37 +1,37 @@
 
-=render layout: 'form_wrapper', locals: { heading: 'Sign up',
+= render layout: 'form_wrapper', locals: { heading: 'Sign up',
   intro_text: "Already have an account? Go to #{link_to "log in", new_user_session_path}."} do
 
-  =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
 
-    =render 'devise/shared/error_messages', resource: resource
+    = render 'devise/shared/error_messages', resource: resource
 
-    =render layout: 'field_wrapper' do
-      =f.label :email
-      =f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :email
+      = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
       .small.form-text.text-muted Enter your email address
 
-    =render layout: 'field_wrapper' do
-      =f.label :name
-      =f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :name
+      = f.text_field :name, autofill: 'off', autocomplete: 'off', class: 'form-control'
       .small.form-text.text-muted Please enter your name
 
-    =render layout: 'field_wrapper' do
-      =f.label :username
-      =f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :username
+      = f.text_field :username, autofocus: true, autofill: 'off', autocomplete: 'off', class: 'form-control'
       .small.form-text.text-muted Optional. Choose a unique username between 3 and 30 characters long
 
-    =render layout: 'field_wrapper' do
-      =f.label :password
-      =f.password_field :password, autocomplete: 'new-password', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :password
+      = f.password_field :password, autocomplete: 'new-password', class: 'form-control'
       .small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
 
-    =render layout: 'field_wrapper' do
-      =f.label :password_confirmation
-      =f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
+    = render layout: 'field_wrapper' do
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
       .small.form-text.text-muted Re-type your password to confirm
 
-    =render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
-      =f.submit 'Create account', class: 'btn btn-primary'
+    = render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
+      = f.submit 'Create account', class: 'btn btn-primary'
 
-    =render 'devise/shared/links'
+    = render 'devise/shared/links'

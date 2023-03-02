@@ -2,74 +2,74 @@
 %h1 About Tiddlyhost
 
 %p
-  =image_tag 'logo-800-square.png', class: 'rounded',
+  = image_tag 'logo-800-square.png', class: 'rounded',
     style: 'width: 120px; height: 120px; float: left; margin: 0.5em 1em 0.5em 0;'
 
 %p
   %i
     The easiest way to use
-    =link_to 'TiddlyWiki', 'https://tiddlywiki.com/', target: '_blank'
+    = link_to 'TiddlyWiki', 'https://tiddlywiki.com/', target: '_blank'
     online.
 
 %p Created, maintained and supported by Simon Baird.
 
 %p
   If you have problems please
-  =link_to('report an issue in Github',
+  = link_to('report an issue in Github',
     Settings.create_issue_url, target: '_blank')
   or
-  =support_mail_to(link_title: 'send an email to Simon') + '.'
+  = support_mail_to(link_title: 'send an email to Simon') + '.'
   See #{link_to "Support", "/support"} for more support options.
 
 %ul.about-links
   %li<
-    =link_to '/support' do
-      =bi_icon('life-preserver')
+    = link_to '/support' do
+      = bi_icon('life-preserver')
       Support
 
   %li<
-    =link_to Settings.faq_url do
-      =bi_icon('patch-question')
+    = link_to Settings.faq_url do
+      = bi_icon('patch-question')
       FAQ
 
   %li<
-    =link_to Settings.docs_url, target: '_blank' do
-      =bi_icon('file-text')
+    = link_to Settings.docs_url, target: '_blank' do
+      = bi_icon('file-text')
       Documentation
 
   %li<
-    =link_to 'https://twitter.com/tiddlyhost' do
-      =bi_icon('twitter')
+    = link_to 'https://twitter.com/tiddlyhost' do
+      = bi_icon('twitter')
       Twitter
 
   %li<
-    =link_to 'https://tiddlyspot.blogspot.com/' do
-      =bi_icon('newspaper')
+    = link_to 'https://tiddlyspot.blogspot.com/' do
+      = bi_icon('newspaper')
       Blog
 
   %li<
-    =link_to '/terms-of-use' do
-      =bi_icon('file-earmark-text')
+    = link_to '/terms-of-use' do
+      = bi_icon('file-earmark-text')
       Terms of Use
 
   %li<
-    =link_to '/privacy-policy' do
-      =bi_icon('file-earmark-text')
+    = link_to '/privacy-policy' do
+      = bi_icon('file-earmark-text')
       Privacy Policy
 
   %li<
-    =link_to "#{Settings.github_url}/blob/main/LICENSE.md" do
-      =bi_icon('file-earmark-check')
+    = link_to "#{Settings.github_url}/blob/main/LICENSE.md" do
+      = bi_icon('file-earmark-check')
       Software License
 
   %li<
-    =link_to Settings.github_url do
-      =bi_icon('gem')
+    = link_to Settings.github_url do
+      = bi_icon('gem')
       Source Code
 
   %li<
-    =link_to '/donate' do
-      =bi_icon('piggy-bank')
+    = link_to '/donate' do
+      = bi_icon('piggy-bank')
       Donations &amp; Sponsorship
 
 %table.m-2.p-1
@@ -80,7 +80,7 @@
     %td.p-1.pe-3.text-muted Built:
     %td.p-1= nice_timestamp(DateTime.parse(@build_info['date']))
 
-  -if feature_enabled?(:admin)
+  - if feature_enabled?(:admin)
     %tr
       %td.pt-4.p-1.pe-3.text-muted Branch:
       %td.pt-4.p-1= github_history_link_to(@build_info['branch'])
@@ -92,26 +92,26 @@
     %tr
       %td.p-1.pe-3.text-muted Rails:
       %td.p-1
-        =image_tag('rails-logo-sml.png', style: "height: 1.4em; width: 1.4em; margin-top: -4px;")
-        =Rails.gem_version
+        = image_tag('rails-logo-sml.png', style: "height: 1.4em; width: 1.4em; margin-top: -4px;")
+        = Rails.gem_version
 
     %tr
       %td.p-1.pe-3.text-muted Ruby:
       %td.p-1
-        =image_tag('ruby-logo-sml.png', style: "height: 1.2em; width: 1.2em; margin-right: 0.2em; margin-top: -4px;")
-        =RUBY_VERSION
+        = image_tag('ruby-logo-sml.png', style: "height: 1.2em; width: 1.2em; margin-right: 0.2em; margin-top: -4px;")
+        = RUBY_VERSION
 
     %tr
       %td.p-1.pe-3.text-muted Psql:
       %td.p-1
-        =image_tag('psql-logo-sml.png', style: "height: 1.3em; width: 1.3em; margin-right: 0.1em;")
-        =ActiveRecord::Base.connection.select_value('SHOW SERVER_VERSION')
+        = image_tag('psql-logo-sml.png', style: "height: 1.3em; width: 1.3em; margin-right: 0.1em;")
+        = ActiveRecord::Base.connection.select_value('SHOW SERVER_VERSION')
 
   %tr
     %td.pt-4.p-1.pe-3.text-muted.align-top Empty versions:
     %td.pt-4.p-1.lh-lg
-      -@build_info['empties'].each do |e|
+      - @build_info['empties'].each do |e|
         %span.me-1
-          =logo_for_kind(e[:kind])
-        =e[:version]
+          = logo_for_kind(e[:kind])
+        = e[:version]
         %br

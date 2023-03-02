@@ -3,12 +3,12 @@
 
 %p
   Site
-  ="'#{@site_name}'"
+  = "'#{@site_name}'"
   doesn't exist on Tiddlyspot.
 
 %p
   Return to
-  =link_to 'Tiddlyspot', Settings.tiddlyspot_url
+  = link_to 'Tiddlyspot', Settings.tiddlyspot_url
   or visit
-  =link_to('Tiddlyhost', Settings.main_site_url) + ","
+  = link_to('Tiddlyhost', Settings.main_site_url) + ","
   a new, improved Tiddlyspot replacement.

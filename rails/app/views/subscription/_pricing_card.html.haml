@@ -11,38 +11,38 @@
   .plan-card.card.mb-4.rounded-3.d-flex{style: "height: 100%;"}
     .card-header.py-3.text-white.bg-gradient{class: "plan-#{product.name}"}
       %h4.my-0.fw-normal
-        =product.name
+        = product.name
         Plan
     .card-body.mx-3.pb-4.d-flex.flex-column
       %h1.card-title.pricing-card-title
-        ="$#{product.price}"
+        = "$#{product.price}"
         %small.text-muted.fw-light{style: "opacity: 0.8; font-size: 50%;"}
-          ="/mo"
+          = "/mo"
       %ul.list-unstyled.mt-3.mb-4
-        -features.each do |f|
+        - features.each do |f|
           %li!= f
 
-      -if subscribed
+      - if subscribed
         .mt-auto.w-100.border.mb-2.shadow-sm.p-2.rounded{class: "plan-#{product.name}-fg"}
-          =bi_icon('check2-circle', height: "1.4em", width: "1.4em")
+          = bi_icon('check2-circle', height: "1.4em", width: "1.4em")
           Subscribed
 
-      -else
-        -if plan == :free
+      - else
+        - if plan == :free
           .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center
-            -unless @subscribed
-              =bi_icon('check2-circle', height: "1.4em", width: "1.4em")
+            - unless @subscribed
+              = bi_icon('check2-circle', height: "1.4em", width: "1.4em")
             Free
 
-        -if plan == :standard
+        - if plan == :standard
           .mt-auto.w-100
-            =render("pay/stripe/checkout_button",
+            = render("pay/stripe/checkout_button",
               session: @user.checkout_session_for_price_id(product.id),
               title: "Subscribe Now",
               class: "w-100 btn btn-lg btn-outline-success mb-2 shadow-sm plan-#{product.name}-fg",
               style: "font-size: 16px; font-weight: bold;")
 
-        -if plan == :premium
+        - if plan == :premium
           .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center{style: "opacity: 0.5;"}
-            =bi_icon('cloud-haze2', fill: 'grey')
+            = bi_icon('cloud-haze2', fill: 'grey')
             Someday
