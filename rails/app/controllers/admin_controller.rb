@@ -149,7 +149,7 @@ class AdminController < ApplicationController
   }.freeze
 
   def users
-    render_records User.left_joins(:sites, :tspot_sites).with_subscriptions.group(:id)
+    render_records User.left_joins(:sites, :tspot_sites).join_subscriptions.group(:id)
   end
 
   def sites

@@ -10,16 +10,14 @@ module Subscriber
     delegate :subscription, :subscribed?, :checkout, :billing_portal,
       to: :payment_processor, allow_nil: true
 
-    scope :with_subscriptions, -> {
-      left_joins(:payment_processor).
-        left_joins(:subscriptions).
-        # Fixme: This condition should really be in the subscriptions left join,
-        # but that requires using raw sql to define the join iiuc
-        where("pay_subscriptions.status IS NULL OR pay_subscriptions.status = 'active'")
+    # Could possibly return multiple rows per user
+    scope :join_subscriptions, -> {
+      left_joins(:payment_processor).left_joins(:subscriptions)
     }
 
+    # The distinct is because this is used to count users
     scope :with_subscriptions_active, -> {
-      with_subscriptions.where(pay_subscriptions: {status: 'active'}).select('distinct users.id')
+      join_subscriptions.where(pay_subscriptions: {status: 'active'}).select('distinct users.id')
     }
 
     # Uncomment to help test UI for unsubcribed user
