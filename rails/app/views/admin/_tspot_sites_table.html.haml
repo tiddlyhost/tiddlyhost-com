@@ -16,7 +16,7 @@
     - unless params[:saved] == '0'
       %th= sort_link 'Saves'
     %th= sort_link 'Versions'
-    - unless @user
+    - unless specific_user
       %th= sort_link 'Owner', :asc
     - unless params[:saved] == '0'
       %th= 'Storage key'
@@ -30,7 +30,7 @@
       %th= sort_link 'Deleted'
 
 %tbody
-  - @records.each do |site|
+  - records.each do |site|
     %tr
       %td= site.id
       %td= admin_site_link site
@@ -47,7 +47,7 @@
       - unless params[:saved] == '0'
         %td= site.save_count
       %td= site.saved_version_count
-      - unless @user
+      - unless specific_user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       - unless params[:saved] == '0'
         %td= link_to(site.blob_key, action: :raw_download, id: site.id, tspot: 1) if site.blob

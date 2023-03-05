@@ -24,7 +24,7 @@
     %th= sort_link 'Saves'
     %th= sort_link 'Clones'
     %th= sort_link 'Versions'
-    - unless @user
+    - unless specific_user
       %th= sort_link 'Owner'
     %th= 'Storage key'
     %th= sort_link 'Raw (MB)'
@@ -34,7 +34,7 @@
     %th= sort_link 'Created'
 
 %tbody
-  - @records.each do |site|
+  - records.each do |site|
     %tr
       %td= site.id
       %td= admin_site_link site
@@ -60,7 +60,7 @@
       %td= site.save_count
       %td= site.clone_count
       %td= site.saved_version_count
-      - unless @user
+      - unless specific_user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
       %td= link_to(site.blob_key, action: :raw_download, id: site.id)
       %td= as_megabytes site.raw_byte_size

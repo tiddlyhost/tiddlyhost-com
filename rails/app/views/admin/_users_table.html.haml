@@ -17,7 +17,7 @@
     %th= sort_link 'Created'
 
 %tbody
-  - @records.each do |user|
+  - records.each do |user|
     %tr
       %td= user.id
       %td= link_to_user(user.name, user)

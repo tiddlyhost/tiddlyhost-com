@@ -16,10 +16,6 @@ linters:
   InlineStyles:
     enabled: false
 
-  # Offense count: 57
-  InstanceVariables:
-    enabled: false
-
   # Offense count: 278
   LineLength:
     enabled: false
@@ -31,6 +27,23 @@ linters:
   # Offense count: 137
   SpaceInsideHashAttributes:
     enabled: false
+
+  # Offense count: 50
+  InstanceVariables:
+    exclude:
+      - "app/views/application/_advanced_wrapper.html.haml"
+      - "app/views/sites/_access_chooser.html.haml"
+      - "app/views/sites/_form.html.haml"
+      - "app/views/sites/_grid_view.html.haml"
+      - "app/views/sites/_history_actions_menu.html.haml"
+      - "app/views/sites/_list_view.html.haml"
+      - "app/views/sites/_save_method_prefs.html.haml"
+      - "app/views/sites/_type_chooser.html.haml"
+      - "app/views/subscription/_plans.html.haml"
+      - "app/views/subscription/_pricing_card.html.haml"
+      - "app/views/subscription/_subscription_info.html.haml"
+      - "app/views/tspot_sites/_claim_form.html.haml"
+      - "app/views/tspot_sites/_form.html.haml"
 
   # Offense count: 2
   ConsecutiveSilentScripts:

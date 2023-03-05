@@ -4,18 +4,18 @@
     - Settings.feature_list.each do |feature|
       %span.pe-3.text-muted
         = feature.to_s.humanize
-        = bool_icon(Settings.feature_enabled?(feature, @user))
+        = bool_icon(Settings.feature_enabled?(feature, user))
 
-  = link_to_user(@user.name, @user)
-  = link_to_user_sites_with_count(@user, :sites)
+  = link_to_user(user.name, user)
+  = link_to_user_sites_with_count(user, :sites)
   - if Settings.tiddlyspot_enabled?
-    = link_to_user_sites_with_count(@user, :tspot_sites)
+    = link_to_user_sites_with_count(user, :tspot_sites)
 
-  = link_to_user_hub_with_count(@user) if @user.has_hub_link?
+  = link_to_user_hub_with_count(user) if user.has_hub_link?
 
-  - if @user.pay_customer_stripe
-    = link_to("#{@user.subscription_info[:name]} Plan", stripe_customer_url(@user), target: "_blank")
-    %span= subscription_renews_info(@user.subscription)
+  - if user.pay_customer_stripe
+    = link_to("#{user.subscription_info[:name]} Plan", stripe_customer_url(user), target: "_blank")
+    %span= subscription_renews_info(user.subscription)
   - else
     -# Free plan
     %span No subscription

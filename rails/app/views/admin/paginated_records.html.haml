@@ -3,7 +3,7 @@
 
 = render 'tabs'
 
-= render 'user_info' if @user
+= render 'user_info', user: @user if @user
 
 - unless @user && action_name == "users"
   .admin-filter
@@ -15,7 +15,7 @@
 .admin-page-info= pagination_info(@records)
 
 %table.admin.table.table-sm.table-striped
-  = render "#{action_name}_table"
+  = render "#{action_name}_table", records: @records, specific_user: @user
 
 .admin-paginate= will_paginate(@records)
 .admin-page-info= pagination_info(@records)
