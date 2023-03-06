@@ -12,23 +12,23 @@ inherits_from:
 
 linters:
 
-  # Offense count: 47
+  # Offense count: 46
   InlineStyles:
     enabled: false
 
-  # Offense count: 278
+  # Offense count: 277
   LineLength:
     enabled: false
 
-  # Offense count: 353
+  # Offense count: 346
   RuboCop:
     enabled: false
 
-  # Offense count: 137
+  # Offense count: 135
   SpaceInsideHashAttributes:
     enabled: false
 
-  # Offense count: 50
+  # Offense count: 42
   InstanceVariables:
     exclude:
       - "app/views/application/_advanced_wrapper.html.haml"
@@ -69,17 +69,6 @@ linters:
   ImplicitDiv:
     exclude:
       - "app/views/devise/registrations/edit.html.haml"
-
-  # Offense count: 8
-  UnnecessaryStringOutput:
-    exclude:
-      - "app/views/devise/registrations/edit.html.haml"
-      - "app/views/devise/registrations/new.html.haml"
-      - "app/views/home/build_info.html.haml"
-      - "app/views/home/error_page.html.haml"
-      - "app/views/sites/_form.html.haml"
-      - "app/views/tspot_sites/_form.html.haml"
-      - "app/views/tspot_sites/claim.html.haml"
 
   # Offense count: 3
   ViewLength:

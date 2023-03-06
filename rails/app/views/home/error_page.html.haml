@@ -1,5 +1,5 @@
 
-%h1= "#{@status_code} #{@status_message}"
+%h1 #{@status_code} #{@status_message}
 
 - if @status_code == 404
   %p.big
@@ -9,7 +9,7 @@
 
 - elsif @status_code == 401
   %p.big
-    = "Authentication required#{@site ? " for #{@site.name}." : "!"}"
+    Authentication required#{@site ? " for #{@site.name}." : "!"}
 
   %p
     This server could not verify that you are authorized to access the document requested.

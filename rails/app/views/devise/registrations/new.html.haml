@@ -24,7 +24,7 @@
     = render layout: 'field_wrapper' do
       = f.label :password
       = f.password_field :password, autocomplete: 'new-password', class: 'form-control'
-      .small.form-text.text-muted= "#{ Settings.minimum_password_length } characters minimum"
+      .small.form-text.text-muted #{Settings.minimum_password_length} characters minimum
 
     = render layout: 'field_wrapper' do
       = f.label :password_confirmation

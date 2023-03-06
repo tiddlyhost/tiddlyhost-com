@@ -6,7 +6,7 @@
     - if @site.errors.any?
       = render layout: 'field_wrapper' do
         .alert.alert-danger
-          %p= "#{pluralize(@site.errors.count, "error")} prevented this site from being saved:"
+          %p #{pluralize(@site.errors.count, "error")} prevented this site from being saved:
           %ul
             - @site.errors.full_messages.each do |message|
               %li= message

@@ -42,7 +42,7 @@
       = f.label :password, 'New password'
       .form-text (leave blank if you don't want to change it)
       = f.password_field :password, autocomplete: 'new-password', class: 'form-control'
-      .form-text= "#{ Settings.minimum_password_length } characters minimum"
+      .form-text #{Settings.minimum_password_length} characters minimum
 
     = render layout: 'field_wrapper' do
       = f.label :password_confirmation, 'New password confirmation'
