@@ -174,11 +174,16 @@ deps-update: bundle-update yarn-upgrade
 
 #----------------------------------------------------------
 
-haml-lint-with-todo:
-	@cd rails && bundle exec haml-lint --config .haml-lint_todo.yml
-
 haml-lint:
-	@cd rails && bundle exec haml-lint
+	$(DCC) 'bundle exec haml-lint'
+
+haml-lint-refresh-todos:
+	$(DCC) 'bundle exec haml-lint --auto-gen-config'
+
+haml-lint-with-todo:
+	$(DCC) 'bundle exec haml-lint --config .haml-lint_todo.yml'
+
+delint: haml-lint-with-todo
 
 #----------------------------------------------------------
 
@@ -402,7 +407,7 @@ push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost
 
 # Fixme: There are too many options here...
-build-push:            tests build-prod push-prod
+build-push:            delint tests build-prod push-prod
 build-full-deploy:     build-push full-deploy
 build-deploy:          build-push deploy-app
 build-upgrade:         build-push upgrade
