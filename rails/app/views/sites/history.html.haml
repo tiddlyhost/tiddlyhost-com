@@ -12,11 +12,13 @@
         %th Saved
         %th
           Size
-          = render 'popover_help', html_content: "This column shows the compressed size which smaller than the site's actual size."
+          = render 'popover_help',
+            html_content: "This column shows the compressed size which smaller than the site's actual size."
 
         %th
           Checksum
-          = render 'popover_help', html_content: "Identical checksums indicate identical saved versions."
+          = render 'popover_help',
+            html_content: "Identical checksums indicate identical saved versions."
 
         %th.text-end.pe-3 Actions
 
@@ -80,4 +82,5 @@
   - elsif @saved_version_count > @keep_count - 10
     .p-3.text-muted.small
       %i
-        Note that only newest #{@keep_count} versions will be kept. Once there are more than #{@keep_count}, the oldest saved versions will be deleted.
+        Note that only newest #{@keep_count} versions will be kept. Once there
+        are more than #{@keep_count}, the oldest saved versions will be deleted.

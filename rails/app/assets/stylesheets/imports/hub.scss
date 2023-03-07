@@ -239,3 +239,12 @@ h1 {
     background-color: #b8900b;
     &:hover { background-color: #e2af00; }
 }
+
+#templates-toggle-switch {
+    margin-left: 0px;
+    margin-bottom: 0.5em;
+    margin-right: 0.1em;
+    vertical-align: middle;
+    width: 1.5em;
+    cursor: pointer;
+}

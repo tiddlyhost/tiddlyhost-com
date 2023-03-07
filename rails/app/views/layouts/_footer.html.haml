@@ -4,7 +4,7 @@
 
     .col-md-3.col-6
       %h6.text-muted Version
-      %ul(style="padding-left: 0.5em; opacity: 70%;")
+      %ul{ style: "padding-left: 0.5em; opacity: 70%;" }
         - unless Rails.env.production?
           %li Env: #{Rails.env}
         %li Version: #{link_to App::VERSION, '/about'}

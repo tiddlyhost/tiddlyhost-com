@@ -6,7 +6,8 @@
     To verify the change to your Tiddlyhost account email address
     please click 'Confirm email' below.
 
-  = render 'button_link', link_text: 'Confirm email', link_url: confirmation_url(@resource, confirmation_token: @token)
+  = render 'button_link', link_text: 'Confirm email',
+    link_url: confirmation_url(@resource, confirmation_token: @token)
 
   %p.pt-5
     %small.text-gray-600
@@ -23,7 +24,8 @@
     To complete the signup process please confirm your
     email address by clicking 'Confirm account' below.
 
-  = render 'button_link', link_text: 'Confirm account', link_url: confirmation_url(@resource, confirmation_token: @token)
+  = render 'button_link', link_text: 'Confirm account',
+    link_url: confirmation_url(@resource, confirmation_token: @token)
 
   = render 'show_email', user: @resource
 

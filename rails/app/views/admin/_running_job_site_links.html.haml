@@ -1,0 +1,6 @@
+
+- if @jobs_running_sites.empty?
+  None
+- else
+  - @jobs_running_sites.each do |site|
+    = site_link(site, link_title: "#{site.class.name}/#{site.id}")

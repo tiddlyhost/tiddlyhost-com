@@ -37,5 +37,4 @@
   %br
   = render 'stat_card', title: 'Jobs in queue', alert: @jobs_alert, count: @jobs_count
   = render 'stat_card', title: 'Locked since',  alert: @jobs_alert, count: nice_timestamp(@jobs_running_since)
-  = render 'stat_card', title: 'Running now',   alert: @jobs_alert,
-    count: safe_join(@jobs_running_sites.map{|s| site_link(s, link_title: "#{s.class.name}/#{s.id} ")}).presence || "None"
+  = render 'stat_card', title: 'Running now', alert: @jobs_alert, count: render("running_job_site_links")

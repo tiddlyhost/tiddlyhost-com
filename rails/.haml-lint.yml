@@ -1,5 +1,16 @@
 
 linters:
   LineLength:
-    enabled: true
-    max: 180
+    max: 120
+    exclude:
+      - "app/views/sites/_actions_menu.html.haml"
+
+  ViewLength:
+    exclude:
+      - "app/views/home/about.html.haml"
+      - "app/views/home/privacy_policy.html.haml"
+      - "app/views/home/terms_of_use.html.haml"
+
+  InlineStyles:
+    # Allow inline styles for now anyway
+    enabled: false

@@ -15,8 +15,8 @@
     %label{ style: "cursor: pointer;" }
       -# The switch styled checkbox here is cosmetic only, it's behaving as link
       -# Todo: Should be able to style a normal link to look the same and ditch the actual checkbox
-      <input class="form-check-input" type="checkbox" role="switch" #{@show_templates ? "checked" : ""}
-      style="margin-left: 0px; margin-bottom: 0.5em; margin-right: 0.1em; vertical-align: middle; width: 1.5em; cursor: pointer;"
+      <input class="form-check-input" id="templates-toggle-switch"
+      type="checkbox" role="switch" #{@show_templates ? "checked" : ""}
       onclick="window.location.href = '#{url_for(sort_filter_url(:t, @show_templates ? nil : '1'))}';">
       Templates only
     = render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
@@ -53,7 +53,8 @@
 
   %span.sort-by
     Sort by:
-    = link_to(sort_opt[:title], "#", class: 'dropdown-toggle', role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+    = link_to(sort_opt[:title], "#", class:'dropdown-toggle',
+      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
     .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
       - sort_options.keys.each do |k|
         = simple_sort_link k

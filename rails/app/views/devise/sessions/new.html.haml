@@ -1,6 +1,6 @@
 
 = render layout: 'form_wrapper', locals: { heading: 'Log in',
-  intro_text: "Need an account? Go to #{link_to "sign up", new_user_registration_path}." } do
+  intro_text: "Need an account? Go to #{link_to 'sign up', new_user_registration_path}." } do
 
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
 
@@ -11,12 +11,13 @@
     = render layout: 'field_wrapper', locals: { pb: 'pb-2' } do
       = f.label :password
       .input-group
-        = f.password_field :password, autocomplete: 'current-password', class: 'form-control',
-          style: 'border-radius: 0.375rem; padding-right: 2.8rem;'
+        = f.password_field :password, autocomplete: 'current-password',
+          class: 'form-control', style: 'border-radius: 0.375rem; padding-right: 2.8rem;'
 
         -# Toggle password visiblity button
         .button.input-group-text.passwd-btn{
-          style: 'cursor: pointer; background-color: transparent; border-style: none; margin-left: -3.07em; z-index: 5; opacity: 0.3;' }
+          style: text_join('cursor: pointer; background-color: transparent;',
+          'border-style: none; margin-left: -3.07em; z-index: 5; opacity: 0.3;') }
           %span.passwd-btn-icon
             = bi_icon('eye')
           %span.passwd-btn-icon{ style: 'display: none;' }

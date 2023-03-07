@@ -10,9 +10,10 @@
     -#
     -# Burger button for phone screens
     -#
-    %button.navbar-toggler(type="button"
-      data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+    %button.navbar-toggler{ type: "button",
+      "data-bs-toggle"=>"collapse", "data-bs-target"=>"#navbarSupportedContent",
+      "aria-controls"=>"navbarSupportedContent",
+      "aria-expanded"=>"false", "aria-label"=>"Toggle navigation" }
       %span.navbar-toggler-icon
 
     -#
@@ -37,9 +38,8 @@
             new_site_path, li_class: 'd-none d-sm-block', title: 'Create site'
 
           %li.nav-item.dropdown
-            %a.nav-link.dropdown-toggle#navbarDropdown(role="button"
-              data-bs-toggle="dropdown" aria-expanded="false" href="#"
-              aria-haspopup="true" title="User menu")
+            %a.nav-link.dropdown-toggle#navbarDropdown{ role: "button", href: "#", title: "User menu",
+              "data-bs-toggle"=>"dropdown", "aria-expanded"=>"false", "aria-haspopup"=>"true" }
               - if current_user.use_gravatar?
                 = gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
               - else

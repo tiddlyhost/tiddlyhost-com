@@ -38,7 +38,8 @@
           = sort_link 'origin', :asc, 'dropdown-item'
 
     .d-inline-block.sites-menu
-      = link_to({ controller: :sites, action: :view_toggle }.merge(params.permit(:access,:s)), class: "m-1 btn btn-sm", title: @grid_view ? 'List view' : 'Grid view') do
+      = link_to({ controller: :sites, action: :view_toggle }.merge(params.permit(:access,:s)),
+        class: "m-1 btn btn-sm", title: @grid_view ? 'List view' : 'Grid view') do
         View:
         = bi_icon(@grid_view ? 'list-ul' : 'grid', fill: '#666')
 

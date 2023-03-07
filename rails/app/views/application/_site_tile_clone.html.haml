@@ -3,10 +3,12 @@
   .ms-1.p-1
     - if site.thumbnail.present?
       = link_to site.url, target: site.long_name do
-        = image_tag(rails_storage_proxy_path(site.thumbnail), class: "thumbnail-large", style: "width: 6em;")
+        = image_tag(rails_storage_proxy_path(site.thumbnail),
+          class: "thumbnail-large", style: "width: 6em;")
 
   .p-1.flex-fill
-    = link_to site.url, target: site.long_name, style: "color: var(--bs-gray-600); text-decoration: none; font-weight: bold;" do
+    = link_to site.url, target: site.long_name,
+      style: "color: var(--bs-gray-600); text-decoration: none; font-weight: bold;" do
       = site.name
     %span.ps-2.text-muted{ style: "font-size: 75%;" }
       - if site.user == current_user

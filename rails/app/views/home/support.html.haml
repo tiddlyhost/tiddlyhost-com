@@ -23,30 +23,32 @@
 
   %p
     You can also browse the
-    #{link_to "existing issues in GitHub", "https://github.com/simonbaird/tiddlyhost/issues", target: '_blank'} to
-    see if there's an issue filed already for your problem.
+    = link_to("existing issues in GitHub",
+      "https://github.com/simonbaird/tiddlyhost/issues", target: '_blank')
+    to see if there's an issue filed already for your problem.
 
     See also the
-    = link_to "Wiki", "https://github.com/simonbaird/tiddlyhost/wiki"
+    = link_to("Wiki",
+      "https://github.com/simonbaird/tiddlyhost/wiki", target: '_blank')
     and the
-    #{link_to "FAQ", "https://github.com/simonbaird/tiddlyhost/wiki/FAQ"}.
+    = link_to("FAQ",
+      "https://github.com/simonbaird/tiddlyhost/wiki/FAQ", target: '_blank') + '.'
     (Improved documentation for Tiddlyhost is planned for the future.)
 
 .my-5
   %h4 TiddlyWiki support
 
   %p
-
-    There are a lot of information out there related to TiddlyWiki. The primary forum for
-    asking questions is
-    #{link_to "Talk TiddlyWiki", "https://talk.tiddlywiki.org/", target: '_blank'}
+    There are a lot of information out there related to TiddlyWiki. The primary forum
+    for asking questions is
+    = link_to("Talk TiddlyWiki", "https://talk.tiddlywiki.org/", target: '_blank')
     but you can find additional resources via
-    #{link_to "TiddlyWiki Forums", "https://tiddlywiki.com/#Forums", target: '_blank'}
+    = link_to("TiddlyWiki Forums", "https://tiddlywiki.com/#Forums", target: '_blank')
     and
-    #{link_to "TiddlyWiki Community", "https://tiddlywiki.com/#Community", target: '_blank'}.
+    = link_to("TiddlyWiki Community", "https://tiddlywiki.com/#Community", target: '_blank') + '.'
 
     You can also file issues for TiddlyWiki
-    #{link_to "in GitHub here", "https://github.com/Jermolene/TiddlyWiki5/issues"}.
+    = link_to("in GitHub here", "https://github.com/Jermolene/TiddlyWiki5/issues") + '.'
 
 
 .my-5
@@ -55,6 +57,9 @@
   %p
     If you need help with Feather Wiki, or you want to report a bug or request a feature, the best way
     to do that is to
-    #{link_to "file an issue in Codeberg", "https://codeberg.org/Alamantus/FeatherWiki/issues/new/choose", target: '_blank'}.
+    = link_to("file an issue in Codeberg",
+      "https://codeberg.org/Alamantus/FeatherWiki/issues/new/choose", target: '_blank') + '.'
 
-    The existing Feather Wiki #{link_to "issues are here", "https://codeberg.org/Alamantus/FeatherWiki/issues", target: '_blank'}.
+    The existing Feather Wiki
+    = link_to("issues are here",
+      "https://codeberg.org/Alamantus/FeatherWiki/issues", target: '_blank') + '.'

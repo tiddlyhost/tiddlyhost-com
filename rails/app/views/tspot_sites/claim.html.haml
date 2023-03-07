@@ -1,6 +1,8 @@
 
 %h1
-  = bi_icon(@success ? 'check-circle' : 'exclamation-diamond', fill: "#{@success ? 'green' : 'orange'}", style: 'opacity: 100%;' )
+  = bi_icon(@success ? 'check-circle' : 'exclamation-diamond',
+    fill: (@success ? 'green' : 'orange'),
+    style: 'opacity: 100%;')
   = @message
 
 - if @success
