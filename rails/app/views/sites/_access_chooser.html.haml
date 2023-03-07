@@ -36,7 +36,8 @@
 
         - when "hub_listed"
           = render 'popover_help',
-            html_content: "Best for showcasing interesting, well maintained sites for people to discover. Note that the name, description and tags will be searchable in the Tiddlyhost Hub."
+            html_content: text_join("Best for showcasing interesting, well maintained sites for people to discover.",
+            "Note that the name, description and tags will be searchable in the Tiddlyhost Hub.")
           .description
             Your site will be accessible on the internet and also be listed and searchable in the
             = link_to('Tiddlyhost Hub', '/hub', target: "_blank")

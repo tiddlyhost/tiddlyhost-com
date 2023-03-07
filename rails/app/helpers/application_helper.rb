@@ -175,4 +175,12 @@ module ApplicationHelper
     bi_icon(*Array.wrap(bi_icon_args)) + text
   end
 
+  # Silly helper to avoid long lines in haml due to very long strings in function
+  # params. It works because haml allows a comma to split function calls lines and
+  # this provides a way to have additional commas.
+  #
+  def text_join(*strings)
+    strings.join(" ")
+  end
+
 end
