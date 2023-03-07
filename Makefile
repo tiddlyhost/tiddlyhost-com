@@ -200,7 +200,7 @@ devel-dump-secrets:
 #----------------------------------------------------------
 
 # Run test suite
-test:
+run-tests:
 	$(DCC) 'bin/rails test:all'
 
 test-ci:
@@ -209,10 +209,11 @@ test-ci:
 coverage:
 	$(DCC) 'env COVERAGE=1 bin/rails test:all'
 
-tests: test
-
 onetest:
 	$(DCC) 'bin/rails test $(TEST)'
+
+test: run-tests
+tests: run-tests
 
 #----------------------------------------------------------
 
