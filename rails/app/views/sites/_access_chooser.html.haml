@@ -11,7 +11,7 @@
   - %w[ public private hub_listed ].each do |choice|
     - is_selected = @site.send("access_#{choice}?")
 
-    %div{class: ('selected' if is_selected)}
+    %div{ class: ('selected' if is_selected) }
       = label_tag do
         = radio_button_tag "_access_choice", choice, is_selected, class: 'me-1', style: "margin-left: -0.3em;"
 

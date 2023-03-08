@@ -1,6 +1,6 @@
 
 = render layout: 'form_wrapper', locals: { heading: 'Log in',
-  intro_text: "Need an account? Go to #{link_to "sign up", new_user_registration_path}."} do
+  intro_text: "Need an account? Go to #{link_to "sign up", new_user_registration_path}." } do
 
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
 
@@ -16,10 +16,10 @@
 
         -# Toggle password visiblity button
         .button.input-group-text.passwd-btn{
-          style: 'cursor: pointer; background-color: transparent; border-style: none; margin-left: -3.07em; z-index: 5; opacity: 0.3;'}
+          style: 'cursor: pointer; background-color: transparent; border-style: none; margin-left: -3.07em; z-index: 5; opacity: 0.3;' }
           %span.passwd-btn-icon
             = bi_icon('eye')
-          %span.passwd-btn-icon{style: 'display: none;'}
+          %span.passwd-btn-icon{ style: 'display: none;' }
             = bi_icon('eye-slash')
 
     - if devise_mapping.rememberable?

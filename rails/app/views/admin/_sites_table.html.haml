@@ -44,7 +44,7 @@
       %td= site.empty.name
       %td= site.cloned_from ? admin_site_link(site.cloned_from) : site.cloned_from_id
       %td= site.tw_version
-      %td.nowrap.text-truncated{style: 'max-width: 8em;'}
+      %td.nowrap.text-truncated{ style: 'max-width: 8em;' }
         = span_with_title site.description
       - unless params[:private]
         %td= bool_text site.is_private?

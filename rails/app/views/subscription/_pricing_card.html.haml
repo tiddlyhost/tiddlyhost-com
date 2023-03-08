@@ -7,23 +7,23 @@
 -# Determine if this is the current subscription
 - subscribed = @subscribed && @subscription_info == product
 
-.m-3.mx-2.mx-sm-5.mx-md-3.text-center{style: "flex: 1;"}
-  .plan-card.card.mb-4.rounded-3.d-flex{style: "height: 100%;"}
-    .card-header.py-3.text-white.bg-gradient{class: "plan-#{product.name}"}
+.m-3.mx-2.mx-sm-5.mx-md-3.text-center{ style: "flex: 1;" }
+  .plan-card.card.mb-4.rounded-3.d-flex{ style: "height: 100%;" }
+    .card-header.py-3.text-white.bg-gradient{ class: "plan-#{product.name}" }
       %h4.my-0.fw-normal
         = product.name
         Plan
     .card-body.mx-3.pb-4.d-flex.flex-column
       %h1.card-title.pricing-card-title
         = "$#{product.price}"
-        %small.text-muted.fw-light{style: "opacity: 0.8; font-size: 50%;"}
+        %small.text-muted.fw-light{ style: "opacity: 0.8; font-size: 50%;" }
           = "/mo"
       %ul.list-unstyled.mt-3.mb-4
         - features.each do |f|
           %li!= f
 
       - if subscribed
-        .mt-auto.w-100.border.mb-2.shadow-sm.p-2.rounded{class: "plan-#{product.name}-fg"}
+        .mt-auto.w-100.border.mb-2.shadow-sm.p-2.rounded{ class: "plan-#{product.name}-fg" }
           = bi_icon('check2-circle', height: "1.4em", width: "1.4em")
           Subscribed
 
@@ -43,6 +43,6 @@
               style: "font-size: 16px; font-weight: bold;")
 
         - if plan == :premium
-          .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center{style: "opacity: 0.5;"}
+          .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center{ style: "opacity: 0.5;" }
             = bi_icon('cloud-haze2', fill: 'grey')
             Someday

@@ -4,7 +4,7 @@
   = bi_icon('person-fill', style: 'margin-right:-3px; margin-left: -1px;')
 
 - if user.has_username?
-  %span{title: user.name}
+  %span{ title: user.name }
     = link_to user.username, hub_user_url(user.username)
 - else
   = user.name

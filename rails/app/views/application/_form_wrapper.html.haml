@@ -14,8 +14,8 @@
   (Using the less pretty haml format so we could dynamically set
   the classes if we wanted to.)
 
-%div{class: "row sm-px-5 py-2"}
-  %div{class: "form-wrapper col-lg-6 offset-lg-3 col-md-8 offset-md-2 rounded p-4"}
+%div{ class: "row sm-px-5 py-2" }
+  %div{ class: "form-wrapper col-lg-6 offset-lg-3 col-md-8 offset-md-2 rounded p-4" }
     - if local_assigns.has_key?(:heading)
       %h2.pt-0
         = heading

@@ -1,5 +1,5 @@
 
-%nav.navbar.navbar-dark.navbar-expand-sm.bg-gradient{class: navbar_prod}
+%nav.navbar.navbar-dark.navbar-expand-sm.bg-gradient{ class: navbar_prod }
   .container-fluid
     -#
     -# Logo
@@ -46,7 +46,7 @@
                 = bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
               = current_user.username_or_name
 
-            %ul.dropdown-menu.dropdown-menu-end.th-nav-menu{'aria-labelledby'=>'navbarDropdown'}
+            %ul.dropdown-menu.dropdown-menu-end.th-nav-menu{ 'aria-labelledby'=>'navbarDropdown' }
               = render 'layouts/user_menu_items'
 
       - else

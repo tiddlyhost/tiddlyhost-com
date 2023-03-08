@@ -1,5 +1,5 @@
 
-.d-flex.mt-1{style: "overflow: hidden;"}
+.d-flex.mt-1{ style: "overflow: hidden;" }
   .ms-1.p-1
     - if site.thumbnail.present?
       = link_to site.url, target: site.long_name do
@@ -8,7 +8,7 @@
   .p-1.flex-fill
     = link_to site.url, target: site.long_name, style: "color: var(--bs-gray-600); text-decoration: none; font-weight: bold;" do
       = site.name
-    %span.ps-2.text-muted{style: "font-size: 75%;"}
+    %span.ps-2.text-muted{ style: "font-size: 75%;" }
       - if site.user == current_user
         -# Cloning your own site
         = site_access(site)
@@ -18,8 +18,8 @@
         %span.site-tile-owner
           = render 'site_owner', user: site.user
 
-    .small.text-muted{style: "white-space: nowrap;"}
+    .small.text-muted{ style: "white-space: nowrap;" }
       = site.description
 
-    .text-muted{style: "font-size: 75%;"}
+    .text-muted{ style: "font-size: 75%;" }
       = kind_summary(site)

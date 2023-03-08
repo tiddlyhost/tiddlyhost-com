@@ -1,15 +1,15 @@
 - is_tspot = site.is_a?(TspotSite)
 
-.site{id: site.name}
+.site{ id: site.name }
   .thumb-container
     = link_to site.url, target: site.long_name do
       - if site.thumbnail.present?
         = image_tag rails_storage_proxy_path(site.thumbnail), class: 'thumbnail-large'
       - else
-        .image-placeholder{title: "Preview image not yet available"}
+        .image-placeholder{ title: "Preview image not yet available" }
           = bi_icon('image', fill: '#ddd')
 
-  .name{title: site.long_name}
+  .name{ title: site.long_name }
     = site_link site, target: site.long_name
 
   - if mode == "home"
@@ -31,14 +31,14 @@
           class: 'clone-btn btn btn-sm px-2 py-1 mx-1 my-0', style: 'border-style: none;',
           title: 'Create a new site using this template') do
           = bi_icon('files', height: '1.2em', fill: '#777')
-          %div{style: "font-size: 60%; margin-top: -1px;"}Clone
-        .py-0.my-0{style: "font-size: 70%; text-align: center; font-weight: bold; line-height: 1em;"}
+          %div{ style: "font-size: 60%; margin-top: -1px;" }Clone
+        .py-0.my-0{ style: "font-size: 70%; text-align: center; font-weight: bold; line-height: 1em;" }
           = site.clone_count
 
     = span_with_title(site.description)
 
   - if mode == "hub"
-    .pt-1{style: 'font-size: 70%; opacity: 0.7; margin-left: 3px;'}
+    .pt-1{ style: 'font-size: 70%; opacity: 0.7; margin-left: 3px;' }
       = render 'site_kind_info', site: site
 
     .owner

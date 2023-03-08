@@ -8,7 +8,7 @@
   - @empties_for_select.each_with_index do |empty, i|
 
     -# The first one is selected by default
-    %div{class: [i == 0 ? 'selected' : '', empty.primary? ? '' : 'longer-only']}
+    %div{ class: [i == 0 ? 'selected' : '', empty.primary? ? '' : 'longer-only'] }
 
       = f.label :empty_id, empty.id, value: empty.id do
 
@@ -19,7 +19,7 @@
         .title
           = empty.title
 
-        %small.text-muted{style: "font-size: 80%;"}
+        %small.text-muted{ style: "font-size: 80%;" }
           (#{empty.tiddlywiki_version})
 
         = render 'popover_help', html_content: empty.long_tooltip

@@ -1,9 +1,9 @@
 
 %span.search
   Search:
-  %form{method: 'GET', style: 'display: inline;'}
+  %form{ method: 'GET', style: 'display: inline;' }
     = hidden_sort_filter_fields
-    %input{type: 'text', name: 'q', value: search_text, id: 'search_box', autofocus: true}
+    %input{ type: 'text', name: 'q', value: search_text, id: 'search_box', autofocus: true }
     %button.btn.btn-sm
       = bi_icon(:search)
     - if search_text

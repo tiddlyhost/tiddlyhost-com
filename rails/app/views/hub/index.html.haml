@@ -11,8 +11,8 @@
   - else
     Explore
 
-  .ps-2.form-switch.text-muted.enable-tooltips{style: "font-size: 0.875rem; display: inline-block;"}
-    %label{style: "cursor: pointer;"}
+  .ps-2.form-switch.text-muted.enable-tooltips{ style: "font-size: 0.875rem; display: inline-block;" }
+    %label{ style: "cursor: pointer;" }
       -# The switch styled checkbox here is cosmetic only, it's behaving as link
       -# Todo: Should be able to style a normal link to look the same and ditch the actual checkbox
       <input class="form-check-input" type="checkbox" role="switch" #{@show_templates ? "checked" : ""}
@@ -32,7 +32,7 @@
   - else
     Discover content created and shared by Tiddlyhost users.
 
-%p.text-muted{style: 'font-size: 95%'}
+%p.text-muted{ style: 'font-size: 95%' }
   - if @tag.present?
     #{thing}s tagged with
     %b= @tag + '.'
@@ -40,7 +40,7 @@
     #{thing}s created by Tiddlyhost user
     %b= @user.username + '.'
 
-%div{style: "margin-bottom: 2em;"}
+%div{ style: "margin-bottom: 2em;" }
   %ul.nav.nav-tabs
     = hub_link_to("All #{thing.downcase}s", hub_all_url)
     - @tag_tabs.each do |tag|
@@ -54,7 +54,7 @@
   %span.sort-by
     Sort by:
     = link_to(sort_opt[:title], "#", class: 'dropdown-toggle', role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
-    .dropdown-menu.hub-menu{'aria-labelledby': 'dropdownMenuLink'}
+    .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
       - sort_options.keys.each do |k|
         = simple_sort_link k
 
