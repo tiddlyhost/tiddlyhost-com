@@ -7,7 +7,7 @@ linters:
 
   ViewLength:
     exclude:
-      - "app/views/home/about.html.haml"
+      # These are long
       - "app/views/home/privacy_policy.html.haml"
       - "app/views/home/terms_of_use.html.haml"
 
