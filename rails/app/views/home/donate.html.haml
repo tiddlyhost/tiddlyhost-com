@@ -1,26 +1,49 @@
+- subscribed_already = user_signed_in? && current_user.subscribed?
 
 %h1 Donations &amp; Sponsorships
 
-.row
-  .col-12
-    %p
-      If you find Tiddlyhost useful then please consider a donation or a
-      sponsorship. A donation or sponsorship will help cover hosting costs, and
-      encourage the continued support and development of Tiddlyhost.
+%div{ style: "max-width: 60em;" }
 
-    %p
-      Click the buttons below to donate or sponsor via
-      = link_to('PayPal', "https://www.paypal.com/", target: '_blank') + ','
-      = link_to('Github Sponsors', "https://github.com/sponsors", target: '_blank') + ','
-      or #{link_to 'Buy Me a Coffee', "https://www.buymeacoffee.com/"}.
+  %p.py-2
+    If you find Tiddlyhost useful then please consider a donation or a
+    sponsorship. A donation or sponsorship will help cover hosting costs, and
+    encourage the continued support and development of Tiddlyhost.
 
-    .pt-3
-      .donate-button
-        = render 'paypal_donate_button'
+  %p.py-2
+    Click the buttons below to donate or sponsor via
+    = link_to('PayPal', "https://www.paypal.com/", target: '_blank', style: "padding-left: 0.25em;") + ','
+    = link_to('Github Sponsors', "https://github.com/sponsors", target: '_blank', style: "padding-left: 0.25em;") + ','
+    or
+    = link_to('Buy Me a Coffee', "https://www.buymeacoffee.com/", style: "padding-left: 0.25em;") + '.'
 
-      .donate-button{ style: 'margin-top: 1.9em;' }
-        = render 'github_sponsor_button'
+  %p.py-2
+    You can also now subscribe to the <b>Tiddlyhost Standard</b> plan,
+    which gives you access to additional Tiddlyhost features, as well
+    as supports the continued development of Tiddlyhost.
+    Visit
+    = link_to bi_icon('bag-check', style: 'margin-right: 0px;') + 'Subscriptions', '/subscription',
+      style: "padding: 0.25em;"
+    to learn more about Tiddlyhost subscription plans.
+    - if subscribed_already
+      %sup.th-dim
+        &dagger;
 
-      .donate-button{ style: 'margin-top: 1.9em; padding-left:4px;' }
-        = link_to "https://www.buymeacoffee.com/simonbaird", title: 'Buy Me a Coffee', target: '_blank' do
-          = image_tag "coffee.svg", style: "width: 120px;"
+  %p.py-2
+    .donate-button
+      = render 'paypal_donate_button'
+
+    .donate-button{ style: 'margin-top: 1.9em;' }
+      = render 'github_sponsor_button'
+
+    .donate-button{ style: 'margin-top: 1.9em; padding-left:4px;' }
+      = link_to "https://www.buymeacoffee.com/simonbaird", title: 'Buy Me a Coffee', target: '_blank' do
+        = image_tag "coffee.svg", style: "width: 120px;"
+
+    .donate-button.ms-2
+      = link_to '/subscription' do
+        = bi_icon('bag-check', style: 'margin-right: 3px;') + 'Subscriptions'
+
+
+  - if subscribed_already
+    %p.py-4.th-text-small.th-dim
+      &dagger;&nbsp; I can see you're already a subscriber. Thank you very much!
