@@ -3,7 +3,7 @@
 
 = render 'tabs'
 
-%ul
+%ul.th-spaced.ms-3
   %li= link_to "Raise an exception", action: :boom
   %li= link_to "Connection pool stats", action: :pool_stats
   %li= link_to "Signups per day data (CSV)", action: :csv_data

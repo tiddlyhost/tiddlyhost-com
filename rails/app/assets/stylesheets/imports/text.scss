@@ -83,3 +83,13 @@ svg.bi {
     h2 { font-size: 1.0rem; }
     h3 { font-size: 0.9rem; }
 }
+
+ul.th-spaced {
+    li {
+        @extend .my-3;
+
+        a {
+            text-decoration: none;
+        }
+    }
+}
