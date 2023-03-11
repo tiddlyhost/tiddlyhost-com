@@ -26,21 +26,31 @@ module SubscriptionHelper
     ].compact.join("/")
   end
 
+  # Shown to admin
   def subscription_renews_info(subscription)
-    if !subscription&.status == "active"
-      "inactive"
-    elsif subscription.ends_at
-      "ends in #{subscription_when(subscription.ends_at)}"
+    if subscription.status == "active"
+      if subscription.ends_at.present?
+        "ends in #{subscription_when(subscription.ends_at)}"
+      elsif subscription.current_period_end.present?
+        "renews in #{subscription_when(subscription.current_period_end)}"
+      else
+        # Not sure if this is possible
+        "active"
+      end
     else
-      "renews in #{subscription_when(subscription.current_period_end)}"
+      subscription.status
     end
   end
 
+  # Shown to users
   def subscription_renew_text(subscription)
     if subscription.ends_at.present?
       "Your subscription ends in #{subscription_when(subscription.ends_at)}."
-    else
+    elsif subscription.current_period_end.present?
       "Your next payment is in #{subscription_when(subscription.current_period_end)}."
+    else
+      # Not sure if this is possible
+      ""
     end
   end
 

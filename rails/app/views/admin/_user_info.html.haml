@@ -15,7 +15,8 @@
 
   - if user.pay_customer_stripe
     = link_to("#{user.subscription_info[:name]} Plan", stripe_customer_url(user), target: "_blank")
-    %span= subscription_renews_info(user.subscription)
-  - else
-    -# Free plan
-    %span No subscription
+    %span
+      - if user.subscription
+        = subscription_renews_info(user.subscription)
+      - else
+        No subscription

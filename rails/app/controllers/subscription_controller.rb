@@ -15,6 +15,8 @@ class SubscriptionController < ApplicationController
 
   def set_user_vars
     @user = current_user
+
+    # Needed because we generate a working checkout link
     @user.set_payment_processor(:stripe)
 
     @portal_session = @user.billing_portal
