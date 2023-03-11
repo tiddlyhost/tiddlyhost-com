@@ -1,29 +1,23 @@
 
 %nav.navbar.navbar-dark.navbar-expand-sm.bg-gradient{ class: navbar_prod }
   .container-fluid
-    -#
+
     -# Logo
-    -#
     = link_to(root_path, class: 'navbar-brand', title: 'Tiddlyhost') do
       = image_tag("logo.svg", style: "height:32px;margin-left:12px;opacity:80%;")
 
-    -#
     -# Burger button for phone screens
-    -#
     %button.navbar-toggler{ type: "button",
       "data-bs-toggle"=>"collapse", "data-bs-target"=>"#navbarSupportedContent",
       "aria-controls"=>"navbarSupportedContent",
       "aria-expanded"=>"false", "aria-label"=>"Toggle navigation" }
       %span.navbar-toggler-icon
 
-    -#
     -# Nav bar content
-    -#
     .collapse.navbar-collapse#navbarSupportedContent
       - if user_signed_in?
-        -#
+
         -# Links for logged in users
-        -#
         %ul.navbar-nav.me-auto.mb-lg-0
           = nav_link_to "Home", root_path
           = nav_link_to "Explore", '/hub'
@@ -50,9 +44,8 @@
               = render 'layouts/user_menu_items'
 
       - else
-        -#
+
         -# Links for not logged in users
-        -#
         %ul.navbar-nav.me-auto
           = nav_link_to "Home", root_path
           = nav_link_to "Explore", '/hub'

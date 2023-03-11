@@ -5,8 +5,8 @@
 .dropdown-menu.dropdown-menu-end
   - if feature_enabled?(:site_history)
     -#
-    -# User has access to the site history functionality
-    -#
+      User has access to the site history functionality
+
     = link_to(link_content(:view), "/sites/#{@site.id}/view_version/#{f.blob_id}",
       class: 'dropdown-item', target: '_blank')
     = link_to(link_content(:download), "/sites/#{@site.id}/download_version/#{f.blob_id}",
@@ -24,9 +24,9 @@
 
   - else
     -#
-    -# User does not have access to the site history functionality. Show a
-    -# preview of the real menu with links to the subscription page.
-    -#
+      User does not have access to the site history functionality. Show a
+      preview of the real menu with links to the subscription page.
+
     = link_to(link_content(:upgrade), "/subscription", class: 'dropdown-item')
     .dropdown-divider
 
