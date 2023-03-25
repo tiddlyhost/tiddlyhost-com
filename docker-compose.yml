@@ -22,6 +22,7 @@ services:
     - ./docker/bundle:/opt/bundle:Z
     - ./node_modules:/opt/node_modules:Z
     - ./docker/log:/var/log/app:Z
+    - ./docker/dotcache:/home/appuser/.cache:Z
     command: /bin/start-rails.sh
 
     security_opt:
@@ -47,6 +48,7 @@ services:
     - ./docker/bundle:/opt/bundle:Z
     - ./node_modules:/opt/node_modules:Z
     - ./docker/log:/var/log/app:Z
+    - ./docker/dotcache:/home/appuser/.cache:Z
     command: /bin/start-delayed-job.sh
 
     security_opt:

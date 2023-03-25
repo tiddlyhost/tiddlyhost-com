@@ -63,7 +63,9 @@ RUN \
     # Needed at build time to compile gems with native extensions
     gcc g++ make libpq-dev libicu-dev \
     #
-    # For puppeteer
+    # For puppeteer.
+    # (Even though it doesn't use the system chrome, this is the
+    # easiest way to get all the required dependencies installed.)
     google-chrome-stable chromium-sandbox libxss1 \
     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf && \
   #

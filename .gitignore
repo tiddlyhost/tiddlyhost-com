@@ -24,6 +24,7 @@ docker/log
 docker/secrets
 docker/config
 docker/bundle
+docker/dotcache
 docker/prerelease.html
 etc/certbot-dns-user-credentials.yml
 etc/docker-conf/
