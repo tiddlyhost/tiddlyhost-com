@@ -146,6 +146,17 @@ class AdminController < ApplicationController
       filter: ->(r, search){ r.admin_search_for(search) },
     },
 
+    signedin: {
+      '1' => { title: 'signed in', filter: ->(r){ r.where('sign_in_count > 0') } },
+      '0' => { title: 'never signed in', filter: ->(r){ r.where('sign_in_count = 0') } },
+    },
+
+    subscription: {
+      '2' => { title: 'current', filter: ->(r){ r.where("pay_subscriptions.status = 'active'") } },
+      '1' => { title: 'any status', filter: ->(r){ r.where.not('pay_subscriptions.id IS NULL') } },
+      '0' => { title: 'no subscription', filter: ->(r){ r.where('pay_subscriptions.id IS NULL') } },
+    },
+
   }.freeze
 
   def users

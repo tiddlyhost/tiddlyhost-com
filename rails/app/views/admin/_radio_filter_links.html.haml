@@ -1,5 +1,13 @@
 :ruby
   a = filter_params[key]['1'][:title]
   b = filter_params[key]['0'][:title]
+  values = { a => '1', b => '0' }
 
-= render 'radio_filter_multi_links', param: key, values: { a => '1', b => '0' }
+  # Most have just two options, but there's one with three
+  # Todo: Make this nicer
+  if filter_params[key]['2']
+    c = filter_params[key]['2'][:title]
+    values = { c => '2', a => '1', b => '0' }
+  end
+
+= render 'radio_filter_multi_links', param: key, values:
