@@ -41,7 +41,18 @@ module Subscriber
 
   def subscription_info
     if subscribed?
-      Settings.stripe_product_by_id(subscription.processor_plan)
+      if subscription.processor_plan
+        Settings.stripe_product_by_id(subscription.processor_plan)
+      else
+        # Workaround/hack for this error:
+        #   undefined method `processor_plan' for nil:NilClass
+        #   app/models/concerns/subscriber.rb:44:in `subscription_info'
+        # Not sure how it could happen, but maybe the processor_plan
+        # record didn't get updated yet even though subscribed? return
+        # true somehow. This is a hack but it's likely to work since
+        # there's only one product currently.
+        Settings.stripe_product(:standard)
+      end
     else
       Settings.stripe_product(:free)
     end
