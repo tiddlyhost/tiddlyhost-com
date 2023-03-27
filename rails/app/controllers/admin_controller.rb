@@ -125,8 +125,8 @@ class AdminController < ApplicationController
     },
 
     new_pass: {
-      '1' => { title: 'new password', filter: ->(r){ r.where.not(password_digest: nil) } },
-      '0' => { title: 'legacy password', filter: ->(r){ r.where(password_digest: nil) } },
+      '1' => { title: 'new passwd', filter: ->(r){ r.where.not(password_digest: nil) } },
+      '0' => { title: 'legacy passwd', filter: ->(r){ r.where(password_digest: nil) } },
     },
 
     deleted: {

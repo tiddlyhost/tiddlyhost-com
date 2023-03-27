@@ -1,1 +1,5 @@
+:ruby
+  a = filter_params[key]['1'][:title]
+  b = filter_params[key]['0'][:title]
+
 = render 'radio_filter_multi_links', param: key, values: { a => '1', b => '0' }
