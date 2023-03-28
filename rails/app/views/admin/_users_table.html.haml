@@ -28,7 +28,7 @@
           = link_to(gravatar_url(user.email), target: '_blank') do
             = gravatar_image(user, size: 18)
       %td= user.user_type.name
-      %td= user.subscription_info.name
+      %td= plan_name_with_indicator(user)
       %td= user.sign_in_count
       %td= link_to_user_sites(pluralize(user.sites.count, 'site'), user, action: :sites)
       - if Settings.tiddlyspot_enabled?

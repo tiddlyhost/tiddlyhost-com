@@ -67,7 +67,7 @@ class AdminController < ApplicationController
     type: 'user_type_id',
     # There's probably only one of these but it needs
     # to be an aggregate due to the group by user.id
-    subscr: 'MAX(pay_subscriptions.id)',
+    subscr: ['MAX(pay_subscriptions.status)', 'MAX(pay_subscriptions.id)'],
     private: 'is_private',
     put: 'prefer_put_saver',
     saves: 'save_count',

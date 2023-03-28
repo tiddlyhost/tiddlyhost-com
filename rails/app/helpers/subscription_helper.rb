@@ -42,6 +42,17 @@ module SubscriptionHelper
     end
   end
 
+  # Shown to admin
+  def plan_name_with_indicator(user)
+    # If they once were subscribed
+    was_subscribed = user.subscriptions.any?
+
+    # Plan name
+    plan_name = user.subscription_info.name
+
+    "#{plan_name}#{"*" if plan_name == "Free" && was_subscribed}"
+  end
+
   # Shown to users
   def subscription_renew_text(subscription)
     if subscription.ends_at.present?
