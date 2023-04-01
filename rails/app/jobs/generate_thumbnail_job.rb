@@ -5,10 +5,6 @@ class GenerateThumbnailJob < ApplicationJob
   def perform(model_name, site_id)
     return unless site = GenerateThumbnailJob.from_model_name_and_id(model_name, site_id)
 
-    # Fixme: Not sure why but there are some sites that choke the job
-    # queue and somehow don't time out
-    return if site_id.in?(Settings.secrets(:skip_thumbnail_sites, model_name.to_sym)||[])
-
     # If the thumbnail is new enough then no need to regenerate
     return if site.thumbnail_fresh?
 
