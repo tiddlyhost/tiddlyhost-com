@@ -98,7 +98,8 @@ class TwFile
   end
 
   def external_core_script_tag
-    doc.at_xpath("/html/script[contains(@src, 'tiddlywikicore')]")
+    script_path = version_higher_than('5.2.5') ? '/html/body/script' : '/html/script'
+    doc.at_xpath("#{script_path}[contains(@src, 'tiddlywikicore')]")
   end
 
   def is_external_core?
@@ -215,6 +216,19 @@ class TwFile
       end.compact
 
     end
+  end
+
+  def version_higher_than(version_string)
+    robust_version > TwFile.robust_version(version_string)
+  end
+
+  def robust_version
+    TwFile.robust_version(tiddlywiki_version)
+  end
+
+  def self.robust_version(version_string)
+    return version_string if version_string.is_a?(Gem::Version)
+    Gem::Version.new(version_string)
   end
 
   private

@@ -9,8 +9,6 @@ class TwFileTest < ActiveSupport::TestCase
     assert_match '<div id="storeArea"><div title="foo"><pre>bar</pre></div></div>', tw.to_html
     assert_equal 'bar', tw.tiddler_content('foo')
     assert_equal 'bar', TwFile.new(tw.to_html).tiddler_content('foo')
-
-    # For an encrypted TiddlyWiki we can't do anything
   end
 
   test "adding a tiddler with json script store" do
@@ -148,6 +146,31 @@ class TwFileTest < ActiveSupport::TestCase
       [:classic, '2.9.2'],
     ].each do |type, expected_version|
       assert_equal [type.to_s, expected_version], TwFile.light_get_kind_and_version(minimal_html(type))
+    end
+  end
+
+  test "robust version" do
+    th_file = ThFile.from_empty(:tw5x)
+    th_file.stub(:tiddlywiki_version, "11.1.2") do
+      assert_equal "11.1.2", th_file.robust_version.to_s
+      assert th_file.version_higher_than("9.8.7")
+      assert_not th_file.version_higher_than("11.1.3-preview")
+    end
+  end
+
+  test "external script tag" do
+    for_all_empties do |empty_file, tw_kind, tw_version|
+      next unless tw_kind == "tw5x"
+
+      th_file = ThFile.from_file(empty_file)
+
+      original_tag = th_file.external_core_script_tag
+      assert original_tag.present?, "Can't find script tag for #{tw_kind} version #{tw_version}"
+      assert_equal "tiddlywikicore-#{tw_version}.js", original_tag['src']
+
+      modified_tag = th_file.inject_external_core_url_prefix.external_core_script_tag
+      assert_equal "http://example.com/tiddlywikicore-#{tw_version}.js", modified_tag['src']
+
     end
   end
 
