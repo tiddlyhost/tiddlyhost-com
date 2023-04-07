@@ -32,6 +32,7 @@ defaults:
     :free:
       :features:
       - Create public and private TiddlyWiki & Feather Wiki sites
+      - Share your creations with others via the Explore page
     :standard:
       :features:
       - Redirect claimed Tiddlyspot sites to any url
