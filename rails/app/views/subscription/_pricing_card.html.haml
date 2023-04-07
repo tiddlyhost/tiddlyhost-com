@@ -28,18 +28,28 @@
 
       - else
         - if plan == :free
-          .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center
-            - unless @subscribed
-              = bi_icon('check2-circle', height: "1.4em", width: "1.4em")
-            Free
+          - if @user
+            .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center
+              - unless @subscribed
+                = bi_icon('check2-circle', height: "1.4em", width: "1.4em")
+              Free
+          - else
+            %a{ href: new_user_registration_path, class: text_join("mt-auto w-100 btn btn-outline-success",
+              "border border-success mb-2 shadow-sm p-2 rounded text-center subscribe plan-#{product.name}-fg") }
+              Sign up
 
         - if plan == :standard
-          .mt-auto.w-100
-            = render("pay/stripe/checkout_button",
-              session: @user.checkout_session_for_price_id(product.id),
-              title: "Subscribe Now",
-              class: "w-100 btn btn-lg btn-outline-success mb-2 shadow-sm plan-#{product.name}-fg",
-              style: "font-size: 16px; font-weight: bold;")
+          - if @user
+            .mt-auto.w-100
+              = render("pay/stripe/checkout_button",
+                session: @user.checkout_session_for_price_id(product.id),
+                title: "Subscribe now",
+                class: "w-100 btn btn-lg btn-outline-success mb-2 shadow-sm plan-#{product.name}-fg",
+                style: "font-size: 16px; font-weight: bold;")
+          - else
+            %a{ href: new_user_registration_path, class: text_join("mt-auto w-100 btn btn-outline-success",
+              "border border-success mb-2 shadow-sm p-2 rounded text-center subscribe plan-#{product.name}-fg") }
+              Sign up
 
         - if plan == :premium
           .mt-auto.w-100.border.border-secondary.mb-2.shadow-sm.p-2.rounded.text-center{ style: "opacity: 0.5;" }

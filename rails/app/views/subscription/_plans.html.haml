@@ -1,8 +1,9 @@
 
-%h2 Subscription Plans
+%h2= @user ? "Subscription plans" : "Pricing"
 
 %p.mt-3
 - if @subscribed
+  -# User is logged in and does have a subscription
   .card
     .card-body.p-2.ps-3.subscribed-message
       %big
@@ -13,7 +14,8 @@
           Manage subscription
         to view or change your subscription.
 
-- else
+- elsif @user
+  -# User is logged in but does not have a subscription
   %p
     %big.enable-tooltips
       Upgrading to a subscription plan gives you access to Tiddlyhost features not available to free plan users.
@@ -40,6 +42,20 @@
               <a href="https://stripe.com/" target="_blank">Stripe</a> page where |
               you\'ll be able to provide payment details for a Tiddlyhost subscription. ' |
           button below.
+- else
+  -# User is not logged in
+  %p.enable-tooltips
+    Sign up to create an account and use Tiddlyhost for free and without requiring a credit card.
+    To access the Standard Plan, go to the "Subscription plans" page after signing up.
+    Tiddlyhost subscription billing is handled by
+    = link_to 'https://stripe.com/', target: '_blank', title: "stripe.com", class: "stripe-logo-link" do
+      = render 'stripe_logo'
+    = render 'popover_help',
+      html_content: ' |
+        <a href="https://stripe.com/" target="_blank">Stripe</a> |
+        is an easy to use and highly trusted platform for online payment handling, |
+        backed by strict industry standards for security and data protection. ' |
+    \.
 
 .d-flex.mt-4.m-2.mx-lg-5.justify-content-center.flex-column.flex-md-row.text-center
   = render 'pricing_card', plan: :free

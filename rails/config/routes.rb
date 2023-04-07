@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     get 'home/mode_toggle'
 
     get 'about', to: 'home#about'
+    get 'pricing', to: 'subscription#pricing'
     get 'donate', to: 'home#donate'
     get 'support', to: 'home#support'
     get 'privacy-policy', to: 'home#privacy_policy'
