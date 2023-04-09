@@ -46,6 +46,11 @@
               .form-check-label Use #{link_to('Libravatar', 'https://libravatar.org/', target: '_blank')}
 
     = render layout: 'field_wrapper' do
+      = f.label :current_password, 'Current password. Required to make changes.'
+      = f.password_field :current_password, autocomplete: 'current-password', class: 'form-control'
+      .form-text Enter your current password to confirm the changes
+
+    = render layout: 'field_wrapper' do
       = f.label :password, 'New password'
       .form-text (leave blank if you don't want to change it)
       = f.password_field :password, autocomplete: 'new-password', class: 'form-control'
@@ -55,11 +60,6 @@
       = f.label :password_confirmation, 'New password confirmation'
       = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
       .form-text Re-type your new password to confirm it
-
-    = render layout: 'field_wrapper' do
-      = f.label :current_password, 'Current password. Required to make changes.'
-      = f.password_field :current_password, autocomplete: 'current-password', class: 'form-control'
-      .form-text Enter your current password to confirm the changes
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-3' } do
       = f.submit 'Update', class: 'btn btn-primary'
