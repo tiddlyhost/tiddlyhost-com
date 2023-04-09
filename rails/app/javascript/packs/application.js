@@ -53,6 +53,10 @@ $(document).ready(function(){
   $('.private-checkbox').on('change', function(){ if ($(this).prop('checked')) { $('.hub-checkbox'    ).prop('checked', false); } });
   $('.hub-checkbox'    ).on('change', function(){ if ($(this).prop('checked')) { $('.private-checkbox').prop('checked', false); } });
 
+  // Same thing for libravatar/gravatar
+  $('#user_use_gravatar'  ).on('change', function(){ if ($(this).prop('checked')) { $('#user_use_libravatar').prop('checked', false); } });
+  $('#user_use_libravatar').on('change', function(){ if ($(this).prop('checked')) { $('#user_use_gravatar'  ).prop('checked', false); } });
+
   // Upload form UI tweaks
   $('#site_tiddlywiki_file').on('change', function(){
     var fileName = $(this).get(0).files.item(0).name;

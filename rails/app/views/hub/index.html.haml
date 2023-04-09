@@ -4,8 +4,9 @@
   - if @tag.present?
     = bi_icon('tag') + @tag
   - elsif @user.present?
-    - if @user.use_gravatar?
-      = gravatar_image(@user, size: 35) + @user.name
+    - if @user.use_avatar?
+      = avatar_image(@user, size: 30,
+        style: 'vertical-align: top; margin-top: 0.25em; margin-right: 0.1em;') + @user.name
     - else
       = bi_icon('person-fill') + @user.name
   - else

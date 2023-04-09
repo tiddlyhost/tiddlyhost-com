@@ -48,13 +48,27 @@ module ApplicationHelper
   end
 
   def gravatar_url(email)
-    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}?d=identicon&s=80"
+  end
+
+  def libravatar_url(email)
+    "https://www.libravatar.org/avatar/#{Digest::MD5.hexdigest(email)}?d=identicon&s=80"
   end
 
   def gravatar_image(user, opts={})
     opts[:size] ||= 80
-    opts[:class] ||= 'gravatar'
+    opts[:class] ||= 'avatar'
     image_tag(gravatar_url(user.email), opts)
+  end
+
+  def libravatar_image(user, opts={})
+    opts[:size] ||= 80
+    opts[:class] ||= 'avatar'
+    image_tag(libravatar_url(user.email), opts)
+  end
+
+  def avatar_image(user, opts={})
+    user.use_libravatar? ? libravatar_image(user, opts) : gravatar_image(user, opts)
   end
 
   def bool_text(bool_val, true_text:'Y', false_text:'N')

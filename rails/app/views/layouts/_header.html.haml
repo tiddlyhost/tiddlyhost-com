@@ -34,8 +34,8 @@
           %li.nav-item.dropdown
             %a.nav-link.dropdown-toggle#navbarDropdown{ role: "button", href: "#", title: "User menu",
               "data-bs-toggle"=>"dropdown", "aria-expanded"=>"false", "aria-haspopup"=>"true" }
-              - if current_user.use_gravatar?
-                = gravatar_image(current_user, size: 20, style: 'margin-top: -2px;')
+              - if current_user.use_avatar?
+                = avatar_image(current_user, size: 18, style: 'margin-top: -2px;')
               - else
                 = bi_icon('person-fill', fill: '#fff', style: 'margin-right: -1px;')
               = current_user.username_or_name

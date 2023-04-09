@@ -5,7 +5,7 @@
     %th= sort_link 'Name', :asc
     %th= sort_link 'Username', :asc
     %th= sort_link 'Email', :asc
-    %th= sort_link 'Gr'
+    %th= sort_link 'Av'
     %th= sort_link 'Type'
     %th= sort_link 'Subscr', :asc
     %th= sort_link 'Logins'
@@ -24,9 +24,8 @@
       %td= link_to_user(user.username, user)
       %td= link_to_user(user.email, user)
       %td
-        - if user.use_gravatar?
-          = link_to(gravatar_url(user.email), target: '_blank') do
-            = gravatar_image(user, size: 18)
+        - if user.use_avatar?
+          = avatar_image(user, size: 18)
       %td= user.user_type.name
       %td= plan_name_with_indicator(user)
       %td= user.sign_in_count

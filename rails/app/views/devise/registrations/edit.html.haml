@@ -28,15 +28,22 @@
       .form-text Unique username (optional). Will be clickable in the Tiddlyhost Hub.
 
     = render layout: 'field_wrapper' do
-      = gravatar_image(resource)
-      %div.mb-3
-        %div.form-check
-          = f.check_box :use_gravatar, class: 'form-check-input'
-          = f.label :use_gravatar, 'Use Gravatar', class: 'form-check-label'
-        .form-text
-          Allow your profile picture from
-          = link_to 'Gravatar', 'https://gravatar.com/', target: '_blank'
-          to be used in the Tiddlyhost Hub.
+      = f.label 'Profile image'
+      .row.my-2
+        .col
+          %div.form-check
+            = f.label :use_gravatar do
+              = gravatar_image(resource, size: 40, style: 'margin-left: -1.5em;')
+              %br
+              = f.check_box :use_gravatar, class: 'form-check-input'
+              .form-check-label Use #{link_to 'Gravatar', 'https://gravatar.com/', target: '_blank'}
+        .col
+          %div.form-check
+            = f.label :use_libravatar do
+              = libravatar_image(resource, size: 40, style: 'margin-left: -1.5em;')
+              %br
+              = f.check_box :use_libravatar, class: 'form-check-input'
+              .form-check-label Use #{link_to('Libravatar', 'https://libravatar.org/', target: '_blank')}
 
     = render layout: 'field_wrapper' do
       = f.label :password, 'New password'

@@ -124,6 +124,10 @@ class User < ApplicationRecord
     is_superuser?
   end
 
+  def use_avatar?
+    use_gravatar? || use_libravatar?
+  end
+
   def is_tiddlyhost?
     email == Settings.tiddlyhost_account_email
   end

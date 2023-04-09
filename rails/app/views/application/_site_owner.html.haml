@@ -1,5 +1,5 @@
-- if user.use_gravatar?
-  = gravatar_image(user, size: 14)
+- if user.use_avatar?
+  = avatar_image(user, size: 14)
 - else
   = bi_icon('person-fill', style: 'margin-right:-3px; margin-left: -1px;')
 

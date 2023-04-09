@@ -4,8 +4,8 @@
   %br
   %b.ps-1
     = link_to edit_user_registration_path do
-      - if current_user.use_gravatar?
-        = gravatar_image(current_user, size: 14, style: 'border-radius: 50%; margin-top: -2px;')
+      - if current_user.use_avatar?
+        = avatar_image(current_user, size: 14, style: 'margin-top: -2px;')
       - else
         = bi_icon('person-fill', fill: '#bbb', style: 'margin-right: -2px;')
       = current_user.username_or_email

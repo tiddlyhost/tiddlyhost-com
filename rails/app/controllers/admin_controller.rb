@@ -54,7 +54,7 @@ class AdminController < ApplicationController
     description: "NULLIF(sites.description, '')",
     email: 'email',
     empty: 'empties.name',
-    gr: 'use_gravatar',
+    av: ['use_gravatar', 'use_libravatar'],
     id: 'id',
     iframes: 'allow_in_iframe',
     kind: 'tw_kind',
