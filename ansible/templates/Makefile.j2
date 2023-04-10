@@ -59,6 +59,7 @@ update:
 #
 # For some reason the thumbnail generator job doesn't timeout like
 # it should. These are helpful until I figure out a better plan.
+# (Update: Maybe not needed any more.)
 #
 showpuppet:
 	@ps -eo pid,ppid,etime,cmd | grep /opt/node_modules/puppeteer | grep -v grep | awk '{print $$1, $$2, $$3}'
@@ -66,6 +67,7 @@ showpuppet:
 killpuppet:
 	@ps -eo pid,ppid,etime,cmd | grep /opt/node_modules/puppeteer | grep -v grep | awk '{print $$1}' | tac | xargs kill
 
-# Expecting to see some defunct chrome processes
+# Expecting to see some defunct chrome processes left behind by puppeteer.
+# They are cleaned up when the delayed job container get restarted.
 showchrome:
 	@ps -eo pid,ppid,etime,cmd | grep chrome | grep -v grep | grep -v make
