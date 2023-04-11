@@ -4,7 +4,8 @@
 location = /ads.txt { return 404; }
 location = /robots.txt { return 404; }
 
-location ~ \.(?:php|jsp|asp|aspx|env)(?:$|\?) { return 404; }
+location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; }
+location ~ \.sql\.(?:xz|zip|z)(?:$|\?) { return 404; }
 location ~ /wlwmanifest\.xml(?:$|\?) { return 404; }
 
 location /wp-content/ { return 404; }
