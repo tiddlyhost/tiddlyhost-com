@@ -21,8 +21,11 @@
     which gives you access to additional Tiddlyhost features, as well
     as supports the continued development of Tiddlyhost.
     Visit
-    = link_to bi_icon('bag-check', style: 'margin-right: 0px;') + 'Subscriptions', '/subscription',
-      style: "padding: 0.25em;"
+    - if user_signed_in?
+      = link_to bi_icon('bag-check', style: 'margin-right: 0px;') + 'Subscription plans', '/subscription',
+        style: "padding: 0.25em;"
+    - else
+      = link_to 'Pricing', '/pricing', style: "padding: 0.25em;"
     to learn more about Tiddlyhost subscription plans.
     - if subscribed_already
       %sup.th-dim
@@ -40,8 +43,12 @@
         = image_tag "coffee.svg", style: "width: 120px;"
 
     .donate-button.ms-2
-      = link_to '/subscription' do
-        = bi_icon('bag-check', style: 'margin-right: 3px;') + 'Subscriptions'
+      - if user_signed_in?
+        = link_to '/subscription' do
+          = bi_icon('bag-check', style: 'margin-right: 3px;') + 'Subscription plans'
+      - else
+        = link_to '/pricing' do
+          = bi_icon('bag-check', style: 'margin-right: 3px;') + 'Pricing'
 
 
   - if subscribed_already
