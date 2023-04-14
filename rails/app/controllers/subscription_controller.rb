@@ -26,6 +26,9 @@ class SubscriptionController < ApplicationController
       @subscribed = @user.subscribed?
       @subscription = @user.subscription
       @subscription_info = @user.subscription_info
+
+      # Include stripe javascript
+      @need_stripe_js = true
     end
   end
 

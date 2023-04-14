@@ -11,7 +11,9 @@
 
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <script src="https://js.stripe.com/v3/"></script>
+    <% if @need_stripe_js %>
+      <script src="https://js.stripe.com/v3/"></script>
+    <% end %>
   </head>
 
   <body>
