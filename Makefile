@@ -465,6 +465,9 @@ faster-upgrade:
 restart-jobs:
 	$(PLAY) ansible/restart.yml -e restart_list=jobs
 
+restart-app:
+	$(PLAY) ansible/restart.yml -e restart_list=app
+
 #----------------------------------------------------------
 
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
