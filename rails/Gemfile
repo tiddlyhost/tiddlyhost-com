@@ -35,9 +35,7 @@ gem 'dalli'
 gem 'rexml'
 
 # Use devise for user management and authentication
-# Temporarily prevent upgrade to 4.9.1 due to a problem with devise-security
-# See https://github.com/devise-security/devise-security/pull/414
-gem 'devise', '4.9.0'
+gem 'devise'
 
 # For captcha and strong passwords
 gem 'devise-security'
