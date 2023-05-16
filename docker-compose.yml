@@ -1,3 +1,5 @@
+version: "3.0"
+
 services:
   web:
     image: nginx
@@ -5,8 +7,8 @@ services:
     depends_on:
     - app
     ports:
-    - "80:80"
-    - "443:443"
+    - "127.0.0.1:8080:80"
+    - "127.0.0.1:8443:443"
     volumes:
     - ./docker/letsencrypt:/etc/letsencrypt:Z
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
@@ -24,6 +26,7 @@ services:
     - ./docker/log:/var/log/app:Z
     - ./docker/dotcache:/home/appuser/.cache:Z
     command: /bin/start-rails.sh
+    restart: unless-stopped
 
     security_opt:
     # Todo: Figure out what syscalls chrome sandbox really needs
@@ -57,11 +60,13 @@ services:
     - "seccomp:unconfined"
 
     # It uses the same image as app so no need for build
+    restart: unless-stopped
 
   cache:
     image: memcached
     container_name: th_cache
     command: memcached -I 8M
+    restart: unless-stopped
 
   db:
     image: postgres:13
@@ -71,7 +76,8 @@ services:
       POSTGRES_PASSWORD: postgres
     # So we can use localhost for the rails db when running
     # on bare metal rather than in the app container
-    ports:
-    - "5432:5432"
+    #ports:
+    #- "127.0.0.1:5432:5432"
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
+    restart: unless-stopped

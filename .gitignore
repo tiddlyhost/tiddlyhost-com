@@ -8,7 +8,7 @@ rails/public/assets/
 rails/public/tiddlywikicore-*.gz
 rails/public/packs/
 rails/public/packs-test/
-rails/public/jsMath/
+
 rails/public/build-info.txt
 rails/config/master.key
 rails/config/credentials.yml.enc

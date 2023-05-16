@@ -1,3 +1,5 @@
+version: "3.0"
+
 services:
   web:
     image: nginx
@@ -6,8 +8,8 @@ services:
     depends_on:
     - app
     ports:
-    - "80:80"
-    - "443:443"
+    - "127.0.0.1:8080:80"
+    - "127.0.0.1:8443:443"
     volumes:
     - ./docker/letsencrypt:/etc/letsencrypt:Z
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
@@ -37,6 +39,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.prod
+    restart: unless-stopped
 
   jobs:
     image: sbaird/tiddlyhost:latest
@@ -53,28 +56,30 @@ services:
     - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:Z,ro
 
     command: /bin/start-delayed-job.sh
+    restart: unless-stopped
 
     security_opt:
     # Todo: Figure out what syscalls chrome sandbox really needs
     # and use an appropriate policy
     - "seccomp:unconfined"
+    restart: unless-stopped
 
   cache:
     image: memcached
     container_name: th_cache
     command: memcached -I 8M
+    restart: unless-stopped
 
   db:
     image: postgres:13
     container_name: th_db
-    restart: always
     environment:
       # (For a brand new fresh deploy you should put the real password here)
       POSTGRES_PASSWORD: postgres
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
+    restart: unless-stopped
 
 volumes:
   # Share rails public with nginx so it can serve static files directly
   rails-static:
-    name: th_rails_static

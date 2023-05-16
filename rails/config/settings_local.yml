@@ -2,3 +2,9 @@
 # You can use this to override values in settings.yml.
 # The content here will be replaced by ansible on deploy,
 # see ansible/templates/config/settings_local
+
+defaults:
+  prod_main_site_url: https://0wiki.ru
+  tiddlyhost_account_email: tiddlyhost@0wiki.ru
+  devise_mailer_sender: '"0wiki" <tiddlyhost@0wiki.ru>'
+  stripe_support_email: '"0wiki" <tiddlyhost@0wiki.ru>'

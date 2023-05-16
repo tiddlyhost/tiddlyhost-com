@@ -81,8 +81,8 @@ prod-secrets: docker/secrets/master.key docker/secrets/credentials.yml.enc
 # Fun way to reuse the ansible templates to create local config
 docker/%: ansible/templates/docker/%.j2
 	@mkdir -p $$(dirname $@)
-	@env primary_host=tiddlyhost.local tiddlyspot_host=tiddlyspot.local \
-	  python -c "import os,sys,jinja2; print(jinja2.Template(sys.stdin.read()).render(os.environ))" \
+	@env primary_host=0wiki.ru tiddlyspot_host=0wiki.ru \
+	  python3 -c "import os,sys,jinja2; print(jinja2.Template(sys.stdin.read()).render(os.environ))" \
 	  < $< > $@
 	@echo $@ created using $<
 
@@ -251,12 +251,12 @@ cleanup:
 # Grep them in the plain text part of the email.
 #
 signup-link:
-	@$(DCC) 'grep "tiddlyhost.local/users/confirmation?confirmation_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
+	@$(DCC) 'grep "0wiki.ru/users/confirmation?confirmation_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
 
 # Get the reset password link after clicking "Forgot your password?" locally
 #
 forgot-link:
-	@$(DCC) 'grep "tiddlyhost.local/users/password/edit?reset_password_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
+	@$(DCC) 'grep "0wiki.ru/users/password/edit?reset_password_token=" log/development.log | grep -v "Started GET" | tail -1 | cut -d" " -f2'
 
 #----------------------------------------------------------
 
@@ -362,7 +362,7 @@ gzip-core-js-files:
 
 # Generate an SSL cert
 # (If the cert exists, assume the key exists too.)
-CERTS_DIR=docker/letsencrypt/live/tiddlyhost.local
+CERTS_DIR=docker/letsencrypt/live/0wiki.ru
 cert: $(CERTS_DIR)/fullchain.pem
 
 $(CERTS_DIR)/fullchain.pem:
@@ -396,7 +396,7 @@ build-ready: no-uncommitted-diffs no-uncommitted-rails-files
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-ready build-info js-math download-empty-prerelease gzip-core-js-files
+build-prod: build-info js-math download-empty-prerelease gzip-core-js-files
 	$(DC_PROD) build --progress plain app
 
 build-prod-ci:
@@ -581,7 +581,7 @@ js-math-purge: js-math-clean
 #----------------------------------------------------------
 
 stripe-dev-listen:
-	stripe listen --forward-to https://tiddlyhost.local/pay/webhooks/stripe --skip-verify
+	stripe listen --forward-to https://0wiki.ru/pay/webhooks/stripe --skip-verify
 
 #----------------------------------------------------------
 
