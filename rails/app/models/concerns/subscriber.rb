@@ -53,6 +53,8 @@ module Subscriber
         # there's only one product currently.
         Settings.stripe_product(:standard)
       end
+    elsif alt_subscription?
+      Settings.stripe_product(alt_subscription.to_sym).presence || Settings.stripe_product(:free)
     else
       Settings.stripe_product(:free)
     end
@@ -76,6 +78,12 @@ module Subscriber
   #
   def pay_customer_stripe
     pay_customers.where(processor: :stripe).first
+  end
+
+  # Beware potential confusion when using this method since it may
+  # not be a real stripe subscription.
+  def has_subscription?
+    subscribed? || alt_subscription.present?
   end
 
 end

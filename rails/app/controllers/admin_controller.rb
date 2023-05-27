@@ -152,9 +152,9 @@ class AdminController < ApplicationController
     },
 
     subscription: {
-      '2' => { title: 'current', filter: ->(r){ r.where("pay_subscriptions.status = 'active'") } },
+      '2' => { title: 'current', filter: ->(r){ r.where("pay_subscriptions.status = 'active' OR NOT alt_subscription IS NULL") } },
       '1' => { title: 'any status', filter: ->(r){ r.where.not('pay_subscriptions.id IS NULL') } },
-      '0' => { title: 'no subscription', filter: ->(r){ r.where('pay_subscriptions.id IS NULL') } },
+      '0' => { title: 'no subscription', filter: ->(r){ r.where('pay_subscriptions.id IS NULL and alt_subscription IS NULL') } },
     },
 
   }.freeze

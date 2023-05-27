@@ -44,13 +44,15 @@ module SubscriptionHelper
 
   # Shown to admin
   def plan_name_with_indicator(user)
-    # If they once were subscribed
-    was_subscribed = user.subscriptions.any?
-
-    # Plan name
     plan_name = user.subscription_info.name
 
-    "#{plan_name}#{"*" if plan_name == "Free" && was_subscribed}"
+    # Show asterix if they were once subscribed
+    indicator = "*" if plan_name == "Free" && user.subscriptions.any?
+
+    # Show if they have an alternative payment method subscription
+    indicator = " (alt)" if user.alt_subscription.present?
+
+    "#{plan_name}#{indicator}"
   end
 
   # Shown to users

@@ -7,7 +7,7 @@ module Settings::Features
   end
 
   def site_history_enabled?(user)
-    user&.is_admin? || user&.subscribed?
+    user&.is_admin? || user&.has_subscription?
   end
 
   def site_history_preview_enabled?(user)
@@ -19,7 +19,7 @@ module Settings::Features
   end
 
   def redirect_tspot_to_url_enabled?(user)
-    user&.is_admin? || user&.subscribed?
+    user&.is_admin? || user&.has_subscription?
   end
 
 end

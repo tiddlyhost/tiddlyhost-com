@@ -120,7 +120,8 @@ class Settings
 
   # The OpenStruct should have keys :name, :price, :id
   def self.stripe_product(plan, frequency=:monthly)
-    OpenStruct.new(self.stripe_products&.dig(plan, frequency))
+    product_info = self.stripe_products&.dig(plan, frequency)
+    OpenStruct.new(product_info) if product_info
   end
 
   # Look up a product's details from its stripe id
