@@ -21,6 +21,9 @@ all:
     #  cert_hosts:
     #  - "{{ primary_host }}"
 
+    # See local-docker-fix in Makefile
+    localhost: {}
+
   vars:
     root_home_dir: /root
     home_dir: /home/{{ ansible_user }}

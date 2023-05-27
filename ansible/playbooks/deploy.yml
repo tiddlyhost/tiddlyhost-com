@@ -63,6 +63,7 @@
       mode: '0755'
     tags:
     - deps
+    - local-docker-fix
 
   - name: Set selinux context for /home/docker
     community.general.sefcontext:
@@ -91,6 +92,7 @@
     register: docker_config
     tags:
     - deps
+    - local-docker-fix
 
     # Need to reload when the docker.service file changes
   - name: Run systemctl daemon-reload if required
@@ -99,6 +101,7 @@
     when: docker_config.changed
     tags:
     - deps
+    - local-docker-fix
 
   - name: Start docker service
     systemd:
@@ -107,15 +110,17 @@
       enabled: yes
     tags:
     - deps
+    - local-docker-fix
 
     # For the case when it was already running but needs a restart now
   - name: Restart docker service if required
     systemd:
       name: docker
       state: restarted
-    when: docker_config.changed or docker_context.changed
+    when: docker_config.changed or (docker_context is defined and docker_context.changed)
     tags:
     - deps
+    - local-docker-fix
 
   - name: Start crond
     systemd:

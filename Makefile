@@ -417,15 +417,13 @@ fast-build-upgrade:    build-push fast-upgrade
 faster-build-upgrade:  build-push faster-upgrade
 fastest-build-upgrade: fast-build-prod push-prod faster-upgrade
 
-ifdef LIMIT
-  LIMIT_OPT=-l $(LIMIT)
-endif
+PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
 
-PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(LIMIT_OPT) $(V)
+DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit prod
+RESTART=$(PLAY) ansible/playbooks/restart.yml --limit prod
+BACKUP=$(PLAY) ansible/playbooks/backup.yml --limit prod
 
-DEPLOY=$(PLAY) ansible/playbooks/deploy.yml
-RESTART=$(PLAY) ansible/playbooks/restart.yml
-BACKUP=$(PLAY) ansible/playbooks/backup.yml
+LOCAL_DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit localhost --ask-become-pass --connection local
 
 full-deploy:
 	$(DEPLOY)
@@ -457,6 +455,10 @@ deploy-secrets:
 # If you want to run selected tasks givem them the foo tag
 deploy-foo:
 	$(DEPLOY) --tags=foo --diff
+
+# To change some docker configuration locally since dnf update seems to reverts it
+local-docker-fix:
+	$(LOCAL_DEPLOY) --tags=local-docker-fix
 
 upgrade:
 	$(DEPLOY) --tags=app --extra-var fast_restart=true
