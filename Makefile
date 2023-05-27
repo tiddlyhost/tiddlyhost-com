@@ -420,65 +420,71 @@ fastest-build-upgrade: fast-build-prod push-prod faster-upgrade
 ifdef LIMIT
   LIMIT_OPT=-l $(LIMIT)
 endif
-PLAY = ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(LIMIT_OPT) $(V)
+
+PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(LIMIT_OPT) $(V)
+
+DEPLOY=$(PLAY) ansible/playbooks/deploy.yml
+RESTART=$(PLAY) ansible/playbooks/restart.yml
+BACKUP=$(PLAY) ansible/playbooks/backup.yml
 
 full-deploy:
-	$(PLAY) ansible/deploy.yml
+	$(DEPLOY)
 
 deploy-deps:
-	$(PLAY) ansible/deploy.yml --tags=deps
+	$(DEPLOY) --tags=deps
 
 deploy-certs:
-	$(PLAY) ansible/deploy.yml --tags=certs
+	$(DEPLOY) --tags=certs
 
 deploy-scripts:
-	$(PLAY) ansible/deploy.yml --tags=scripts
+	$(DEPLOY) --tags=scripts
 
 refresh-prerelease:
-	$(PLAY) ansible/deploy.yml --tags=refresh-prerelease
+	$(DEPLOY) --tags=refresh-prerelease
 
 deploy-app:
-	$(PLAY) ansible/deploy.yml --tags=app
+	$(DEPLOY) --tags=app
 
 deploy-app-bootstrap:
-	$(PLAY) ansible/deploy.yml --tags=app,db-create
+	$(DEPLOY) --tags=app,db-create
 
 deploy-cleanup:
-	$(PLAY) ansible/deploy.yml --tags=cleanup
+	$(DEPLOY) --tags=cleanup
 
 deploy-secrets:
-	$(PLAY) ansible/deploy.yml --tags=secrets
+	$(DEPLOY) --tags=secrets
 
 # If you want to run selected tasks givem them the foo tag
 deploy-foo:
-	$(PLAY) ansible/deploy.yml --tags=foo --diff
+	$(DEPLOY) --tags=foo --diff
 
 upgrade:
-	$(PLAY) ansible/deploy.yml --tags=app --extra-var fast_restart=true
+	$(DEPLOY) --tags=app --extra-var fast_restart=true
 
 fast-upgrade:
-	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --extra-var fast_restart=true
+	$(DEPLOY) --tags=fast-upgrade --extra-var fast_restart=true
 
 faster-upgrade:
-	$(PLAY) ansible/deploy.yml --tags=fast-upgrade --skip-tags=migration --extra-var fast_restart=true
+	$(DEPLOY) --tags=fast-upgrade --skip-tags=migration --extra-var fast_restart=true
 
 restart-jobs:
-	$(PLAY) ansible/restart.yml -e restart_list=jobs
+	$(RESTART) -e restart_list=jobs
 
 restart-app:
-	$(PLAY) ansible/restart.yml -e restart_list=app
+	$(RESTART) -e restart_list=app
 
 #----------------------------------------------------------
 
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
 
-BACKUPS_DIR=../thost-backups
+TOP_DIR=$(shell git rev-parse --show-toplevel)
+BACKUPS_DIR=$(TOP_DIR)/../thost-backups
 S3_BACKUPS=$(BACKUPS_DIR)/s3
 DB_BACKUPS=$(BACKUPS_DIR)/db
 
 db-backup:
 	mkdir -p $(DB_BACKUPS)/$(TIMESTAMP)
-	$(PLAY) ansible/backup.yml -e local_backup_subdir=$(TIMESTAMP) --limit=prod
+	$(BACKUP) -e local_backup_subdir=$(TIMESTAMP) -e local_backup_dir=$(DB_BACKUPS) --limit=prod
 	ls -l $(DB_BACKUPS)/$(TIMESTAMP)
 	zcat $(DB_BACKUPS)/$(TIMESTAMP)/dbdump.gz | grep '^-- ' | head -3
 	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)

@@ -4,11 +4,11 @@
   become_user: root
 
   vars:
-    certbot_dns_credentials: ../etc/certbot-dns-user-credentials.yml
-    docker_config_json: ../etc/docker-conf/config.json
-    docker_compose_file: ../docker-compose-prod.yml
-    master_key_file: ../rails/config/master.key
-    credentials_file: ../rails/config/credentials.yml.enc
+    certbot_dns_credentials: ../../etc/certbot-dns-user-credentials.yml
+    docker_config_json: ../../etc/docker-conf/config.json
+    docker_compose_file: ../../docker-compose-prod.yml
+    master_key_file: ../../rails/config/master.key
+    credentials_file: ../../rails/config/credentials.yml.enc
 
     certbot_dir_config: "{{ docker_dir }}/letsencrypt"
     certbot_dir_work: "{{ home_dir }}/.certbot/work"
@@ -176,7 +176,7 @@
   - name: Copy cache info scripts
     become: no
     copy:
-      src: "../bin/{{ item }}"
+      src: "../../bin/{{ item }}"
       dest: "{{ bin_dir }}/{{ item }}"
       mode: "0755"
     with_items:
