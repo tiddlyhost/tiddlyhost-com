@@ -5,7 +5,7 @@
 
 .stats
   = render 'stat_card', title: 'Users',         count: @user_count, big: true
-  = render 'stat_card', title: 'Subscriptions', count: @subscription_count, big: true
+  = render 'stat_card', title: 'Subscriptions', count: "#{@subscription_count} + #{@alt_subscription_count}", big: true
   = render 'stat_card', title: 'Sites',         count: @site_count, big: true
   = render 'stat_card', title: 'Site views',    count: nice_view_count(@view_count), big: true
 
