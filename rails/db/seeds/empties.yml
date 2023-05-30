@@ -16,15 +16,12 @@
 - id: 2
   name: classic
   title: TiddlyWiki Classic
-  description: The original old version of TiddlyWiki, retired from active development
-    in 2011
+  description: The original version of TiddlyWiki, TiddlyWiki(5) is not backward compatible with it
   enabled: true
   display_order: 30
   primary: false
   info_link: https://classic.tiddlywiki.com/
-  tooltip: Still receives the occasional maintenance update and is fully supported on
-    Tiddlyhost. Use for the nostalgia or to revive old TiddlyWikis in their original
-    form.
+  tooltip: Still used and developed by a small community. It is fully supported on Tiddlyhost.
 - id: 3
   name: tw5-json-store-test
   title: New JSON store format pre-merge for test only
