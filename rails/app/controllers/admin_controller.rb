@@ -13,7 +13,8 @@ class AdminController < ApplicationController
 
     @user_count = User.count
     @subscription_count = User.with_subscriptions_active.count
-    @alt_subscription_count = User.where("alt_subscription IS NOT NULL").count
+    @alt_subscription_count = User.where("alt_subscription IS NOT NULL").
+      where.not(id: Settings.secrets(:my_account_ids)||[]).count
 
     @never_signed_in_users = User.signed_in_never.count
     @signed_in_once_users = User.signed_in_once.count
