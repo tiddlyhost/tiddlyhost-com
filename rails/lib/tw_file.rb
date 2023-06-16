@@ -343,7 +343,10 @@ class TwFile
 
     # TODO: See how this works for titles with quotes in them
     tiddler_divs = choose_store(shadow: shadow).xpath("div[@title='#{title}']")
-    raise "Multiple #{title} tiddlers found!" if tiddler_divs.length > 1
+
+    # There ought to be only one, but let's not throw errors for the edge case
+    #raise "Multiple #{title} tiddlers found!" if tiddler_divs.length > 1
+
     tiddler_divs.first
   end
 
