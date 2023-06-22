@@ -179,8 +179,11 @@ class AdminController < ApplicationController
   def raw_download
     klass = params[:tspot].present? ? TspotSite : Site
     site = klass.find(params[:id])
-    download_html_content(site.file_download,
-      "raw_#{klass.name.underscore}_#{site.id}_#{site.name}")
+    blob_id = params[:blob_id]
+
+    raw_html = site.file_download(blob_id)
+    download_filename = "raw_#{klass.name.underscore}_#{site.id}_#{blob_id}_#{site.name}"
+    download_html_content(raw_html, download_filename)
   end
 
   def csv_data

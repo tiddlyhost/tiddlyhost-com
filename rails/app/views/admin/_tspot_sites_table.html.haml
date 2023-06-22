@@ -19,7 +19,6 @@
     - unless specific_user
       %th= sort_link 'Owner', :asc
     - unless params[:saved] == '0'
-      %th= 'Storage key'
       %th= sort_link 'Raw (MB)'
       %th= 'Blob (MB)'
     %th= sort_link 'Last access'
@@ -46,11 +45,10 @@
       %td= site.access_count
       - unless params[:saved] == '0'
         %td= site.save_count
-      %td= site.saved_version_count
+      %td= render 'versions_dropdown', site: site
       - unless specific_user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       - unless params[:saved] == '0'
-        %td= link_to(site.blob_key, action: :raw_download, id: site.id, tspot: 1) if site.blob
         %td= as_megabytes site.raw_byte_size
         %td= as_megabytes site.blob_byte_size
       %td= nice_timestamp site.accessed_at

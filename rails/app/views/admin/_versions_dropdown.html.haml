@@ -1,0 +1,18 @@
+
+%a.dropdown-toggle{
+  "data-bs-toggle"=>"dropdown",
+  "aria-haspopup"=>"true",
+  "aria-expanded"=>"false" }
+  = site.saved_version_count
+
+.dropdown-menu.dropdown-menu-end.th-text-90.px-3
+  - site.saved_content_files.order('id desc').map(&:blob).each_with_index do |blob, i|
+    .d-flex.py-1
+      %div{ style: "width: 2em;" }
+        = bi_icon('caret-right-fill', style: "opacity: 30%;") if i == 0
+      %div{ style: "width: 1.5em;" }
+        #{i+1}.
+      %div{ style: "width: 16em;" }
+        = link_to(blob.key, { action: :raw_download, id: site.id, blob_id: blob.id })
+      %div
+        = nice_timestamp blob.created_at

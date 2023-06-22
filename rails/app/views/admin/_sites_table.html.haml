@@ -26,7 +26,6 @@
     %th= sort_link 'Versions'
     - unless specific_user
       %th= sort_link 'Owner'
-    %th= 'Storage key'
     %th= sort_link 'Raw (MB)'
     %th= 'Blob (MB)'
     %th= sort_link 'Last access'
@@ -59,10 +58,9 @@
       %td= site.access_count
       %td= site.save_count
       %td= site.clone_count
-      %td= site.saved_version_count
+      %td= render 'versions_dropdown', site: site
       - unless specific_user
         %td= link_to_user_sites(site.user.username_or_email, site.user)
-      %td= link_to(site.blob_key, action: :raw_download, id: site.id)
       %td= as_megabytes site.raw_byte_size
       %td= as_megabytes site.blob_byte_size
       %td= nice_timestamp site.accessed_at
