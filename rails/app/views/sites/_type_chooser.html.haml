@@ -1,5 +1,5 @@
 
-.nice-radio-container.type-chooser.enable-tooltips.shorter
+.nice-radio-container.type-chooser.enable-tooltips{ class: @site.empty.primary? ? "shorter" : "longer" }
 
   = f.label nil do
     Type
@@ -8,11 +8,11 @@
   - @empties_for_select.each_with_index do |empty, i|
 
     -# The first one is selected by default
-    %div{ class: [i == 0 ? 'selected' : '', empty.primary? ? '' : 'longer-only'] }
+    %div{ class: [empty == @site.empty ? 'selected' : '', empty.primary? ? '' : 'longer-only'] }
 
       = f.label :empty_id, empty.id, value: empty.id do
 
-        = f.radio_button :empty_id, empty.id, checked: i == 0, class: 'me-1', style: "margin-left: -0.3em;"
+        = f.radio_button :empty_id, empty.id, class: 'me-1', style: "margin-left: -0.3em;"
 
         = logo_for_kind empty.kind
 
