@@ -11,6 +11,15 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "tiddlers.json" do
+    empty_tiddlers = [
+      "$:/core",
+      "$:/isEncrypted",
+      "$:/status/RequireReloadDueToPluginChange",
+      "$:/StoryList",
+      "$:/themes/tiddlywiki/snowwhite",
+      "$:/themes/tiddlywiki/vanilla",
+    ]
+
     [
       { url: '/tiddlers.json',
         json: [
@@ -22,10 +31,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         json: [ {"title"=>"MyTiddler"}, {"title"=>"Foo"}, {"title"=>"Baz"} ] },
 
       { url: '/tiddlers.json?skinny=1&include_system=1',
-        titles: [
-          "$:/core", "$:/isEncrypted",
-          "$:/themes/tiddlywiki/snowwhite", "$:/themes/tiddlywiki/vanilla",
-          "MyTiddler", "Foo", "Baz" ] },
+        titles: empty_tiddlers + [ "MyTiddler", "Foo", "Baz" ] },
 
       { url: '/tiddlers.json?title=Foo',
         json: [ {"title"=>"Foo","text"=>"Bar"} ] },

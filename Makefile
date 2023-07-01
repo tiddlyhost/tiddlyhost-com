@@ -347,9 +347,10 @@ external-core-files-%: create-external-core-files-%
 #  external-core-files-5.2.4 \
 #  external-core-files-5.2.5 \
 #  external-core-files-5.2.6 \
+#  external-core-files-5.2.7 \
 #
 external-core-files: \
-	external-core-files-5.2.7
+	external-core-files-5.3.0
 
 # Run this at build time since I don't want to check in the gzipped files
 gzip-core-js-files:
