@@ -28,8 +28,14 @@
         %ul.navbar-nav.mb-auto
           = dark_mode_toggle_link
 
-          = nav_link_to bi_icon('plus', fill: "white", height: "1.9em", width: "1.9em", style: "opacity: 90%;"),
-            new_site_path, li_class: 'd-none d-sm-block', title: 'Create site'
+          -# For normal nav bar
+          = nav_link_to bi_icon('plus', fill: "white", height: "1.9em", width: "1.9em",
+            style: "opacity: 90%;"), new_site_path, li_class: 'd-none d-sm-block', title: 'Create site'
+
+          -# For burger menu
+          = nav_link_to bi_icon('plus', fill: "white", height: "1.9em", width: "1.9em",
+            style: "opacity:90%; margin-left:-3px; margin-right:0px;") + content_tag(:span,
+            'Create site'), new_site_path, li_class: 'd-block d-sm-none', title: 'Create site'
 
           %li.nav-item.dropdown
             %a.nav-link.dropdown-toggle#navbarDropdown{ role: "button", href: "#", title: "User menu",
