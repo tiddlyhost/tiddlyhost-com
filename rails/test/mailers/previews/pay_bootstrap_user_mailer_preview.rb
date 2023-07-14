@@ -49,6 +49,8 @@ class PayBootstrapUserMailerPreview < ActionMailer::Preview
   end
 
   def payment_failed
+    # For a failed payment this param will not be present
+    @email_params[:pay_charge] = nil
     do_email :payment_failed
   end
 
