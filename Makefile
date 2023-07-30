@@ -324,16 +324,13 @@ $(TW5_UGLIFY_DIR):
 # Maybe in future they will be built automatically and
 # made available somewhere.
 #
-# Uglify is buggy with 5.3.0 so for now let's not use it
-#   export TIDDLYWIKI_PLUGIN_PATH=$(TW5_UGLIFY_DIR) && \
-#   node tiddlywiki.js +plugins/plugins/uglify editions/empty \
-#
 create-external-core-files-%: $(TW5_DIR) $(TW5_UGLIFY_DIR) clean-external-core-files
 	cd $(TW5_DIR) && git reset --hard && git checkout v$* && \
 	  node tiddlywiki.js editions/empty \
 	    --output $(TW5_OUTPUT) \
 	    --rendertiddler '$$:/core/save/offline-external-js' 'empty.html' 'text/plain' && \
-	  node tiddlywiki.js editions/empty \
+	  export TIDDLYWIKI_PLUGIN_PATH=$(TW5_UGLIFY_DIR) && \
+	  node tiddlywiki.js +plugins/plugins/uglify editions/empty \
 	    --output $(TW5_OUTPUT) \
 	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.min.js]]' 'text/plain'
 # Todo maybe: Uglify the empty as well
