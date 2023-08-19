@@ -176,12 +176,20 @@ class SiteTest < ActiveSupport::TestCase
     assert_enqueued_with(job: PruneAttachmentsJob) do
       @site.content_upload("foo123")
     end
+
+    job_wrapper = ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.new(enqueued_jobs.first)
+    # (It should use the default from Delayed::Worker.DEFAULT_MAX_ATTEMPTS, which is 25)
+    assert_nil job_wrapper.max_attempts
   end
 
   test "thumbnail job scheduled" do
     assert_enqueued_with(job: GenerateThumbnailJob) do
       @site.content_upload("foo123")
     end
+
+    # See rails/config/initializers/active_job_delayed_job_param_fix.rb
+    job_wrapper = ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.new(enqueued_jobs.last)
+    assert_equal 1, job_wrapper.max_attempts
   end
 
   test "thumbnail generation" do
