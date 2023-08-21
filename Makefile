@@ -342,23 +342,31 @@ external-core-files-%: create-external-core-files-%
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME).html
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME)/$*.html
 
-# Should be no need to rebuild older versions
-#  external-core-files-5.2.3 \
-#  external-core-files-5.2.4 \
-#  external-core-files-5.2.5 \
-#  external-core-files-5.2.6 \
-#  external-core-files-5.2.7 \
-#  external-core-files-5.3.0 \
-#
-external-core-files: \
-	external-core-files-5.3.1
-
 # Run this at build time since I don't want to check in the gzipped files
 gzip-core-js-files:
 	@for f in $$( ls rails/public/tiddlywikicore-*.js ); do \
 	  gzip -c $$f > $$f.gz; \
 	  echo Created $$f.gz; \
 	done
+
+#----------------------------------------------------------
+
+# All the steps needed for a TiddlyWiki upgrade
+# The version number must be provided manually like this:
+#   VER=5.3.1 make tw5-update
+#
+tw5-update: $(TW5_DIR) $(TW5_UGLIFY_DIR) download-empty-tw5
+	cp rails/tw_content/empties/tw5.html rails/tw_content/empties/tw5/$(VER).html
+	cd $(TW5_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
+	cd $(TW5_UGLIFY_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
+	$(MAKE) external-core-files-$(VER)
+	git add \
+	  rails/tw_content/empties/tw5.html \
+	  rails/tw_content/empties/tw5/$(VER).html \
+	  rails/tw_content/empties/tw5x.html \
+	  rails/tw_content/empties/tw5x/$(VER).html \
+	  rails/public/tiddlywikicore-$(VER).js
+	git commit -m "chore: Upgrade TiddlyWiki empties to version $(VER)"
 
 #----------------------------------------------------------
 
