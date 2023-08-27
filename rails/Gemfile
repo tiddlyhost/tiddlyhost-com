@@ -69,7 +69,7 @@ gem 'spicy-proton'
 
 # For payments
 gem 'pay', '~> 6.0'
-gem 'stripe', '~> 8.0'
+gem 'stripe', '~> 9.0'
 
 # Needed after ruby 3.1 upgrade
 gem 'net-smtp', require: false
