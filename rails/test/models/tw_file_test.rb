@@ -174,6 +174,29 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
+  test "autosave behavior" do
+    [
+      [:tw5, false, 'no'],
+      [:tw5x, true, 'yes'],
+
+    ].each do |empty, external_core, expected|
+      # Create new tiddlywiki
+      th_file = ThFile.from_empty(empty)
+
+      # Sanity check whether it is external core
+      assert_equal external_core, th_file.is_external_core?
+
+      # Attempt to turn autosave on
+      th_file.write_tiddlers({'$:/config/AutoSave' => 'yes'})
+
+      # Apply the usual processing done when serving a site
+      th_file.apply_tiddlyhost_mods('foo')
+
+      # Confirm the auto save value
+      assert_equal expected, th_file.tiddler_content('$:/config/AutoSave')
+    end
+  end
+
   def minimal_html(type)
     File.read("test/data/minimal_#{type}.html")
   end

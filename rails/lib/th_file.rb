@@ -92,13 +92,18 @@ class ThFile < TwFile
       # (Not needed for put saver but should be harmless.)
       '$:/UploadWithUrlOnly' => 'yes',
 
-      # Autosave is nice, but I'm thinking we should start with it off to generate
-      # a little less traffic.
-      '$:/config/AutoSave' => 'no',
-
       # Provide a way for TiddlyWikis to detect when they're able to be saved
       '$:/status/IsLoggedIn' => status_is_logged_in,
     })
+
+    # Since every save uploads the entire TiddlyWiki I want to discourage
+    # autosave for internal core TiddlyWikis, but let's allow it for external
+    # core and see how it goes.
+    unless is_external_core?
+      write_tiddlers({
+        '$:/config/AutoSave' => 'no',
+      })
+    end
 
     # Add a prefix to the core js src url for external core TiddlyWikis
     if is_external_core?

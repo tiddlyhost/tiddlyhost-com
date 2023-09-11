@@ -14,3 +14,10 @@ classic:
     updated much since 2011."
   info_link: https://classic.tiddlywiki.com/
   enabled: true
+tw5x:
+  id: 3
+  name: tw5x
+  title: TiddlyWiki External
+  description: TiddlyWiki (External Core)
+  info_link: https://tiddlywiki.com/
+  enabled: true
