@@ -1,0 +1,16 @@
+.ps-2.form-switch.text-muted.enable-tooltips{ style: "font-size: 0.875rem; display: inline-block;" }
+  %label{ style: "cursor: pointer;" }
+    -#
+      The switch styled checkbox here is cosmetic only, it's behaving as link
+      Todo: Should be able to style a normal link to look the same and ditch the actual checkbox
+
+    <input class="form-check-input" id="templates-toggle-switch"
+    type="checkbox" role="switch" #{show_templates ? "checked" : ""}
+    onclick="window.location.href = '#{url_for(sort_filter_url(:t, show_templates ? nil : '1'))}';">
+    Templates only
+  = render 'popover_help', placement: 'bottom', size: '0.875rem', fill: '#666',
+    html_content: ' |
+      Templates are customized "empties" created by Tiddlyhost users |
+      and shared for use by others. They may contain general purpose enhancements and |
+      customizations or they may be designed for a particular specialized |
+      purpose.' |
