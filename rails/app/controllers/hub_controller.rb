@@ -2,6 +2,7 @@ class HubController < ApplicationController
   PER_PAGE = 18
 
   before_action :set_show_templates
+  before_action :set_kind_filter
 
   def index
     render_hub
@@ -30,6 +31,7 @@ class HubController < ApplicationController
     # helpers can see them.
     q: {}, # text search
     t: {}, # template filter
+    k: SiteCommon::KINDS.to_a.map{|k, v| [k.to_sym, {title: v}]}.to_h
   }.freeze
 
   # We don't do asc/desc sorting for the hub
@@ -59,6 +61,7 @@ class HubController < ApplicationController
       per_page: PER_PAGE,
       sort_by: sort_opt[:field],
       templates_only: @show_templates,
+      kind: @kind_filter,
       tag: @tag,
       user: @user,
       search: search_text)
@@ -69,6 +72,11 @@ class HubController < ApplicationController
 
   def set_show_templates
     @show_templates = params[:t] == '1'
+  end
+
+  def set_kind_filter
+    params.delete(:k) unless params[:k].in?(SiteCommon::KIND_VALS)
+    @kind_filter = params[:k]
   end
 
   def default_sort

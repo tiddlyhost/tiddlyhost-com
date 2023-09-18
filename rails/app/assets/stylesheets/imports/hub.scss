@@ -169,14 +169,15 @@ h1 {
 }
 
 .page_info .sort-by, .sites-filter-by {
-    margin-left: 2em;
+    margin-left: 1.5em;
 
     a {
         text-decoration: none;
     }
 
     .dropdown-toggle {
-        color: #6c757d;
+        color: var(--bs-secondary-background);
+        padding-left: 0.25em;
     }
 
     .dropdown-menu {
@@ -184,6 +185,10 @@ h1 {
 
         .dropdown-item {
             padding: 0.5em 2em;
+
+            &:before, &.sel:before {
+                padding-right: 0.7em;
+            }
         }
     }
 }
@@ -196,6 +201,7 @@ h1 {
         background-color: var(--bs-form-control-bg);
         border: var(--bs-border-width) solid var(--bs-border-color);
         border-radius: 0.25rem;
+        margin-left: 0.15em;
 
         &:focus {
             outline: none;
@@ -209,12 +215,12 @@ h1 {
         padding-left: 0px;
         margin-right: 0px;
         padding-right: 0px;
-        color: #6c757d;
+        color: var(--bs-secondary-background);
     }
 
     a {
         font-size: 80%;
-        color: #6c757d;
+        color: var(--bs-secondary-background);
     }
 }
 

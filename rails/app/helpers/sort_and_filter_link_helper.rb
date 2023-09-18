@@ -80,7 +80,11 @@ module SortAndFilterLinkHelper
     klass = ["dropdown-item", (selected ? "sel" : "notsel")]
 
     link_to(filter_link_url(param_key, param_val), class: klass) do
-      link_title
+      if block_given?
+        yield link_title
+      else
+        link_title
+      end
     end
   end
 

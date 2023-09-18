@@ -40,9 +40,27 @@
   = "matching '#{search_text}'" if search_text
 
   %span.sort-by
-    Sort by:
-    = link_to(sort_opt[:title], "#", class:'dropdown-toggle',
-      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+    = link_to("#", class:'dropdown-toggle',
+      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
+      %span.pe-1
+        Kind:
+      - if @kind_filter.present? && @kind_filter != "all"
+        = logo_for_kind(@kind_filter, "margin-left: 2px; height: 1.3em; margin-top: -3px;")
+      - else
+        show all
+    .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
+      = filter_link(:k, nil)
+      - filter_params[:k].keys.each do |k|
+        = filter_link(:k, k) do |title|
+          = logo_for_kind(k, "margin-right: 4px; height: 1.3em;")
+          = title
+
+  %span.sort-by
+    = link_to("#", class:'dropdown-toggle',
+      role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
+      %span.pe-1
+        Sort by:
+      = sort_opt[:title]
     .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
       - sort_options.keys.each do |k|
         = simple_sort_link k
