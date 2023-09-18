@@ -79,7 +79,7 @@ prod-secrets: docker/secrets/master.key docker/secrets/credentials.yml.enc
 #----------------------------------------------------------
 
 # Fun way to reuse the ansible templates to create local config
-docker/%: ansible/templates/docker/%.j2
+docker/%: ansible/playbooks/templates/docker/%.j2
 	@mkdir -p $$(dirname $@)
 	@env primary_host=tiddlyhost.local tiddlyspot_host=tiddlyspot.local \
 	  python -c "import os,sys,jinja2; print(jinja2.Template(sys.stdin.read()).render(os.environ))" \
