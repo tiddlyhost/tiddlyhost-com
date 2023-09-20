@@ -46,7 +46,7 @@
   .ps-1.ms-2.mb-3.th-text-small
     - if @filtered_site_count != @site_count
       Showing #{@filtered_site_count} #{params[:access]} sites of #{pluralize(@site_count, 'site')} total.
-      = link_to('Clear filter', sites_path, style: 'text-decoration: none;') + "."
+      = link_to('Clear filter', sites_path(s: params[:s]), style: 'text-decoration: none;') + "."
     - else
       = pluralize(@site_count, 'site') + ","
     = as_megabytes(@total_storage_bytes)
