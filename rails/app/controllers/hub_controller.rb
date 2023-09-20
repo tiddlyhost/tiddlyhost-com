@@ -42,6 +42,8 @@ class HubController < ApplicationController
     c: { title: 'recently created', field: 'created_at DESC NULLS LAST' },
     a: { title: 'name a-z', field: 'name ASC' },
     z: { title: 'name z-a', field: 'name DESC' },
+    nv: { title: 'newer version', field: 'tw_version_trimmed DESC NULLS LAST' },
+    ov: { title: 'older version', field: 'tw_version_trimmed ASC NULLS LAST' },
     r: { title: 'random', field: 'rand_sort' },
   }.freeze
 

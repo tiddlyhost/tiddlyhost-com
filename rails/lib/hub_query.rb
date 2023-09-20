@@ -43,12 +43,15 @@ module HubQuery
         "'Site' AS type",
         :id,
         :name,
+        :tw_version,
         :view_count,
         :created_at,
         :allow_public_clone,
         :clone_count,
         "active_storage_blobs.created_at AS blob_created_at",
         "RANDOM() AS rand_sort",
+        # Trim off Feather Wiki name prefixes for sorting, e.g. Warbler_
+        "REGEXP_REPLACE(tw_version, '^[A-Za-z]+_', '') as tw_version_trimmed",
         *extra_fields_in_select
       ),
 
@@ -57,12 +60,15 @@ module HubQuery
         "'TspotSite' AS type",
         :id,
         :name,
+        :tw_version,
         "access_count AS view_count",
         "NULL AS created_at",
         "false AS allow_public_clone",
         "0 AS clone_count",
         "CASE WHEN save_count = 0 THEN NULL ELSE active_storage_blobs.created_at END AS blob_created_at",
         "RANDOM() AS rand_sort",
+        # Trim off Feather Wiki name prefixes for sorting, e.g. Warbler_
+        "REGEXP_REPLACE(tw_version, '^[A-Za-z]+_', '') as tw_version_trimmed",
         *extra_fields_in_select
       ),
     ]
