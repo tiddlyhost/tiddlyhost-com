@@ -22,6 +22,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'daemons'
 gem 'delayed_job_active_record'
 
+# https://github.com/ambethia/recaptcha
+gem 'recaptcha'
+
 # Markdown
 gem 'redcarpet', '~> 3.6'
 

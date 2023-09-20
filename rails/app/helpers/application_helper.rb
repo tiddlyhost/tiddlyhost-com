@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  include Recaptcha::Adapters::ViewMethods
+
   def nav_link_to(title, link, opts={})
     is_active = current_page?(link) ||
       # We redirect home to /sites when user is logged in

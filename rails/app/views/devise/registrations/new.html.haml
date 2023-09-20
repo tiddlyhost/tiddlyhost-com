@@ -6,6 +6,10 @@
 
     = render 'devise/shared/error_messages', resource: resource
 
+    = flash[:recaptcha_error]
+
+    = recaptcha_v3(action: 'signup')
+
     = render layout: 'field_wrapper' do
       = f.label :email
       = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
