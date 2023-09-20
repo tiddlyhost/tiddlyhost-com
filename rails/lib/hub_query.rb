@@ -73,6 +73,8 @@ module HubQuery
     qs.map! { |q| q.tagged_with(tag) } if tag.present?
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
     qs.map! { |q| q.search_for(search) } if search.present?
+
+    kind = ['tw5', 'tw5x'] if kind == 'tw'
     qs.map! { |q| q.where(tw_kind: kind) } if kind.present?
 
     # The idea here is the row selected by the DISTINCT ON should be

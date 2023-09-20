@@ -51,6 +51,8 @@ module SiteCommon
   }.freeze
 
   KIND_LOGOS = {
+    # Todo maybe: A different image for 'tw'
+    'tw'      => 'tw5-icon.ico',
     'tw5'     => 'tw5-icon.ico',
     'tw5x'    => 'tw5x-icon.ico',
     'classic' => 'classic-icon.ico',

@@ -31,7 +31,7 @@ class HubController < ApplicationController
     # helpers can see them.
     q: {}, # text search
     t: {}, # template filter
-    k: SiteCommon::KINDS.to_a.map{|k, v| [k.to_sym, {title: v}]}.to_h
+    k: {'tw'=>'TiddlyWiki (any)'}.merge(SiteCommon::KINDS).to_a.map{|k, v| [k.to_sym, {title: v}]}.to_h
   }.freeze
 
   # We don't do asc/desc sorting for the hub
@@ -75,7 +75,7 @@ class HubController < ApplicationController
   end
 
   def set_kind_filter
-    params.delete(:k) unless params[:k].in?(SiteCommon::KIND_VALS)
+    params.delete(:k) unless params[:k].in?(filter_params[:k].keys.map(&:to_s))
     @kind_filter = params[:k]
   end
 
