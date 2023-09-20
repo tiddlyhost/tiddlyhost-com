@@ -60,10 +60,10 @@ module SortAndFilterLinkHelper
     link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel])
   end
 
-  def filter_link_group(param_key)
+  def filter_link_group(param_key, &blk)
     links = [
-      filter_link(param_key, nil),
-      filter_params[param_key].keys.map { |v| filter_link(param_key, v) }
+      filter_link(param_key, nil, &blk),
+      filter_params[param_key].keys.map { |v| filter_link(param_key, v, &blk) }
     ]
     safe_join(links.flatten)
   end
@@ -81,7 +81,7 @@ module SortAndFilterLinkHelper
 
     link_to(filter_link_url(param_key, param_val), class: klass) do
       if block_given?
-        yield link_title
+        yield param_val, link_title
       else
         link_title
       end

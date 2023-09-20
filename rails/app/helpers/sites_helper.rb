@@ -49,7 +49,7 @@ module SitesHelper
 
     case access_type when "redirected"
       bi_icon('arrow-right-circle', opts)
-    when "hub_listed"
+    when "hub_listed", "hub"
       bi_icon('search-heart', opts)
     when "public"
       bi_icon('eye', opts)
@@ -78,7 +78,7 @@ module SitesHelper
   end
 
   def logo_for_kind(kind, style='height: 1.4em; margin-top: -3px;')
-    image_tag(SiteCommon::KIND_LOGOS[kind.to_s], style: style, title: SiteCommon::KINDS[kind.to_s])
+    image_tag(SiteCommon::KIND_LOGOS[kind.to_s], style: style, title: SiteCommon::KINDS[kind.to_s]) if SiteCommon::KIND_LOGOS[kind.to_s].present?
   end
 
   def kind_logo(site, style='height: 1.4em; margin-top: -3px; padding-right: 4px;')

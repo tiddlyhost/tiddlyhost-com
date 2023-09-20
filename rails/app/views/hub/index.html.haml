@@ -51,7 +51,7 @@
     .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
       = filter_link(:k, nil)
       - filter_params[:k].keys.each do |k|
-        = filter_link(:k, k) do |title|
+        = filter_link(:k, k) do |_, title|
           = logo_for_kind(k, "margin-right: 4px; height: 1.3em;")
           = title
 
