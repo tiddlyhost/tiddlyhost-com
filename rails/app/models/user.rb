@@ -138,4 +138,9 @@ class User < ApplicationRecord
     super
   end
 
+  # https://www.rubydoc.info/github/plataformatec/devise/Devise/Models/Confirmable#after_confirmation-instance_method
+  def after_confirmation
+    th_log("Account #{id} #{email} confirmation")
+  end
+
 end

@@ -4,6 +4,11 @@ class RegistrationsController < Devise::RegistrationsController
 
   prepend_before_action :check_recaptcha, only: [:create]
 
+  def destroy
+    th_log("Account #{resource.id} #{resource.email} deletion")
+    super
+  end
+
   protected
 
   def after_inactive_sign_up_path_for(resource)
