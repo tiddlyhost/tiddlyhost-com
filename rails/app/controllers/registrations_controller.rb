@@ -4,6 +4,15 @@ class RegistrationsController < Devise::RegistrationsController
 
   prepend_before_action :check_recaptcha, only: [:create]
 
+  # This is already a before_action specified in ApplicationController.
+  # Not sure if this will actually make it run twice, but it should be
+  # harmless enough if that is the case. The motivation is so that the
+  # name and username params are not lost when calling
+  # resource_class.new(sign_up_params) in check_recaptcha below. To do
+  # that this needs to run before the check_recaptcha before action added
+  # above.
+  prepend_before_action :permit_devise_params, only: [:create]
+
   def destroy
     th_log("Account #{resource.id} #{resource.email} deletion")
     super
@@ -23,7 +32,6 @@ class RegistrationsController < Devise::RegistrationsController
     log_recaptch_detail(sign_up_params['email'].strip, ok, recaptcha_reply)
     return if ok
 
-    # (Not sure how important this part is, but it's from the example.)
     self.resource = resource_class.new(sign_up_params)
     resource.validate # Look for any other validation errors besides reCAPTCHA
     set_minimum_password_length
