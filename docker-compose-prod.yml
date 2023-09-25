@@ -66,6 +66,7 @@ services:
 
   db:
     image: postgres:13
+    #image: postgres:16
     container_name: th_db
     restart: always
     environment:
@@ -73,6 +74,17 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
+    #- ./docker/postgresql-data/data16:/var/lib/postgresql/data:Z
+
+  # Temporary for upgrade migration
+  dbnew:
+    image: postgres:16
+    container_name: th_dbnew
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./docker/postgresql-data/data16:/var/lib/postgresql/data:Z
 
 volumes:
   # Share rails public with nginx so it can serve static files directly

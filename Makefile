@@ -50,6 +50,7 @@ fast-build-base:
 	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # To set up your environment right after doing a git clone
+# Beware: This command runs `rails db:setup` which will clear out your local database
 DB_VOL_MOUNT=docker/postgresql-data
 APP_VOL_MOUNTS=docker/bundle docker/log docker/config docker/secrets node_modules docker/dotcache
 rails-init: build-info js-math download-empty-prerelease gzip-core-js-files

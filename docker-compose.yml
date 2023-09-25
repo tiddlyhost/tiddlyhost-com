@@ -65,6 +65,7 @@ services:
 
   db:
     image: postgres:13
+    #image: postgres:16
     container_name: th_db
     environment:
       # (Only used when the container sets up a brand new db IIUC)
@@ -75,3 +76,13 @@ services:
     - "5432:5432"
     volumes:
     - ./docker/postgresql-data/data:/var/lib/postgresql/data:Z
+    #- ./docker/postgresql-data/data16:/var/lib/postgresql/data:Z
+
+  # Temporary for upgrade migration
+  dbnew:
+    image: postgres:16
+    container_name: th_dbnew
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./docker/postgresql-data/data16:/var/lib/postgresql/data:Z
