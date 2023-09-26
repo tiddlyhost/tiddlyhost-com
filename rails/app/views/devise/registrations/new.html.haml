@@ -13,6 +13,12 @@
 
     = recaptcha_v3(action: 'signup')
 
+    -#
+      Avoid "timeout-or-duplicate" recaptcha errors when a
+      user takes more than two minutes to fill out the form
+    :javascript
+      setInterval(() => executeRecaptchaForSignup(), 110000)
+
     = render layout: 'field_wrapper' do
       = f.label :email
       = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control'
