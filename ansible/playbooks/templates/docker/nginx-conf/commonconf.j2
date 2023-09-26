@@ -73,3 +73,13 @@ location @app {
   #
   proxy_pass http://app:3333;
 }
+
+#
+# The default "bad gateway" page is not very nice so let's use
+# a custom page. Should appear if the @app container is down.
+#
+error_page 502 /custom502.html;
+location = /custom502.html {
+  root /opt/nginx-html;
+  internal;
+}

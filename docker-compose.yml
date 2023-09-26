@@ -10,6 +10,7 @@ services:
     volumes:
     - ./docker/letsencrypt:/etc/letsencrypt:Z
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
+    - ./docker/nginx-html:/opt/nginx-html:Z
 
   app:
     image: sbaird/tiddlyhost-base:latest

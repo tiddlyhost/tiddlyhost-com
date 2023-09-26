@@ -18,6 +18,7 @@
 
     thost_log_dir: "{{ docker_dir }}/log"
     nginx_conf_dir: "{{ docker_dir }}/nginx-conf"
+    nginx_html_dir: "{{ docker_dir }}/nginx-html"
     rails_conf_dir: "{{ docker_dir }}/config"
     secrets_dir: "{{ docker_dir }}/secrets"
 
@@ -303,6 +304,25 @@
     with_items:
     - app.conf
     - commonconf
+    tags:
+    - app
+
+  - name: Create nginx html dir
+    become: no
+    file:
+      path: "{{ nginx_html_dir }}"
+      state: directory
+    tags:
+    - app
+
+  - name: Copy nginx html files
+    become: no
+    copy:
+      src: ../../docker/nginx-html/{{ item }}
+      dest: "{{ nginx_html_dir }}/{{ item }}"
+      mode: "0644"
+    with_items:
+    - custom502.html
     tags:
     - app
 

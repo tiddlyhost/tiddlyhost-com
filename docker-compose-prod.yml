@@ -11,6 +11,7 @@ services:
     volumes:
     - ./docker/letsencrypt:/etc/letsencrypt:Z
     - ./docker/nginx-conf:/etc/nginx/conf.d:Z
+    - ./docker/nginx-html:/opt/nginx-html:Z
     - rails-static:/opt/rails-static
 
   app:
