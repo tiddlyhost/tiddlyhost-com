@@ -68,7 +68,10 @@ services:
     image: postgres:16
     container_name: th_db
     environment:
-      # (Only used when the container sets up a brand new db IIUC)
+      # Relevant only when the container finds no existing database.
+      # If you are initializing a new db then change the password
+      # after the db is created, or modify this temporarily before
+      # starting it for the first time.
       POSTGRES_PASSWORD: postgres
     # So we can use localhost for the rails db when running
     # on bare metal rather than in the app container

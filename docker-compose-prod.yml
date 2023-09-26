@@ -70,7 +70,10 @@ services:
     container_name: th_db
     restart: always
     environment:
-      # (For a brand new fresh deploy you should put the real password here)
+      # Relevant only when the container finds no existing database.
+      # If you are initializing a new db then change the password
+      # after the db is created, or modify this temporarily before
+      # starting it for the first time.
       POSTGRES_PASSWORD: postgres
     volumes:
     - ./docker/postgresql-data/data16:/var/lib/postgresql/data:Z
