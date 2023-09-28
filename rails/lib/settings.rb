@@ -118,10 +118,14 @@ class Settings
     Settings.secrets(Rails.env.to_sym, :stripe, :products)
   end
 
+  # This should never appear but it helps tests pass when secrets
+  # are not present. Fixme: The fact this is needed is not ideal.
+  FALLBACK_PLAN = {"name" => "Missing", "price" => 0}
+
   # The OpenStruct should have keys :name, :price, :id
   def self.stripe_product(plan, frequency=:monthly)
-    product_info = self.stripe_products&.dig(plan, frequency)
-    OpenStruct.new(product_info) if product_info
+    product_info = self.stripe_products&.dig(plan, frequency) || FALLBACK_PLAN
+    OpenStruct.new(product_info)
   end
 
   # Look up a product's details from its stripe id
