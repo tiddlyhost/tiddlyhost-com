@@ -19,7 +19,6 @@ ARG APP_PATH=/opt/app
 ARG _BUNDLE_PATH=/opt/bundle
 ARG NODE_MODULES_PATH=/opt/node_modules
 ARG APP_LOG_PATH=/var/log/app
-ARG CERT_PATH=/opt/certs
 
 RUN \
   #
