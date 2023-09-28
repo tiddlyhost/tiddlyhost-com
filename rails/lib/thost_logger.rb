@@ -1,7 +1,7 @@
 
 class ThostLogger < Logger
 
-  TH_LOG_FILE = '/var/log/app/app.log'
+  TH_LOG_FILE = Settings.th_log_file
 
   # Only need one of these
   def self.thost_logger

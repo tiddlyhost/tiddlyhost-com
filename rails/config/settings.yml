@@ -18,6 +18,7 @@ defaults:
   minimum_password_length: 8
   hub_tag_tab_count: 6
   db_host: <%= is_in_container ? "db" : "localhost" %>
+  th_log_file: <%= is_in_container ? "/var/log/app/app.log" : "#{rails_root}/log/app.log" %>
 
   major_version: "1.3"
 
