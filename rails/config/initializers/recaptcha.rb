@@ -1,5 +1,10 @@
 
 Recaptcha.configure do |config|
-  config.site_key = Settings.secrets(:recaptcha, :site_key)
-  config.secret_key = Settings.secrets(:recaptcha, :secret_key)
+  if Rails.env.test?
+    config.site_key = "foo"
+    config.secret_key = "bar"
+  else
+    config.site_key = Settings.secrets(:recaptcha, :site_key)
+    config.secret_key = Settings.secrets(:recaptcha, :secret_key)
+  end
 end
