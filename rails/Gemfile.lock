@@ -72,16 +72,16 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.828.0)
-    aws-sdk-core (3.183.1)
+    aws-partitions (1.829.0)
+    aws-sdk-core (3.184.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.71.0)
-      aws-sdk-core (~> 3, >= 3.177.0)
+    aws-sdk-kms (1.72.0)
+      aws-sdk-core (~> 3, >= 3.184.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.135.0)
+    aws-sdk-s3 (1.136.0)
       aws-sdk-core (~> 3, >= 3.181.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.6)
@@ -118,7 +118,7 @@ GEM
     css_parser (1.16.0)
       addressable
     daemons (1.4.1)
-    dalli (3.2.5)
+    dalli (3.2.6)
     date (3.3.3)
     delayed_job (4.1.11)
       activesupport (>= 3.0, < 8.0)
@@ -144,7 +144,7 @@ GEM
     grover (1.1.5)
       combine_pdf (~> 1.0)
       nokogiri (~> 1.0)
-    haml (6.1.2)
+    haml (6.1.4)
       temple (>= 0.8.2)
       thor
       tilt
@@ -384,4 +384,4 @@ RUBY VERSION
    ruby 3.2.0p0
 
 BUNDLED WITH
-   2.4.19
+   2.4.20
