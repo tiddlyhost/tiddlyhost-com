@@ -1,6 +1,6 @@
-
-- hosts: all
-  become: yes
+- name: Deploy Tiddlyhost
+  hosts: all
+  become: true
   become_user: root
 
   vars:
@@ -29,14 +29,14 @@
   tasks:
 
   - name: Add repo for docker-ce
-    command:
+    ansible.builtin.command:
       cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo warn=no
       creates: /etc/yum.repos.d/docker-ce.repo
     tags:
     - deps
 
   - name: Install docker and a few other packages we need
-    dnf:
+    ansible.builtin.dnf:
       state: present
       name:
       - docker-ce
@@ -56,12 +56,12 @@
     # (Todo: Better storage management)
     #
   - name: Ensure /home/docker exists
-    file:
+    ansible.builtin.file:
       path: /home/docker
       state: directory
       owner: root
       group: root
-      mode: '0755'
+      mode: "0755"
     tags:
     - deps
     - local-docker-fix
@@ -76,14 +76,14 @@
     - deps
 
   - name: Apply the new selinux context created above
-    command: |-
+    ansible.builtin.command: |-
       restorecon -r /home/docker
     when: docker_context.changed
     tags:
     - deps
 
   - name: Change docker default from /var/lib/docker to /home/docker
-    lineinfile:
+    ansible.builtin.lineinfile:
       path: /lib/systemd/system/docker.service
       regexp: '^ExecStart'
       # Default line looks like this:
@@ -97,7 +97,7 @@
 
     # Need to reload when the docker.service file changes
   - name: Run systemctl daemon-reload if required
-    command:
+    ansible.builtin.command:
       cmd: systemctl daemon-reload
     when: docker_config.changed
     tags:
@@ -105,17 +105,17 @@
     - local-docker-fix
 
   - name: Start docker service
-    systemd:
+    ansible.builtin.systemd:
       name: docker
       state: started
-      enabled: yes
+      enabled: true
     tags:
     - deps
     - local-docker-fix
 
     # For the case when it was already running but needs a restart now
   - name: Restart docker service if required
-    systemd:
+    ansible.builtin.systemd:
       name: docker
       state: restarted
     when: docker_config.changed or (docker_context is defined and docker_context.changed)
@@ -124,30 +124,31 @@
     - local-docker-fix
 
   - name: Start crond
-    systemd:
+    ansible.builtin.systemd:
       name: crond
       state: started
-      enabled: yes
+      enabled: true
     tags:
     - deps
 
   - name: Pip install docker-compose and certbot-dns-route53
-    pip:
+    ansible.builtin.pip:
       name:
-      - docker-compose
-      - certbot-dns-route53
+        - docker-compose
+        - certbot-dns-route53
     tags:
     - deps
 
   - name: Make .docker dir for root user
-    file:
+    ansible.builtin.file:
       path: "{{ root_home_dir }}/.docker"
       state: directory
+      mode: "0755"
     tags:
     - deps
 
   - name: Copy config.json file for docker pull credentials
-    copy:
+    ansible.builtin.copy:
       src: "{{ docker_config_json }}"
       dest: "{{ root_home_dir }}/.docker/config.json"
       mode: "0600"
@@ -155,16 +156,17 @@
     - deps
 
   - name: Create bin dir
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ bin_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - scripts
 
   - name: Copy up a Makefile and some scripts
-    become: no
-    template:
+    become: false
+    ansible.builtin.template:
       src: templates/{{ item }}.j2
       dest: "{{ home_dir }}/{{ item }}"
       mode: "0755"
@@ -180,8 +182,8 @@
 
     # (These are in a different place because they're also useful locally)
   - name: Copy cache info scripts
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: "../../bin/{{ item }}"
       dest: "{{ bin_dir }}/{{ item }}"
       mode: "0755"
@@ -193,7 +195,7 @@
     - scripts
 
   - name: Create a cron job for regular db backups
-    cron:
+    ansible.builtin.cron:
       name: thost db backup
       user: root
       job: "{{ bin_dir }}/db-backup"
@@ -203,7 +205,7 @@
     - scripts
 
   - name: Create a cron job for regular prerelease empty fetches
-    cron:
+    ansible.builtin.cron:
       name: fetch prerelease empty
       user: "{{ ansible_user }}"
       job: "{{ bin_dir }}/fetch-prerelease-empty"
@@ -215,7 +217,7 @@
     # The genenerate thumbnail job produces many defunct chrome
     # processes. Restart once in a while to clean them up.
   - name: Create a cron job to restart the jobs container
-    cron:
+    ansible.builtin.cron:
       name: jobs container restart
       user: root
       job: "/usr/local/bin/docker-compose -f {{ home_dir }}/docker-compose.yml restart jobs"
@@ -225,16 +227,17 @@
     - scripts
 
   - name: Create dir for certbot aws credentials
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ home_dir }}/.aws"
       state: directory
+      mode: "0755"
     tags:
     - certs
 
   - name: Install AWS credentials for certbot
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: "{{ certbot_dns_credentials }}"
       dest: "{{ home_dir }}/.aws/credentials"
       mode: "0600"
@@ -242,62 +245,65 @@
     - certs
 
   - name: Create a cert if it doesn't exist
-    become: no
-    command:
+    become: false
+    ansible.builtin.command:
       cmd: "{{ bin_dir }}/certbot-create"
       creates: "{{ certbot_dir_live }}/fullchain.pem"
     tags:
     - certs
 
   - name: Renew certs maybe
-    become: no
-    command:
+    become: false
+    ansible.builtin.command:
       cmd: "{{ bin_dir }}/certbot-renew"
     register: certbot_renew
     tags:
     - certs
 
   - name: Show renew output
-    debug:
+    ansible.builtin.debug:
       var: certbot_renew.stdout_lines
     tags:
     - certs
 
   - name: Copy docker-compose file
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: "{{ docker_compose_file }}"
       dest: "{{ home_dir }}/docker-compose.yml"
+      mode: "0644"
     tags:
     - app
 
   - name: Pull latest images
     # So docker-compose doesn't try to build
-    command:
+    ansible.builtin.command:
       cmd: docker-compose pull -q
     tags:
     - app
     - fast-upgrade
 
   - name: Create dir for logs
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ thost_log_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - app
 
   - name: Create nginx conf dir
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ nginx_conf_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - app
 
   - name: Copy nginx config
-    become: no
-    template:
+    become: false
+    ansible.builtin.template:
       src: templates/docker/nginx-conf/{{ item }}.j2
       dest: "{{ nginx_conf_dir }}/{{ item }}"
       mode: "0600"
@@ -308,16 +314,17 @@
     - app
 
   - name: Create nginx html dir
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ nginx_html_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - app
 
   - name: Copy nginx html files
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: ../../docker/nginx-html/{{ item }}
       dest: "{{ nginx_html_dir }}/{{ item }}"
       mode: "0644"
@@ -327,16 +334,17 @@
     - app
 
   - name: Create rails local settings dir
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ rails_conf_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - app
 
   - name: Copy rails local settings
-    become: no
-    template:
+    become: false
+    ansible.builtin.template:
       src: templates/docker/config/{{ item }}.j2
       dest: "{{ rails_conf_dir }}/{{ item }}"
       mode: "0600"
@@ -346,16 +354,17 @@
     - app
 
   - name: Create dir for secrets
-    become: no
-    file:
+    become: false
+    ansible.builtin.file:
       path: "{{ secrets_dir }}"
       state: directory
+      mode: "0755"
     tags:
     - app
 
   - name: Copy master key file
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: "{{ master_key_file }}"
       dest: "{{ secrets_dir }}/master.key"
       mode: "0400"
@@ -364,8 +373,8 @@
     - secrets
 
   - name: Copy encrypted credentials file
-    become: no
-    copy:
+    become: false
+    ansible.builtin.copy:
       src: "{{ credentials_file }}"
       dest: "{{ secrets_dir }}/credentials.yml.enc"
       mode: "0400"
@@ -374,7 +383,7 @@
     - secrets
 
   - name: Copy init script
-    template:
+    ansible.builtin.template:
       src: templates/etc/init.d/{{ service_name }}.j2
       dest: /etc/init.d/{{ service_name }}
       mode: "0755"
@@ -383,16 +392,16 @@
     - app
 
   - name: Run systemctl daemon-reload if required
-    command:
+    ansible.builtin.command:
       cmd: systemctl daemon-reload
     when: init_script.changed
     tags:
     - app
 
   - name: Fetch latest prerelease
-    command:
+    ansible.builtin.command:
       cmd: "{{ bin_dir }}/fetch-prerelease-empty"
-    become: no
+    become: false
     tags:
     - app
     - fast-upgrade
@@ -401,7 +410,7 @@
   # This is slower because it shuts down all four containers and
   # brings them back up again
   - name: Start/restart service
-    systemd:
+    ansible.builtin.systemd:
       name: "{{ service_name }}"
       state: restarted
     when: not fast_restart
@@ -411,7 +420,7 @@
 
   # This is faster because it restarts the rails container only
   - name: Restart/upgrade rails container
-    systemd:
+    ansible.builtin.systemd:
       name: "{{ service_name }}"
       state: reloaded
     when: fast_restart
@@ -421,13 +430,13 @@
 
     # Only for bootstrapping a new server
   - name: Create db
-    command:
+    ansible.builtin.command:
       cmd: docker-compose exec app bash -c "bin/rails db:create"
     tags:
     - db-create
 
   - name: Apply database migrations
-    command:
+    ansible.builtin.command:
       cmd: docker-compose exec app bash -c "bin/rails db:migrate"
     register: db_migrate
     tags:
@@ -436,7 +445,7 @@
     - migration
 
   - name: Show database migration output
-    debug:
+    ansible.builtin.debug:
       var: db_migrate.stdout_lines
     tags:
     - app
@@ -444,13 +453,13 @@
     - migration
 
   - name: Clean up unused docker images
-    command:
+    ansible.builtin.command:
       cmd: docker image prune -f
     tags:
     - cleanup
 
   - name: Clean up stale containers
-    command:
+    ansible.builtin.command:
       cmd: docker-compose rm
     tags:
     - cleanup
