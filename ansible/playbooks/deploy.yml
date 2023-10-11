@@ -97,8 +97,8 @@
 
     # Need to reload when the docker.service file changes
   - name: Run systemctl daemon-reload if required
-    ansible.builtin.command:
-      cmd: systemctl daemon-reload
+    ansible.builtin.systemd_service:
+      daemon_reload: true
     when: docker_config.changed
     tags:
     - deps
@@ -392,8 +392,8 @@
     - app
 
   - name: Run systemctl daemon-reload if required
-    ansible.builtin.command:
-      cmd: systemctl daemon-reload
+    ansible.builtin.systemd_service:
+      daemon_reload: true
     when: init_script.changed
     tags:
     - app

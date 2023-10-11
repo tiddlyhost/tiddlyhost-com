@@ -187,7 +187,7 @@ haml-lint-with-todo:
 delint: haml-lint-with-todo
 
 ansible-lint:
-	@ansible-lint -p ansible/playbooks/deploy.yml -x yaml[indentation],no-changed-when,no-handler,command-instead-of-module
+	@ansible-lint -p ansible/playbooks/deploy.yml -x yaml[indentation],no-changed-when,no-handler
 
 ansible-lint-strict:
 	@ansible-lint -p ansible/playbooks/deploy.yml -x yaml[indentation]
