@@ -79,6 +79,8 @@
     ansible.builtin.command: |-
       restorecon -r /home/docker
     when: docker_context.changed
+    # Assume a change if this runs
+    changed_when: true
     tags:
     - deps
 
@@ -257,6 +259,8 @@
     ansible.builtin.command:
       cmd: "{{ bin_dir }}/certbot-renew"
     register: certbot_renew
+    changed_when: |-
+      not "No renewals were attempted." in certbot_renew.stdout
     tags:
     - certs
 
@@ -403,6 +407,8 @@
     ansible.builtin.command:
       cmd: "{{ bin_dir }}/fetch-prerelease-empty"
     become: false
+    # This may be inaccurate but it doesn't matter much
+    changed_when: false
     tags:
     - app
     - fast-upgrade
