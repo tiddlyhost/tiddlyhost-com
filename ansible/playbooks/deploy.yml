@@ -277,8 +277,9 @@
 
   - name: Pull latest images
     # So docker-compose doesn't try to build
-    ansible.builtin.command:
-      cmd: docker-compose pull -q
+    community.docker.docker_compose:
+      project_src: "{{ home_dir }}"
+      pull: true
     tags:
     - app
     - fast-upgrade
@@ -430,15 +431,22 @@
 
     # Only for bootstrapping a new server
   - name: Create db
-    ansible.builtin.command:
-      cmd: docker-compose exec app bash -c "bin/rails db:create"
+    community.docker.docker_container_exec:
+      container: th_app
+      command: bin/rails db:create
+    register: db_create
+    changed_when: |-
+      not "already exists" in db_create.stderr
     tags:
     - db-create
 
   - name: Apply database migrations
-    ansible.builtin.command:
-      cmd: docker-compose exec app bash -c "bin/rails db:migrate"
+    community.docker.docker_container_exec:
+      container: th_app
+      command: bin/rails db:migrate
     register: db_migrate
+    changed_when: |-
+      db_migrate.stdout != ""
     tags:
     - app
     - fast-upgrade
@@ -447,19 +455,24 @@
   - name: Show database migration output
     ansible.builtin.debug:
       var: db_migrate.stdout_lines
+    when: db_migrate.changed
     tags:
     - app
     - fast-upgrade
     - migration
 
   - name: Clean up unused docker images
-    ansible.builtin.command:
-      cmd: docker image prune -f
+    community.docker.docker_prune:
+      images: true
     tags:
     - cleanup
 
   - name: Clean up stale containers
+    # Can't find way to do this with a module
     ansible.builtin.command:
       cmd: docker-compose rm
+    register: docker_rm
+    changed_when: |-
+      not "No stopped containers" in docker_rm.stdout
     tags:
     - cleanup
