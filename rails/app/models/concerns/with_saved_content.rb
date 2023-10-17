@@ -130,14 +130,14 @@ module WithSavedContent
   #
   def blob_cache(cache_type, tiddler_name=nil, &blk)
     blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
-    Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+    Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks, &blk)
   end
 
   # Currently only used by TspotSite but define it here anyway.
   # Takes a block that runs on a cache miss.
   def site_cache(cache_type, &blk)
     site_content_cache_key = [cache_key, cache_type]
-    Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks.from_now, &blk)
+    Rails.cache.fetch(site_content_cache_key, expires_in: 4.weeks, &blk)
   end
 
   # For use with the TW site, not the site record itself
