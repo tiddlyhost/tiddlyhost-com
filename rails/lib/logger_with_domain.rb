@@ -17,7 +17,7 @@ class LoggerWithDomain < Rails::Rack::Logger
       request.host_with_port,
       request.filtered_path,
       request.ip,
-      Time.now.to_default_s ]
+      Time.now.to_s ]
   end
 
 end
