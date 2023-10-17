@@ -29,7 +29,11 @@ Bundler.require(*Rails.groups)
 module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    # Todo: Should this be updated to 7.1?
     config.load_defaults 6.1
+
+    # https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#new-activesupport-cache-serialization-format
+    config.active_support.cache_format_version = 7.0
 
     # Configuration for the application, engines, and railties goes here.
     #
