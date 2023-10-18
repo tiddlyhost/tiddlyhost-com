@@ -77,11 +77,20 @@ Rails.application.configure do
   }
 
   # Send error notifications via email
-  config.middleware.use ExceptionNotification::Rack, email: {
-    email_prefix: '[TH] ',
-    sender_address: Settings.secrets(:email_addresses, :exception_notification_sender),
-    exception_recipients: Settings.secrets(:email_addresses, :exception_notification_recipients),
-  }
+  config.middleware.use ExceptionNotification::Rack,
+    ignore_exceptions:
+      [
+        # Commonly caused by bots with '*/*;charset=UTF-8' or similar in
+        # their http accept header, which Rails now considers invalid.
+        # Also caused by exploit scripts setting bogus mime types.
+        'ActionDispatch::Http::MimeNegotiation::InvalidType',
+
+      ] + ExceptionNotifier.ignored_exceptions,
+    email: {
+      email_prefix: '[TH] ',
+      sender_address: Settings.secrets(:email_addresses, :exception_notification_sender),
+      exception_recipients: Settings.secrets(:email_addresses, :exception_notification_recipients),
+    }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
