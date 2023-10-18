@@ -85,6 +85,10 @@ Rails.application.configure do
         # Also caused by exploit scripts setting bogus mime types.
         'ActionDispatch::Http::MimeNegotiation::InvalidType',
 
+        # This can happen when failing to produce a thumbnail image. No need
+        # to notify about it I guess.
+        'Grover::JavaScript::TimeoutError',
+
       ] + ExceptionNotifier.ignored_exceptions,
     email: {
       email_prefix: '[TH] ',
