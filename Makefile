@@ -109,6 +109,12 @@ sandbox:
 console:
 	$(DCC) 'bin/rails console'
 
+db-migrate:
+	$(DCC) 'bin/rails db:migrate'
+
+tmp-clear:
+	$(DCC) 'bin/rails tmp:clear'
+
 docker/log:
 	mkdir -p docker/log
 
@@ -232,7 +238,7 @@ start-prod: local-config prod-secrets prod-prerelease
 # Stop and remove containers, clean up unused images and remove
 # the static files volume used by the prod container so to ensure
 # it gets recreated fresh on startup
-cleanup:
+cleanup: tmp-clear
 	$(DC) stop
 	$(DC_PROD) stop
 	$(DC) rm -f
