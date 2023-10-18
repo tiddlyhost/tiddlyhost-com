@@ -5,7 +5,7 @@
 # See Makefile for more details.
 # See also docker/Dockerfile.base
 #
-FROM sbaird/tiddlyhost-base:latest
+FROM sbaird/tiddlyhost-base:latest@sha256:84bd15b025953e711812152254212c1a76b81120ddd3b453beaf3fba17818802
 
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app

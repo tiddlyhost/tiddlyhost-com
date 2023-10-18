@@ -21,33 +21,24 @@ GROUP_ID ?= $(shell id -g)
 # for reproducibility but also have an easy way to keep it updated when
 # a new version is available.
 #
-DOCKER_FILE=docker/Dockerfile.base
 RUBY_VER=3.2
 RUBY_TAG=$(RUBY_VER)-slim
 
 pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
-	@\
-	export BASE_IMAGE_WITH_DIGEST="$$( \
-	  $(D) image inspect ruby:$(RUBY_TAG) --format '{{index .RepoDigests 0}}' | sed 's/ruby@/ruby:$(RUBY_TAG)@/' )" && \
-	export REQUIRED="FROM $${BASE_IMAGE_WITH_DIGEST}" && \
-	export CURRENT=$$( grep -E '^FROM' $(DOCKER_FILE) ) && \
-	\
-	if [[ "$$REQUIRED" == "$$CURRENT" ]]; then \
-	  echo "$${CURRENT} is correct for ruby:$(RUBY_TAG)"; \
-	else \
-	  sed -i "s/$${CURRENT}/$${REQUIRED}/" $(DOCKER_FILE) && \
-	  git commit $(DOCKER_FILE) -m 'chore: Pull ruby-slim base image and update digest' -m 'Commit created with `make pull-ruby`'; \
-	fi
+	bin/pin-digest.sh ruby:$(RUBY_TAG) docker/Dockerfile.base
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
-build-base: cleanup
+_build-base: cleanup
 	$(DC) build --progress plain --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
 fast-build-base:
 	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+
+build-base: _build-base push-base
+	bin/pin-digest.sh sbaird/tiddlyhost-base:latest docker/Dockerfile.prod
 
 # To set up your environment right after doing a git clone
 # Beware: This command runs `rails db:setup` which will clear out your local database
@@ -418,6 +409,9 @@ build-prod-ci:
 
 fast-build-prod: build-info
 	$(DC_PROD) build --progress plain app
+
+push-base:
+	$(D) --config etc/docker-conf push sbaird/tiddlyhost-base
 
 push-prod:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost
