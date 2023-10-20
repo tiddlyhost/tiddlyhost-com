@@ -14,5 +14,5 @@ if [[ "$REQUIRED" == "$CURRENT" ]]; then
 else
   echo "Updating ${CURRENT} to ${REQUIRED}"
   sed -i "s|${CURRENT}|${REQUIRED}|" "${DOCKER_FILE}"
-  git commit "${DOCKER_FILE}" -m "chore: New pinned digest in $(basename ${DOCKER_FILE})"
+  git commit "${DOCKER_FILE}" -m "chore: Bump ${IMAGE_REF/:latest/} digest" -m "Commit created with bin/pin-digest.sh"
 fi
