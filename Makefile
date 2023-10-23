@@ -168,7 +168,8 @@ yarn-upgrade:
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
 deps-update: bundle-update yarn-upgrade
 	git add $(LOCK_FILES)
-	git commit $(LOCK_FILES) -m 'chore: Update ruby gems and node modules' -m 'Commit created with `make deps-update`'
+	git commit $(LOCK_FILES) -m 'chore: Update ruby gems and node modules' \
+	  -m 'Commit created with `make deps-update`'
 
 #----------------------------------------------------------
 
@@ -352,22 +353,37 @@ gzip-core-js-files:
 
 #----------------------------------------------------------
 
+EMPTIES_DIR=rails/tw_content/empties
+
 # All the steps needed for a TiddlyWiki upgrade
 # The version number must be provided manually like this:
 #   VER=5.3.1 make tw5-update
 #
 tw5-update: $(TW5_DIR) $(TW5_UGLIFY_DIR) download-empty-tw5
-	cp rails/tw_content/empties/tw5.html rails/tw_content/empties/tw5/$(VER).html
+	cp $(EMPTIES_DIR)/tw5.html $(EMPTIES_DIR)/tw5/$(VER).html
 	cd $(TW5_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
 	cd $(TW5_UGLIFY_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
 	$(MAKE) external-core-files-$(VER)
 	git add \
-	  rails/tw_content/empties/tw5.html \
-	  rails/tw_content/empties/tw5/$(VER).html \
-	  rails/tw_content/empties/tw5x.html \
-	  rails/tw_content/empties/tw5x/$(VER).html \
+	  $(EMPTIES_DIR)/tw5.html \
+	  $(EMPTIES_DIR)/tw5/$(VER).html \
+	  $(EMPTIES_DIR)/tw5x.html \
+	  $(EMPTIES_DIR)/tw5x/$(VER).html \
 	  rails/public/tiddlywikicore-$(VER).js
-	git commit -m "chore: Upgrade TiddlyWiki empties to version $(VER)"
+	git commit -m 'chore: Upgrade TiddlyWiki empties to version $(VER)' \
+	  -m 'Commit created with `VER=$(VER) make tw5-update`'
+
+# Same thing for Feather Wiki
+# You must specify the version manually here too:
+#   VER=1.7.0 make feather-update
+#
+feather-update: download-empty-feather
+	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/Warbler_$(VER).html
+	git add \
+	  $(EMPTIES_DIR)/feather.html \
+	  $(EMPTIES_DIR)/feather/Warbler_$(VER).html
+	git commit -m 'chore: Upgrade Feather Wiki empties to version $(VER)' \
+	  -m 'Commit created with `VER=$(VER) make feather-update`'
 
 #----------------------------------------------------------
 
