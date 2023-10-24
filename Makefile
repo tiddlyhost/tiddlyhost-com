@@ -584,12 +584,18 @@ openstack-reboot-hard:
 #----------------------------------------------------------
 
 PROD_INFO_URL=https://tiddlyhost.com/build-info.txt
+
 prod-info:
-	@echo '## Prod build info'
 	@-curl -s $(PROD_INFO_URL)
-	@echo ''
-	@echo '## Diff to prod'
-	@-git diff --color=always $$(curl -s $(PROD_INFO_URL) | grep 'sha:' | cut -d: -f2) | less -REXS
+
+prod-diff:
+	@-( \
+	  echo '## Prod build info' && \
+	  $(MAKE) prod-info && \
+	  echo '' && \
+	  echo '## Prod diff' && \
+	  git diff --color=always $$(curl -s $(PROD_INFO_URL) | grep 'sha:' | cut -d: -f2) \
+	) | less -REXS
 
 #----------------------------------------------------------
 JS_MATH_ZIP=jsMath-3.3g.zip
