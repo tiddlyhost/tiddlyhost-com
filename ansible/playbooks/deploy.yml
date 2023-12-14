@@ -41,6 +41,7 @@
       name:
       - docker-ce
       - docker-ce-cli
+      - docker-compose-plugin
       - containerd.io
       - certbot
       - chkconfig
@@ -133,10 +134,9 @@
     tags:
     - deps
 
-  - name: Pip install docker-compose and certbot-dns-route53
+  - name: Pip install certbot-dns-route53
     ansible.builtin.pip:
       name:
-        - docker-compose
         - certbot-dns-route53
     tags:
     - deps
@@ -222,7 +222,7 @@
     ansible.builtin.cron:
       name: jobs container restart
       user: root
-      job: "/usr/local/bin/docker-compose -f {{ home_dir }}/docker-compose.yml restart jobs"
+      job: "/usr/bin/docker compose -f {{ home_dir }}/docker-compose.yml restart jobs"
       minute: "10"
       hour: "*/8"
     tags:
@@ -280,7 +280,7 @@
     - scripts
 
   - name: Pull latest images
-    # So docker-compose doesn't try to build
+    # So docker compose doesn't try to build
     community.docker.docker_compose:
       project_src: "{{ home_dir }}"
       pull: true
@@ -476,7 +476,7 @@
   - name: Clean up stale containers
     # Can't find way to do this with a module
     ansible.builtin.command:
-      cmd: docker-compose rm
+      cmd: docker compose rm
     register: docker_rm
     changed_when: |-
       not "No stopped containers" in docker_rm.stdout

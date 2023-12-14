@@ -6,8 +6,8 @@
 . /etc/init.d/functions
 
 START_DIR={{ home_dir }}
-DOCKER_COMPOSE=/usr/local/bin/docker-compose
 DOCKER=/usr/bin/docker
+DOCKER_COMPOSE=$DOCKER compose
 
 start() {
     $DOCKER_COMPOSE up --detach
