@@ -277,7 +277,7 @@
       dest: "{{ home_dir }}/docker-compose.yml"
       mode: "0644"
     tags:
-    - app
+    - scripts
 
   - name: Pull latest images
     # So docker-compose doesn't try to build
