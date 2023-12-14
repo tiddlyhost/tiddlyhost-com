@@ -37,16 +37,16 @@ dwatch:
 	@sudo watch -n1 docker ps -a
 
 status:
-	sudo service thost status
+	sudo systemctl status thost.service
 
 restart:
-	sudo service thost restart
+	sudo systemctl restart thost.service
 
 stop:
-	sudo service thost stop
+	sudo systemctl stop thost.service
 
 start:
-	sudo service thost start
+	sudo systemctl start thost.service
 
 patch:
 	sudo dnf update --security
