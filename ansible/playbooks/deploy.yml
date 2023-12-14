@@ -284,6 +284,8 @@
     community.docker.docker_compose:
       project_src: "{{ home_dir }}"
       pull: true
+      # Will be restarted later
+      recreate: never
     tags:
     - app
     - fast-upgrade
