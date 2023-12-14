@@ -33,6 +33,15 @@ logf:
 %-logf:
 	$(DC) logs -f $*
 
+# Different to app-log and app-logf, see th_log in
+# application_controller.rb and application_record.rb.
+# Currently contains account captcha, confirmations and deletions
+applog:
+	more docker/log/app.log
+
+applogf:
+	tail -f docker/log/app.log
+
 dwatch:
 	@sudo watch -n1 docker ps -a
 
