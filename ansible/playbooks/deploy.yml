@@ -405,6 +405,13 @@
     tags:
     - app
 
+  - name: Ensure service starts after boot
+    ansible.builtin.systemd_service:
+      name: thost
+      enabled: true
+    tags:
+    - app
+
   - name: Fetch latest prerelease
     ansible.builtin.command:
       cmd: "{{ bin_dir }}/fetch-prerelease-empty"
