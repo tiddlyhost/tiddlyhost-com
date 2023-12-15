@@ -4,22 +4,14 @@ all:
       primary_host: tiddlyhost.com
       tiddlyspot_host: tiddlyspot.com
       ansible_host: "{{ primary_host }}"
-      #ansible_host: tiddlyhub.com
+
+      # Todo: Should create this user rather than assume it exists and has sudo
       ansible_user: fedora
+
       # For letsencrypt
       cert_hosts:
       - "{{ primary_host }}"
       - "{{ tiddlyspot_host }}"
-
-    #prod_new:
-    #  # (Not the original intended purpose of this domain name but never mind)
-    #  primary_host: tiddlyhub.com
-    #  tiddlyspot_host: ~
-    #  ansible_host: "{{ primary_host }}"
-    #  ansible_user: fedora
-    #  # For letsencrypt
-    #  cert_hosts:
-    #  - "{{ primary_host }}"
 
     # See local-docker-fix in Makefile
     localhost: {}
