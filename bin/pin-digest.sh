@@ -3,6 +3,7 @@ set -euo pipefail
 
 IMAGE_REF=$1
 DOCKER_FILE=$2
+MESSAGE=${3:-""}
 
 IMAGE_DIGEST="$( docker image inspect ${IMAGE_REF} --format '{{index .RepoDigests 0}}' | cut -d'@' -f2 )"
 
@@ -14,5 +15,5 @@ if [[ "$REQUIRED" == "$CURRENT" ]]; then
 else
   echo "Updating ${CURRENT} to ${REQUIRED}"
   sed -i "s|${CURRENT}|${REQUIRED}|" "${DOCKER_FILE}"
-  git commit "${DOCKER_FILE}" -m "chore: Bump ${IMAGE_REF/:latest/} digest" -m "Commit created with bin/pin-digest.sh"
+  git commit "${DOCKER_FILE}" -m "chore: Bump ${IMAGE_REF/:latest/} digest" -m "Commit created with bin/pin-digest.sh" -m "$MESSAGE"
 fi

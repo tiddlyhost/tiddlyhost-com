@@ -26,7 +26,7 @@ RUBY_TAG=$(RUBY_VER)-slim
 
 pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
-	bin/pin-digest.sh docker.io/library/ruby:$(RUBY_TAG) docker/Dockerfile.base
+	bin/pin-digest.sh docker.io/library/ruby:$(RUBY_TAG) docker/Dockerfile.base "Newer ruby base image pulled from docker hub"
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
@@ -38,7 +38,7 @@ fast-build-base:
 	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 build-base: _build-base push-base
-	bin/pin-digest.sh docker.io/sbaird/tiddlyhost-base:latest docker/Dockerfile.prod
+	bin/pin-digest.sh docker.io/sbaird/tiddlyhost-base:latest docker/Dockerfile.prod "Tiddlyhost base image rebuilt"
 
 # To set up your environment right after doing a git clone
 # Beware: This command runs `rails db:setup` which will clear out your local database
