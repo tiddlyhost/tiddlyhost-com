@@ -308,9 +308,6 @@ TW5_REPO=git@github.com:Jermolene/TiddlyWiki5.git
 TW5_DIR=../TiddlyWiki5
 TW5_OUTPUT=$(TW5_DIR)/output/external-core
 
-TW5_UGLIFY_REPO=git@github.com:flibbles/tw5-uglify.git
-TW5_UGLIFY_DIR=../tw5-uglify
-
 EXTERNAL_CORE_EMPTY_NAME=tw5x
 
 clean-external-core-files:
@@ -319,30 +316,27 @@ clean-external-core-files:
 $(TW5_DIR):
 	mkdir -p $(TW5_DIR) && cd $(TW5_DIR) && git clone $(TW5_REPO) .
 
-$(TW5_UGLIFY_DIR):
-	mkdir -p $(TW5_UGLIFY_DIR) && cd $(TW5_UGLIFY_DIR) && git clone $(TW5_UGLIFY_REPO) .
-
 # Do some work to build these files from source.
 # Maybe in future they will be built automatically and
 # made available somewhere.
 #
-create-external-core-files-%: $(TW5_DIR) $(TW5_UGLIFY_DIR) clean-external-core-files
+create-external-core-files-%: $(TW5_DIR) clean-external-core-files
 	cd $(TW5_DIR) && git reset --hard && git checkout v$* && \
+	  # Build external core empty.html
 	  node tiddlywiki.js editions/empty \
 	    --output $(TW5_OUTPUT) \
 	    --rendertiddler '$$:/core/save/offline-external-js' 'empty.html' 'text/plain' && \
-	  export TIDDLYWIKI_PLUGIN_PATH=$(TW5_UGLIFY_DIR) && \
-	  node tiddlywiki.js +plugins/plugins/uglify editions/empty \
+	  # Build external core js file
+	  node tiddlywiki.js editions/empty \
 	    --output $(TW5_OUTPUT) \
-	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.min.js]]' 'text/plain'
-# Todo maybe: Uglify the empty as well
+	    --render '$$:/core/templates/tiddlywiki5.js' '[[tiddlywikicore-]addsuffix<version>addsuffix[.js]]' 'text/plain'
 
 external-core-files-%: create-external-core-files-%
-	# Use the .min.js uglified version
-	cp $(TW5_OUTPUT)/tiddlywikicore-$*.min.js rails/public/tiddlywikicore-$*.js
 	# Copy the empty to two places
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME).html
 	cp $(TW5_OUTPUT)/empty.html $(EMPTY_DIR)/$(EXTERNAL_CORE_EMPTY_NAME)/$*.html
+	# Copy the core js file
+	cp $(TW5_OUTPUT)/tiddlywikicore-$*.js rails/public/tiddlywikicore-$*.js
 
 # Run this at build time since I don't want to check in the gzipped files
 gzip-core-js-files:
@@ -359,10 +353,9 @@ EMPTIES_DIR=rails/tw_content/empties
 # The version number must be provided manually like this:
 #   VER=5.3.1 make tw5-update
 #
-tw5-update: $(TW5_DIR) $(TW5_UGLIFY_DIR) download-empty-tw5
+tw5-update: $(TW5_DIR) download-empty-tw5
 	cp $(EMPTIES_DIR)/tw5.html $(EMPTIES_DIR)/tw5/$(VER).html
 	cd $(TW5_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
-	cd $(TW5_UGLIFY_DIR) && git fetch origin && git checkout master && git merge --ff-only origin/master
 	$(MAKE) external-core-files-$(VER)
 	git add \
 	  $(EMPTIES_DIR)/tw5.html \
