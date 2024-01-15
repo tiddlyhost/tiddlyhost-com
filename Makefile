@@ -21,7 +21,7 @@ GROUP_ID ?= $(shell id -g)
 # for reproducibility but also have an easy way to keep it updated when
 # a new version is available.
 #
-RUBY_VER=3.2
+RUBY_VER=3.3
 RUBY_TAG=$(RUBY_VER)-slim
 
 pull-ruby:
