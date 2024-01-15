@@ -26,5 +26,3 @@ all:
     db_dump_file: "{{ backups_dir }}/dbdump.gz"
 
     prerelease_empty: https://tiddlywiki.com/prerelease/empty.html
-
-    fast_restart: false

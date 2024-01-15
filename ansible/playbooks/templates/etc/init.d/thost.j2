@@ -14,13 +14,6 @@ stop() {
     docker compose down --volumes
 }
 
-stop-web() {
-    # Should be slightly faster since the db and cache containers stay up
-    docker compose rm --stop --force web app jobs
-    # Make sure the rails-static volume is refreshed
-    docker volume rm th_rails_static
-}
-
 cd $START_DIR
 
 case "$1" in
@@ -32,13 +25,9 @@ case "$1" in
         stop
         ;;
 
+    # Todo: I suspect this is not needed for systemd
     restart)
         stop
-        start
-        ;;
-
-    reload)
-        stop-web
         start
         ;;
 

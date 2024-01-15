@@ -406,10 +406,7 @@ push-prod:
 build-push:            delint tests build-prod push-prod
 build-full-deploy:     build-push full-deploy
 build-deploy:          build-push deploy-app
-build-upgrade:         build-push upgrade
-fast-build-upgrade:    build-push fast-upgrade
-faster-build-upgrade:  build-push faster-upgrade
-fastest-build-upgrade: fast-build-prod push-prod faster-upgrade
+fast-build-deploy:     fast-build-prod push-prod fast-deploy-app
 
 PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
 
@@ -437,6 +434,9 @@ refresh-prerelease:
 deploy-app:
 	$(DEPLOY) --tags=app
 
+fast-deploy-app:
+	$(DEPLOY) --tags=fast-upgrade
+
 deploy-app-bootstrap:
 	$(DEPLOY) --tags=app,db-create
 
@@ -453,15 +453,6 @@ deploy-foo:
 # To change some docker configuration locally since dnf update seems to reverts it
 local-docker-fix:
 	$(LOCAL_DEPLOY) --tags=local-docker-fix
-
-upgrade:
-	$(DEPLOY) --tags=app --extra-var fast_restart=true
-
-fast-upgrade:
-	$(DEPLOY) --tags=fast-upgrade --extra-var fast_restart=true
-
-faster-upgrade:
-	$(DEPLOY) --tags=fast-upgrade --skip-tags=migration --extra-var fast_restart=true
 
 restart-jobs:
 	$(RESTART) -e restart_list=jobs
