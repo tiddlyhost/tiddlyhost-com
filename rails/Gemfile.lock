@@ -154,7 +154,7 @@ GEM
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    grover (1.1.5)
+    grover (1.1.6)
       combine_pdf (~> 1.0)
       nokogiri (~> 1.0)
     haml (6.3.0)
@@ -214,7 +214,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.24.0)
-    parser (3.3.0.3)
+    parser (3.3.0.4)
       ast (~> 2.4.1)
       racc
     pay (6.8.1)
@@ -282,11 +282,11 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.2.6)
-    rubocop (1.59.0)
+    rubocop (1.60.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 3.2.2.4)
+      parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
@@ -412,7 +412,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 3.2.0p0
+   ruby 3.3.0p0
 
 BUNDLED WITH
    2.5.4
