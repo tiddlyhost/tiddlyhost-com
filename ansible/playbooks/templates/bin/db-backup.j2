@@ -12,4 +12,4 @@ mv {{ db_dump_file }} {{ db_dump_file }}.0
 # Make a new backup
 # (This usually runs as root, but keep the sudo here anyway.)
 sudo docker-compose -f {{ home_dir }}/docker-compose.yml exec -T db bash -c \
-  'pg_dump --dbname={{ db_name }} --username={{ db_user }}' | gzip > {{ db_dump_file }}
+  'pg_dump --dbname={{ db_name }} --username={{ db_user }} --create' | gzip > {{ db_dump_file }}
