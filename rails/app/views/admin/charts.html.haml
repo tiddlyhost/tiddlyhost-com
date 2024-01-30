@@ -1,0 +1,10 @@
+
+%h2 Charts
+
+= render 'tabs'
+
+= render 'line_chart',
+  width: 500,
+  height: 250,
+  data: @subscriber_count,
+  label: "Subscribers"

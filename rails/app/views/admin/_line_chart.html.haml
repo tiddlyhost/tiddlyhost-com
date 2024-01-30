@@ -1,0 +1,46 @@
+
+.chart
+
+  %canvas{ id: "myLineChart", width: width, height: height }
+
+  :javascript
+    (function(){
+      const data = #{data.to_json};
+
+      // Extracting labels and values from the data
+      const labels = data.map(item => item[0]);
+      const values = data.map(item => item[1]);
+
+      // Get the canvas element and create a 2d context
+      const ctx = document.getElementById('myLineChart').getContext('2d');
+
+      // Create a line chart
+      const myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '#{label}',
+            data: values,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0,
+            hoverPointRadius: 3,
+          }]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'day' },
+              // title: { display: true, text: 'Date' }
+            },
+            y: {
+              // title: { display: true, text: 'Value' }
+            }
+          }
+        }
+      });
+    })();

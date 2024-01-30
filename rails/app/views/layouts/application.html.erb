@@ -14,6 +14,12 @@
     <% if @need_stripe_js %>
       <script src="https://js.stripe.com/v3/"></script>
     <% end %>
+
+    <% if @need_chart_js %>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+    <% end %>
   </head>
 
   <body>

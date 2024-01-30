@@ -1,8 +1,12 @@
 require 'csv'
 
 class AdminController < ApplicationController
+  include AdminChartData
+
   before_action :authenticate_user!
   before_action :require_admin_user!
+
+  before_action :enable_chart_js, only: [:charts]
 
   def index
     @title = 'Stats'
@@ -217,6 +221,10 @@ class AdminController < ApplicationController
     render json: ActiveRecord::Base.connection.pool.stat.to_json
   end
 
+  def charts
+    @subscriber_count = chart_data(:subscriber_count)
+  end
+
   private
 
   def default_sort
@@ -257,6 +265,10 @@ class AdminController < ApplicationController
         @title = "#{@user.username_or_email}'s #{@title}"
       end
     end
+  end
+
+  def enable_chart_js
+    @need_chart_js = true
   end
 
 end
