@@ -1,0 +1,8 @@
+
+.dropdown{ style: "display: inline-block;" }
+  = link_to("", "#", class:'dropdown-toggle btn btn-light',
+    role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false')
+  .dropdown-menu{ 'aria-labelledby': 'dropdownMenuLink' }
+    - AdminChartData::KNOWN_CHARTS.each do |c|
+      = link_to({ action: :charts, chart: c }, class: 'dropdown-item') do
+        = c.titleize

@@ -222,7 +222,7 @@ class AdminController < ApplicationController
   end
 
   def charts
-    @subscriber_count = chart_data(:subscriber_count)
+    @chart_data = chart_data(params[:chart])
   end
 
   private
