@@ -349,6 +349,16 @@ feather-update: download-empty-feather
 	git commit -m 'chore: Upgrade Feather Wiki empties to version $(VER)' \
 	  -m 'Commit created with `VER=$(VER) make feather-update`'
 
+# Same thing for Classic
+#   VER=2.10.1 make classic-update
+classic-update: download-empty-classic
+	cp $(EMPTIES_DIR)/classic.html $(EMPTIES_DIR)/classic/$(VER).html
+	git add \
+	  $(EMPTIES_DIR)/classic.html \
+	  $(EMPTIES_DIR)/classic/$(VER).html
+	git commit -m 'chore: Upgrade TiddlyWiki Classic empties to $(VER)' \
+	  -m 'Commit created with `VER=$(VER) make classic-update`'
+
 #----------------------------------------------------------
 
 # Generate an SSL cert
