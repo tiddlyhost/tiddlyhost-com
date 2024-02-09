@@ -321,11 +321,16 @@ gzip-core-js-files:
 
 EMPTIES_DIR=rails/tw_content/empties
 
+require-var-%:
+	@[[ ! -z "$$$(*)" ]] || ( echo "Environment var $(*) is required." && exit 1 )
+
+ver-set: require-var-VER
+
 # All the steps needed for a TiddlyWiki upgrade
 # The version number must be provided manually like this:
 #   VER=5.3.1 make tw5-update
 #
-tw5-update: $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-core-js
+tw5-update: ver-set $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-core-js
 	cp $(EMPTIES_DIR)/tw5.html $(EMPTIES_DIR)/tw5/$(VER).html
 	cp $(EMPTIES_DIR)/tw5x.html $(EMPTIES_DIR)/tw5x/$(VER).html
 	git add \
@@ -341,7 +346,7 @@ tw5-update: $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-core-js
 # You must specify the version manually here too:
 #   VER=1.7.0 make feather-update
 #
-feather-update: download-empty-feather
+feather-update: ver-set download-empty-feather
 	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/Warbler_$(VER).html
 	git add \
 	  $(EMPTIES_DIR)/feather.html \
@@ -351,7 +356,7 @@ feather-update: download-empty-feather
 
 # Same thing for Classic
 #   VER=2.10.1 make classic-update
-classic-update: download-empty-classic
+classic-update: ver-set download-empty-classic
 	cp $(EMPTIES_DIR)/classic.html $(EMPTIES_DIR)/classic/$(VER).html
 	git add \
 	  $(EMPTIES_DIR)/classic.html \
@@ -487,8 +492,7 @@ db-backup:
 	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)
 	du -h -s $(DB_BACKUPS)
 
-s3-bucket-name:
-	@[[ ! -z "$$BUCKET_NAME" ]] || ( echo "BUCKET_NAME not set!" && exit 1 )
+s3-bucket-name: require-var-BUCKET_NAME
 
 # Assume you have suitable s3 credentials available
 
