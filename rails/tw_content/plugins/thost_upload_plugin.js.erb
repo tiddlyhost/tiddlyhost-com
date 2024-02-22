@@ -204,8 +204,7 @@ window.readOnly = false;
 window.showBackstage = true;
 
 // Add 'upload to tiddlyhost' button
-with (config.shadowTiddlers) {
-  SideBarOptions = SideBarOptions.replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
-}
+config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
+  .replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
 
 //}}}
