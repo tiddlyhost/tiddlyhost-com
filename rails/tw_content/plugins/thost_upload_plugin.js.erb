@@ -1,22 +1,16 @@
 /***
-|''Name:''         |ThostUploadPlugin |
-|''Description:''  |Support saving to Tiddlyhost.com |
-|''Version:''      |1.0.0 |
-|''Date:''         |March 06, 2021 |
-|''Source:''       |https://github.com/simonbaird/tiddlyhost/tree/main/rails/tw_content/plugins |
-|''Author:''       |BidiX, Simon Baird |
-|''License:''      |BSD open source license |
-|''~CoreVersion:'' |2.9.2 |
+|Name         |ThostUploadPlugin |
+|Description  |Support saving to Tiddlyhost.com |
+|Version      |1.0.1 |
+|Date         |March 06, 2021 |
+|Source       |https://github.com/simonbaird/tiddlyhost/tree/main/rails/tw_content/plugins |
+|Author       |BidiX, Simon Baird, Yakov Litvin |
+|License      |BSD open source license |
+|~CoreVersion |2.9.2 |
 ***/
 //{{{
 
-version.extensions.ThostUploadPlugin = {
-  major: 1, minor: 0, revision: 0,
-  date: new Date("Mar 06, 2021"),
-  source: 'https://github.com/simonbaird/tiddlyhost/rails/tw_content/plugins',
-  author: 'BidiX, Simon Baird',
-  coreVersion: '2.9.2'
-};
+version.extensions.ThostUploadPlugin = { major: 1, minor: 0, revision: 1 };
 
 //
 // Environment
@@ -116,7 +110,7 @@ bidix.thostUpload.uploadMain = function(uploadParams, original, posDiv) {
     }
   };
 
-  var revised = bidix.thostUpload.updateOriginal(original, posDiv);
+  var revised = updateOriginal(original, posDiv);
   bidix.thostUpload.httpUpload(uploadParams, revised, callback, uploadParams);
 };
 
@@ -175,28 +169,8 @@ bidix.thostUpload.httpUpload = function(uploadParams, data, callback, params) {
   return r;
 };
 
-// same as Saving's updateOriginal but without convertUnicodeToUTF8 calls
-bidix.thostUpload.updateOriginal = function(original, posDiv) {
-  if (!posDiv) {
-    posDiv = locateStoreArea(original);
-  }
-  if ((posDiv[0] == -1) || (posDiv[1] == -1)) {
-    alert(config.messages.invalidFileError.format([localPath]));
-    return;
-  }
-
-  var revised = original.substr(0, posDiv[0] + startSaveArea.length) + "\n" +
-    store.allTiddlersAsHtml() + "\n" +
-    original.substr(posDiv[1]);
-
-  var newSiteTitle = getPageTitle().htmlEncode();
-  revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-  revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
-  revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
-  revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
-  revised = updateMarkupBlock(revised,"POST-SCRIPT","MarkupPostBody");
-  return revised;
-};
+// a fix for versions before 2.9.2 (updateOriginal used conversions irrelevant for Tiddlyhost)
+convertUnicodeToFileFormat = function(s) { return s };
 
 //
 // Site config
@@ -224,8 +198,7 @@ window.readOnly = false;
 window.showBackstage = true;
 
 // Add 'upload to tiddlyhost' button
-with (config.shadowTiddlers) {
-  SideBarOptions = SideBarOptions.replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
-}
+config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
+  .replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
 
 //}}}
