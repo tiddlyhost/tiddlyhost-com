@@ -116,7 +116,7 @@ bidix.thostUpload.uploadMain = function(uploadParams, original, posDiv) {
     }
   };
 
-  var revised = bidix.thostUpload.updateOriginal(original, posDiv);
+  var revised = updateOriginal(original, posDiv);
   bidix.thostUpload.httpUpload(uploadParams, revised, callback, uploadParams);
 };
 
@@ -175,28 +175,8 @@ bidix.thostUpload.httpUpload = function(uploadParams, data, callback, params) {
   return r;
 };
 
-// same as Saving's updateOriginal but without convertUnicodeToUTF8 calls
-bidix.thostUpload.updateOriginal = function(original, posDiv) {
-  if (!posDiv) {
-    posDiv = locateStoreArea(original);
-  }
-  if ((posDiv[0] == -1) || (posDiv[1] == -1)) {
-    alert(config.messages.invalidFileError.format([localPath]));
-    return;
-  }
-
-  var revised = original.substr(0, posDiv[0] + startSaveArea.length) + "\n" +
-    store.allTiddlersAsHtml() + "\n" +
-    original.substr(posDiv[1]);
-
-  var newSiteTitle = getPageTitle().htmlEncode();
-  revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-  revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
-  revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
-  revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
-  revised = updateMarkupBlock(revised,"POST-SCRIPT","MarkupPostBody");
-  return revised;
-};
+// a fix for versions before 2.9.2 (updateOriginal used conversions irrelevant for Tiddlyhost)
+convertUnicodeToFileFormat = function(s) { return s };
 
 //
 // Site config
