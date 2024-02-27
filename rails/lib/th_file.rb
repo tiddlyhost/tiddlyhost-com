@@ -55,7 +55,18 @@ class ThFile < TwFile
     self
   end
 
-  def apply_tw5_mods(site_name, for_download: false, local_core: false, use_put_saver: false, is_logged_in: false)
+  # Determine if we think the user could make changes and save.
+  # (Used in the `TiddlyHostIsLoggedIn` tiddler for Classic and
+  # the `$:/status/IsLoggedIn` tiddler for TW5.)
+  def status_is_logged_in(is_logged_in: false, for_download: false)
+    if is_logged_in && !for_download
+      'yes'
+    else
+      'no'
+    end
+  end
+
+  def apply_tw5_mods(site_name, for_download:, local_core:, use_put_saver:, is_logged_in:)
     upload_url = if for_download || use_put_saver
       # Clear $:/UploadURL for downloads so the save button in the downloaded
       # file will not try to use upload.js. It should use another save
@@ -72,17 +83,6 @@ class ThFile < TwFile
       Settings.subdomain_site_url(site_name)
     end
 
-    if !for_download && is_logged_in
-      # Provide a way for TiddlyWiki files to detect when
-      # they're being viewed by their owner
-      status_is_logged_in = 'yes'
-
-    else
-      # The readonly plugin might user this to hide tiddler edit buttons, etc.
-      status_is_logged_in = 'no'
-
-    end
-
     write_tiddlers({
       # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
       '$:/UploadURL' => upload_url,
@@ -93,7 +93,7 @@ class ThFile < TwFile
       '$:/UploadWithUrlOnly' => 'yes',
 
       # Provide a way for TiddlyWikis to detect when they're able to be saved
-      '$:/status/IsLoggedIn' => status_is_logged_in,
+      '$:/status/IsLoggedIn' => status_is_logged_in(is_logged_in:, for_download:),
     })
 
     # Since every save uploads the entire TiddlyWiki I want to discourage
@@ -115,7 +115,7 @@ class ThFile < TwFile
     end
   end
 
-  def apply_classic_mods(site_name)
+  def apply_classic_mods(site_name, for_download:, is_logged_in:)
     # We don't want to hard code the site url in the plugin, but we also don't
     # want to hard code the domain name and port etc since they're different
     # in different environments. This is clever way to deal with that.
@@ -129,24 +129,29 @@ class ThFile < TwFile
       }
     })
 
-    # This could be a regular tiddler, but let's make it a shadow tiddler just to be cool.
-    # Will be clickable when viewing the plugin since we used 'TiddlyHost' as the modifier above.
-    # (I'm using camel case intentionally here despite the usual spelling of Tiddlyhost.)
     write_shadow_tiddlers({
+      # This could be a regular tiddler, but let's make it a shadow tiddler just to be cool.
+      # Will be clickable when viewing the plugin since we used 'TiddlyHost' as the modifier above.
+      # (I'm using camel case intentionally here despite the usual spelling of Tiddlyhost.)
       'TiddlyHost' => {
         text: "[[Tiddlyhost|#{Settings.main_site_url}]] is a hosting service for ~TiddlyWiki.",
         modifier: 'TiddlyHost',
-      }
+      },
+
+      # Used in the ThostUploadPlugin to ensure we don't render in readonly mode
+      'TiddlyHostIsLoggedIn' => {
+        text: status_is_logged_in(is_logged_in:, for_download:),
+        modifier: 'TiddlyHost',
+      },
     })
   end
 
   def apply_tiddlyhost_mods(site_name, for_download: false, local_core: false, use_put_saver: false, is_logged_in: false)
     if is_tw5?
-      apply_tw5_mods(site_name,
-        for_download: for_download, local_core: local_core, use_put_saver: use_put_saver, is_logged_in: is_logged_in)
+      apply_tw5_mods(site_name, for_download:, local_core:, use_put_saver:, is_logged_in:)
 
     elsif is_classic?
-      apply_classic_mods(site_name)
+      apply_classic_mods(site_name, for_download:, is_logged_in:)
 
     else # FeatherWiki
       # No hackery for FeatherWiki currently

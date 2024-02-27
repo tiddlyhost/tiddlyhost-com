@@ -192,10 +192,15 @@ bidix.initOption('txtThostSiteName','<%= site_name %>');
 // Tiddlyhost stuff
 //
 
-// So you can see edit controls via http
-config.options.chkHttpReadOnly = false;
-window.readOnly = false;
-window.showBackstage = true;
+if (config.shadowTiddlers.TiddlyHostIsLoggedIn == "yes") {
+  // If user is logged in to Tiddlyhost and viewing their own site then
+  // we disregard the original value of the chkHttpReadOnly cookie
+  config.options.chkHttpReadOnly = false
+  // window.readOnly gets set before plugins are loaded, so we need to
+  // set it here to make sure TW is editable, unlike window.showBackstage
+  // which is set after
+  window.readOnly = false
+}
 
 // Add 'upload to tiddlyhost' button
 config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
