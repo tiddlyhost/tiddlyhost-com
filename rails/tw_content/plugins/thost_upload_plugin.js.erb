@@ -200,10 +200,10 @@ if (config.shadowTiddlers.TiddlyHostIsLoggedIn == "yes") {
   // set it here to make sure TW is editable, unlike window.showBackstage
   // which is set after
   window.readOnly = false
-}
 
-// Add 'upload to tiddlyhost' button
-config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
-  .replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
+  // Add the 'save to tiddlyhost' button after the regular save button
+  config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
+    .replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
+}
 
 //}}}

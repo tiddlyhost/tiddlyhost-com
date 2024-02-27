@@ -139,6 +139,7 @@ class ThFile < TwFile
       },
 
       # Used in the ThostUploadPlugin to ensure we don't render in readonly mode
+      # and to show the 'save to tiddlyhost' button
       'TiddlyHostIsLoggedIn' => {
         text: status_is_logged_in(is_logged_in:, for_download:),
         modifier: 'TiddlyHost',
