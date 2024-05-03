@@ -128,6 +128,7 @@ GEM
     crass (1.0.6)
     css_parser (1.17.1)
       addressable
+    csv (3.2.8)
     daemons (1.4.1)
     dalli (3.2.8)
     date (3.3.4)
@@ -381,6 +382,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   charlock_holmes
+  csv
   daemons
   dalli
   delayed_job_active_record
