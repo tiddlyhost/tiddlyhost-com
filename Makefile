@@ -266,7 +266,7 @@ EMPTY_DIR=rails/tw_content/empties
 
 EMPTY_URL_tw5=https://tiddlywiki.com/empty.html
 EMPTY_URL_tw5x=https://tiddlywiki.com/empty-external-core.html
-EMPTY_URL_feather=https://feather.wiki/builds/FeatherWiki_Warbler.html
+EMPTY_URL_feather=https://feather.wiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html
 EMPTY_URL_classic=https://classic.tiddlywiki.com/empty.html
 EMPTY_URL_prerelease=https://tiddlywiki.com/prerelease/empty.html
 
@@ -292,7 +292,7 @@ prod-prerelease: $(PROD_PRERELEASE)
 # this isn't used regularly, but keep it in case I ever want to
 # build my own Feather Wiki empty for some reason.
 #
-FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_Warbler.html
+FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_$(FEATHER_BIRD).html
 FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
 $(FEATHER_EMPTY): $(FEATHER_BUILD)
 	cp $? $@
@@ -346,11 +346,12 @@ tw5-update: ver-set $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-c
 # You must specify the version manually here too:
 #   VER=1.7.0 make feather-update
 #
+FEATHER_BIRD=Skylark
 feather-update: ver-set download-empty-feather
-	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/Warbler_$(VER).html
+	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/$(VER).html
 	git add \
 	  $(EMPTIES_DIR)/feather.html \
-	  $(EMPTIES_DIR)/feather/Warbler_$(VER).html
+	  $(EMPTIES_DIR)/feather/$(VER).html
 	git commit -m 'chore: Upgrade Feather Wiki empties to version $(VER)' \
 	  -m 'Commit created with `VER=$(VER) make feather-update`'
 
