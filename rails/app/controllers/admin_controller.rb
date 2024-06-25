@@ -183,7 +183,7 @@ class AdminController < ApplicationController
   end
 
   def raw_download
-    klass = params[:tspot].present? ? TspotSite : Site
+    klass = params[:type] == 'TspotSite' ? TspotSite : Site
     site = klass.find(params[:id])
     blob_id = params[:blob_id]
 
