@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # As per https://stackoverflow.com/questions/7214166/full-urls-in-rails-logs
 # Used in config/application.rb

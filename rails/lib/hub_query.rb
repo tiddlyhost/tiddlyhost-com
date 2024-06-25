@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Because we chose to keep sites and tspot sites in separate schema with
 # unrelated models we need to do some extra work here.

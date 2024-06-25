@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Explanation: Because delayed job sees the job wrapper and not the actual
 # underlying job, `payload_object.respond_to?(:max_attempts)` in

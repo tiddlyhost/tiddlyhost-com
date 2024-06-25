@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from acts_as_taggable_on_engine (originally 1)
 if ActiveRecord.gem_version >= Gem::Version.new('5.0')
   class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]; end

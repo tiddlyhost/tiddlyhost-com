@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # Avoid an error due to Mail::Address not existing yet (??)
 require 'mail'

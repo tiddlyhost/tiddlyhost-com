@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Add52Empty < ActiveRecord::Migration[6.1]
 
   def up

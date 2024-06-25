@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAllowInIframeToSite < ActiveRecord::Migration[6.1]
   def change
     add_column :sites, :allow_in_iframe, :boolean, default: false

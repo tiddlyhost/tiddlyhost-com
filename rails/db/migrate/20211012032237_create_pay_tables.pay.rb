@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from pay (originally 1)
 class CreatePayTables < ActiveRecord::Migration[6.0]
   def change

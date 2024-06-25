@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class TspotSite < ApplicationRecord
   # We need to tweak the validations a little so disable the default validations.

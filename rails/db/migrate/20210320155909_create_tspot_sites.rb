@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTspotSites < ActiveRecord::Migration[6.1]
   def change
     create_table :tspot_sites do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # This is included in ApplicationController so these
 # methods can be used in controllers as well as views

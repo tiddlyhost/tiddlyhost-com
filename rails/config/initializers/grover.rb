@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 Grover.configure do |config|
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # See also test/mailers/previews/devise_bootstrap_mailer_preview
 # Based on https://github.com/bootstrap-email/bootstrap-email/issues/41

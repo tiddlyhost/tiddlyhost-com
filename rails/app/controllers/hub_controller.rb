@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HubController < ApplicationController
   PER_PAGE = 18
 

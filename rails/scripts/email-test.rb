@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Usage:
 #  rails runner scripts/email-test.rb

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddPutSaverFields < ActiveRecord::Migration[6.1]
   def change
     # Preserve the value from the old field

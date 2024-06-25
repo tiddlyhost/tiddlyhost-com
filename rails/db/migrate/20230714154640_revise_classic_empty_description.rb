@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReviseClassicEmptyDescription < ActiveRecord::Migration[7.0]
 
   def up

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NewEmptySchemaAndUpdates < ActiveRecord::Migration[6.1]
 
   def up
