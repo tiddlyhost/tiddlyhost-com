@@ -50,7 +50,7 @@ class TspotFetcherTest < ActiveSupport::TestCase
       ['mulder', '', tn1_crypt, false],
 
     ].each do |user, pass, crypt, expected|
-      assert_equal expected, !!TspotFetcher.passwd_match?(user, pass, crypt), "#{user}:#{pass}"
+      assert_equal expected, TspotFetcher.passwd_match?(user, pass, crypt), "#{user}:#{pass}"
     end
   end
 end
