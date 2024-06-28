@@ -43,6 +43,10 @@ class Settings
     SETTINGS[method.to_s]
   end
 
+  def self.respond_to_missing?(_)
+    true
+  end
+
   def self.secrets(*dig_args)
     Rails.application.credentials.dig(*dig_args)
   end
