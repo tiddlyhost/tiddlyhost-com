@@ -21,6 +21,17 @@ module WithThumbnail
     thumbnail.present? && thumbnail.blob.created_at > current_content.blob.created_at
   end
 
+  # See `find_or_build_blob` in
+  #  lib/active_storage/attached/changes/create_one.rb
+  #
+  def self.attachable_thumbnail_hash(png_content)
+    {
+      io: StringIO.new(png_content),
+      content_type: 'image/png',
+      filename: 'thumb.png',
+    }
+  end
+
   private
 
   # This is expensive since it spins up a headless chromium
@@ -62,16 +73,5 @@ module WithThumbnail
       {}
 
     end
-  end
-
-  # See `find_or_build_blob` in
-  #  lib/active_storage/attached/changes/create_one.rb
-  #
-  def self.attachable_thumbnail_hash(png_content)
-    {
-      io: StringIO.new(png_content),
-      content_type: 'image/png',
-      filename: 'thumb.png',
-    }
   end
 end
