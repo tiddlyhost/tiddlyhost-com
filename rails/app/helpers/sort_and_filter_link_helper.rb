@@ -43,7 +43,7 @@ module SortAndFilterLinkHelper
       klass = sort_css_class
     else
       # Clicking will select a new sort value
-      new_sort_by = sort_val_with_suffix(param_val, default_sort_dir == :desc)
+      new_sort_by = sort_val_with_suffix(param_val, sort_desc: default_sort_dir == :desc)
       klass = nil
     end
 
@@ -133,10 +133,10 @@ module SortAndFilterLinkHelper
   # For links
   #
   def flipped_sort_by(sort_val = sort_by)
-    sort_val_with_suffix(sort_val, !sort_desc?)
+    sort_val_with_suffix(sort_val, sort_desc: !sort_desc?)
   end
 
-  def sort_val_with_suffix(sort_val, sort_desc = false)
+  def sort_val_with_suffix(sort_val, sort_desc: false)
     "#{sort_val}#{DESC_SUFFIX if sort_desc}"
   end
 

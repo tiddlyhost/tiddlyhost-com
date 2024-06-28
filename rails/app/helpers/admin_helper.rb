@@ -41,7 +41,7 @@ module AdminHelper
     end
   end
 
-  def card_color(title, _value, alert = false)
+  def card_color(title, _value, alert: false)
     return 'red' if alert
 
     case title.downcase
