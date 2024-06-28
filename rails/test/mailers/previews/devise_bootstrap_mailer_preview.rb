@@ -51,7 +51,7 @@ class DeviseBootstrapMailerPreview < ActionMailer::Preview
   # set the "to" address realistically in the preview
   #
   def stub_unconfirmed_email
-    def @user.unconfirmed_email
+    define_singleton_method(@user, :unconfirmed_email) do
       'newemail@example.com'
     end
   end

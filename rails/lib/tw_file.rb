@@ -34,8 +34,8 @@ class TwFile
     end
 
     # Avoid ridiculously long inspect output
-    def @doc.inspect
-      super.truncate(2500, separator: ',')
+    @doc.define_singleton_method(:inspect) do |*args|
+      super(*args).truncate(2500, separator: ',')
     end
   end
 
