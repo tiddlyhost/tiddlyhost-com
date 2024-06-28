@@ -2,7 +2,7 @@
 
 #
 # Usage:
-#  rails runner scripts/email-test.rb
+#  rails runner scripts/email_test.rb
 #
 ActionMailer::Base.mail(
   from: Settings.devise_mailer_sender,
