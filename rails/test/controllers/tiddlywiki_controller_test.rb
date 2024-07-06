@@ -197,8 +197,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         site.update(prefer_put_saver: true, prefer_upload_saver: false)
         prev_blob_key = site.blob.key
 
-        new_content = site.th_file.
-          write_tiddlers({ 'NewTiddler' => 'Hi from put saver' }).to_html
+        new_content = site.th_file
+          .write_tiddlers({ 'NewTiddler' => 'Hi from put saver' }).to_html
 
         put_save_site_as_user(user: site.user, site:, content: new_content)
 
@@ -228,8 +228,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     @site.update(prefer_upload_saver: true)
     refute @site.use_put_saver?
 
-    new_content = @site.th_file.
-      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
+    new_content = @site.th_file
+      .write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
 
     modified_tw_file = "#{Rails.root}/test/fixtures/files/index.html"
     File.write(modified_tw_file, new_content)
@@ -245,8 +245,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   test 'put save with etag check' do
     assert @site.use_put_saver?
 
-    new_content = @site.th_file.
-      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
+    new_content = @site.th_file
+      .write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
 
     fetch_site_as_user
     etag = response.headers['ETag']
@@ -261,8 +261,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
   test 'put save will not overwrite' do
     assert @site.use_put_saver?
-    new_content = @site.th_file.
-      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
+    new_content = @site.th_file
+      .write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: @site.user, site: @site, content: new_content,
       headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
     assert_equal(
@@ -273,8 +273,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
   test 'put save requires auth' do
     assert @site.use_put_saver?
-    new_content = @site.th_file.
-      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
+    new_content = @site.th_file
+      .write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
       headers: { 'If-Match' => 'whatever' }, expected_status: 403)
     assert_equal(

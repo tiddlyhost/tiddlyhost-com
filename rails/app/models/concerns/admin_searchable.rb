@@ -8,7 +8,7 @@ module AdminSearchable
     # Assume there's already a search_for scope defined.
     #
     scope :admin_search_for, lambda { |search_text|
-      search_for(search_text).
-      or(where(id: search_text)) }
+      search_for(search_text)
+      .or(where(id: search_text)) }
   end
 end

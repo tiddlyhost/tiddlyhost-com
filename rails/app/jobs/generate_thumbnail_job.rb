@@ -19,11 +19,11 @@ class GenerateThumbnailJob < ApplicationJob
 
   def dupe_jobs(model_name, site_id)
     # This is hacky but I guess it works
-    Delayed::Job.
-      where('locked_by IS NULL').
-      where("handler like '%GenerateThumbnailJob\n%'").
-      where("handler like '%  - #{model_name}\n%'").
-      where("handler like '%  - #{site_id}\n%'")
+    Delayed::Job
+      .where('locked_by IS NULL')
+      .where("handler like '%GenerateThumbnailJob\n%'")
+      .where("handler like '%  - #{model_name}\n%'")
+      .where("handler like '%  - #{site_id}\n%'")
   end
 
   # Help identify problematic sites

@@ -27,12 +27,12 @@ class DeviseBootstrapMailer < Devise::Mailer
   alias_method :orig_subject_for, :subject_for
 
   def email_title_for(action)
-    orig_subject_for(action).
-      # Tweak the defaults a little
-      sub(/Changed$/i, 'change notification').
-      sub(/^Confirmation/i, 'Email confirmation').
-      sub(/^Reset password/i, 'Password reset').
-      sub(/instructions$/i, '')
+    # Tweak the defaults a little
+    orig_subject_for(action)
+      .sub(/Changed$/i, 'change notification')
+      .sub(/^Confirmation/i, 'Email confirmation')
+      .sub(/^Reset password/i, 'Password reset')
+      .sub(/instructions$/i, '')
   end
 
   def subject_for(action)

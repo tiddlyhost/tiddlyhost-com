@@ -131,11 +131,11 @@ module HubQuery
 
     # Do our own counts because the built in taggings_count value
     # is for all sites, not just sites visible in the hub
-    tagging.
-      group_by { |t| t.tag.name }.
-      map { |k, v| [k, -v.count] }.
-      sort_by(&:last).
-      map(&:first).
-      reject { |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags) || []) }
+    tagging
+      .group_by { |t| t.tag.name }
+      .map { |k, v| [k, -v.count] }
+      .sort_by(&:last)
+      .map(&:first)
+      .reject { |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags) || []) }
   end
 end
