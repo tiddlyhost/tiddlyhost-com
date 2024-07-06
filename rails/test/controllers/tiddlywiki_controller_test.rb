@@ -48,7 +48,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     get url
     assert_response :success
     assert_equal json, JSON.parse(response.body) if json
-    assert_equal titles, JSON.parse(response.body).map { |v| v['title'] } if titles
+    assert_equal(titles, JSON.parse(response.body).map { |v| v['title'] }) if titles
   end
 
   test 'text/:title.tid' do
