@@ -4,3 +4,214 @@ AllCops:
   Exclude:
     - 'db/schema.rb'
   NewCops: enable
+
+  # TODO: Add the suggested extensions
+  SuggestExtensions: false
+
+# I thought we liked these..?
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+# It wants comment blocks above each class
+Style/Documentation:
+  Enabled: false
+
+# It wants to put them on a single line, which I don't like much
+Style/EmptyMethod:
+  Enabled: false
+
+# Sometimes ModuleName::ClassName is better
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# I'll decide when/if to use these
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+# I prefer no space for actual commented out code,
+# as opposed to actual commentary
+Layout/LeadingCommentSpace:
+  Enabled: false
+
+# I'd rather have a consistent indent than to force it to
+# line it up with a particular column in the line above
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+# Let me choose what looks better
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Layout/MultilineHashBraceLayout:
+  Enabled: false
+
+Layout/BlockEndNewline:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+# Maybe we'll take a look at the metrics some day, but for now we don't care
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+# For this:
+# a = if ..
+# else
+# end
+Layout/ElseAlignment:
+  Enabled: false
+
+Layout/EndAlignment:
+  Enabled: false
+
+# a = case
+# ...
+# end
+Layout/CaseIndentation:
+  Enabled: false
+
+Layout/MultilineArrayBraceLayout:
+  Enabled: false
+
+Layout/MultilineBlockLayout:
+  Enabled: false
+
+Layout/ArrayAlignment:
+  Enabled: false
+
+# Sometimes it helps readability
+Style/RedundantSelf:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+# Whatever
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+
+# Meh..
+Naming/PredicateName:
+  Enabled: false
+
+Style/NestedTernaryOperator:
+  Enabled: false
+
+# Whatever
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+# Someday maybe
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+# Whatever
+Naming/AccessorMethodName:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+# Probably a good idea, but the autocorrect doesn't handle the
+# change neatly, so let's revisit
+Style/GuardClause:
+  Enabled: false
+
+# Sometimes putting the condition at the end makes it less readable so let's
+# not force it to be that way
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Also usually a good idea, but let's not force it
+Style/ConditionalAssignment:
+  Enabled: false
+
+# Sometimes I want to throw in a begin end for clarity of intent
+Style/RedundantBegin:
+  Enabled: false
+
+# Same idea...
+Style/EmptyElse:
+  Enabled: false
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+# Not sure why this is considered a good idea...
+Lint/SafeNavigationChain:
+  Enabled: false
+
+# TODO instead of Todo, etc. Let's come back to it.
+Style/CommentAnnotation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Exclude:
+  - "lib/logger_with_domain.rb"
+  - "lib/thost_logger.rb"
+
+Style/OpenStructUse:
+  Exclude:
+  - "lib/settings.rb"
+
+Layout/FirstArgumentIndentation:
+  Exclude:
+  - "lib/hub_query.rb"
