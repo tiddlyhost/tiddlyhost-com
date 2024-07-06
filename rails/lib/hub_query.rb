@@ -31,7 +31,7 @@ module HubQuery
       ])
   end
 
-  def self.paginated_sites(page:, per_page:, sort_by:, templates_only: false, tag:, user:, search:, kind: nil, for_hub: true, extra_fields_in_select: [])
+  def self.paginated_sites(page:, per_page:, sort_by:, tag:, user:, search:, templates_only: false, kind: nil, for_hub: true, extra_fields_in_select: [])
     # Work with two separate queries, one for each model
     qs = [
       #
