@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AddPreMergeJsonStoreEmpty < ActiveRecord::Migration[6.1]
-
   def up
     (Empty.find_or_create_by(name: 'tw5-json-store-test') do |e|
       e.title = 'New JSON store format pre-merge for test only'
@@ -14,5 +13,4 @@ class AddPreMergeJsonStoreEmpty < ActiveRecord::Migration[6.1]
     # Disable it but don't delete it since there might be sites using it
     Empty.find_by_name('tw5-json-store-test').update(enabled: false)
   end
-
 end

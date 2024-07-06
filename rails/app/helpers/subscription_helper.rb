@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module SubscriptionHelper
-
   def feature_descriptions_for(plan)
     feature_list = case plan
     when :free
@@ -71,5 +70,4 @@ module SubscriptionHelper
   def subscription_when(ts)
     distance_of_time_in_words(Date.today, ts.to_date)
   end
-
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-
   #
   # Devise for user signups and authentication
   # (but exclude it for Tiddlyspot routes)
@@ -9,12 +8,10 @@ Rails.application.routes.draw do
   constraints(->(req) {
     req.domain != Settings.tiddlyspot_host
   }) do
-
     devise_for :users, controllers: {
       registrations: :registrations,
       sessions: :sessions,
     }
-
   end
 
   #
@@ -23,7 +20,6 @@ Rails.application.routes.draw do
   constraints(->(req) {
     req.domain == Settings.main_site_host && req.subdomain.present? && req.subdomain != 'www'
   }) do
-
     match '/', to: 'tiddlywiki#serve', via: [:get, :options]
     match '/tiddlers.json', to: 'tiddlywiki#json_content', via: [:get, :options]
     match '/text/:title.tid', to: 'tiddlywiki#tid_content', via: [:get, :options]
@@ -42,7 +38,6 @@ Rails.application.routes.draw do
   constraints(->(req) {
     req.domain == Settings.main_site_host && (req.subdomain.blank? || req.subdomain == 'www')
   }) do
-
     root to: 'home#index'
 
     get 'home/index'
@@ -95,7 +90,6 @@ Rails.application.routes.draw do
         get "download_version/:blob_id", action: "download_version"
         post "restore_version/:blob_id", action: "restore_version"
         post "discard_version/:blob_id", action: "discard_version"
-
       end
     end
 
@@ -105,7 +99,6 @@ Rails.application.routes.draw do
         collection do
           get :claim_form
           post :claim
-
         end
 
         member do
@@ -121,7 +114,6 @@ Rails.application.routes.draw do
       end
 
     end
-
   end
 
   if Settings.tiddlyspot_enabled?
@@ -131,7 +123,6 @@ Rails.application.routes.draw do
     constraints(->(req) {
       req.domain == Settings.tiddlyspot_host && req.subdomain.present? && req.subdomain != 'www'
     }) do
-
       get '/', to: 'tiddlyspot#serve'
       get '/index.html', to: 'tiddlyspot#serve'
       options '/', to: 'tiddlyspot#options'
@@ -149,9 +140,7 @@ Rails.application.routes.draw do
     constraints(->(req) {
       req.domain == Settings.tiddlyspot_host && (req.subdomain.blank? || req.subdomain == 'www')
     }) do
-
       get '/', to: 'tiddlyspot#home'
-
     end
 
   end
@@ -162,5 +151,4 @@ Rails.application.routes.draw do
   get '/404', to: "home#error_404"
   get '/422', to: "home#error_422"
   get '/500', to: "home#error_500"
-
 end

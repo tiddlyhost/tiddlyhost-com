@@ -3,7 +3,6 @@
 require "test_helper"
 
 class DeviseBootstrapMailerTest < ActionMailer::TestCase
-
   def setup
     @user = users(:bobby)
     @token = 'abc123'
@@ -50,5 +49,4 @@ class DeviseBootstrapMailerTest < ActionMailer::TestCase
       assert_match /Tiddlyhost/, email.text_part.body.decoded
     end
   end
-
 end

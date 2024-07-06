@@ -3,7 +3,6 @@
 require "test_helper"
 
 class HubControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     @user = users(:bobby)
     @site = sites(:mysite)
@@ -62,5 +61,4 @@ class HubControllerTest < ActionDispatch::IntegrationTest
   def assert_site_not_visible(site=@site)
     assert_select(".hub .site##{site.name}", count: 0)
   end
-
 end

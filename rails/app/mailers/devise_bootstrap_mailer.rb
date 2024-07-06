@@ -5,7 +5,6 @@
 # Based on https://github.com/bootstrap-email/bootstrap-email/issues/41
 #
 class DeviseBootstrapMailer < Devise::Mailer
-
   layout 'bootstrap-mailer'
   default template_path: 'devise/mailer'
 
@@ -39,5 +38,4 @@ class DeviseBootstrapMailer < Devise::Mailer
   def subject_for(action)
     "Tiddlyhost #{email_title_for(action).downcase}"
   end
-
 end

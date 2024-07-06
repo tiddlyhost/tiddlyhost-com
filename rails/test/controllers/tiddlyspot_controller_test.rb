@@ -3,7 +3,6 @@
 require "test_helper"
 
 class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
-
   test "home page" do
     host! Settings.tiddlyspot_host
     get '/'
@@ -200,5 +199,4 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1', '404 Not Found', response.body
     assert_mock mock if mock
   end
-
 end

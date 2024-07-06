@@ -3,7 +3,6 @@
 require "test_helper"
 
 class UserSignupTest < CapybaraIntegrationTest
-
   test "user signup" do
     name, email, username, weak_password, strong_password =
       'Testy McTest', 'tmctest@mail.com', 'tmt', 'trstno1', 'trUst|no1'
@@ -61,7 +60,5 @@ class UserSignupTest < CapybaraIntegrationTest
     # New user has the basic user type
     user = User.find_by_email('tmctest@mail.com')
     assert_equal 'basic', user.user_type.name
-
   end
-
 end

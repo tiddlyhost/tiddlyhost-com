@@ -38,7 +38,6 @@ module NewSiteHelper
     Site.create!({ name: name, empty_id: empty.id, user_id: user.id }.
       merge(WithSavedContent.attachment_params(tw_html)))
   end
-
 end
 
 class ActiveSupport::TestCase
@@ -67,7 +66,6 @@ class ActionDispatch::IntegrationTest
     yield mock if block_given?
     mock
   end
-
 end
 
 class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
@@ -87,5 +85,4 @@ class CapybaraIntegrationTest < ActionDispatch::IntegrationTest
     Capybara.reset_sessions!
     Capybara.use_default_driver
   end
-
 end

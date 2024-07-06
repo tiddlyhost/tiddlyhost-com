@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class NewEmptySchemaAndUpdates < ActiveRecord::Migration[6.1]
-
   def up
     add_column :empties, :display_order, :integer, default: 100
     add_column :empties, :primary, :bool, default: false
@@ -63,5 +62,4 @@ class NewEmptySchemaAndUpdates < ActiveRecord::Migration[6.1]
     remove_column :empties, :primary
     remove_column :empties, :display_order
   end
-
 end

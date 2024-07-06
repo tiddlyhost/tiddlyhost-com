@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-
   include Recaptcha::Adapters::ViewMethods
 
   def nav_link_to(title, link, opts={})
@@ -92,11 +91,13 @@ module ApplicationHelper
   # Fixme: use number_to_human_size here too
   def as_megabytes(bytes, precision: 2)
     return '-' if bytes.nil?
+
     number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
   end
 
   def nice_timestamp(timestamp, brief: false)
     return '-' unless timestamp
+
     content_tag :span, title: timestamp.to_s do
       brief ? brief_time_ago_in_words(timestamp) : "#{time_ago_in_words(timestamp)} ago"
     end
@@ -200,5 +201,4 @@ module ApplicationHelper
   def text_join(*strings)
     strings.join(" ")
   end
-
 end

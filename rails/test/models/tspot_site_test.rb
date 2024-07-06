@@ -3,7 +3,6 @@
 require "test_helper"
 
 class TspotSiteTest < ActiveSupport::TestCase
-
   setup do
     @site_name = 'mysite'
     @site = TspotSite.find_by_name(@site_name)
@@ -92,7 +91,6 @@ class TspotSiteTest < ActiveSupport::TestCase
     # Previous passwords don't work
     refute @site.passwd_ok?('mysite', @new_passwd)
     refute @site.passwd_ok?('mysite', @old_passwd)
-
   end
 
   # See also test/controllers/tiddlyspot_controller_test

@@ -3,7 +3,6 @@
 require "test_helper"
 
 class AdminControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     @admin = users(:mary)
     @admin.update(user_type: UserType.superuser)
@@ -43,5 +42,4 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
       assert_match /^\d\d\d\d-\d\d-\d\d,\d$/, line
     end
   end
-
 end

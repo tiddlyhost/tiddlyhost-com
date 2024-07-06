@@ -119,5 +119,4 @@ class TspotSitesController < ApplicationController
       require(:tspot_site).
       permit(:password, :password_confirmation)
   end
-
 end

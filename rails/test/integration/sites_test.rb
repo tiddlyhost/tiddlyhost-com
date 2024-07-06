@@ -206,5 +206,4 @@ class SitesTest < CapybaraIntegrationTest
     assert_selector "title", text: "#{status_code} #{status_message}", visible: false
     assert_selector "h1", text: "#{status_code} #{status_message}"
   end
-
 end

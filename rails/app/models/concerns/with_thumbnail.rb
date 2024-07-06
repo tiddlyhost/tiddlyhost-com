@@ -76,5 +76,4 @@ module WithThumbnail
       filename: 'thumb.png',
     }
   end
-
 end

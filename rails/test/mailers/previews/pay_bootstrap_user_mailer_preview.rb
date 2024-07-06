@@ -7,7 +7,6 @@
 # Todo: Figure out which of these we are really using.
 #
 class PayBootstrapUserMailerPreview < ActionMailer::Preview
-
   def initialize(params = {})
     @user = User.first
     @customer = @user.pay_customer_stripe
@@ -61,5 +60,4 @@ class PayBootstrapUserMailerPreview < ActionMailer::Preview
   def do_email(email_type)
     PayBootstrapUserMailer.with(@email_params).send(email_type)
   end
-
 end

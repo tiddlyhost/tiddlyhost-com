@@ -93,5 +93,4 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 2, hub_query(user: @user).count
     assert_equal 0, hub_query(user: users(:mary)).count
   end
-
 end

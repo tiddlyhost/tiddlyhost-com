@@ -28,6 +28,7 @@ module Subscriber
   def checkout_session_for(plan, frequency=:monthly)
     price_id = Settings.stripe_product(plan, frequency)&.id
     raise "Can't find price id for #{plan.inspect}, #{frequency.inspect}!" unless price_id
+
     checkout_session_for_price_id(price_id)
   end
 
@@ -86,5 +87,4 @@ module Subscriber
   def has_subscription?
     subscribed? || alt_subscription.present?
   end
-
 end

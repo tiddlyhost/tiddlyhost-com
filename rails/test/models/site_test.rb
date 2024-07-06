@@ -16,7 +16,6 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   test "name validation" do
-
     # These names are invalid
     [
       "-aaa",
@@ -53,7 +52,6 @@ class SiteTest < ActiveSupport::TestCase
       @site.update(name: valid_name)
       assert @site.valid?, "#{valid_name} unexpectedly disallowed!"
     end
-
   end
 
   test "view counts and timestamps" do
@@ -201,5 +199,4 @@ class SiteTest < ActiveSupport::TestCase
     assert @site.reload.thumbnail.present?
     assert_equal 'image/png', @site.thumbnail.blob.content_type
   end
-
 end

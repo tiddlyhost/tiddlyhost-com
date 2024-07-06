@@ -22,5 +22,4 @@ module Settings::Features
   def redirect_tspot_to_url_enabled?(user)
     user&.is_admin? || user&.has_subscription?
   end
-
 end

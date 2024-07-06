@@ -3,7 +3,6 @@
 require "test_helper"
 
 class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     @user = users(:bobby)
     @tiddlers = { 'MyTiddler'=>'Hi there', 'Foo'=>'Bar', 'Baz'=>'123' }
@@ -43,7 +42,6 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     ].each do |query|
       assert_expected_json(**query)
     end
-
   end
 
   def assert_expected_json(url:, json: nil, titles: nil)
@@ -351,5 +349,4 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
     assert_response expected_status
   end
-
 end

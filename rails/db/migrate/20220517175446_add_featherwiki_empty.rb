@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AddFeatherwikiEmpty < ActiveRecord::Migration[6.1]
-
   def up
     (Empty.find_or_create_by(name: 'feather') do |e|
       e.title = 'Feather Wiki'
@@ -14,5 +13,4 @@ class AddFeatherwikiEmpty < ActiveRecord::Migration[6.1]
     # Disable it but don't delete it since there might be sites using it
     Empty.find_by_name('feather').update(enabled: false)
   end
-
 end

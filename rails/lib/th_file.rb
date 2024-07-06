@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ThFile < TwFile
-
   #
   # Note: Some of this is duplicated now in app/models/empty.rb
   # but let's leave it alone for now. It is used (only?) when
@@ -177,5 +176,4 @@ class ThFile < TwFile
         match(%r{bidix\.initOption\('txtThostSiteName','([a-z0-9-]+)'\);})&.send(:[], 1)
     end
   end
-
 end

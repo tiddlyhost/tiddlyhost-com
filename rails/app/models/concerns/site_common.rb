@@ -90,6 +90,7 @@ module SiteCommon
   # Remove Feather Wiki variant prefix, e.g. "Warbler_1.5.0" -> "1.5.0"
   def tw_version_short
     return tw_version unless is_feather?
+
     tw_version&.sub(/^[A-Za-z]+_/, '')
   end
 
@@ -122,5 +123,4 @@ module SiteCommon
   def access_hub_listed?
     hub_listed?
   end
-
 end

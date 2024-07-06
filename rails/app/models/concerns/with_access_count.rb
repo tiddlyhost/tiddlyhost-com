@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module WithAccessCount
-
   def touch_accessed_at
     gentle_touch_timestamp(:accessed_at)
   end
@@ -34,5 +33,4 @@ module WithAccessCount
     # Use update_column to avoid automatically touching updated_at
     update_column(field_name, send(field_name) + 1)
   end
-
 end

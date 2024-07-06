@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module SitesHelper
-
   def site_link(site, opts={})
     link_title = opts.delete(:link_title)
     link_to site.url, {target: '_blank'}.merge(opts) do
@@ -112,5 +111,4 @@ module SitesHelper
     opac = 100 - 23 * (how_far_under + 3)
     "opacity: #{opac.clamp(0,100)}%;"
   end
-
 end

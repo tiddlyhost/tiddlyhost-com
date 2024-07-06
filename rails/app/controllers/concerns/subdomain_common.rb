@@ -14,5 +14,4 @@ module SubdomainCommon
   def etag_header
     response.set_header 'ETag', @site.tw_etag
   end
-
 end

@@ -3,7 +3,6 @@
 require "test_helper"
 
 class TwFileTest < ActiveSupport::TestCase
-
   test "adding a tiddler" do
     tw = TwFile.new(minimal_html(:tw5))
     tw.write_tiddlers({'foo' => 'bar'})
@@ -71,7 +70,6 @@ class TwFileTest < ActiveSupport::TestCase
       }.each do |tiddler_name, expected_content|
         assert_equal expected_content, tw.tiddler_content(tiddler_name)
       end
-
     end
   end
 
@@ -132,7 +130,6 @@ class TwFileTest < ActiveSupport::TestCase
 
     # Garbage data
     refute TwFile.new(File.read("#{Rails.root}/app/assets/images/favicon.ico")).looks_valid?
-
   end
 
   test "light get version" do
@@ -172,7 +169,6 @@ class TwFileTest < ActiveSupport::TestCase
 
       modified_tag = th_file.inject_external_core_url_prefix.external_core_script_tag
       assert_equal "http://example.com/tiddlywikicore-#{tw_version}.js", modified_tag['src']
-
     end
   end
 
@@ -202,5 +198,4 @@ class TwFileTest < ActiveSupport::TestCase
   def minimal_html(type)
     File.read("test/data/minimal_#{type}.html")
   end
-
 end

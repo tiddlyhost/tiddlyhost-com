@@ -24,5 +24,4 @@ module WithDefault
   def is_default?
     self.class.is_default?(self)
   end
-
 end

@@ -23,5 +23,4 @@ module SafeModeUrls
 
     end
   end
-
 end

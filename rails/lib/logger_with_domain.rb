@@ -11,7 +11,6 @@
 #    Started POST "/" for 172.20.0.1 at 2021-03-26 08:10:39 +0000
 #
 class LoggerWithDomain < Rails::Rack::Logger
-
   def started_request_message(request)
     'Started %s "%s%s%s" for %s at %s' % [
       request.request_method,
@@ -21,5 +20,4 @@ class LoggerWithDomain < Rails::Rack::Logger
       request.ip,
       Time.now.to_s ]
   end
-
 end

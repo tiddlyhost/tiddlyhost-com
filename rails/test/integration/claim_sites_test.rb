@@ -4,7 +4,6 @@ require 'test_helper'
 require 'minitest/mock'
 
 class ClaimSitesTest < CapybaraIntegrationTest
-
   setup do
     sign_in users(:bobby)
   end
@@ -113,6 +112,4 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com', count: 0
     assert site.reload.deleted?
   end
-
-
 end

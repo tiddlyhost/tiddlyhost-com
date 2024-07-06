@@ -32,5 +32,4 @@ class SubscriptionController < ApplicationController
       @need_stripe_js = true
     end
   end
-
 end

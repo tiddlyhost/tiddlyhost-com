@@ -155,6 +155,7 @@ class Site < ApplicationRecord
     return true if is_tw5? && use_put_saver? != default_to_put_saver?
     return true if allow_public_clone?
     return true if allow_in_iframe?
+
     false
   end
 
@@ -188,6 +189,7 @@ class Site < ApplicationRecord
   # See also app/jobs/prune_attachments_job.
   def keep_count
     return Settings.keep_counts[:standard] if site_history_enabled?
+
     Settings.keep_counts[:free]
   end
 
@@ -196,5 +198,4 @@ class Site < ApplicationRecord
   def site_history_enabled?
     Settings.feature_enabled?(:site_history, user)
   end
-
 end

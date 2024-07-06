@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Add52Empty < ActiveRecord::Migration[6.1]
-
   def up
     (Empty.find_or_create_by(name: 'prerelease') do |e|
       e.title = 'TiddlyWiki 5.2.0 Pre-release'
@@ -20,5 +19,4 @@ class Add52Empty < ActiveRecord::Migration[6.1]
     # Re-enable the old preview I guess
     Empty.find_by_name('tw5-json-store-test').update(enabled: true)
   end
-
 end

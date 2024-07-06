@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module AdminHelper
-
   def link_to_user_sites(text, user, opts={})
     link_to(text, { controller: :admin,
       action: opts.delete(:action) || action_name,
@@ -15,6 +14,7 @@ module AdminHelper
 
   def link_to_user_hub_with_count(user)
     return unless user.has_username?
+
     link_to(hub_user_url(user.username), target: '_blank') do
       safe_join([pluralize(user.hub_sites_count, 'hub site'),
       bi_icon('arrow-right-short')])
@@ -43,6 +43,7 @@ module AdminHelper
 
   def card_color(title, value, alert=false)
     return 'red' if alert
+
     case title.downcase
     when /users/, /active/, /subscriptions/
       'yellow'
@@ -54,5 +55,4 @@ module AdminHelper
       'plain'
     end
   end
-
 end

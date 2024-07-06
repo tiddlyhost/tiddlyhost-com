@@ -3,7 +3,6 @@
 require "test_helper"
 
 class TspotFetcherTest < ActiveSupport::TestCase
-
   setup do
     @fetcher = TspotFetcher.new('somesite')
   end
@@ -54,5 +53,4 @@ class TspotFetcherTest < ActiveSupport::TestCase
       assert_equal expected, !!TspotFetcher.passwd_match?(user, pass, crypt), "#{user}:#{pass}"
     end
   end
-
 end

@@ -4,7 +4,6 @@
 # Read settings from config/settings.yml and config/settings_local.yml
 #
 class Settings
-
   # Used to avoid throwing errors if build-info.txt is not there
   PLACEHOLDER_BUILD_INFO = {
     "date" => "Wed May 4 12:41:58 PM EDT 2022",
@@ -26,6 +25,7 @@ class Settings
     read_settings = ->(settings_file) do
       file_name = "#{rails_root}/#{settings_file}"
       return nil unless File.exist?(file_name)
+
       erb_template = ERB.new(File.read(file_name))
       settings_yaml = erb_template.result_with_hash(is_in_container: is_in_container, rails_root: rails_root)
       YAML.load(settings_yaml) || {}
@@ -134,5 +134,4 @@ class Settings
   def self.stripe_product_by_id(plan_id)
     OpenStruct.new(stripe_products&.values.map(&:values).flatten.find{|p| p[:id] == plan_id})
   end
-
 end

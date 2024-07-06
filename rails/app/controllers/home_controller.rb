@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-
   def index
     if user_signed_in?
       redirect_to sites_path
@@ -74,8 +73,6 @@ class HomeController < ApplicationController
       format.all do
         head status_code
       end
-
     end
   end
-
 end

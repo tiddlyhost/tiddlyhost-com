@@ -193,5 +193,4 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 3, new_blob_ids.count
     assert_equal blob_ids[0..-2], new_blob_ids
   end
-
 end

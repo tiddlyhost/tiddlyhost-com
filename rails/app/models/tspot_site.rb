@@ -98,6 +98,7 @@ class TspotSite < ApplicationRecord
 
   def ensure_destubbed(ip_address=nil)
     return self unless is_stub?
+
     update(fetcher_attrs)
     self
   end
@@ -156,6 +157,7 @@ class TspotSite < ApplicationRecord
     return true if allow_in_iframe?
     return true if redirect_to_url.present?
     return true if redirect_to_site_id.present?
+
     false
   end
 
@@ -194,5 +196,4 @@ class TspotSite < ApplicationRecord
   def keep_count
     1
   end
-
 end

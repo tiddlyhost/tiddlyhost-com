@@ -29,6 +29,7 @@ class User < ApplicationRecord
 
   def all_sites
     return sites unless Settings.tiddlyspot_enabled?
+
     sites + tspot_sites
   end
 
@@ -137,6 +138,7 @@ class User < ApplicationRecord
   # The default is set in config/initializers/devise
   def timeout_in
     return 12.hours if is_admin?
+
     super
   end
 
@@ -144,5 +146,4 @@ class User < ApplicationRecord
   def after_confirmation
     th_log("Account #{id} #{email} confirmation")
   end
-
 end

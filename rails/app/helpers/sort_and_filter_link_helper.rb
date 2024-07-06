@@ -5,7 +5,6 @@
 # methods can be used in controllers as well as views
 #
 module SortAndFilterLinkHelper
-
   def filter_results(unfiltered_results)
     filtered_results = unfiltered_results
 
@@ -217,5 +216,4 @@ module SortAndFilterLinkHelper
   def get_controller
     is_a?(ApplicationController) ? self : controller
   end
-
 end

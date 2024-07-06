@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ReviseFeatherwikiDescription < ActiveRecord::Migration[7.0]
-
   def up
     # Should match what's in db/seeds/empties.yml
     EmptyMigrationHelper.apply_empty_changes(%{
@@ -15,5 +14,4 @@ class ReviseFeatherwikiDescription < ActiveRecord::Migration[7.0]
 
   def down
   end
-
 end

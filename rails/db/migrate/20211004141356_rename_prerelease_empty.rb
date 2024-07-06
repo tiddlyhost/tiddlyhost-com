@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class RenamePrereleaseEmpty < ActiveRecord::Migration[6.1]
-
   def up
     #
     # It used to say something about 5.2.0.
@@ -16,5 +15,4 @@ class RenamePrereleaseEmpty < ActiveRecord::Migration[6.1]
   def down
     # Don't worry about it...
   end
-
 end

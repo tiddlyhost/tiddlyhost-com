@@ -12,7 +12,6 @@ module SiteHistory
 
     before_action :set_blob_id,
       only: [:view_version, :download_version, :restore_version, :discard_version]
-
   end
 
   def history
@@ -55,5 +54,4 @@ module SiteHistory
   def set_blob_id
     @blob_id = params[:blob_id]
   end
-
 end

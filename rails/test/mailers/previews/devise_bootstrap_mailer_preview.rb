@@ -5,7 +5,6 @@
 # - http://tiddlyhost.local:3333/rails/mailers/ or https://tiddlyhost.local/rails/mailers/
 #
 class DeviseBootstrapMailerPreview < ActionMailer::Preview
-
   def initialize(params = {})
     @user = User.first
     @token = 'abc123'
@@ -56,5 +55,4 @@ class DeviseBootstrapMailerPreview < ActionMailer::Preview
       'newemail@example.com'
     end
   end
-
 end

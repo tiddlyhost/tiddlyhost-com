@@ -86,5 +86,4 @@ class HubController < ApplicationController
   def default_sort
     @show_templates ? :cl : :v
   end
-
 end

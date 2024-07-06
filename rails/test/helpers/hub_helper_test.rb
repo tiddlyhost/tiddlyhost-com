@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class HubHelperTest < ActionView::TestCase
-
   test "nice view count" do
     {
       123 => '123',
@@ -14,5 +13,4 @@ class HubHelperTest < ActionView::TestCase
       assert_equal expected, nice_view_count(view_count)
     end
   end
-
 end

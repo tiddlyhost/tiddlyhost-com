@@ -24,5 +24,4 @@ class PopulatePlans < ActiveRecord::Migration[6.1]
     #User.update_all(plan_id: nil)
     #Plan.delete_all
   end
-
 end

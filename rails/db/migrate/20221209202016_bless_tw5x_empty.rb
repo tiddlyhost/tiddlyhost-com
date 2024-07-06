@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class BlessTw5xEmpty < ActiveRecord::Migration[6.1]
-
   def up
     EmptyMigrationHelper.apply_empty_changes(%{
       tw5x:
@@ -36,5 +35,4 @@ class BlessTw5xEmpty < ActiveRecord::Migration[6.1]
 
   def down
   end
-
 end

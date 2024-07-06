@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AddEmpties < ActiveRecord::Migration[6.1]
-
   def up
     create_table :empties do |t|
       t.string :name
@@ -31,14 +30,11 @@ class AddEmpties < ActiveRecord::Migration[6.1]
 
     # All sites so far were created with tw5
     Site.update_all(empty_id: Empty.find_by_name('tw5').id)
-
   end
 
   def down
     Site.update_all(empty_id: nil)
     remove_reference :sites, :empty, foreign_key: true
     drop_table :empties
-
   end
-
 end

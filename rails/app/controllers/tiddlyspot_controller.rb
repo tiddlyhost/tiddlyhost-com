@@ -96,5 +96,4 @@ class TiddlyspotController < ApplicationController
       Hash[ key_value_strings.map{ |kv| kv.split('=') } ].with_indifferent_access
     end
   end
-
 end

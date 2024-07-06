@@ -108,7 +108,6 @@ module HubQuery
       result_count = ActiveRecord::Base.count_by_sql("select count(*) from (#{full_query_sql}) as foo")
       pager.total_entries = result_count
     end
-
   end
 
   def self.most_used_tags(for_templates: false)
@@ -139,5 +138,4 @@ module HubQuery
       map(&:first).
       reject{ |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags)||[]) }
   end
-
 end

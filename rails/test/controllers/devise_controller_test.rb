@@ -3,7 +3,6 @@
 require "test_helper"
 
 class DeviseControllerTest < ActionDispatch::IntegrationTest
-
   #
   # Not really testing devise here, just smoke testing the various forms
   #
@@ -36,5 +35,4 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
-
 end

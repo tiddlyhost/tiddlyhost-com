@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ReviseClassicEmptyDescription < ActiveRecord::Migration[7.0]
-
   def up
     # Should match what's in db/seeds/empties.yml
     EmptyMigrationHelper.apply_empty_changes(%{
@@ -14,5 +13,4 @@ class ReviseClassicEmptyDescription < ActiveRecord::Migration[7.0]
   def down
     # Don't try to put it back how it was
   end
-
 end

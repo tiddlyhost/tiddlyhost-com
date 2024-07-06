@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module AdminChartData
-
   private
 
   def chart_data_subscribers
@@ -53,5 +52,4 @@ module AdminChartData
       [d.to_s, yield(d.to_time).count]
     end
   end
-
 end

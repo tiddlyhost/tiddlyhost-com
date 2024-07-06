@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Grover.configure do |config|
-
   config.options = {
     viewport: {
       width: 1024,
@@ -24,5 +23,4 @@ Grover.configure do |config|
     # networkidle2 was never reached, (I think??).
     wait_for_timeout: 20_000,
   }
-
 end

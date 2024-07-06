@@ -60,6 +60,7 @@ class ApplicationController < ActionController::Base
 
   def require_condition!(condition)
     return if condition
+
     # 403 would be more accurate but let's pretend it's a 404
     @status_code, @status_message = 404, 'Not Found'
     render 'home/error_page', status: @status_code, layout: 'simple'
@@ -99,5 +100,4 @@ class ApplicationController < ActionController::Base
      is_dark ? "dark" : "light"
   end
   helper_method :bs_theme
-
 end

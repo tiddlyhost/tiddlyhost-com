@@ -3,7 +3,6 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-
   setup do
     @user = users(:bobby)
   end
@@ -69,7 +68,5 @@ class UserTest < ActiveSupport::TestCase
       # Case is preserved, trailing space is stripped
       assert_equal allowed_username.strip, @user.reload.username
     end
-
   end
-
 end

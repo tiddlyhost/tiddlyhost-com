@@ -38,6 +38,7 @@ class GenerateThumbnailJob < ApplicationJob
   def self.from_model_name_and_id(model_name, site_id)
     return unless model_name.in?(%w[ Site TspotSite ])
     return unless site = model_name.safe_constantize&.find_by_id(site_id)
+
     site
   end
 
@@ -48,5 +49,4 @@ class GenerateThumbnailJob < ApplicationJob
   def max_attempts
     1
   end
-
 end

@@ -3,7 +3,6 @@
 require "test_helper"
 
 class AdminControllerTest < ActionDispatch::IntegrationTest
-
   test "feature flag disables this controller" do
     Settings::Features.stub(:subscriptions_enabled?, false) do
       sign_in users(:bobby)
@@ -17,5 +16,4 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
   end
 
   # Todo: Mock the stripe gem and test this controller properly
-
 end

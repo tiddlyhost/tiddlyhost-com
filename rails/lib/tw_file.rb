@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class TwFile
-
   module TiddlerDiv
     def self.from_fields(fields, tw_doc)
       fields.stringify_keys!
@@ -14,7 +13,6 @@ class TwFile
         # Add the tiddler text inside a pre element
         inner_pre = div.add_child(Nokogiri::XML::Node.new('pre', tw_doc))
         inner_pre.content = text
-
       end
     end
 
@@ -28,7 +26,6 @@ class TwFile
       fields.merge!('text' => div.at_xpath('pre').content) unless skinny
       fields
     end
-
   end
 
   def initialize(html_content)
@@ -111,6 +108,7 @@ class TwFile
     return 'feather' if is_feather?
     return 'classic' if is_classic?
     return 'tw5x' if is_external_core?
+
     'tw5'
   end
 
@@ -124,6 +122,7 @@ class TwFile
 
   def tiddlywiki_version
     return featherwiki_version if is_feather?
+
     tiddlywiki_version_tw5 || tiddlywiki_version_classic
   end
 
@@ -213,6 +212,7 @@ class TwFile
     else
       store.xpath('div').map do |t|
         next unless include_system || !t.attr('title').start_with?('$:/')
+
         TiddlerDiv.to_fields(t, skinny: skinny)
       end.compact
 
@@ -229,6 +229,7 @@ class TwFile
 
   def self.robust_version(version_string)
     return version_string if version_string.is_a?(Gem::Version)
+
     Gem::Version.new(version_string)
   end
 
@@ -363,5 +364,4 @@ class TwFile
     fields = { text: fields } if fields.is_a?(String)
     TiddlerDiv.from_fields(fields.merge(title: title), doc)
   end
-
 end

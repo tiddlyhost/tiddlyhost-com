@@ -3,7 +3,6 @@
 require 'aws-sdk-s3'
 
 class TspotFetcher
-
   def initialize(site_name, secrets=nil)
     @name = site_name
 
@@ -94,5 +93,4 @@ class TspotFetcher
       nil
     end
   end
-
 end

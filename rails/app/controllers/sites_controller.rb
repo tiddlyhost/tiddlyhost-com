@@ -210,5 +210,4 @@ class SitesController < ApplicationController
     site_to_clone_maybe = Site.find_by_name(site_to_clone_name) if site_to_clone_name.present?
     @site_to_clone = site_to_clone_maybe if site_to_clone_maybe&.cloneable_by_user?(current_user)
   end
-
 end

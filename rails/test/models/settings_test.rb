@@ -3,7 +3,6 @@
 require "test_helper"
 
 class SettingsTest < ActiveSupport::TestCase
-
   test "feature enabled" do
     admin_user = User.find_by_id(1)
     admin_user.update(user_type: UserType.superuser)
@@ -29,7 +28,6 @@ class SettingsTest < ActiveSupport::TestCase
       actual = %i[foo bar baz quux site_history].map{ |f| Settings.feature_enabled?(f, user) }
       assert_equal(expected, actual)
     end
-
   end
 
   def with_mocked_grant_feature_data(user_list)
@@ -61,5 +59,4 @@ class SettingsTest < ActiveSupport::TestCase
       end
     end
   end
-
 end
