@@ -321,7 +321,7 @@ class TwFile
     @_tiddler_data_from_json ||= begin
       # Iterate over all the store nodes and merge the results
       json_stores.inject({}) do |all_tiddlers, store_node|
-        tiddler_list = JSON.load(store_node.content)
+        tiddler_list = JSON.parse(store_node.content)
         tiddler_hash = tiddler_list.to_h { |t| [t['title'], t] }
         all_tiddlers.merge(tiddler_hash)
       end

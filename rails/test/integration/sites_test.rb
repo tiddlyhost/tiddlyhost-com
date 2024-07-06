@@ -67,7 +67,7 @@ class SitesTest < CapybaraIntegrationTest
     # Todo: Create a controller test for most of this stuff
     visit "#{expected_url}/tiddlers.json?include_system=1"
     assert_equal 200, page.status_code
-    assert_equal '$:/themes/tiddlywiki/vanilla', JSON.load(page.body).last['title']
+    assert_equal '$:/themes/tiddlywiki/vanilla', JSON.parse(page.body).last['title']
 
     # Sign in as a different user
     # Site is still not available but the response is different
@@ -155,7 +155,7 @@ class SitesTest < CapybaraIntegrationTest
 
         visit "#{url}.json"
         assert_equal error_code, page.status_code
-        assert_match(/^#{error_code} /, JSON.load(page.body)['error'])
+        assert_match(/^#{error_code} /, JSON.parse(page.body)['error'])
 
         visit "#{url}.blah"
         assert_equal error_code, page.status_code
