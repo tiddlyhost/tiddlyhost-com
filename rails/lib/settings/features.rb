@@ -15,7 +15,7 @@ module Settings::Features
     subscriptions_enabled?(user) && !site_history_enabled?(user)
   end
 
-  def subscriptions_enabled?(user = nil)
+  def subscriptions_enabled?(_user = nil)
     true
   end
 

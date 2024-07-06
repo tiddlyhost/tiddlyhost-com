@@ -96,7 +96,7 @@ class TspotSite < ApplicationRecord
     TspotSite.fetched_site_to_attrs(fetcher)
   end
 
-  def ensure_destubbed(ip_address = nil)
+  def ensure_destubbed(_ip_address = nil)
     return self unless is_stub?
 
     update(fetcher_attrs)

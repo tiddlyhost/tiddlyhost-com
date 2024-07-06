@@ -13,10 +13,10 @@ class SettingsTest < ActiveSupport::TestCase
 
     # Can't stub a non-existing method so do it like this
     Settings::Features.module_eval do
-      def self.foo_enabled?(user) = true
+      def self.foo_enabled?(_user) = true
       def self.bar_enabled?(user) = user
       def self.baz_enabled?(user) = user&.is_admin?
-      def self.quux_enabled?(user) = false
+      def self.quux_enabled?(_user) = false
     end
 
     {
