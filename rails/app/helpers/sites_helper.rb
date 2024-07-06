@@ -31,7 +31,7 @@ module SitesHelper
       'hub_listed'
     elsif site.access_public?
       'public'
-    else site.access_private?
+    elsif site.access_private?
       'private'
     end
 
