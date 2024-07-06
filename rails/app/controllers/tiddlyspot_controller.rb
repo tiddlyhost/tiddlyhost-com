@@ -93,7 +93,7 @@ class TiddlyspotController < ApplicationController
   def upload_params
     @_upload_params ||= begin
       key_value_strings = params[:UploadPlugin].strip.split(';').map(&:presence).compact
-      Hash[key_value_strings.map { |kv| kv.split('=') }].with_indifferent_access
+      key_value_strings.to_h { |kv| kv.split('=') }.with_indifferent_access
     end
   end
 end

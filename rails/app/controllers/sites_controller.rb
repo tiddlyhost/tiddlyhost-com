@@ -31,9 +31,9 @@ class SitesController < ApplicationController
       public: { filter: ->(s) { s.select(&:is_public?).reject(&:hub_listed?) } },
       private: { filter: ->(s) { s.select(&:is_private?) } },
     },
-    kind: SiteCommon::KINDS.to_a.map { |k, v| [k.to_sym,
+    kind: SiteCommon::KINDS.to_a.to_h { |k, v| [k.to_sym,
       { filter: ->(ss) { ss.select { |s| s.tw_kind == k.to_s } }, title: v }
-    ]}.to_h
+    ]}
   }.freeze
 
   NULL_ALWAYS_LAST = %w[

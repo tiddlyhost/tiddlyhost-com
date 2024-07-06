@@ -33,7 +33,7 @@ class HubController < ApplicationController
     # helpers can see them.
     q: {}, # text search
     t: {}, # template filter
-    k: { 'tw' => 'TiddlyWiki (any)' }.merge(SiteCommon::KINDS).to_a.map { |k, v| [k.to_sym, { title: v }] }.to_h
+    k: { 'tw' => 'TiddlyWiki (any)' }.merge(SiteCommon::KINDS).to_a.to_h { |k, v| [k.to_sym, { title: v }] }
   }.freeze
 
   # We don't do asc/desc sorting for the hub

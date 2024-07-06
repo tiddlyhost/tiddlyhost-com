@@ -20,7 +20,7 @@ class TwFile
       return nil unless div
 
       # div.to_a is a list of attr/value pairs
-      fields = Hash[div.to_a]
+      fields = div.to_a.to_h
 
       # The tiddler text is inside a pre element
       fields.merge!('text' => div.at_xpath('pre').content) unless skinny
@@ -322,7 +322,7 @@ class TwFile
       # Iterate over all the store nodes and merge the results
       json_stores.inject({}) do |all_tiddlers, store_node|
         tiddler_list = JSON.load(store_node.content)
-        tiddler_hash = Hash[tiddler_list.map { |t| [t['title'], t] }]
+        tiddler_hash = tiddler_list.to_h { |t| [t['title'], t] }
         all_tiddlers.merge(tiddler_hash)
       end
     end
@@ -332,12 +332,12 @@ class TwFile
 
     # Otherwise, deal with the filtering as required.
     # Todo: Consider how to do this in a more memory efficient way.
-    Hash[@_tiddler_data_from_json.map do |title, fields|
+    @_tiddler_data_from_json.map do |title, fields|
       # Skip the text field for skinny results
       use_fields = skinny ? fields.except('text') : fields
       # Skip the system tiddlers maybe
       include_system || !title.start_with?('$:/') ? [title, use_fields] : nil
-    end.compact]
+    end.compact.to_h
   end
 
   def tiddler(title, shadow: false)
