@@ -266,8 +266,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     put_save_site_as_user(user: @site.user, site: @site, content: new_content,
       headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
     assert_equal(
-      %{The site has been updated since you first loaded it. Saving now would cause those
-      updates to be overwritten. Try reloading and then reapplying your changes.}.squish,
+      %(The site has been updated since you first loaded it. Saving now would cause those
+      updates to be overwritten. Try reloading and then reapplying your changes.).squish,
       response.body.squish)
   end
 

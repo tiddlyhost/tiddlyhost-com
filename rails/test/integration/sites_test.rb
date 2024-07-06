@@ -26,7 +26,7 @@ class SitesTest < CapybaraIntegrationTest
 
     # The index now includes a link to the new site
     expected_url = 'http://bar.example.com'
-    assert_selector %{td a[href="#{expected_url}"]}
+    assert_selector %(td a[href="#{expected_url}"])
 
     # Sanity check the new site
     site = Site.last

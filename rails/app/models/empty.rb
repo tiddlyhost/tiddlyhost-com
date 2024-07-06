@@ -35,7 +35,7 @@ class Empty < ApplicationRecord
 
   def long_tooltip
     pretty_link_text = info_link.sub(%r{^https?://}, '').sub(%r{/$}, '')
-    %{#{tooltip} Source: <a href="#{info_link}" target="_blank">#{pretty_link_text} ⇗</a>}
+    %(#{tooltip} Source: <a href="#{info_link}" target="_blank">#{pretty_link_text} ⇗</a>)
   end
 
   def self.versions
