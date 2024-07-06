@@ -215,3 +215,6 @@ Style/OpenStructUse:
 Layout/FirstArgumentIndentation:
   Exclude:
   - "lib/hub_query.rb"
+
+Layout/DotPosition:
+  EnforcedStyle: trailing

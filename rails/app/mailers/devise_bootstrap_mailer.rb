@@ -28,11 +28,11 @@ class DeviseBootstrapMailer < Devise::Mailer
 
   def email_title_for(action)
     # Tweak the defaults a little
-    orig_subject_for(action)
-      .sub(/Changed$/i, 'change notification')
-      .sub(/^Confirmation/i, 'Email confirmation')
-      .sub(/^Reset password/i, 'Password reset')
-      .sub(/instructions$/i, '')
+    orig_subject_for(action).
+      sub(/Changed$/i, 'change notification').
+      sub(/^Confirmation/i, 'Email confirmation').
+      sub(/^Reset password/i, 'Password reset').
+      sub(/instructions$/i, '')
   end
 
   def subject_for(action)

@@ -5,24 +5,24 @@ module AdminChartData
 
   def chart_data_subscribers
     day_range('2023-02-25') do |d|
-      Pay::Subscription.where.not(status: 'canceled')
-        .where('created_at <= ? AND current_period_end >= ?', d, d)
+      Pay::Subscription.where.not(status: 'canceled').
+        where('created_at <= ? AND current_period_end >= ?', d, d)
     end
   end
 
   def chart_data_signups_per_day
     # (Doesn't count deleted accounts)
     day_range do |d|
-      User.signed_in_more_than(0)
-        .where('created_at >= ? AND created_at <=?', d.prev_day, d)
+      User.signed_in_more_than(0).
+        where('created_at >= ? AND created_at <=?', d.prev_day, d)
     end
   end
 
   def chart_data_total_users
     # (Doesn't count deleted accounts)
     day_range do |d|
-      User.signed_in_more_than(1)
-        .where('created_at <= ?', d)
+      User.signed_in_more_than(1).
+        where('created_at <= ?', d)
     end
   end
 

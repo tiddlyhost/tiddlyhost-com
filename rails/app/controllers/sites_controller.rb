@@ -185,19 +185,19 @@ class SitesController < ApplicationController
   end
 
   def site_params_for_create
-    params
-      .require(:site)
-      .permit(
+    params.
+      require(:site).
+      permit(
         :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
         :prefer_put_saver, :prefer_upload_saver, :allow_public_clone,
-        :empty_id)
-      .merge(user_id: current_user.id)
+        :empty_id).
+      merge(user_id: current_user.id)
   end
 
   def site_params_for_update
-    params
-      .require(:site)
-      .permit(
+    params.
+      require(:site).
+      permit(
         :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
         :prefer_put_saver, :prefer_upload_saver, :allow_public_clone)
   end
