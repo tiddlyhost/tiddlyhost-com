@@ -112,7 +112,7 @@ class TiddlywikiController < ApplicationController
         # Give a 200 status no matter what so the user sees the message in a browser alert
         render plain: "If this is your site please log in at\n#{main_site_url} and try again.\n"
       end
-    rescue => e
+    rescue StandardError => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
       render plain: "#{e.class.name} - #{e.message}\n"
     end
@@ -151,7 +151,7 @@ class TiddlywikiController < ApplicationController
         err_message = "If this is your site please log in at #{main_site_url} and try again."
         render status: 403, plain: err_message
       end
-    rescue => e
+    rescue StandardError => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
       err_message = "#{e.class.name} #{e.message}"
       render status: 500, plain: err_message

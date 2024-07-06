@@ -49,7 +49,7 @@ class TiddlyspotController < ApplicationController
       else
         render plain: "Password incorrect\n"
       end
-    rescue => e
+    rescue StandardError => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
       render plain: "#{e.class.name} - #{e.message}\n"
     end
