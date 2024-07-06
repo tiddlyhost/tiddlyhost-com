@@ -12,12 +12,14 @@
 #
 class LoggerWithDomain < Rails::Rack::Logger
   def started_request_message(request)
-    'Started %s "%s%s%s" for %s at %s' % [
+    format(
+      'Started %s "%s%s%s" for %s at %s',
       request.request_method,
       request.protocol,
       request.host_with_port,
       request.filtered_path,
       request.ip,
-      Time.now.to_s]
+      Time.now.to_s
+    )
   end
 end

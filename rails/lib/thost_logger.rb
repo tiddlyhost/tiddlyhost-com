@@ -17,10 +17,16 @@ class ThostLogger < Logger
   def with_extra_request_info(msg, req = nil)
     return msg if req.nil?
 
-    '%s - %s "%s%s%s" for %s (%s) "%s"' % [
-      msg, req.request_method, req.protocol,
-      req.host_with_port, req.filtered_path, req.ip,
-      req.remote_ip, req.headers['HTTP_USER_AGENT']
-    ]
+    format(
+      '%s - %s "%s%s%s" for %s (%s) "%s"',
+      msg,
+      req.request_method,
+      req.protocol,
+      req.host_with_port,
+      req.filtered_path,
+      req.ip,
+      req.remote_ip,
+      req.headers['HTTP_USER_AGENT']
+    )
   end
 end
