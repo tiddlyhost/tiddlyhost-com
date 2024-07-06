@@ -272,7 +272,7 @@ class TwFile
 
     tiddler_div = create_tiddler_div(title, data)
 
-    if existing_tiddler = tiddler(title, shadow:)
+    if (existing_tiddler = tiddler(title, shadow:))
       existing_tiddler.replace(tiddler_div)
     else
       choose_store(shadow:) << tiddler_div

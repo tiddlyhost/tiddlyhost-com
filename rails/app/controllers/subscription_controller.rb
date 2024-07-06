@@ -19,7 +19,7 @@ class SubscriptionController < ApplicationController
   private
 
   def set_user_vars
-    if @user = current_user
+    if (@user = current_user)
       # Needed because we generate a working checkout link
       @user.set_payment_processor(:stripe)
 

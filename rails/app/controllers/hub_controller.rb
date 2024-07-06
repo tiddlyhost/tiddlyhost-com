@@ -16,7 +16,7 @@ class HubController < ApplicationController
   end
 
   def user
-    if params[:username].present? && user = User.find_by_username(params[:username])
+    if params[:username].present? && (user = User.find_by_username(params[:username]))
       @user = user
       render_hub
     else

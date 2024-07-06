@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   # Used for serving custom favicons
   def local_asset_path(asset_name)
     manifest = Rails.application.assets_manifest
-    if asset_file = manifest.assets[asset_name]
+    if (asset_file = manifest.assets[asset_name])
       # For production with compiled assets
       File.join(manifest.directory, asset_file)
     else
