@@ -152,7 +152,7 @@ module ApplicationHelper
       options = options.merge renderer: BootstrapPaginateRenderer
     end
 
-    super *[coll_or_options, options].compact
+    super(*[coll_or_options, options].compact)
   end
 
   def _dark_mode_toggle_link(theme, screen_size)
