@@ -106,7 +106,7 @@ module SitesHelper
   #
   def fade_away_opacity(site, index)
     how_far_under = index - site.keep_count
-    opac = 100 - 23 * (how_far_under + 3)
+    opac = 100 - (23 * (how_far_under + 3))
     "opacity: #{opac.clamp(0, 100)}%;"
   end
 end

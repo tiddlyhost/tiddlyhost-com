@@ -23,12 +23,12 @@ class BootstrapPaginateRenderer < WillPaginate::ActionView::LinkRenderer
   end
 
   def previous_page
-    num = @collection.current_page > 1 && @collection.current_page - 1
+    num = @collection.current_page > 1 && (@collection.current_page - 1)
     previous_or_next_page(num, '<span aria-hidden="true">&laquo; Previous</span>')
   end
 
   def next_page
-    num = @collection.current_page < total_pages && @collection.current_page + 1
+    num = @collection.current_page < total_pages && (@collection.current_page + 1)
     previous_or_next_page(num, '<span aria-hidden="true">Next &raquo;</span>')
   end
 
