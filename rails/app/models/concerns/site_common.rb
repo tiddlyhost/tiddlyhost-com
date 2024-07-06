@@ -30,7 +30,7 @@ module SiteCommon
     scope :owned_by, ->(user) { where(user_id: user.id) }
 
     scope :search_for, lambda { |search_text|
-          where("#{table_name}.name        ILIKE CONCAT('%',?,'%')", search_text)
+      where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text)
       .or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text))
       .or(search_tags(search_text))
     }
@@ -63,7 +63,7 @@ module SiteCommon
   # (These are not currently used)
   KIND_URLS = {
     'tw5'     => 'https://tiddlywiki.com/',
-     # Todo: Think of a better url for tw5x
+    # Todo: Think of a better url for tw5x
     'tw5x'    => CGI.escape('https://tiddlywiki.com/#:[[Using the external JavaScript template]] HelloThere'),
     'classic' => 'https://classic.tiddlywiki.com/',
     'feather' => 'https://feather.wiki/',

@@ -58,7 +58,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         title: Foo
 
         Bar
-        EOT
+      EOT
 
     ].each do |query|
       assert_expected_tid(**query)

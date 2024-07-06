@@ -45,7 +45,8 @@ module SitesHelper
       width: '0.95em',
     }.merge(opts)
 
-    case access_type when 'redirected'
+    case access_type
+    when 'redirected'
       bi_icon('arrow-right-circle', opts)
     when 'hub_listed', 'hub'
       bi_icon('search-heart', opts)
