@@ -176,6 +176,18 @@ deps-update: pull-ruby build-base bundle-update yarn-upgrade
 haml-lint:
 	$(DCC) 'bundle exec haml-lint'
 
+rubocop:
+	docker-compose run --no-deps app bash -c 'bundle exec rubocop'
+
+# Example usage:
+#   ONLY=Layout/EmptyLinesAroundModuleBody,Layout/EmptyLinesAroundClassBody make rubycop-fix
+rubocop-fix:
+	docker-compose run --no-deps app bash -c 'bundle exec rubocop --only $(ONLY) --autocorrect-all'
+	git commit -a \
+	  -m "rubocop: $$(echo $(ONLY) | cut -d, -f1)..." \
+	  -m "Rubocop autocorrect for the following:" \
+	  -m "$$(echo $(ONLY) | tr , '\n' | sed 's/^/- /')"
+
 haml-lint-refresh-todos:
 	$(DCC) 'bundle exec haml-lint --auto-gen-config'
 
