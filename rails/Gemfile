@@ -77,9 +77,9 @@ gem 'pay', '~> 6.0'
 gem 'stripe', '~> 9.0'
 
 # Needed after ruby 3.1 upgrade
-gem 'net-smtp', require: false
-gem 'net-pop', require: false
 gem 'net-imap', require: false
+gem 'net-pop', require: false
+gem 'net-smtp', require: false
 
 gem 'charlock_holmes'
 
