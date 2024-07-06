@@ -11,7 +11,7 @@ class Settings
     'build_number' => 42,
     'commit' => 'Fix stuff',
     'branch' => 'devel',
-  }
+  }.freeze
 
   SETTINGS = begin
     # Since we might run this before Rails has started
@@ -122,7 +122,7 @@ class Settings
 
   # This should never appear but it helps tests pass when secrets
   # are not present. Fixme: The fact this is needed is not ideal.
-  FALLBACK_PLAN = { 'name' => 'Missing', 'price' => 0 }
+  FALLBACK_PLAN = { 'name' => 'Missing', 'price' => 0 }.freeze
 
   # The OpenStruct should have keys :name, :price, :id
   def self.stripe_product(plan, frequency = :monthly)

@@ -30,7 +30,7 @@ module AdminChartData
     subscribers
     signups_per_day
     total_users
-  ]
+  ].freeze
 
   DEFAULT_CHART = KNOWN_CHARTS.first
 

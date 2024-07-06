@@ -3,8 +3,8 @@
 module SafeModeUrls
   extend ActiveSupport::Concern
 
-  TW5_SUFFIX = '#:safe'.freeze
-  CLASSIC_SUFFIX = '#start:safe'.freeze
+  TW5_SUFFIX = '#:safe'
+  CLASSIC_SUFFIX = '#start:safe'
 
   def safe_mode_url
     case tw_kind

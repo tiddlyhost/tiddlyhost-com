@@ -40,7 +40,7 @@ module WithSavedContent
     super
   end
 
-  COMPRESSED_CONTENT_TYPE = 'application/zlib'.freeze
+  COMPRESSED_CONTENT_TYPE = 'application/zlib'
 
   def self.compress_html(raw_html)
     Zlib::Deflate.deflate(raw_html)

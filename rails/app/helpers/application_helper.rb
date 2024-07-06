@@ -187,7 +187,7 @@ module ApplicationHelper
     restore: ['file-earmark-arrow-up', 'Restore as current version'],
     discard: ['trash', 'Discard'],
     upgrade: [['stars', class: 'red-icon'], 'Upgrade plan'],
-  }
+  }.freeze
 
   def link_content(key)
     bi_icon_args, text = SHARED_LINK_CONTENT[key]
