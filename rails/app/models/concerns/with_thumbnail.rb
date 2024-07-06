@@ -49,7 +49,7 @@ module WithThumbnail
   # See also config/initializers/grover
   #
   def grover_opts
-    opts = case tw_kind
+    case tw_kind
     when 'feather'
       {
         style_tag_options: [
@@ -62,8 +62,6 @@ module WithThumbnail
       {}
 
     end
-
-    opts
   end
 
   # See `find_or_build_blob` in
