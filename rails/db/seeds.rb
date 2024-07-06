@@ -9,5 +9,5 @@
 
 ].each do |klass|
   seed_file = "#{Rails.root}/db/seeds/#{klass.table_name}.yml"
-  klass.create!(YAML.load(File.read(seed_file)))
+  klass.create!(YAML.load_file(seed_file))
 end
