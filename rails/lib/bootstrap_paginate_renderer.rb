@@ -16,9 +16,9 @@ class BootstrapPaginateRenderer < WillPaginate::ActionView::LinkRenderer
 
   def page_number(page)
     if page == current_page
-      '<li class="page-item active">' + link(page, page, rel: rel_value(page), class: 'page-link') + '</li>'
+      "<li class=\"page-item active\">#{link(page, page, rel: rel_value(page), class: 'page-link')}</li>"
     else
-      '<li class="page-item">' + link(page, page, rel: rel_value(page), class: 'page-link') + '</li>'
+      "<li class=\"page-item\">#{link(page, page, rel: rel_value(page), class: 'page-link')}</li>"
     end
   end
 
@@ -34,9 +34,9 @@ class BootstrapPaginateRenderer < WillPaginate::ActionView::LinkRenderer
 
   def previous_or_next_page(page, text)
     if page
-      '<li class="page-item">' + link(text, page, class: 'page-link') + '</li>'
+      "<li class=\"page-item\">#{link(text, page, class: 'page-link')}</li>"
     else
-      '<li class="page-item disabled">' + link(text, page, class: 'page-link') + '</li>'
+      "<li class=\"page-item disabled\">#{link(text, page, class: 'page-link')}</li>"
     end
   end
 end
