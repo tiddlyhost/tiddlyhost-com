@@ -76,8 +76,8 @@ module HubQuery
     ]
 
     # Apply filters
-    qs.map! { |q| q.for_hub } if for_hub
-    qs.map! { |q| q.templates_only } if templates_only
+    qs.map!(&:for_hub) if for_hub
+    qs.map!(&:templates_only) if templates_only
     qs.map! { |q| q.tagged_with(tag) } if tag.present?
     qs.map! { |q| q.where(user_id: user.id) } if user.present?
     qs.map! { |q| q.search_for(search) } if search.present?

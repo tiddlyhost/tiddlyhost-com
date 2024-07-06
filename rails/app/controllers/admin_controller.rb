@@ -127,8 +127,8 @@ class AdminController < ApplicationController
     },
 
     no_stub: {
-      '1' => { title: 'non-stub', filter: ->(r) { r.no_stubs } },
-      '0' => { title: 'stub', filter: ->(r) { r.stubs } },
+      '1' => { title: 'non-stub', filter: lambda(&:no_stubs) },
+      '0' => { title: 'stub', filter: lambda(&:stubs) },
     },
 
     new_pass: {
