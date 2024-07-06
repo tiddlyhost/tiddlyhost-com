@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # Devise for user signups and authentication
   # (but exclude it for Tiddlyspot routes)
   #
-  constraints(->(req) {
+  constraints(lambda { |req|
     req.domain != Settings.tiddlyspot_host
   }) do
     devise_for :users, controllers: {
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   #
   # Individual sites on tiddlyhost.com
   #
-  constraints(->(req) {
+  constraints(lambda { |req|
     req.domain == Settings.main_site_host && req.subdomain.present? && req.subdomain != 'www'
   }) do
     match '/', to: 'tiddlywiki#serve', via: [:get, :options]
@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   #
   # The primary site at tiddlyhost.com
   #
-  constraints(->(req) {
+  constraints(lambda { |req|
     req.domain == Settings.main_site_host && (req.subdomain.blank? || req.subdomain == 'www')
   }) do
     root to: 'home#index'
@@ -120,7 +120,7 @@ Rails.application.routes.draw do
     #
     # Individual sites on tiddlyspot.com
     #
-    constraints(->(req) {
+    constraints(lambda { |req|
       req.domain == Settings.tiddlyspot_host && req.subdomain.present? && req.subdomain != 'www'
     }) do
       get '/', to: 'tiddlyspot#serve'
@@ -137,7 +137,7 @@ Rails.application.routes.draw do
     #
     # Main tiddlyspot.com home page (such as it is)
     #
-    constraints(->(req) {
+    constraints(lambda { |req|
       req.domain == Settings.tiddlyspot_host && (req.subdomain.blank? || req.subdomain == 'www')
     }) do
       get '/', to: 'tiddlyspot#home'

@@ -12,12 +12,12 @@ module Subscriber
       to: :payment_processor, allow_nil: true
 
     # Could possibly return multiple rows per user
-    scope :join_subscriptions, -> {
+    scope :join_subscriptions, lambda {
       left_joins(:payment_processor).left_joins(:subscriptions)
     }
 
     # The distinct is because this is used to count users
-    scope :with_subscriptions_active, -> {
+    scope :with_subscriptions_active, lambda {
       join_subscriptions.where(pay_subscriptions: { status: 'active' }).select('distinct users.id')
     }
 

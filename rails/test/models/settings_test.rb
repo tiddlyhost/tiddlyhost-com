@@ -31,7 +31,7 @@ class SettingsTest < ActiveSupport::TestCase
   end
 
   def with_mocked_grant_feature_data(user_list)
-    stubbed = ->(*args) do
+    stubbed = lambda do |*args|
       assert_equal args, [:grant_feature, :foo_bar]
       user_list
     end

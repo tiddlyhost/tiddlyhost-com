@@ -81,7 +81,7 @@ class User < ApplicationRecord
   scope :with_type,    ->(*type_names) { where(user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
   scope :without_type, ->(*type_names) { where.not(user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
 
-  scope :search_for, ->(search_text) {
+  scope :search_for, lambda { |search_text|
     where("#{table_name}.name ILIKE CONCAT('%',?,'%')", search_text).
     or(where("#{table_name}.username ILIKE CONCAT('%',?,'%')", search_text)).
     or(where("#{table_name}.email ILIKE CONCAT('%',?,'%')", search_text)) }
