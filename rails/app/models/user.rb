@@ -49,7 +49,7 @@ class User < ApplicationRecord
       # Must not start or end with a dash
       # (See also app/javascript/packs/application.js)
       without: / [^A-Za-z0-9-] | -- | ^- | -$ /x,
-      message: "'%{value}' is not allowed. Please choose a different username.",
+      message: "'%<value>s' is not allowed. Please choose a different username.",
     }
 
   scope :signed_in_never,          ->        { where(sign_in_count: 0) }

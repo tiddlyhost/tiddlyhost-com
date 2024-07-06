@@ -40,7 +40,7 @@ class Site < ApplicationRecord
       # Must not start or end with a dash
       # (See also app/javascript/packs/application.js)
       without: / [^a-z0-9-] | -- | ^- | -$ /x,
-      message: "'%{value}' is not allowed. Please choose a different site name.",
+      message: "'%<value>s' is not allowed. Please choose a different site name.",
     },
     exclusion: {
       # Let's reserve a few common subdomains
@@ -56,7 +56,7 @@ class Site < ApplicationRecord
         support
         wiki
       ],
-      message: "'%{value}' is reserved. Please choose a different site name.",
+      message: "'%<value>s' is reserved. Please choose a different site name.",
     }
 
   def th_file
