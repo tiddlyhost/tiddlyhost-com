@@ -65,7 +65,7 @@ Rails.application.routes.draw do
     get 'admin/pool_stats'
 
     get 'hub', to: 'hub#index'
-    get 'hub/tag/:tag', to: 'hub#tag', constraints: { tag: %r{.+} }
+    get 'hub/tag/:tag', to: 'hub#tag', constraints: { tag: /.+/ }
     get 'hub/user/:username', to: 'hub#user'
 
     get 'subscription', to: 'subscription#show'

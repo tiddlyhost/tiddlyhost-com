@@ -40,7 +40,7 @@ class TspotFetcher
     # The .htaccess file for public Tiddlyspot sites should match this.
     # (Could probably be less specific, but let's try it this way.)
     htaccess_file =~
-      %r{\n## --- public site ---\n\n# protect only controlpanel\n\n<files "controlpanel\.cgi">\n}
+      /\n## --- public site ---\n\n# protect only controlpanel\n\n<files "controlpanel\.cgi">\n/
   end
 
   def is_private?

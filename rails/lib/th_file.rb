@@ -173,7 +173,7 @@ class ThFile < TwFile
         .match(%r{//([a-z0-9-]+)\.})&.send(:[], 1)
     else
       tiddler_content('ThostUploadPlugin')
-        .match(%r{bidix\.initOption\('txtThostSiteName','([a-z0-9-]+)'\);})&.send(:[], 1)
+        .match(/bidix\.initOption\('txtThostSiteName','([a-z0-9-]+)'\);/)&.send(:[], 1)
     end
   end
 end
