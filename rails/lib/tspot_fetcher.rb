@@ -49,7 +49,7 @@ class TspotFetcher
 
   # This doesn't really belong here, but never mind
   def self.passwd_match?(given_username, given_passwd, htpasswd)
-    return false unless \
+    return false unless
       given_username.present? && given_passwd.present? && htpasswd.present?
 
     username, passwd_crypt = htpasswd.split(':')

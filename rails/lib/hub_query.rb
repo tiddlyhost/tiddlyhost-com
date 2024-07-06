@@ -41,7 +41,7 @@ module HubQuery
       # the newest blob is the one that is kept, which is exactly what is needed.
       #
       Site.with_blobs_for_query.not_deleted.select(
-        'DISTINCT ON (type, id) ' +
+        'DISTINCT ON (type, id) ' \
         "'Site' AS type",
         :id,
         :name,
@@ -58,7 +58,7 @@ module HubQuery
       ),
 
       TspotSite.with_blobs_for_query.not_deleted.select(
-        'DISTINCT ON (type, id) ' +
+        'DISTINCT ON (type, id) ' \
         "'TspotSite' AS type",
         :id,
         :name,
