@@ -13,15 +13,16 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   def hub_query(opts = {})
-    HubQuery.paginated_sites(**{
+    HubQuery.paginated_sites(
       page: 1,
       per_page: 10,
       sort_by: 'name',
       templates_only: nil,
       tag: nil,
       user: nil,
-      search: nil
-    }.merge(opts))
+      search: nil,
+      **opts
+    )
   end
 
   test 'everything' do
