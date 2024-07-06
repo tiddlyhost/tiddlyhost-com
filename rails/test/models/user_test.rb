@@ -23,7 +23,7 @@ class UserTest < ActiveSupport::TestCase
     ].each do |disallowed_username|
       @user.username = disallowed_username
       refute @user.valid?
-      assert_match /has already been taken/, @user.errors.full_messages.first
+      assert_match(/has already been taken/, @user.errors.full_messages.first)
     end
   end
 
@@ -47,7 +47,7 @@ class UserTest < ActiveSupport::TestCase
     ].each do |disallowed_username|
       @user.username = disallowed_username
       refute @user.valid?
-      assert_match /is not allowed|is too short|is too long/, @user.errors.full_messages.first
+      assert_match(/is not allowed|is too short|is too long/, @user.errors.full_messages.first)
     end
 
     [

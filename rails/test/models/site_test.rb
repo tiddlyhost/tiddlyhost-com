@@ -166,7 +166,7 @@ class SiteTest < ActiveSupport::TestCase
     # Create another site
     new_site = new_site_helper(name: 'newsite', user: @site.user)
     new_site_blob_id = new_site.blob.id
-    assert_match /UnaMesa Association/, new_site.file_download(new_site_blob_id)
+    assert_match(/UnaMesa Association/, new_site.file_download(new_site_blob_id))
 
     # Can't access blobs from other sites
     assert_nil @site.file_download(new_site_blob_id)

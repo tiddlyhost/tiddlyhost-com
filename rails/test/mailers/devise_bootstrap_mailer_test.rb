@@ -23,9 +23,9 @@ class DeviseBootstrapMailerTest < ActionMailer::TestCase
       end
 
       assert_equal [@user.email], email.to
-      assert_match /Tiddlyhost /, email.subject
+      assert_match(/Tiddlyhost /, email.subject)
       assert_match '<div class="card-header" style=', email.html_part.body.decoded
-      assert_match /Tiddlyhost/, email.text_part.body.decoded
+      assert_match(/Tiddlyhost/, email.text_part.body.decoded)
     end
 
     # Two of the emails have variations used when the user is changing
@@ -44,9 +44,9 @@ class DeviseBootstrapMailerTest < ActionMailer::TestCase
       end
 
       assert_equal [@user.email], email.to
-      assert_match /Tiddlyhost /, email.subject
+      assert_match(/Tiddlyhost /, email.subject)
       assert_match '<div class="card-header" style=', email.html_part.body.decoded
-      assert_match /Tiddlyhost/, email.text_part.body.decoded
+      assert_match(/Tiddlyhost/, email.text_part.body.decoded)
     end
   end
 end
