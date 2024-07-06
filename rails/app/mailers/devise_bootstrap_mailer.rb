@@ -8,13 +8,13 @@ class DeviseBootstrapMailer < Devise::Mailer
   layout 'bootstrap-mailer'
   default template_path: 'devise/mailer'
 
-  def devise_mail(record, action, opts = {}, &block)
+  def devise_mail(record, action, opts = {}, &)
     initialize_from_record(record)
 
     @email_title = email_title_for(action)
 
     # Use bootstrap mail
-    make_bootstrap_mail(headers_for(action, opts), &block)
+    make_bootstrap_mail(headers_for(action, opts), &)
   end
 
   private

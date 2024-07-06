@@ -30,15 +30,13 @@ class SettingsTest < ActiveSupport::TestCase
     end
   end
 
-  def with_mocked_grant_feature_data(user_list)
+  def with_mocked_grant_feature_data(user_list, &)
     stubbed = lambda do |*args|
       assert_equal args, [:grant_feature, :foo_bar]
       user_list
     end
 
-    Settings.stub(:secrets, stubbed) do
-      yield
-    end
+    Settings.stub(:secrets, stubbed, &)
   end
 
   test 'manually granted feature access' do

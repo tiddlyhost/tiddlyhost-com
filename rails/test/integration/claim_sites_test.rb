@@ -22,8 +22,8 @@ class ClaimSitesTest < CapybaraIntegrationTest
     end
   end
 
-  def with_mocked_site(mock, &blk)
-    TspotFetcher.stub(:new, mock, &blk)
+  def with_mocked_site(mock, &)
+    TspotFetcher.stub(:new, mock, &)
   end
 
   def attempt_claim(site_name, password, mocked_site, expected_text)

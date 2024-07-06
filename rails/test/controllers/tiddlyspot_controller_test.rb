@@ -31,8 +31,8 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     mock
   end
 
-  def with_mocked_site(mock, &blk)
-    TspotFetcher.stub(:new, mock, &blk)
+  def with_mocked_site(mock, &)
+    TspotFetcher.stub(:new, mock, &)
   end
 
   test 'viewing a public site' do

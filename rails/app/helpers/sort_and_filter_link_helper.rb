@@ -61,10 +61,10 @@ module SortAndFilterLinkHelper
     link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel])
   end
 
-  def filter_link_group(param_key, &blk)
+  def filter_link_group(param_key, &)
     links = [
-      filter_link(param_key, nil, &blk),
-      filter_params[param_key].keys.map { |v| filter_link(param_key, v, &blk) }
+      filter_link(param_key, nil, &),
+      filter_params[param_key].keys.map { |v| filter_link(param_key, v, &) }
     ]
     safe_join(links.flatten)
   end

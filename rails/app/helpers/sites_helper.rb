@@ -20,10 +20,8 @@ module SitesHelper
     end
   end
 
-  def site_download_link(site, opts = {})
-    link_to site.download_url, opts do
-      yield
-    end
+  def site_download_link(site, opts = {}, &)
+    link_to(site.download_url, opts, &)
   end
 
   def site_access(site)
