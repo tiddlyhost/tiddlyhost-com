@@ -78,7 +78,7 @@ module SitesHelper
   end
 
   def logo_for_kind(kind, style = 'height: 1.4em; margin-top: -3px;')
-    image_tag(SiteCommon::KIND_LOGOS[kind.to_s], style: style, title: SiteCommon::KINDS[kind.to_s]) if SiteCommon::KIND_LOGOS[kind.to_s].present?
+    image_tag(SiteCommon::KIND_LOGOS[kind.to_s], style:, title: SiteCommon::KINDS[kind.to_s]) if SiteCommon::KIND_LOGOS[kind.to_s].present?
   end
 
   def kind_logo(site, style = 'height: 1.4em; margin-top: -3px; padding-right: 4px;')

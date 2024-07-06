@@ -64,7 +64,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
       #'cool_site',
 
     ].each do |name|
-      site.update!(name: name)
+      site.update!(name:)
       mock = mocked_site(name) do |m|
         m.expect(:is_private?, false)
       end

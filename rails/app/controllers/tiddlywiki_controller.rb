@@ -50,7 +50,7 @@ class TiddlywikiController < ApplicationController
     title = params[:title]
     pretty = params[:pretty] == '1'
 
-    json_data = @site.json_data(include_system: include_system, skinny: skinny)
+    json_data = @site.json_data(include_system:, skinny:)
 
     json_data = json_data.select { |d| Array.wrap(title).include?(d['title']) } if title.present?
 

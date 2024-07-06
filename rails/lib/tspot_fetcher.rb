@@ -88,7 +88,7 @@ class TspotFetcher
 
   def fetch_key(key)
     begin
-      @s3_client.get_object(bucket: @bucket_name, key: key).body.read
+      @s3_client.get_object(bucket: @bucket_name, key:).body.read
     rescue Aws::S3::Errors::NoSuchKey
       nil
     end

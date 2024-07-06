@@ -30,7 +30,7 @@ module WithSavedContent
 
   # For use when extracting a specific version of a site its save history
   def specific_saved_content_file(blob_id)
-    saved_content_files.where(blob_id: blob_id).first
+    saved_content_files.where(blob_id:).first
   end
 
   # Make sure the cached current_content is cleared on reload
@@ -74,8 +74,8 @@ module WithSavedContent
       raw_byte_size: new_content.bytesize,
 
       # The kind and version of the site
-      tw_kind: tw_kind,
-      tw_version: tw_version,
+      tw_kind:,
+      tw_version:,
 
       # We want to append the new attachment to the existing attachments. By default
       # rails won't do that, so that's why we include the existing blobs here.

@@ -9,7 +9,7 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   def user_query(sort_by = 'id')
-    HubQuery.sites_for_user(@user, sort_by: sort_by)
+    HubQuery.sites_for_user(@user, sort_by:)
   end
 
   def hub_query(opts = {})

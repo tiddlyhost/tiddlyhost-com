@@ -95,7 +95,7 @@ module SortAndFilterLinkHelper
     selected = params[param_key] == param_val
     onclick = "window.location.href = '#{url_for(filter_link_url(param_key, param_val))}'"
     content_tag :label do
-      "#{radio_button_tag(param_key, param_val, selected, onclick: onclick)} #{link_title}"
+      "#{radio_button_tag(param_key, param_val, selected, onclick:)} #{link_title}"
     end
   end
 

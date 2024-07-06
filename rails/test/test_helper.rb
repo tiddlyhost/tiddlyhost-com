@@ -35,7 +35,7 @@ module NewSiteHelper
     # Inject tiddlers
     tw_html = th_file.write_tiddlers(tiddlers).to_html
 
-    Site.create!({ name: name, empty_id: empty.id, user_id: user.id }.
+    Site.create!({ name:, empty_id: empty.id, user_id: user.id }.
       merge(WithSavedContent.attachment_params(tw_html)))
   end
 end

@@ -123,7 +123,7 @@ class ThFile < TwFile
 
     write_tiddlers({
       'ThostUploadPlugin' => {
-        text: plugin_content(:thost_upload_plugin, site_name: site_name, site_url: site_url),
+        text: plugin_content(:thost_upload_plugin, site_name:, site_url:),
         tags: 'systemConfig',
         modifier: 'TiddlyHost',
       }

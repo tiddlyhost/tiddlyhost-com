@@ -92,7 +92,7 @@ module ApplicationHelper
   def as_megabytes(bytes, precision: 2)
     return '-' if bytes.nil?
 
-    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision: precision)
+    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision:)
   end
 
   def nice_timestamp(timestamp, brief: false)

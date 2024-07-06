@@ -82,7 +82,7 @@ class TwFileTest < ActiveSupport::TestCase
         ['TiddlyHost', true, 'is a hosting service for ~TiddlyWiki'],
 
       ].each do |tiddler_name, shadow, include_string|
-        tiddler_content = tw.tiddler_content(tiddler_name, shadow: shadow)
+        tiddler_content = tw.tiddler_content(tiddler_name, shadow:)
         assert_includes tiddler_content, include_string
       end
 

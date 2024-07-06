@@ -83,7 +83,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
   test 'public site' do
     [nil, :mary, :bobby].each do |user|
-      fetch_site_as_user(user: user, expected_status: 200)
+      fetch_site_as_user(user:, expected_status: 200)
     end
   end
 
@@ -100,7 +100,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     @site.update!(is_private: true)
 
     { nil => 401, mary: 403, bobby: 200 }.each do |user, expected_status|
-      fetch_site_as_user(user: user, expected_status: expected_status)
+      fetch_site_as_user(user:, expected_status:)
     end
   end
 
@@ -163,7 +163,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       assert_equal tw_kind, site.tw_kind
       assert_equal tw_version, site.tw_version
       assert_equal site_name, site.name
-      fetch_site_as_user(user: site.user, site: site)
+      fetch_site_as_user(user: site.user, site:)
 
       # Prepare a modified version of the site, as though the
       # user added a tiddler, and write it to test/fixtures/files
@@ -174,7 +174,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         site.th_file.write_tiddlers({ 'NewTiddler' => 'Hey now' }).to_html)
 
       # Now simulate a save
-      upload_save_site_as_user(user: site.user, site: site, fixture_file: 'index.html')
+      upload_save_site_as_user(user: site.user, site:, fixture_file: 'index.html')
 
       # Should see these fields are updated
       site.reload
@@ -187,7 +187,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       assert_equal 'Hey now', site.th_file.tiddler_content('NewTiddler')
 
       # Confirm it via http get
-      th_file = fetch_site_as_user(user: site.user, site: site)
+      th_file = fetch_site_as_user(user: site.user, site:)
       assert_equal 'Hey now', th_file.tiddler_content('NewTiddler')
 
       if th_file.is_tw5?
@@ -200,7 +200,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         new_content = site.th_file.
           write_tiddlers({ 'NewTiddler' => 'Hi from put saver' }).to_html
 
-        put_save_site_as_user(user: site.user, site: site, content: new_content)
+        put_save_site_as_user(user: site.user, site:, content: new_content)
 
         # Should see these fields are updated
         site.reload
@@ -214,7 +214,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         assert_equal 'Hi from put saver', site.th_file.tiddler_content('NewTiddler')
 
         # Confirm it via http get
-        th_file = fetch_site_as_user(user: site.user, site: site)
+        th_file = fetch_site_as_user(user: site.user, site:)
         assert_equal 'Hi from put saver', th_file.tiddler_content('NewTiddler')
 
       end

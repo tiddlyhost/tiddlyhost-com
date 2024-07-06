@@ -174,7 +174,7 @@ class TwFile
     else
       # Assume we're using TW 5.1.x or earlier
       tiddlers.each do |title, data|
-        insert_or_replace(title, data, shadow: shadow)
+        insert_or_replace(title, data, shadow:)
       end
 
     end
@@ -191,12 +191,12 @@ class TwFile
     if json_store?
       tiddler_data_from_json(include_system: true)[title]
     else
-      TiddlerDiv.to_fields(tiddler(title, shadow: shadow))
+      TiddlerDiv.to_fields(tiddler(title, shadow:))
     end
   end
 
   def tiddler_content(title, shadow: false)
-    tiddler_data(title, shadow: shadow)&.send(:[], 'text')
+    tiddler_data(title, shadow:)&.send(:[], 'text')
   end
 
   def shadow_tiddler_content(title)
@@ -207,13 +207,13 @@ class TwFile
     return [] if encrypted?
 
     if json_store?
-      tiddler_data_from_json(include_system: include_system, skinny: skinny).values
+      tiddler_data_from_json(include_system:, skinny:).values
 
     else
       store.xpath('div').map do |t|
         next unless include_system || !t.attr('title').start_with?('$:/')
 
-        TiddlerDiv.to_fields(t, skinny: skinny)
+        TiddlerDiv.to_fields(t, skinny:)
       end.compact
 
     end
@@ -272,10 +272,10 @@ class TwFile
 
     tiddler_div = create_tiddler_div(title, data)
 
-    if existing_tiddler = tiddler(title, shadow: shadow)
+    if existing_tiddler = tiddler(title, shadow:)
       existing_tiddler.replace(tiddler_div)
     else
-      choose_store(shadow: shadow) << tiddler_div
+      choose_store(shadow:) << tiddler_div
     end
   end
 
@@ -344,7 +344,7 @@ class TwFile
     return if encrypted?
 
     # TODO: See how this works for titles with quotes in them
-    tiddler_divs = choose_store(shadow: shadow).xpath("div[@title='#{title}']")
+    tiddler_divs = choose_store(shadow:).xpath("div[@title='#{title}']")
 
     # There ought to be only one, but let's not throw errors for the edge case
     #raise "Multiple #{title} tiddlers found!" if tiddler_divs.length > 1
@@ -362,6 +362,6 @@ class TwFile
 
   def create_tiddler_div(title, fields)
     fields = { text: fields } if fields.is_a?(String)
-    TiddlerDiv.from_fields(fields.merge(title: title), doc)
+    TiddlerDiv.from_fields(fields.merge(title:), doc)
   end
 end

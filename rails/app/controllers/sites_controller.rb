@@ -79,7 +79,7 @@ class SitesController < ApplicationController
   # GET /sites/1/download
   def download
     local_core = (params[:mode] == 'local_core')
-    download_html_content(@site.download_content(local_core: local_core), @site.name)
+    download_html_content(@site.download_content(local_core:), @site.name)
   end
 
   def download_core_js

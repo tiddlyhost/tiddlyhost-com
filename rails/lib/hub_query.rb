@@ -20,7 +20,7 @@ module HubQuery
     # Not really paginated or hub related...
     # Todo: Cap site count per user or do pagination
     paginated_sites(
-      page: nil, per_page: 1000, sort_by: sort_by, tag: nil, user: user, search: nil, for_hub: false,
+      page: nil, per_page: 1000, sort_by:, tag: nil, user:, search: nil, for_hub: false,
       extra_fields_in_select: [
         :tw_kind,
         :tw_version,
