@@ -57,7 +57,7 @@ class HubController < ApplicationController
     @tag_tabs = HubQuery.most_used_tags(for_templates: @show_templates).first(Settings.hub_tag_tab_count)
 
     # If there's a particular tag selected, show that in the tab bar also
-    @tag_tabs = @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
+    @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
 
     # See lib/hub_query
     @sites = HubQuery.paginated_sites(
