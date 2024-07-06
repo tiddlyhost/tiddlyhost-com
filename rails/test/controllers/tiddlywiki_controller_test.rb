@@ -144,7 +144,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       # TODO: Test coverage for saving feather sites
       next if tw_kind == 'feather'
 
-      site_name = "test-#{tw_kind}-#{tw_version.gsub(/\./, '-')}"
+      site_name = "test-#{tw_kind}-#{tw_version.gsub('.', '-')}"
       site_tiddlers = @tiddlers
       site_user = @user
 

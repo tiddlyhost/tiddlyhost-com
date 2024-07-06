@@ -113,7 +113,7 @@ class Settings
   end
 
   def self.feature_list
-    (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map { |m| m.to_s.sub(/_enabled\?/, '').to_sym }).uniq.sort
+    (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map { |m| m.to_s.sub('_enabled?', '').to_sym }).uniq.sort
   end
 
   def self.stripe_products
