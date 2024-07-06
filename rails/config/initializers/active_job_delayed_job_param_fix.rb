@@ -11,11 +11,11 @@
 #
 module ActiveJobDelayedJobParamFix
   def max_attempts
-    return job.max_attempts if job.respond_to?(:max_attempts)
+    job.max_attempts if job.respond_to?(:max_attempts)
   end
 
   def max_run_time
-    return job.max_run_time if job.respond_to?(:max_run_time)
+    job.max_run_time if job.respond_to?(:max_run_time)
   end
 
   private

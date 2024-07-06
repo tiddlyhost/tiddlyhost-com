@@ -66,7 +66,7 @@ class TwFile
     # For FeatherWiki
     # (Compressed versions don't have the quotes hence the "? here)
     match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
-    return ['feather', match[1]] if match
+    ['feather', match[1]] if match
   end
 
   # We can't be certain, but we can sanity check a few things to

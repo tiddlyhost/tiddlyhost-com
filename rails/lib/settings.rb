@@ -34,7 +34,7 @@ class Settings
     settings = read_settings['config/settings.yml']
     settings_local = read_settings['config/settings_local.yml']
     build_info = { 'build_info' =>
-      (read_settings['public/build-info.txt'] || PLACEHOLDER_BUILD_INFO) }
+      read_settings['public/build-info.txt'] || PLACEHOLDER_BUILD_INFO }
 
     settings['defaults'].merge(settings[rails_env]).merge(build_info).merge(settings_local)
   end
