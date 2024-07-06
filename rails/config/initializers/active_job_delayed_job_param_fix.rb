@@ -25,4 +25,4 @@ module ActiveJobDelayedJobParamFix
   end
 end
 
-ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.send(:include, ActiveJobDelayedJobParamFix)
+ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.include ActiveJobDelayedJobParamFix
