@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Delayed::Worker.logger = Logger.new(STDOUT)
+Delayed::Worker.logger = Logger.new($stdout)
 Delayed::Worker.max_run_time = 2.minutes
 
 # To see exception notification emails for delayed job errors
