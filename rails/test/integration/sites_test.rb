@@ -147,7 +147,7 @@ class SitesTest < CapybaraIntegrationTest
         assert_equal error_code, page.status_code
         # Confirm the expected view and layout is used
         assert_selector '.navbar .navbar-brand span', text: 'Tiddlyhost'
-        assert_selector 'h1', text: "#{error_code}"
+        assert_selector 'h1', text: error_code.to_s
 
         visit "#{url}.txt"
         assert_equal error_code, page.status_code

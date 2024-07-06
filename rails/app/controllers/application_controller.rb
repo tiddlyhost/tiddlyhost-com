@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     # For some reason using text/javascript here makes rails give a CORS
     # error. Use text/plain instead which should work just as well.
     send_data js_content,
-      type: 'text/plain; charset=utf-8', filename: "#{file_name}"
+      type: 'text/plain; charset=utf-8', filename: file_name
   end
 
   def main_site_url
