@@ -186,7 +186,7 @@ module ApplicationHelper
     download: ['download', 'Download'],
     restore: ['file-earmark-arrow-up', 'Restore as current version'],
     discard: ['trash', 'Discard'],
-    upgrade: [['stars', class: 'red-icon'], 'Upgrade plan'],
+    upgrade: [['stars', { class: 'red-icon' }], 'Upgrade plan'],
   }.freeze
 
   def link_content(key)
