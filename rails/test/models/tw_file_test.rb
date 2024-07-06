@@ -5,7 +5,7 @@ require "test_helper"
 class TwFileTest < ActiveSupport::TestCase
   test "adding a tiddler" do
     tw = TwFile.new(minimal_html(:tw5))
-    tw.write_tiddlers({'foo' => 'bar'})
+    tw.write_tiddlers({ 'foo' => 'bar' })
 
     assert_match '<div id="storeArea"><div title="foo"><pre>bar</pre></div></div>', tw.to_html
     assert_equal 'bar', tw.tiddler_content('foo')
@@ -14,7 +14,7 @@ class TwFileTest < ActiveSupport::TestCase
 
   test "adding a tiddler with json script store" do
     tw = TwFile.new(minimal_html(:tw5_json))
-    tw.write_tiddlers({'foo' => 'bar'})
+    tw.write_tiddlers({ 'foo' => 'bar' })
 
     # We add tiddlers by appending a new script element
     assert_match '<script class="tiddlywiki-tiddler-store" type="application/json">[{"text":"bar","title":"foo"}]</script>', tw.to_html
@@ -29,8 +29,8 @@ class TwFileTest < ActiveSupport::TestCase
     tw = TwFile.new(tw.to_html)
 
     assert_equal 'bar', tw.tiddler_content('foo')
-    assert_equal([{'text'=>'bar','title'=>'foo'}], tw.tiddlers_data)
-    assert_equal([{'title'=>'foo'}], tw.tiddlers_data(skinny: true))
+    assert_equal([{ 'text' => 'bar', 'title' => 'foo' }], tw.tiddlers_data)
+    assert_equal([{ 'title' => 'foo' }], tw.tiddlers_data(skinny: true))
   end
 
   test "tiddlyhost mods for tw5" do
@@ -98,7 +98,7 @@ class TwFileTest < ActiveSupport::TestCase
 
   test "tiddlywiki validation" do
     # Valid files
-    %w[ tw5 encrypted classic ].each do |type|
+    %w[tw5 encrypted classic].each do |type|
       tw_file = TwFile.new(minimal_html(type))
       assert tw_file.looks_valid?
 
@@ -185,7 +185,7 @@ class TwFileTest < ActiveSupport::TestCase
       assert_equal external_core, th_file.is_external_core?
 
       # Attempt to turn autosave on
-      th_file.write_tiddlers({'$:/config/AutoSave' => 'yes'})
+      th_file.write_tiddlers({ '$:/config/AutoSave' => 'yes' })
 
       # Apply the usual processing done when serving a site
       th_file.apply_tiddlyhost_mods('foo')

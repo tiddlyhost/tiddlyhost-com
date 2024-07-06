@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
 module SitesHelper
-  def site_link(site, opts={})
+  def site_link(site, opts = {})
     link_title = opts.delete(:link_title)
-    link_to site.url, {target: '_blank'}.merge(opts) do
+    link_to site.url, { target: '_blank' }.merge(opts) do
       link_title || site.name
     end
   end
 
-  def site_long_link(site, opts={})
-    link_to site.url, {target: '_blank'}.merge(opts) do
+  def site_long_link(site, opts = {})
+    link_to site.url, { target: '_blank' }.merge(opts) do
       (yield if block_given?).to_s + (opts.delete(:name) || site.long_name)
     end
   end
 
-  def site_pretty_link(site, opts={})
+  def site_pretty_link(site, opts = {})
     site_long_link(site, opts) do
       image_tag(asset_path(site.favicon_asset_name))
     end
   end
 
-  def site_download_link(site, opts={})
+  def site_download_link(site, opts = {})
     link_to site.download_url, opts do
       yield
     end
@@ -40,7 +40,7 @@ module SitesHelper
     access_icon(access_type) + access_type.humanize
   end
 
-  def access_icon(access_type, opts={})
+  def access_icon(access_type, opts = {})
     opts = {
       fill: '#6c757d',
       height: '0.95em',
@@ -77,11 +77,11 @@ module SitesHelper
     url
   end
 
-  def logo_for_kind(kind, style='height: 1.4em; margin-top: -3px;')
+  def logo_for_kind(kind, style = 'height: 1.4em; margin-top: -3px;')
     image_tag(SiteCommon::KIND_LOGOS[kind.to_s], style: style, title: SiteCommon::KINDS[kind.to_s]) if SiteCommon::KIND_LOGOS[kind.to_s].present?
   end
 
-  def kind_logo(site, style='height: 1.4em; margin-top: -3px; padding-right: 4px;')
+  def kind_logo(site, style = 'height: 1.4em; margin-top: -3px; padding-right: 4px;')
     logo_for_kind(site.tw_kind, style) if site.tw_kind
   end
 
@@ -109,6 +109,6 @@ module SitesHelper
   def fade_away_opacity(site, index)
     how_far_under = index - site.keep_count
     opac = 100 - 23 * (how_far_under + 3)
-    "opacity: #{opac.clamp(0,100)}%;"
+    "opacity: #{opac.clamp(0, 100)}%;"
   end
 end

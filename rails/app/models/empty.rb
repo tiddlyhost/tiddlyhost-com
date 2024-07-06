@@ -3,7 +3,7 @@
 class Empty < ApplicationRecord
   include WithDefault
 
-  scope :enabled, ->{ where(enabled: true) }
+  scope :enabled, -> { where(enabled: true) }
 
   def self.for_select
     enabled.order(:display_order).to_a.select(&:file_present?)
@@ -39,6 +39,6 @@ class Empty < ApplicationRecord
   end
 
   def self.versions
-    self.for_select.map{ |e| {name: e.name, version: e.tiddlywiki_version, kind: e.kind } }
+    self.for_select.map { |e| { name: e.name, version: e.tiddlywiki_version, kind: e.kind } }
   end
 end

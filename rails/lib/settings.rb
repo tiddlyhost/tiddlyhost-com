@@ -33,8 +33,8 @@ class Settings
 
     settings = read_settings["config/settings.yml"]
     settings_local = read_settings["config/settings_local.yml"]
-    build_info = {"build_info" =>
-      (read_settings["public/build-info.txt"] || PLACEHOLDER_BUILD_INFO)}
+    build_info = { "build_info" =>
+      (read_settings["public/build-info.txt"] || PLACEHOLDER_BUILD_INFO) }
 
     settings['defaults'].merge(settings[rails_env]).merge(build_info).merge(settings_local)
   end
@@ -92,7 +92,7 @@ class Settings
     self.url_defaults[:protocol] == 'https'
   end
 
-  def self.short_sha(length=7)
+  def self.short_sha(length = 7)
     self.build_info["sha"][0...length]
   end
 
@@ -113,7 +113,7 @@ class Settings
   end
 
   def self.feature_list
-    (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map{|m| m.to_s.sub(/_enabled\?/, '').to_sym}).uniq.sort
+    (Settings.secrets(:grant_feature).keys + Settings::Features.methods(false).map { |m| m.to_s.sub(/_enabled\?/, '').to_sym }).uniq.sort
   end
 
   def self.stripe_products
@@ -122,16 +122,16 @@ class Settings
 
   # This should never appear but it helps tests pass when secrets
   # are not present. Fixme: The fact this is needed is not ideal.
-  FALLBACK_PLAN = {"name" => "Missing", "price" => 0}
+  FALLBACK_PLAN = { "name" => "Missing", "price" => 0 }
 
   # The OpenStruct should have keys :name, :price, :id
-  def self.stripe_product(plan, frequency=:monthly)
+  def self.stripe_product(plan, frequency = :monthly)
     product_info = self.stripe_products&.dig(plan, frequency) || FALLBACK_PLAN
     OpenStruct.new(product_info)
   end
 
   # Look up a product's details from its stripe id
   def self.stripe_product_by_id(plan_id)
-    OpenStruct.new(stripe_products&.values.map(&:values).flatten.find{|p| p[:id] == plan_id})
+    OpenStruct.new(stripe_products&.values.map(&:values).flatten.find { |p| p[:id] == plan_id })
   end
 end

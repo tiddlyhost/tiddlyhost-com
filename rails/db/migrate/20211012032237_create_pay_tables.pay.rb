@@ -26,7 +26,7 @@ class CreatePayTables < ActiveRecord::Migration[6.0]
     add_index :pay_merchants, [:owner_type, :owner_id, :processor]
 
     create_table :pay_payment_methods do |t|
-      t.belongs_to :customer, foreign_key: {to_table: :pay_customers}, null: false, index: false
+      t.belongs_to :customer, foreign_key: { to_table: :pay_customers }, null: false, index: false
       t.string :processor_id, null: false
       t.boolean :default
       t.string :type
@@ -36,7 +36,7 @@ class CreatePayTables < ActiveRecord::Migration[6.0]
     add_index :pay_payment_methods, [:customer_id, :processor_id], unique: true
 
     create_table :pay_subscriptions do |t|
-      t.belongs_to :customer, foreign_key: {to_table: :pay_customers}, null: false, index: false
+      t.belongs_to :customer, foreign_key: { to_table: :pay_customers }, null: false, index: false
       t.string :name, null: false
       t.string :processor_id, null: false
       t.string :processor_plan, null: false
@@ -52,8 +52,8 @@ class CreatePayTables < ActiveRecord::Migration[6.0]
     add_index :pay_subscriptions, [:customer_id, :processor_id], unique: true
 
     create_table :pay_charges do |t|
-      t.belongs_to :customer, foreign_key: {to_table: :pay_customers}, null: false, index: false
-      t.belongs_to :subscription, foreign_key: {to_table: :pay_subscriptions}, null: true
+      t.belongs_to :customer, foreign_key: { to_table: :pay_customers }, null: false, index: false
+      t.belongs_to :subscription, foreign_key: { to_table: :pay_subscriptions }, null: true
       t.string :processor_id, null: false
       t.integer :amount, null: false
       t.string :currency

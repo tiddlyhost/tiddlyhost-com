@@ -18,14 +18,14 @@ module Subscriber
 
     # The distinct is because this is used to count users
     scope :with_subscriptions_active, -> {
-      join_subscriptions.where(pay_subscriptions: {status: 'active'}).select('distinct users.id')
+      join_subscriptions.where(pay_subscriptions: { status: 'active' }).select('distinct users.id')
     }
 
     # Uncomment to help test UI for unsubcribed user
     #def subscribed?; false; end
   end
 
-  def checkout_session_for(plan, frequency=:monthly)
+  def checkout_session_for(plan, frequency = :monthly)
     price_id = Settings.stripe_product(plan, frequency)&.id
     raise "Can't find price id for #{plan.inspect}, #{frequency.inspect}!" unless price_id
 

@@ -31,8 +31,8 @@ module SiteCommon
 
     scope :search_for, ->(search_text) {
           where("#{table_name}.name        ILIKE CONCAT('%',?,'%')", search_text).
-      or( where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text) ).
-      or( search_tags(search_text) )
+      or(where("#{table_name}.description ILIKE CONCAT('%',?,'%')", search_text)).
+      or(search_tags(search_text))
     }
 
     scope :search_tags, ->(search_text) {

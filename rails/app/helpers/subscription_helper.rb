@@ -11,7 +11,7 @@ module SubscriptionHelper
       [:free, :standard, plan]
     end
 
-    feature_list.map{ |p| Settings.plan_descriptions.dig(p, :features) || [] }.flatten
+    feature_list.map { |p| Settings.plan_descriptions.dig(p, :features) || [] }.flatten
   end
 
   def stripe_customer_url(user)

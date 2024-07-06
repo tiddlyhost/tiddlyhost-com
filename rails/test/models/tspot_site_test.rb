@@ -30,13 +30,13 @@ class TspotSiteTest < ActiveSupport::TestCase
     refute TspotSite.not_deleted.include?(@site)
   end
 
-  def assert_legacy_password(passwd=@old_passwd)
+  def assert_legacy_password(passwd = @old_passwd)
     assert_nil @site.password_digest
     assert @site.use_legacy_password?
     assert @site.passwd_ok?(@site_name, passwd)
   end
 
-  def assert_new_password(passwd=@new_passwd)
+  def assert_new_password(passwd = @new_passwd)
     assert_equal 60, @site.password_digest.length
     refute @site.use_legacy_password?
     assert @site.passwd_ok?(@site_name, passwd)
@@ -77,7 +77,7 @@ class TspotSiteTest < ActiveSupport::TestCase
     assert_new_password
 
     # Set a new password incorrectly again
-    assert_raises{ @site.set_password(@new_new_passwd, 'xyz') }
+    assert_raises { @site.set_password(@new_new_passwd, 'xyz') }
 
     # New password still works
     assert_new_password

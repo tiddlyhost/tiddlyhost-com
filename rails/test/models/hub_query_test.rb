@@ -8,11 +8,11 @@ class SiteTest < ActiveSupport::TestCase
     @user = @site.user
   end
 
-  def user_query(sort_by='id')
+  def user_query(sort_by = 'id')
     HubQuery.sites_for_user(@user, sort_by: sort_by)
   end
 
-  def hub_query(opts={})
+  def hub_query(opts = {})
     HubQuery.paginated_sites(**{
       page: 1,
       per_page: 10,

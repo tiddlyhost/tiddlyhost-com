@@ -3,7 +3,7 @@
 module ApplicationHelper
   include Recaptcha::Adapters::ViewMethods
 
-  def nav_link_to(title, link, opts={})
+  def nav_link_to(title, link, opts = {})
     is_active = current_page?(link) ||
       # We redirect home to /sites when user is logged in
       (current_page?(sites_path) && link == root_path) ||
@@ -22,7 +22,7 @@ module ApplicationHelper
     end
   end
 
-  def tab_link_to(title, link, opts={})
+  def tab_link_to(title, link, opts = {})
     is_active = current_page?(link)
     content_tag :li, class: 'nav-item' do
       link_to link, opts.merge(class: "nav-link#{' active' if is_active}") do
@@ -31,7 +31,7 @@ module ApplicationHelper
     end
   end
 
-  def bi_icon(icon, opts={})
+  def bi_icon(icon, opts = {})
     return unless icon
 
     opts.reverse_merge!(
@@ -47,7 +47,7 @@ module ApplicationHelper
   end
 
   def display_none_when(condition)
-    "display: #{ condition ? 'none' : 'block' };"
+    "display: #{condition ? 'none' : 'block'};"
   end
 
   def gravatar_url(email)
@@ -58,23 +58,23 @@ module ApplicationHelper
     "https://www.libravatar.org/avatar/#{Digest::MD5.hexdigest(email)}?d=identicon&s=80"
   end
 
-  def gravatar_image(user, opts={})
+  def gravatar_image(user, opts = {})
     opts[:size] ||= 80
     opts[:class] ||= 'avatar'
     image_tag(gravatar_url(user.email), opts)
   end
 
-  def libravatar_image(user, opts={})
+  def libravatar_image(user, opts = {})
     opts[:size] ||= 80
     opts[:class] ||= 'avatar'
     image_tag(libravatar_url(user.email), opts)
   end
 
-  def avatar_image(user, opts={})
+  def avatar_image(user, opts = {})
     user.use_libravatar? ? libravatar_image(user, opts) : gravatar_image(user, opts)
   end
 
-  def bool_text(bool_val, true_text:'Y', false_text:'N')
+  def bool_text(bool_val, true_text: 'Y', false_text: 'N')
     bool_val ? true_text : false_text
   end
 
@@ -117,17 +117,17 @@ module ApplicationHelper
 
   # Same thing but truncate in the dom
   # (Not used currently.)
-  def span_with_title_truncated(full_text, truncate_length=100)
+  def span_with_title_truncated(full_text, truncate_length = 100)
     content_tag :span, title: full_text do
       truncate(full_text, length: truncate_length, separator: ' ')
     end
   end
 
-  def nice_percentage(number, total, opts={})
+  def nice_percentage(number, total, opts = {})
     number_to_percentage(100 * number / total, opts.reverse_merge(precision: 1))
   end
 
-  def support_mail_to(opts={})
+  def support_mail_to(opts = {})
     mail_to(Settings.support_email,
       opts.delete(:link_title) || Settings.support_email_name,
       opts.reverse_merge(target: '_blank'))
@@ -137,8 +137,8 @@ module ApplicationHelper
     "#{Settings.github_url}/commits/#{branch_or_sha}"
   end
 
-  def github_history_link_to(title, sha=nil, opts={})
-    link_to(title, github_history_url(sha||title), {target: '_blank'}.reverse_merge(opts))
+  def github_history_link_to(title, sha = nil, opts = {})
+    link_to(title, github_history_url(sha || title), { target: '_blank' }.reverse_merge(opts))
   end
 
   # See also lib/bootstrap_paginate_renderer.rb

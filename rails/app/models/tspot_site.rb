@@ -83,7 +83,7 @@ class TspotSite < ApplicationRecord
     htpasswd.blank?
   end
 
-  def self.fetched_site_to_attrs(fetched_site, ip_address=nil)
+  def self.fetched_site_to_attrs(fetched_site, ip_address = nil)
     WithSavedContent.attachment_params(fetched_site.html_file).merge({
       name: fetched_site.name,
       is_private: fetched_site.is_private?,
@@ -96,7 +96,7 @@ class TspotSite < ApplicationRecord
     TspotSite.fetched_site_to_attrs(fetcher)
   end
 
-  def ensure_destubbed(ip_address=nil)
+  def ensure_destubbed(ip_address = nil)
     return self unless is_stub?
 
     update(fetcher_attrs)
@@ -108,7 +108,7 @@ class TspotSite < ApplicationRecord
   # no longer create a new record here, but we might need to use
   # the fetcher to populate its content and metadata.
   #
-  def self.find_and_populate(site_name, ip_address=nil)
+  def self.find_and_populate(site_name, ip_address = nil)
     not_deleted.find_by_name(site_name)&.ensure_destubbed(ip_address)
   end
 

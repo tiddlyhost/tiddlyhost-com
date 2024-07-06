@@ -194,7 +194,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_mock mock
   end
 
-  def assert_404(mock=nil)
+  def assert_404(mock = nil)
     assert_response 404
     assert_select 'h1', '404 Not Found', response.body
     assert_mock mock if mock

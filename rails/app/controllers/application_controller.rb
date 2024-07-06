@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :dark_mode?
 
-  def bs_theme(is_dark=dark_mode?)
+  def bs_theme(is_dark = dark_mode?)
      is_dark ? "dark" : "light"
   end
   helper_method :bs_theme

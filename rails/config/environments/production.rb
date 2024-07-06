@@ -50,7 +50,7 @@ Rails.application.configure do
   config.log_level = :info
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # 'cache' here is the hostname of the memcached container inside
   # the docker environment created by docker-compose

@@ -20,7 +20,7 @@ class AdminController < ApplicationController
     @user_count = User.count
     @subscription_count = User.with_subscriptions_active.count
     @alt_subscription_count = User.where("alt_subscription IS NOT NULL").
-      where.not(id: Settings.secrets(:my_account_ids)||[]).count
+      where.not(id: Settings.secrets(:my_account_ids) || []).count
 
     @never_signed_in_users = User.signed_in_never.count
     @signed_in_once_users = User.signed_in_once.count
@@ -102,47 +102,47 @@ class AdminController < ApplicationController
 
   FILTER_PARAMS = {
     owned: {
-      '1' => { title: 'owned', filter: ->(r){ r.where.not(user_id: nil) } },
-      '0' => { title: 'unowned', filter: ->(r){ r.where(user_id: nil) } },
+      '1' => { title: 'owned', filter: ->(r) { r.where.not(user_id: nil) } },
+      '0' => { title: 'unowned', filter: ->(r) { r.where(user_id: nil) } },
     },
 
     saved: {
-      '1' => { title: 'saved', filter: ->(r){ r.where.not(save_count: 0) } },
-      '0' => { title: 'unsaved', filter: ->(r){ r.where(save_count: 0) } },
+      '1' => { title: 'saved', filter: ->(r) { r.where.not(save_count: 0) } },
+      '0' => { title: 'unsaved', filter: ->(r) { r.where(save_count: 0) } },
     },
 
     private: {
-      '1' => { title: 'private', filter: ->(r){ r.where.not(is_private: false ) } },
-      '0' => { title: 'public', filter: ->(r){ r.where(is_private: false) } },
+      '1' => { title: 'private', filter: ->(r) { r.where.not(is_private: false) } },
+      '0' => { title: 'public', filter: ->(r) { r.where(is_private: false) } },
     },
 
     hub: {
-      '1' => { title: 'hub', filter: ->(r){ r.where.not(is_searchable: false) } },
-      '0' => { title: 'non-hub', filter: ->(r){ r.where(is_searchable: false) } },
+      '1' => { title: 'hub', filter: ->(r) { r.where.not(is_searchable: false) } },
+      '0' => { title: 'non-hub', filter: ->(r) { r.where(is_searchable: false) } },
     },
 
     template: {
-      '1' => { title: 'template', filter: ->(r){ r.where.not(allow_public_clone: false) } },
-      '0' => { title: 'non-template', filter: ->(r){ r.where(allow_public_clone: false) } },
+      '1' => { title: 'template', filter: ->(r) { r.where.not(allow_public_clone: false) } },
+      '0' => { title: 'non-template', filter: ->(r) { r.where(allow_public_clone: false) } },
     },
 
     no_stub: {
-      '1' => { title: 'non-stub', filter: ->(r){ r.no_stubs } },
-      '0' => { title: 'stub', filter: ->(r){ r.stubs } },
+      '1' => { title: 'non-stub', filter: ->(r) { r.no_stubs } },
+      '0' => { title: 'stub', filter: ->(r) { r.stubs } },
     },
 
     new_pass: {
-      '1' => { title: 'new passwd', filter: ->(r){ r.where.not(password_digest: nil) } },
-      '0' => { title: 'legacy passwd', filter: ->(r){ r.where(password_digest: nil) } },
+      '1' => { title: 'new passwd', filter: ->(r) { r.where.not(password_digest: nil) } },
+      '0' => { title: 'legacy passwd', filter: ->(r) { r.where(password_digest: nil) } },
     },
 
     deleted: {
-      '1' => { title: 'deleted', filter: ->(r){ r.where.not(deleted: false) } },
-      '0' => { title: 'not deleted', filter: ->(r){ r.where(deleted: false) } },
+      '1' => { title: 'deleted', filter: ->(r) { r.where.not(deleted: false) } },
+      '0' => { title: 'not deleted', filter: ->(r) { r.where(deleted: false) } },
     },
 
     kind: {
-      filter: ->(r, kind){ r.where(tw_kind: kind) },
+      filter: ->(r, kind) { r.where(tw_kind: kind) },
     },
 
     user: {
@@ -150,18 +150,18 @@ class AdminController < ApplicationController
     },
 
     q: {
-      filter: ->(r, search){ r.admin_search_for(search) },
+      filter: ->(r, search) { r.admin_search_for(search) },
     },
 
     signedin: {
-      '1' => { title: 'signed in', filter: ->(r){ r.where('sign_in_count > 0') } },
-      '0' => { title: 'never signed in', filter: ->(r){ r.where('sign_in_count = 0') } },
+      '1' => { title: 'signed in', filter: ->(r) { r.where('sign_in_count > 0') } },
+      '0' => { title: 'never signed in', filter: ->(r) { r.where('sign_in_count = 0') } },
     },
 
     subscription: {
-      '2' => { title: 'current', filter: ->(r){ r.where("pay_subscriptions.status = 'active' OR NOT alt_subscription IS NULL") } },
-      '1' => { title: 'any status', filter: ->(r){ r.where.not('pay_subscriptions.id IS NULL') } },
-      '0' => { title: 'no subscription', filter: ->(r){ r.where('pay_subscriptions.id IS NULL and alt_subscription IS NULL') } },
+      '2' => { title: 'current', filter: ->(r) { r.where("pay_subscriptions.status = 'active' OR NOT alt_subscription IS NULL") } },
+      '1' => { title: 'any status', filter: ->(r) { r.where.not('pay_subscriptions.id IS NULL') } },
+      '0' => { title: 'no subscription', filter: ->(r) { r.where('pay_subscriptions.id IS NULL and alt_subscription IS NULL') } },
     },
 
   }.freeze

@@ -46,7 +46,7 @@ module AdminChartData
   end
 
   # Fixme: This is slow and inefficient
-  def day_range(from='2021-02-12')
+  def day_range(from = '2021-02-12')
     (Date.parse(from)..Date.today).map do |d|
       # First column is X axis, second column is Y axis
       [d.to_s, yield(d.to_time).count]

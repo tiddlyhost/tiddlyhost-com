@@ -16,7 +16,7 @@ module WithSavedContent
       to: :blob, prefix: true, allow_nil: true
 
     # Used in hub_query
-    scope :with_blobs_for_query, ->{ left_joins(saved_content_files_attachments: :blob) }
+    scope :with_blobs_for_query, -> { left_joins(saved_content_files_attachments: :blob) }
   end
 
   # Use the newest attachment from saved_content_files
@@ -66,7 +66,7 @@ module WithSavedContent
   # Todo: Refactor and make this less clunky. Perhaps make use of
   # `saved_content_files.attach` which would be more typical.
   #
-  def self.attachment_params(new_content, record=nil)
+  def self.attachment_params(new_content, record = nil)
     tw_kind, tw_version = TwFile.light_get_kind_and_version(new_content)
     current_attachables = record.present? ? record.saved_content_files.blobs : []
     {
@@ -86,7 +86,7 @@ module WithSavedContent
   end
 
   # Used by Site records and TspotSite records that have been saved.
-  def file_download(blob_id=nil)
+  def file_download(blob_id = nil)
     # Don't bother to cache older versions of the site
     return uncached_file_download(blob_id) if blob_id
 
@@ -96,7 +96,7 @@ module WithSavedContent
     end
   end
 
-  def uncached_file_download(blob_id=nil)
+  def uncached_file_download(blob_id = nil)
     if blob_id
       # The exact version as specified by the blob id
       downloaded_content = specific_saved_content_file(blob_id)&.download
@@ -129,7 +129,7 @@ module WithSavedContent
   # when the site is saved, i.e. exactly when it needs to.
   # Takes a block that runs on a cache miss.
   #
-  def blob_cache(cache_type, tiddler_name=nil, &blk)
+  def blob_cache(cache_type, tiddler_name = nil, &blk)
     blob_content_cache_key = [blob.cache_key, cache_type, tiddler_name].compact
     Rails.cache.fetch(blob_content_cache_key, expires_in: 4.weeks, &blk)
   end

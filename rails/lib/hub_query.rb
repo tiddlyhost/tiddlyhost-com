@@ -91,9 +91,9 @@ module HubQuery
     qs.map! { |q| q.order("1, 2, blob_created_at DESC") }
 
     # Return paginated collection
-    WillPaginate::Collection.create(page||1, per_page) do |pager|
+    WillPaginate::Collection.create(page || 1, per_page) do |pager|
       # Combine the two queries with a union and apply the sorting
-      full_query_sql = qs.map(&:to_sql).map{|q|"( #{q} )"}.join(" UNION ") + "ORDER BY #{sort_by}, 1, 2 DESC"
+      full_query_sql = qs.map(&:to_sql).map { |q| "( #{q} )" }.join(" UNION ") + "ORDER BY #{sort_by}, 1, 2 DESC"
 
       # For paginated results
       paged_query_sql = "#{full_query_sql} LIMIT #{pager.per_page} OFFSET #{pager.offset}"
@@ -132,10 +132,10 @@ module HubQuery
     # Do our own counts because the built in taggings_count value
     # is for all sites, not just sites visible in the hub
     tagging.
-      group_by{ |t| t.tag.name }.
-      map{ |k, v| [k, -v.count] }.
+      group_by { |t| t.tag.name }.
+      map { |k, v| [k, -v.count] }.
       sort_by(&:last).
       map(&:first).
-      reject{ |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags)||[]) }
+      reject { |tag_name| tag_name.in?(Settings.secrets(:unfeatured_tags) || []) }
   end
 end

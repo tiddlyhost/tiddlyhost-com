@@ -3,7 +3,7 @@
 require 'aws-sdk-s3'
 
 class TspotFetcher
-  def initialize(site_name, secrets=nil)
+  def initialize(site_name, secrets = nil)
     @name = site_name
 
     # No need for a real S3 client in test suite
@@ -53,7 +53,7 @@ class TspotFetcher
       given_username.present? && given_passwd.present? && htpasswd.present?
 
     username, passwd_crypt = htpasswd.split(':')
-    salt = username[0,2]
+    salt = username[0, 2]
     given_username == username && given_passwd.crypt(salt) == passwd_crypt
   end
 
@@ -82,7 +82,7 @@ class TspotFetcher
   end
 
   def site_key(file_name)
-    exploded_path = "#{@name[0,1]}/#{@name[0,2]}/#{@name[0,3]}/#{@name}"
+    exploded_path = "#{@name[0, 1]}/#{@name[0, 2]}/#{@name[0, 3]}/#{@name}"
     "ts/sites/#{exploded_path}/#{file_name}"
   end
 

@@ -27,12 +27,12 @@ class SitesController < ApplicationController
   FILTER_PARAMS = {
     # Fixme maybe: These filters could probably be moved into the db query
     access: {
-      hub: { filter: ->(s){ s.select(&:hub_listed?) }, title: 'hub listed' },
-      public: { filter: ->(s){ s.select(&:is_public?).reject(&:hub_listed?) } },
-      private: { filter: ->(s){ s.select(&:is_private?) } },
+      hub: { filter: ->(s) { s.select(&:hub_listed?) }, title: 'hub listed' },
+      public: { filter: ->(s) { s.select(&:is_public?).reject(&:hub_listed?) } },
+      private: { filter: ->(s) { s.select(&:is_private?) } },
     },
-    kind: SiteCommon::KINDS.to_a.map{|k, v| [k.to_sym,
-      { filter: ->(ss){ ss.select{ |s| s.tw_kind == k.to_s } }, title: v }
+    kind: SiteCommon::KINDS.to_a.map { |k, v| [k.to_sym,
+      { filter: ->(ss) { ss.select { |s| s.tw_kind == k.to_s } }, title: v }
     ]}.to_h
   }.freeze
 
@@ -59,7 +59,7 @@ class SitesController < ApplicationController
       cookies[:grid_view] = "1"
     end
     # Preserve filter and sort params
-    redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({action: :index}))
+    redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({ action: :index }))
   end
 
   # Any site that's been saved recently would probably already
@@ -110,7 +110,7 @@ class SitesController < ApplicationController
     end
 
     create_attrs = site_params_for_create.merge(WithSavedContent.attachment_params(initial_content))
-    create_attrs.merge!({cloned_from_id: @site_to_clone.id, empty_id: @site_to_clone.empty_id}) if @site_to_clone
+    create_attrs.merge!({ cloned_from_id: @site_to_clone.id, empty_id: @site_to_clone.empty_id }) if @site_to_clone
 
     @site = Site.new(create_attrs)
 

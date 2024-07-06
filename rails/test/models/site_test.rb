@@ -78,30 +78,30 @@ class SiteTest < ActiveSupport::TestCase
   test "when to use put saver" do
     {
       true => [
-        {tw_kind: "feather"},
-        {tw_kind: "tw5", tw_version: "5.2.3"},
-        {tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true},
+        { tw_kind: "feather" },
+        { tw_kind: "tw5", tw_version: "5.2.3" },
+        { tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true },
 
         # Unlikely edge case showing preference is ignored
-        {tw_kind: "feather", prefer_upload_saver: true},
+        { tw_kind: "feather", prefer_upload_saver: true },
       ],
 
       false => [
-        {tw_kind: "classic"},
-        {tw_kind: "tw5", tw_version: "5.2.2"},
-        {tw_kind: "tw5", tw_version: "5.2.3", prefer_upload_saver: true},
+        { tw_kind: "classic" },
+        { tw_kind: "tw5", tw_version: "5.2.2" },
+        { tw_kind: "tw5", tw_version: "5.2.3", prefer_upload_saver: true },
 
         # Edge case to demonstrate that prefer upload takes precendent if both are set
-        {tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true, prefer_upload_saver: true},
-        {tw_kind: "tw5", tw_version: "5.2.3", prefer_put_saver: true, prefer_upload_saver: true},
+        { tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true, prefer_upload_saver: true },
+        { tw_kind: "tw5", tw_version: "5.2.3", prefer_put_saver: true, prefer_upload_saver: true },
 
         # Unlikely edge case showing preference is ignored
-        {tw_kind: "classic", prefer_put_saver: true},
+        { tw_kind: "classic", prefer_put_saver: true },
       ],
 
     }.each do |expected, list|
       list.each do |attrs|
-        @site.update!({prefer_upload_saver: false, prefer_put_saver: false}.merge(attrs))
+        @site.update!({ prefer_upload_saver: false, prefer_put_saver: false }.merge(attrs))
         assert_equal expected, @site.use_put_saver?, attrs.inspect
       end
     end

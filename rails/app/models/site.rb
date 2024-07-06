@@ -83,7 +83,7 @@ class Site < ApplicationRecord
       is_logged_in: is_logged_in, use_put_saver: use_put_saver?).to_html
   end
 
-  def json_data(opts={})
+  def json_data(opts = {})
     th_file.tiddlers_data(**opts)
   end
 

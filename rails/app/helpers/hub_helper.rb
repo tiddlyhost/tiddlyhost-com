@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HubHelper
-  def hub_link_to(title, link, opts={})
+  def hub_link_to(title, link, opts = {})
     tab_link_to(title, link, opts)
   end
 
@@ -16,11 +16,11 @@ module HubHelper
 
     elsif view_count < 1_000_000
       precision = view_count > 10_000 ? 0 : 1
-      "#{number_with_precision(view_count.to_f/1_000, precision: precision)}K"
+      "#{number_with_precision(view_count.to_f / 1_000, precision: precision)}K"
 
     else
       precision = view_count > 10_000_000 ? 0 : 1
-      "#{number_with_precision(view_count.to_f/1_000_000, precision: precision)}M"
+      "#{number_with_precision(view_count.to_f / 1_000_000, precision: precision)}M"
 
     end
   end

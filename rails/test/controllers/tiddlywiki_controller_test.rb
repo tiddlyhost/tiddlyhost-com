@@ -5,7 +5,7 @@ require "test_helper"
 class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:bobby)
-    @tiddlers = { 'MyTiddler'=>'Hi there', 'Foo'=>'Bar', 'Baz'=>'123' }
+    @tiddlers = { 'MyTiddler' => 'Hi there', 'Foo' => 'Bar', 'Baz' => '123' }
     @site = new_site_helper(user: @user, name: 'foo', tiddlers: @tiddlers)
     host! @site.host
   end
@@ -23,21 +23,21 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     [
       { url: '/tiddlers.json',
         json: [
-          {"title"=>"MyTiddler","text"=>"Hi there"},
-          {"title"=>"Foo","text"=>"Bar"},
-          {"title"=>"Baz","text"=>"123"} ] },
+          { "title" => "MyTiddler", "text" => "Hi there" },
+          { "title" => "Foo", "text" => "Bar" },
+          { "title" => "Baz", "text" => "123" }] },
 
       { url: '/tiddlers.json?skinny=1',
-        json: [ {"title"=>"MyTiddler"}, {"title"=>"Foo"}, {"title"=>"Baz"} ] },
+        json: [{ "title" => "MyTiddler" }, { "title" => "Foo" }, { "title" => "Baz" }] },
 
       { url: '/tiddlers.json?skinny=1&include_system=1',
-        titles: empty_tiddlers + [ "MyTiddler", "Foo", "Baz" ] },
+        titles: empty_tiddlers + ["MyTiddler", "Foo", "Baz"] },
 
       { url: '/tiddlers.json?title=Foo',
-        json: [ {"title"=>"Foo","text"=>"Bar"} ] },
+        json: [{ "title" => "Foo", "text" => "Bar" }] },
 
       { url: '/tiddlers.json?&skinny=1&title[]=Foo&title[]=Baz',
-        json: [ {"title"=>"Foo"}, {"title"=>"Baz"} ] }
+        json: [{ "title" => "Foo" }, { "title" => "Baz" }] }
 
     ].each do |query|
       assert_expected_json(**query)
@@ -48,7 +48,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     get url
     assert_response :success
     assert_equal json, JSON.load(response.body) if json
-    assert_equal titles, JSON.load(response.body).map{|v| v['title']} if titles
+    assert_equal titles, JSON.load(response.body).map { |v| v['title'] } if titles
   end
 
   test "text/:title.tid" do
@@ -82,7 +82,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "public site" do
-    [ nil, :mary, :bobby ].each do |user|
+    [nil, :mary, :bobby].each do |user|
       fetch_site_as_user(user: user, expected_status: 200)
     end
   end
@@ -171,7 +171,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       #
       modified_tw_file = "#{Rails.root}/test/fixtures/files/index.html"
       File.write(modified_tw_file,
-        site.th_file.write_tiddlers({'NewTiddler'=>'Hey now'}).to_html)
+        site.th_file.write_tiddlers({ 'NewTiddler' => 'Hey now' }).to_html)
 
       # Now simulate a save
       upload_save_site_as_user(user: site.user, site: site, fixture_file: 'index.html')
@@ -198,7 +198,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         prev_blob_key = site.blob.key
 
         new_content = site.th_file.
-          write_tiddlers({'NewTiddler'=>'Hi from put saver'}).to_html
+          write_tiddlers({ 'NewTiddler' => 'Hi from put saver' }).to_html
 
         put_save_site_as_user(user: site.user, site: site, content: new_content)
 
@@ -229,7 +229,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     refute @site.use_put_saver?
 
     new_content = @site.th_file.
-      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
 
     modified_tw_file = "#{Rails.root}/test/fixtures/files/index.html"
     File.write(modified_tw_file, new_content)
@@ -246,7 +246,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert @site.use_put_saver?
 
     new_content = @site.th_file.
-      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
 
     fetch_site_as_user
     etag = response.headers['ETag']
@@ -262,7 +262,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   test "put save will not overwrite" do
     assert @site.use_put_saver?
     new_content = @site.th_file.
-      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: @site.user, site: @site, content: new_content,
       headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
     assert_equal(
@@ -274,7 +274,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   test "put save requires auth" do
     assert @site.use_put_saver?
     new_content = @site.th_file.
-      write_tiddlers({'NewTiddler'=>'Hi'}).to_html
+      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
       headers: { 'If-Match' => 'whatever' }, expected_status: 403)
     assert_equal(

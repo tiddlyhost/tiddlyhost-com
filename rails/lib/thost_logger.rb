@@ -10,11 +10,11 @@ class ThostLogger < Logger
 
   # Skip the rest for now.
   #  %i[ debug info warn error fatal unknown ]
-  def info(msg, request=nil)
+  def info(msg, request = nil)
     super(with_extra_request_info(msg, request))
   end
 
-  def with_extra_request_info(msg, req=nil)
+  def with_extra_request_info(msg, req = nil)
     return msg if req.nil?
 
     '%s - %s "%s%s%s" for %s (%s) "%s"' % [

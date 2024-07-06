@@ -241,7 +241,7 @@ class TiddlywikiController < ApplicationController
 
   def tiddler_data_to_tid_text(tiddler_data)
     [
-      tiddler_data.except('text').sort_by{ |k, v| k}.map{ |k, v| "#{k}: #{v}\n" },
+      tiddler_data.except('text').sort_by { |k, v| k }.map { |k, v| "#{k}: #{v}\n" },
       "\n",
       tiddler_data['text'],
       "\n",

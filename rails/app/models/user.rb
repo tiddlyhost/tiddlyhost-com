@@ -78,7 +78,7 @@ class User < ApplicationRecord
   end
 
   # Unused. Delete maybe?
-  scope :with_type,    ->(*type_names) { where(    user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
+  scope :with_type,    ->(*type_names) { where(user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
   scope :without_type, ->(*type_names) { where.not(user_type_id: UserType.where(name: type_names.map(&:to_s)).pluck(:id)) }
 
   scope :search_for, ->(search_text) {

@@ -33,7 +33,7 @@ module SortAndFilterLinkHelper
   #
   # Todo: link title could be found in sort_options[_][:title]
   # if we pass in the param_val
-  def sort_link(link_title, default_sort_dir=:desc, extra_klass=nil)
+  def sort_link(link_title, default_sort_dir = :desc, extra_klass = nil)
     # Derive the param value from the title
     param_val = link_title.downcase.gsub(/[^a-z]/, '')
 
@@ -56,7 +56,7 @@ module SortAndFilterLinkHelper
   # Used in the hub
   # This one does not provide the asc/desc flipping
   #
-  def simple_sort_link(new_sort_by, klass='dropdown-item')
+  def simple_sort_link(new_sort_by, klass = 'dropdown-item')
     sel = "sel" if sort_by == new_sort_by&.to_s
     link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel])
   end
@@ -90,7 +90,7 @@ module SortAndFilterLinkHelper
   end
 
   # A radio button that acts like a link
-  def filter_radio_link(link_title, param_key, param_val=nil)
+  def filter_radio_link(link_title, param_key, param_val = nil)
     param_val = param_val.to_s.presence
     selected = params[param_key] == param_val
     onclick = "window.location.href = '#{url_for(filter_link_url(param_key, param_val))}'"
@@ -126,17 +126,17 @@ module SortAndFilterLinkHelper
   def sort_sql
     null_always_last = sort_null_always_last_vals.include?(sort_by)
     asc_desc_sql = sort_desc? ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
-    Array.wrap(sort_opt).map{ |expr| "#{expr} #{asc_desc_sql}" }.join(",")
+    Array.wrap(sort_opt).map { |expr| "#{expr} #{asc_desc_sql}" }.join(",")
   end
 
   #--------------------------------------------------------
   # For links
   #
-  def flipped_sort_by(sort_val=sort_by)
+  def flipped_sort_by(sort_val = sort_by)
     sort_val_with_suffix(sort_val, !sort_desc?)
   end
 
-  def sort_val_with_suffix(sort_val, sort_desc=false)
+  def sort_val_with_suffix(sort_val, sort_desc = false)
     "#{sort_val}#{DESC_SUFFIX if sort_desc}"
   end
 

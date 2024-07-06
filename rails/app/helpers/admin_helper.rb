@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module AdminHelper
-  def link_to_user_sites(text, user, opts={})
+  def link_to_user_sites(text, user, opts = {})
     link_to(text, { controller: :admin,
       action: opts.delete(:action) || action_name,
       user: user.id }, opts)
@@ -21,8 +21,8 @@ module AdminHelper
     end
   end
 
-  def link_to_user(text, user, opts={})
-    link_to(text||'', { controller: :admin, action: :users, user: user.id }, opts)
+  def link_to_user(text, user, opts = {})
+    link_to(text || '', { controller: :admin, action: :users, user: user.id }, opts)
   end
 
   def pagination_info(records)
@@ -41,7 +41,7 @@ module AdminHelper
     end
   end
 
-  def card_color(title, value, alert=false)
+  def card_color(title, value, alert = false)
     return 'red' if alert
 
     case title.downcase

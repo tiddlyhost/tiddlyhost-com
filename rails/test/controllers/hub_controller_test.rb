@@ -54,11 +54,11 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  def assert_site_visible(site=@site)
+  def assert_site_visible(site = @site)
     assert_select(".hub .site##{site.name}", count: 1)
   end
 
-  def assert_site_not_visible(site=@site)
+  def assert_site_not_visible(site = @site)
     assert_select(".hub .site##{site.name}", count: 0)
   end
 end
