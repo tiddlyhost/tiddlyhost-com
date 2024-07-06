@@ -25,6 +25,7 @@ module SitesHelper
   end
 
   def site_access(site)
+    # rubocop: disable Layout/IndentationWidth
     access_type = if site.redirect_to.present?
       'redirected'
     elsif site.access_hub_listed?
@@ -34,6 +35,7 @@ module SitesHelper
     elsif site.access_private?
       'private'
     end
+    # rubocop: enable Layout/IndentationWidth
 
     access_icon(access_type) + access_type.humanize
   end

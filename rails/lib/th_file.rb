@@ -67,6 +67,7 @@ class ThFile < TwFile
   end
 
   def apply_tw5_mods(site_name, for_download:, local_core:, use_put_saver:, is_logged_in:)
+    # rubocop: disable Layout/IndentationWidth
     upload_url = if for_download || use_put_saver
       # Clear $:/UploadURL for downloads so the save button in the downloaded
       # file will not try to use upload.js. It should use another save
@@ -82,6 +83,7 @@ class ThFile < TwFile
       # Todo: Actually using just "/" would work just as well here I think
       Settings.subdomain_site_url(site_name)
     end
+    # rubocop: enable Layout/IndentationWidth
 
     write_tiddlers({
       # TiddlyWiki will POST to this url using code in core/modules/savers/upload.js
