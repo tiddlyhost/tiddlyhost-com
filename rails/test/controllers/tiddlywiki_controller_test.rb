@@ -93,7 +93,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
     @site.update(allow_in_iframe: true)
     fetch_site_as_user
-    refute response.headers.has_key?('X-Frame-Options')
+    refute response.headers.key?('X-Frame-Options')
   end
 
   test 'private site' do
