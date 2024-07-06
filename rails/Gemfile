@@ -59,7 +59,7 @@ gem 'exception_notification'
 gem 'haml-rails'
 
 # Support S3 for ActiveStorage
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
 
 # For nice emails
 gem 'bootstrap-email'

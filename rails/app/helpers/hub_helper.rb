@@ -29,6 +29,6 @@ module HubHelper
     [
       "#{nice_view_count(hub_site.view_count)} views",
       ("#{brief_time_ago_in_words(hub_site.blob_created_at)}" if hub_site.blob_created_at && hub_site.save_count > 0)
-    ].compact.join(", ")
+    ].compact.join(', ')
   end
 end

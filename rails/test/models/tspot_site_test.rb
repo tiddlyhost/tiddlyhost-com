@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TspotSiteTest < ActiveSupport::TestCase
   setup do
@@ -9,20 +9,20 @@ class TspotSiteTest < ActiveSupport::TestCase
     @old_passwd, @new_passwd, @new_new_passwd = 'abc123', 'xyz789', 'foobar7'
   end
 
-  test "url" do
+  test 'url' do
     assert_equal 'mysite.tiddlyspot-example.com', @site.host
     assert_equal 'http://mysite.tiddlyspot-example.com', @site.url
     assert_equal 'http://tiddlyspot-example.com', Settings.tiddlyspot_url
   end
 
-  test "is_stub" do
+  test 'is_stub' do
     refute @site.is_stub?
 
     stub_site = TspotSite.create(name: 'stubby')
     assert stub_site.is_stub?
   end
 
-  test "deleting" do
+  test 'deleting' do
     refute @site.deleted?
     assert TspotSite.not_deleted.include?(@site)
 
@@ -42,13 +42,13 @@ class TspotSiteTest < ActiveSupport::TestCase
     assert @site.passwd_ok?(@site_name, passwd)
   end
 
-  test "setting a new password" do
+  test 'setting a new password' do
     # Initially the legacy password works
     assert_legacy_password
 
     # Try setting a too short password
     e = assert_raises(ActiveRecord::RecordInvalid) { @site.set_password('xyz', 'xyz') }
-    assert_includes e.message, "too short"
+    assert_includes e.message, 'too short'
 
     # Legacy password still works
     assert_legacy_password

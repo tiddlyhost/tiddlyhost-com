@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -10,34 +10,34 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     host! @site.host
   end
 
-  test "tiddlers.json" do
+  test 'tiddlers.json' do
     empty_tiddlers = [
-      "$:/core",
-      "$:/isEncrypted",
-      "$:/status/RequireReloadDueToPluginChange",
-      "$:/StoryList",
-      "$:/themes/tiddlywiki/snowwhite",
-      "$:/themes/tiddlywiki/vanilla",
+      '$:/core',
+      '$:/isEncrypted',
+      '$:/status/RequireReloadDueToPluginChange',
+      '$:/StoryList',
+      '$:/themes/tiddlywiki/snowwhite',
+      '$:/themes/tiddlywiki/vanilla',
     ]
 
     [
       { url: '/tiddlers.json',
         json: [
-          { "title" => "MyTiddler", "text" => "Hi there" },
-          { "title" => "Foo", "text" => "Bar" },
-          { "title" => "Baz", "text" => "123" }] },
+          { 'title' => 'MyTiddler', 'text' => 'Hi there' },
+          { 'title' => 'Foo', 'text' => 'Bar' },
+          { 'title' => 'Baz', 'text' => '123' }] },
 
       { url: '/tiddlers.json?skinny=1',
-        json: [{ "title" => "MyTiddler" }, { "title" => "Foo" }, { "title" => "Baz" }] },
+        json: [{ 'title' => 'MyTiddler' }, { 'title' => 'Foo' }, { 'title' => 'Baz' }] },
 
       { url: '/tiddlers.json?skinny=1&include_system=1',
-        titles: empty_tiddlers + ["MyTiddler", "Foo", "Baz"] },
+        titles: empty_tiddlers + ['MyTiddler', 'Foo', 'Baz'] },
 
       { url: '/tiddlers.json?title=Foo',
-        json: [{ "title" => "Foo", "text" => "Bar" }] },
+        json: [{ 'title' => 'Foo', 'text' => 'Bar' }] },
 
       { url: '/tiddlers.json?&skinny=1&title[]=Foo&title[]=Baz',
-        json: [{ "title" => "Foo" }, { "title" => "Baz" }] }
+        json: [{ 'title' => 'Foo' }, { 'title' => 'Baz' }] }
 
     ].each do |query|
       assert_expected_json(**query)
@@ -51,7 +51,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal titles, JSON.load(response.body).map { |v| v['title'] } if titles
   end
 
-  test "text/:title.tid" do
+  test 'text/:title.tid' do
     [
       url: '/text/Foo.tid',
       tid: <<-EOT.strip_heredoc()
@@ -71,7 +71,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal tid, response.body
   end
 
-  test "text/:title.tid for non-existent tiddler" do
+  test 'text/:title.tid for non-existent tiddler' do
     assert_tid_not_found('/text/Bananas.tid')
   end
 
@@ -81,22 +81,22 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal '', response.body
   end
 
-  test "public site" do
+  test 'public site' do
     [nil, :mary, :bobby].each do |user|
       fetch_site_as_user(user: user, expected_status: 200)
     end
   end
 
-  test "allow in iframe" do
+  test 'allow in iframe' do
     fetch_site_as_user
     assert_equal 'SAMEORIGIN', response.headers['X-Frame-Options']
 
     @site.update(allow_in_iframe: true)
     fetch_site_as_user
-    refute response.headers.has_key?("X-Frame-Options")
+    refute response.headers.has_key?('X-Frame-Options')
   end
 
-  test "private site" do
+  test 'private site' do
     @site.update!(is_private: true)
 
     { nil => 401, mary: 403, bobby: 200 }.each do |user, expected_status|
@@ -104,16 +104,16 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "options request when signed out doesnt error" do
+  test 'options request when signed out doesnt error' do
     @site.update!(is_private: true)
     host! @site.host
 
     options '/', headers: { 'Accept' => 'application/json' }
     assert_response :unauthorized
-    assert_equal "", response.body
+    assert_equal '', response.body
   end
 
-  test "sign in redirect" do
+  test 'sign in redirect' do
     @site.update!(is_private: true)
     host! @site.host
 
@@ -121,7 +121,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     get '/'
     assert_response 401
 
-    sign_in_url = "http://example.com/users/sign_in"
+    sign_in_url = 'http://example.com/users/sign_in'
     sign_in_url_with_redir = "#{sign_in_url}?s=#{@site.name}"
 
     # The sign in link includes the extra url param
@@ -138,7 +138,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     # Todo: Test the actual redirect, probably in an integration test though
   end
 
-  test "saving" do
+  test 'saving' do
     # Test against different versions of TW since they'll all be present in prod
     for_all_empties do |empty_file, tw_kind, tw_version|
       # TODO: Test coverage for saving feather sites
@@ -184,7 +184,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       assert_equal tw_version, site.tw_version
 
       # Confirm the site has the new tiddler
-      assert_equal "Hey now", site.th_file.tiddler_content('NewTiddler')
+      assert_equal 'Hey now', site.th_file.tiddler_content('NewTiddler')
 
       # Confirm it via http get
       th_file = fetch_site_as_user(user: site.user, site: site)
@@ -211,7 +211,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
         assert_equal tw_version, site.tw_version
 
         # Confirm the site has the new tiddler
-        assert_equal "Hi from put saver", site.th_file.tiddler_content('NewTiddler')
+        assert_equal 'Hi from put saver', site.th_file.tiddler_content('NewTiddler')
 
         # Confirm it via http get
         th_file = fetch_site_as_user(user: site.user, site: site)
@@ -224,7 +224,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "upload save requires auth" do
+  test 'upload save requires auth' do
     @site.update(prefer_upload_saver: true)
     refute @site.use_put_saver?
 
@@ -242,7 +242,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       response.body
   end
 
-  test "put save with etag check" do
+  test 'put save with etag check' do
     assert @site.use_put_saver?
 
     new_content = @site.th_file.
@@ -259,7 +259,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Hi', @site.th_file.tiddler_content('NewTiddler')
   end
 
-  test "put save will not overwrite" do
+  test 'put save will not overwrite' do
     assert @site.use_put_saver?
     new_content = @site.th_file.
       write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
@@ -271,14 +271,14 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       response.body.squish)
   end
 
-  test "put save requires auth" do
+  test 'put save requires auth' do
     assert @site.use_put_saver?
     new_content = @site.th_file.
       write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
       headers: { 'If-Match' => 'whatever' }, expected_status: 403)
     assert_equal(
-      "If this is your site please log in at http://example.com and try again.", response.body)
+      'If this is your site please log in at http://example.com and try again.', response.body)
   end
 
   def fetch_site_as_user(user: @user, site: @site, expected_status: 200)
@@ -327,8 +327,8 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
 
     # The legacy UploadPlugin param is ignored, but put it here for extra realism
     post('/', params: {
-      "UploadPlugin" => "backupDir=.;user=undefined;password=null;uploaddir=.;;\r\n",
-      "userfile" => file_upload })
+      'UploadPlugin' => "backupDir=.;user=undefined;password=null;uploaddir=.;;\r\n",
+      'userfile' => file_upload })
 
     assert_response expected_status
 
@@ -336,7 +336,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       assert_equal "0 - OK\n", response.body
     end
 
-    assert_equal "text/plain; charset=utf-8", response.headers["Content-Type"]
+    assert_equal 'text/plain; charset=utf-8', response.headers['Content-Type']
     # Todo maybe: Is there anything else worth asserting in the headers?
   end
 

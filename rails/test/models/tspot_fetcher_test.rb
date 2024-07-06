@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TspotFetcherTest < ActiveSupport::TestCase
   setup do
     @fetcher = TspotFetcher.new('somesite')
   end
 
-  test "site key" do
+  test 'site key' do
     assert_equal(
-      "ts/sites/s/so/som/somesite/index.html",
+      'ts/sites/s/so/som/somesite/index.html',
       @fetcher.send(:site_key, 'index.html'))
   end
 
-  test "private site check" do
+  test 'private site check' do
     # We look for a particular regex in the .htaccess file
     # to establish the site is public
     htaccess_content = <<-EOT.strip_heredoc
@@ -39,8 +39,8 @@ class TspotFetcherTest < ActiveSupport::TestCase
     end
   end
 
-  test "password checking" do
-    tn1_crypt = "mulder:#{"trustno1".crypt("mu")}"
+  test 'password checking' do
+    tn1_crypt = "mulder:#{'trustno1'.crypt('mu')}"
     [
       ['mulder', 'trustno1', tn1_crypt, true],
       ['mulder', 'trustn01', tn1_crypt, false],

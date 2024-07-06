@@ -6,6 +6,6 @@ module RandomName
         Spicy::Proton.adjective(max: 7),
         Spicy::Proton.noun(max: 7),
         rand(10..99),
-      ].compact.join("-")
+      ].compact.join('-')
     end
 end

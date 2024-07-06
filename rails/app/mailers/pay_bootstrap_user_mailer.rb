@@ -17,37 +17,37 @@ class PayBootstrapUserMailer < Pay::UserMailer
       attachments[params[:pay_charge].filename] = params[:pay_charge].receipt
     end
 
-    @email_title = "Payment receipt"
+    @email_title = 'Payment receipt'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def refund
-    @email_title = "Refund processed"
+    @email_title = 'Refund processed'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_renewing
-    @email_title = "Subscription renewal"
+    @email_title = 'Subscription renewal'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def payment_action_required
-    @email_title = "Payment confirmation required"
+    @email_title = 'Payment confirmation required'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_trial_will_end
-    @email_title = "Subscription trial ending soon"
+    @email_title = 'Subscription trial ending soon'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def subscription_trial_ended
-    @email_title = "Subscription trial ended"
+    @email_title = 'Subscription trial ended'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 
   def payment_failed
-    @email_title = "Payment declined"
+    @email_title = 'Payment declined'
     make_bootstrap_mail tweak_subject mail_arguments
   end
 

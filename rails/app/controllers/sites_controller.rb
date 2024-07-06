@@ -56,7 +56,7 @@ class SitesController < ApplicationController
     if cookies[:grid_view].present?
       cookies.delete(:grid_view)
     else
-      cookies[:grid_view] = "1"
+      cookies[:grid_view] = '1'
     end
     # Preserve filter and sort params
     redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({ action: :index }))

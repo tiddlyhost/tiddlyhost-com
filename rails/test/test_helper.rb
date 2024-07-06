@@ -6,8 +6,8 @@ if ENV['COVERAGE'] == '1'
 end
 
 ENV['RAILS_ENV'] ||= 'test'
-require_relative "../config/environment"
-require "rails/test_help"
+require_relative '../config/environment'
+require 'rails/test_help'
 
 require 'capybara/rails'
 require 'capybara/minitest'

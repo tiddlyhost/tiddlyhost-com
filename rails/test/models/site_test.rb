@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class SiteTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
@@ -9,29 +9,29 @@ class SiteTest < ActiveSupport::TestCase
     @site = Site.find_by_name('mysite')
   end
 
-  test "url" do
+  test 'url' do
     assert_equal 'mysite.example.com', @site.host
     assert_equal 'http://mysite.example.com', @site.url
     assert_equal 'http://example.com', Settings.main_site_url
   end
 
-  test "name validation" do
+  test 'name validation' do
     # These names are invalid
     [
-      "-aaa",
-      "aaa-",
-      "-aaa-",
-      "a--a",
-      "Aaa",
-      "aa",
-      "abc$",
-      "x" * 64,
-      "ftp",
-      "www",
-      "wiki",
+      '-aaa',
+      'aaa-',
+      '-aaa-',
+      'a--a',
+      'Aaa',
+      'aa',
+      'abc$',
+      'x' * 64,
+      'ftp',
+      'www',
+      'wiki',
       "foo\nbar",
       "foo\tbar",
-      "foo bar",
+      'foo bar',
     ].each do |invalid_name|
       @site.update(name: invalid_name)
       refute @site.valid?, "#{invalid_name} unexpectedly allowed!"
@@ -39,22 +39,22 @@ class SiteTest < ActiveSupport::TestCase
 
     # These names are valid
     [
-      "aaa",
-      "aa-aa",
-      "bbb-cc-dd",
-      "x" * 63,
-      "ab9",
-      "777",
-      "123-aaa",
-      "myftp",
-      "shit", # Hmm...
+      'aaa',
+      'aa-aa',
+      'bbb-cc-dd',
+      'x' * 63,
+      'ab9',
+      '777',
+      '123-aaa',
+      'myftp',
+      'shit', # Hmm...
     ].each do |valid_name|
       @site.update(name: valid_name)
       assert @site.valid?, "#{valid_name} unexpectedly disallowed!"
     end
   end
 
-  test "view counts and timestamps" do
+  test 'view counts and timestamps' do
     orig_updated_at = @site.updated_at.to_i
     orig_accessed_at = @site.accessed_at.to_i
     orig_view_count = @site.view_count
@@ -75,28 +75,28 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal orig_updated_at, @site.updated_at.to_i
   end
 
-  test "when to use put saver" do
+  test 'when to use put saver' do
     {
       true => [
-        { tw_kind: "feather" },
-        { tw_kind: "tw5", tw_version: "5.2.3" },
-        { tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true },
+        { tw_kind: 'feather' },
+        { tw_kind: 'tw5', tw_version: '5.2.3' },
+        { tw_kind: 'tw5', tw_version: '5.2.2', prefer_put_saver: true },
 
         # Unlikely edge case showing preference is ignored
-        { tw_kind: "feather", prefer_upload_saver: true },
+        { tw_kind: 'feather', prefer_upload_saver: true },
       ],
 
       false => [
-        { tw_kind: "classic" },
-        { tw_kind: "tw5", tw_version: "5.2.2" },
-        { tw_kind: "tw5", tw_version: "5.2.3", prefer_upload_saver: true },
+        { tw_kind: 'classic' },
+        { tw_kind: 'tw5', tw_version: '5.2.2' },
+        { tw_kind: 'tw5', tw_version: '5.2.3', prefer_upload_saver: true },
 
         # Edge case to demonstrate that prefer upload takes precendent if both are set
-        { tw_kind: "tw5", tw_version: "5.2.2", prefer_put_saver: true, prefer_upload_saver: true },
-        { tw_kind: "tw5", tw_version: "5.2.3", prefer_put_saver: true, prefer_upload_saver: true },
+        { tw_kind: 'tw5', tw_version: '5.2.2', prefer_put_saver: true, prefer_upload_saver: true },
+        { tw_kind: 'tw5', tw_version: '5.2.3', prefer_put_saver: true, prefer_upload_saver: true },
 
         # Unlikely edge case showing preference is ignored
-        { tw_kind: "classic", prefer_put_saver: true },
+        { tw_kind: 'classic', prefer_put_saver: true },
       ],
 
     }.each do |expected, list|
@@ -111,33 +111,33 @@ class SiteTest < ActiveSupport::TestCase
     site.saved_content_files.attach([WithSavedContent.attachable_hash(content)])
   end
 
-  test "attachment behavior" do
+  test 'attachment behavior' do
     # To begin with, site has no content (which is not a
     # realistic scenario, but it's what we have in fixtures.)
     refute @site.saved_content_files.attached?
 
     # Upload some content
-    upload_content(@site, "foo123")
+    upload_content(@site, 'foo123')
 
     # The new schema has an attachment now
     assert @site.saved_content_files.attached?
 
     # Sanity check the content
-    assert_equal "foo123", @site.file_download
+    assert_equal 'foo123', @site.file_download
   end
 
-  test "prune attachments respects keep count" do
-    upload_content(@site, "boop5")
-    upload_content(@site, "boop6")
+  test 'prune attachments respects keep count' do
+    upload_content(@site, 'boop5')
+    upload_content(@site, 'boop6')
     boop6_blob_id = @site.reload.blob.id
 
-    upload_content(@site, "boop7")
+    upload_content(@site, 'boop7')
     boop7_blob_id = @site.reload.blob.id
 
-    upload_content(@site, "boop8")
+    upload_content(@site, 'boop8')
     boop8_blob_id = @site.reload.blob.id
 
-    upload_content(@site, "boop9")
+    upload_content(@site, 'boop9')
     assert_equal 5, @site.reload.saved_content_files.count
 
     @site.stub(:keep_count, 100) do
@@ -153,18 +153,18 @@ class SiteTest < ActiveSupport::TestCase
     end
 
     # We can still access the current versions
-    assert_equal "boop9", @site.file_download
-    assert_equal "boop9", @site.file_download(@site.blob.id)
+    assert_equal 'boop9', @site.file_download
+    assert_equal 'boop9', @site.file_download(@site.blob.id)
 
     # We can access older versions by their blob id
-    assert_equal "boop8", @site.file_download(boop8_blob_id)
-    assert_equal "boop7", @site.file_download(boop7_blob_id)
+    assert_equal 'boop8', @site.file_download(boop8_blob_id)
+    assert_equal 'boop7', @site.file_download(boop7_blob_id)
 
     # This one is gone now since we kept only three
     assert_nil @site.file_download(boop6_blob_id)
 
     # Create another site
-    new_site = new_site_helper(name: "newsite", user: @site.user)
+    new_site = new_site_helper(name: 'newsite', user: @site.user)
     new_site_blob_id = new_site.blob.id
     assert_match /UnaMesa Association/, new_site.file_download(new_site_blob_id)
 
@@ -172,9 +172,9 @@ class SiteTest < ActiveSupport::TestCase
     assert_nil @site.file_download(new_site_blob_id)
   end
 
-  test "prune job scheduled" do
+  test 'prune job scheduled' do
     assert_enqueued_with(job: PruneAttachmentsJob) do
-      @site.content_upload("foo123")
+      @site.content_upload('foo123')
     end
 
     job_wrapper = ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.new(enqueued_jobs.first)
@@ -182,9 +182,9 @@ class SiteTest < ActiveSupport::TestCase
     assert_nil job_wrapper.max_attempts
   end
 
-  test "thumbnail job scheduled" do
+  test 'thumbnail job scheduled' do
     assert_enqueued_with(job: GenerateThumbnailJob) do
-      @site.content_upload("foo123")
+      @site.content_upload('foo123')
     end
 
     # See rails/config/initializers/active_job_delayed_job_param_fix.rb
@@ -192,8 +192,8 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 1, job_wrapper.max_attempts
   end
 
-  test "thumbnail generation" do
-    @site.content_upload("foo123")
+  test 'thumbnail generation' do
+    @site.content_upload('foo123')
     refute @site.thumbnail.present?
     GenerateThumbnailJob.perform_now('Site', @site.id)
     assert @site.reload.thumbnail.present?

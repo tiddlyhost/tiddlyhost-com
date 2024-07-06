@@ -62,7 +62,7 @@ class TspotSitesController < ApplicationController
       @message = "'#{@site_name}' site ownership claimed successfully"
 
     else
-      @message = "Claim unsuccessful"
+      @message = 'Claim unsuccessful'
     end
   end
 

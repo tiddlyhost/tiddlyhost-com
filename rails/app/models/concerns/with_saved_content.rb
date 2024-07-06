@@ -152,6 +152,6 @@ module WithSavedContent
 
   def prune_attachments_now
     # Remove older attachments, keep the newest
-    saved_content_files.order("created_at DESC").offset(keep_count).each(&:purge)
+    saved_content_files.order('created_at DESC').offset(keep_count).each(&:purge)
   end
 end

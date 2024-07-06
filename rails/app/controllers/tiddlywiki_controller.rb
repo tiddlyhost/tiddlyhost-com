@@ -133,9 +133,9 @@ class TiddlywikiController < ApplicationController
           # - Some kind of "force overwrite" option if they decide the other
           #   changes are less important
           #
-          err_message = "The site has been updated since you first loaded it. " +
+          err_message = 'The site has been updated since you first loaded it. ' +
             "Saving now would cause those updates to be overwritten.\n\n" +
-            "Try reloading and then reapplying your changes."
+            'Try reloading and then reapplying your changes.'
           render status: 412, plain: err_message
 
         else
@@ -183,7 +183,7 @@ class TiddlywikiController < ApplicationController
     @status_code, @status_message = site_not_available_status
 
     # Send an empty body if it's probably not going to be visible
-    return head @status_code if action_name != "serve" || request.head? || request.options? || !request.format.html?
+    return head @status_code if action_name != 'serve' || request.head? || request.options? || !request.format.html?
 
     # Otherwise send the "not available" page
     render :site_not_available, status: @status_code, layout: 'simple'

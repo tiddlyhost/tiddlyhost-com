@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
-  test "home page" do
+  test 'home page' do
     host! Settings.tiddlyspot_host
     get '/'
     assert_response :success
     assert_select 'a.btn', 'Continue to Tiddlyhost', response.body
   end
 
-  test "www redirect" do
+  test 'www redirect' do
     host! "www.#{Settings.tiddlyspot_host}"
     get '/'
     assert_redirected_to Settings.tiddlyspot_url_defaults
-    assert_redirected_to "http://tiddlyspot-example.com/"
+    assert_redirected_to 'http://tiddlyspot-example.com/'
   end
 
   def mocked_site(name)
@@ -35,7 +35,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     TspotFetcher.stub(:new, mock, &blk)
   end
 
-  test "viewing a public site" do
+  test 'viewing a public site' do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
     end
@@ -44,7 +44,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
-  test "viewing a public site with index.html" do
+  test 'viewing a public site with index.html' do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
     end
@@ -53,7 +53,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
-  test "viewing sites with weird names" do
+  test 'viewing sites with weird names' do
     site = TspotSite.find_by_name('coolsite')
 
     [
@@ -74,7 +74,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "downloading a public site" do
+  test 'downloading a public site' do
     mock = mocked_site('coolsite') do |m|
       m.expect(:is_private?, false)
     end
@@ -84,7 +84,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_success('some site html', mock)
   end
 
-  test "viewing a private site without auth" do
+  test 'viewing a private site without auth' do
     mock = mocked_site('privatestuff') do |m|
       m.expect(:is_private?, true)
     end
@@ -93,7 +93,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_unauthorized(mock)
   end
 
-  test "downloading a private site without auth" do
+  test 'downloading a private site without auth' do
     mock = mocked_site('privatestuff') do |m|
       m.expect(:is_private?, true)
     end
@@ -102,35 +102,35 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_unauthorized(mock)
   end
 
-  test "viewing a private site with unsuccessful auth" do
+  test 'viewing a private site with unsuccessful auth' do
     mock = mocked_site('privatestuff') do |m|
       m.expect(:is_private?, true)
     end
 
     with_mocked_site(mock) { get '/', headers: {
-      "Authorization" => "Basic #{Base64.encode64('notes:noidea')}" } }
+      'Authorization' => "Basic #{Base64.encode64('notes:noidea')}" } }
     assert_unauthorized(mock)
   end
 
-  test "viewing a private site with successful auth" do
+  test 'viewing a private site with successful auth' do
     mock = mocked_site('privatestuff') do |m|
       m.expect(:is_private?, true)
     end
 
     with_mocked_site(mock) { get '/', headers: {
-      "Authorization" => "Basic #{Base64.encode64('mulder:trustno1')}" } }
+      'Authorization' => "Basic #{Base64.encode64('mulder:trustno1')}" } }
     assert_success('some site html', mock)
   end
 
-  test "viewing site that was deleted" do
+  test 'viewing site that was deleted' do
     host! "deletedsite.#{Settings.tiddlyspot_host}"
     get '/'
     assert_404
   end
 
-  test "redirect to url" do
+  test 'redirect to url' do
     site = TspotSite.find_by_name('mysite')
-    site.content_upload("hey now")
+    site.content_upload('hey now')
     site.update(redirect_to_url: 'http://some-url.example.com', is_private: false)
 
     host! "mysite.#{Settings.tiddlyspot_host}"
@@ -148,7 +148,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to 'http://some-url.example.com'
   end
 
-  test "redirect to thost site" do
+  test 'redirect to thost site' do
     site = TspotSite.find_by_name('mysite')
     site.update(redirect_to_site_id: 1)
     host! "mysite.#{Settings.tiddlyspot_host}"
@@ -162,7 +162,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_404
   end
 
-  test "viewing a stubbed site will cause it to be populated" do
+  test 'viewing a stubbed site will cause it to be populated' do
     # Create a stub tspot site
     stubbed_site = TspotSite.create!(name: 'stubsite')
     assert stubbed_site.is_stub?

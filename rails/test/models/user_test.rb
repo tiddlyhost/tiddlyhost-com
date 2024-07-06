@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   setup do
     @user = users(:bobby)
   end
 
-  test "user types" do
+  test 'user types' do
     assert_equal 'basic', @user.user_type.name
   end
 
-  test "username uniqueness" do
+  test 'username uniqueness' do
     User.create!(
       email: 'bob@gmail.com', name: 'Another Bob', username: 'Bob', password: 'Abcd1234')
 
@@ -27,7 +27,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test "username validation" do
+  test 'username validation' do
     [
       # No leading or trailing dashes
       '-bob-',

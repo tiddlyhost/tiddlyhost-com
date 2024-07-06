@@ -6,11 +6,11 @@
 class Settings
   # Used to avoid throwing errors if build-info.txt is not there
   PLACEHOLDER_BUILD_INFO = {
-    "date" => "Wed May 4 12:41:58 PM EDT 2022",
-    "sha" => "0123456789abcdef",
-    "build_number" => 42,
-    "commit" => "Fix stuff",
-    "branch" => "devel",
+    'date' => 'Wed May 4 12:41:58 PM EDT 2022',
+    'sha' => '0123456789abcdef',
+    'build_number' => 42,
+    'commit' => 'Fix stuff',
+    'branch' => 'devel',
   }
 
   SETTINGS = begin
@@ -20,7 +20,7 @@ class Settings
 
     # If we're running in /opt/app then assume it's in the container
     # (Used in settings.yaml to tweak db name, url protocol and port)
-    is_in_container = File.expand_path(rails_root) == "/opt/app"
+    is_in_container = File.expand_path(rails_root) == '/opt/app'
 
     read_settings = ->(settings_file) do
       file_name = "#{rails_root}/#{settings_file}"
@@ -31,10 +31,10 @@ class Settings
       YAML.load(settings_yaml) || {}
     end
 
-    settings = read_settings["config/settings.yml"]
-    settings_local = read_settings["config/settings_local.yml"]
-    build_info = { "build_info" =>
-      (read_settings["public/build-info.txt"] || PLACEHOLDER_BUILD_INFO) }
+    settings = read_settings['config/settings.yml']
+    settings_local = read_settings['config/settings_local.yml']
+    build_info = { 'build_info' =>
+      (read_settings['public/build-info.txt'] || PLACEHOLDER_BUILD_INFO) }
 
     settings['defaults'].merge(settings[rails_env]).merge(build_info).merge(settings_local)
   end
@@ -93,11 +93,11 @@ class Settings
   end
 
   def self.short_sha(length = 7)
-    self.build_info["sha"][0...length]
+    self.build_info['sha'][0...length]
   end
 
   def self.app_version
-    "#{major_version}.#{build_info["build_number"]}-#{Settings.short_sha}"
+    "#{major_version}.#{build_info['build_number']}-#{Settings.short_sha}"
   end
 
   def self.feature_enabled?(feature_name, user)
@@ -122,7 +122,7 @@ class Settings
 
   # This should never appear but it helps tests pass when secrets
   # are not present. Fixme: The fact this is needed is not ideal.
-  FALLBACK_PLAN = { "name" => "Missing", "price" => 0 }
+  FALLBACK_PLAN = { 'name' => 'Missing', 'price' => 0 }
 
   # The OpenStruct should have keys :name, :price, :id
   def self.stripe_product(plan, frequency = :monthly)

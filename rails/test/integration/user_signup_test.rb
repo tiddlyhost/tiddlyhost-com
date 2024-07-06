@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class UserSignupTest < CapybaraIntegrationTest
-  test "user signup" do
+  test 'user signup' do
     name, email, username, weak_password, strong_password =
       'Testy McTest', 'tmctest@mail.com', 'tmt', 'trstno1', 'trUst|no1'
 
@@ -52,10 +52,10 @@ class UserSignupTest < CapybaraIntegrationTest
     assert page.has_css?('h1', text: 'Your sites')
 
     # Logout
-    click_link "Log out"
+    click_link 'Log out'
 
     # Confirm we are logged out
-    assert page.has_css?(".jumbotron")
+    assert page.has_css?('.jumbotron')
 
     # New user has the basic user type
     user = User.find_by_email('tmctest@mail.com')

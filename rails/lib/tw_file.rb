@@ -61,7 +61,7 @@ class TwFile
     # For classic
     match = html_content.match(
       /^var version = { ?title: "TiddlyWiki", major: (\d+), minor: (\d+), revision: (\d+),/m)
-    return ['classic', match[1..3].join(".")] if match
+    return ['classic', match[1..3].join('.')] if match
 
     # For FeatherWiki
     # (Compressed versions don't have the quotes hence the "? here)

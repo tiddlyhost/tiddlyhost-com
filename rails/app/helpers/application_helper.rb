@@ -35,13 +35,13 @@ module ApplicationHelper
     return unless icon
 
     opts.reverse_merge!(
-      class: ["bi"].append(opts.delete(:class)).compact,
-      height: "1.2em",
-      width: "1.4em",
+      class: ['bi'].append(opts.delete(:class)).compact,
+      height: '1.2em',
+      width: '1.4em',
       style: "margin-top:-3px;margin-right:3px;#{opts.delete(:style)}")
 
     content_tag(:svg, opts) do
-      content_tag(:use, nil, "xlink:href" =>
+      content_tag(:use, nil, 'xlink:href' =>
         "#{asset_path('bootstrap-icons/bootstrap-icons.svg')}##{icon}")
     end
   end
@@ -80,12 +80,12 @@ module ApplicationHelper
 
   def bool_icon(bool_val)
     bool_val ?
-      bi_icon('check-circle', fill: "green") :
-      bi_icon('dash-circle-dotted', fill: "#aaa")
+      bi_icon('check-circle', fill: 'green') :
+      bi_icon('dash-circle-dotted', fill: '#aaa')
   end
 
   def storage_bytes(bytes)
-    number_to_human_size(bytes, precision: 5, significant: true, delimiter: ",")
+    number_to_human_size(bytes, precision: 5, significant: true, delimiter: ',')
   end
 
   # Fixme: use number_to_human_size here too
@@ -156,13 +156,13 @@ module ApplicationHelper
   end
 
   def _dark_mode_toggle_link(theme, screen_size)
-    icon_type = theme == :light ? "sun" : "moon-stars"
+    icon_type = theme == :light ? 'sun' : 'moon-stars'
     text = "#{theme.to_s.titleize} mode"
     icon = bi_icon(icon_type)
 
     # screen size :small is for when the burger menu is showing, e.g. on a phone
     link_content = screen_size == :small ? safe_join([icon, text]) : icon
-    screen_size_class = screen_size == :small ? "d-block d-sm-none" : "d-none d-sm-block"
+    screen_size_class = screen_size == :small ? 'd-block d-sm-none' : 'd-none d-sm-block'
 
     nav_link_to(link_content, home_mode_toggle_path, remote: true, title: text,
       li_class: "#{screen_size_class} #{icon_type}-btn mode-toggle-btn")
@@ -186,7 +186,7 @@ module ApplicationHelper
     download: ['download', 'Download'],
     restore: ['file-earmark-arrow-up', 'Restore as current version'],
     discard: ['trash', 'Discard'],
-    upgrade: [['stars', class: "red-icon"], 'Upgrade plan'],
+    upgrade: [['stars', class: 'red-icon'], 'Upgrade plan'],
   }
 
   def link_content(key)
@@ -199,6 +199,6 @@ module ApplicationHelper
   # this provides a way to have additional commas.
   #
   def text_join(*strings)
-    strings.join(" ")
+    strings.join(' ')
   end
 end

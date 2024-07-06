@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class DeviseBootstrapMailerTest < ActionMailer::TestCase
   def setup
@@ -31,7 +31,7 @@ class DeviseBootstrapMailerTest < ActionMailer::TestCase
     # Two of the emails have variations used when the user is changing
     # email address. Ensure they work too.
     #
-    @user.update(unconfirmed_email: "somenewemail@tables.com")
+    @user.update(unconfirmed_email: 'somenewemail@tables.com')
 
     {
       confirmation_instructions: [@user, @token],

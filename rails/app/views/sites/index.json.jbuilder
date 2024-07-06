@@ -1,1 +1,1 @@
-json.array! @sites, partial: "sites/site", as: :site
+json.array! @sites, partial: 'sites/site', as: :site

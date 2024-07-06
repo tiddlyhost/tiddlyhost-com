@@ -143,7 +143,7 @@ class Site < ApplicationRecord
   # message improvements in 5.2.3 that provide a marginally better UX when the
   # save fails, so let's use the put saver by default from that version onwards
   # and stick with the legacy upload saver for earler versions
-  DEFAULT_TO_PUT_SAVER_FROM_VERSION = "5.2.3".freeze
+  DEFAULT_TO_PUT_SAVER_FROM_VERSION = '5.2.3'.freeze
 
   def default_to_put_saver?
     # Use Gem::Version here to handle the comparison properly, e.g. so "5.10" > "5.9"

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class SettingsTest < ActiveSupport::TestCase
-  test "feature enabled" do
+  test 'feature enabled' do
     admin_user = User.find_by_id(1)
     admin_user.update(user_type: UserType.superuser)
     assert admin_user.is_admin?
@@ -41,10 +41,10 @@ class SettingsTest < ActiveSupport::TestCase
     end
   end
 
-  test "manually granted feature access" do
+  test 'manually granted feature access' do
     {
-      ["bobby@tables.com"] => true,
-      ["mary@tables.com"] => false,
+      ['bobby@tables.com'] => true,
+      ['mary@tables.com'] => false,
       [1] => true,
       [2] => false,
       [] => false,

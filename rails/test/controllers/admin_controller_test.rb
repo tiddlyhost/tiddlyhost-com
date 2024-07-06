@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class AdminControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -8,7 +8,7 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     @admin.update(user_type: UserType.superuser)
   end
 
-  test "unauthorized user" do
+  test 'unauthorized user' do
     %w[
       /admin
       /admin/users
@@ -21,7 +21,7 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "smoke test" do
+  test 'smoke test' do
     sign_in @admin
     %w[
       /admin
@@ -35,7 +35,7 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "csv data" do
+  test 'csv data' do
     sign_in @admin
     get '/admin/csv_data'
     @response.body.lines.each do |line|

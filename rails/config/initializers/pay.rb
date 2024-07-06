@@ -5,10 +5,10 @@ require 'mail'
 
 Pay.setup do |config|
   # For use in receipt/refund/renewal emails
-  config.business_name = "https://tiddlyhost.com/"
-  config.business_address = ""
-  config.application_name = "Tiddlyhost"
+  config.business_name = 'https://tiddlyhost.com/'
+  config.business_address = ''
+  config.application_name = 'Tiddlyhost'
   config.support_email = Settings.stripe_support_email
 
-  config.mailer = "PayBootstrapUserMailer"
+  config.mailer = 'PayBootstrapUserMailer'
 end

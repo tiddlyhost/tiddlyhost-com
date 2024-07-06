@@ -8,10 +8,10 @@ class ClaimSitesTest < CapybaraIntegrationTest
     sign_in users(:bobby)
   end
 
-  test "link is present" do
+  test 'link is present' do
     visit '/sites'
-    click_link "Claim Tiddlyspot site"
-    assert_selector "h2", text: "Claim Tiddlyspot site"
+    click_link 'Claim Tiddlyspot site'
+    assert_selector 'h2', text: 'Claim Tiddlyspot site'
   end
 
   def mocked_fetcher
@@ -52,29 +52,29 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_mock mocked_site if mocked_site
   end
 
-  test "non-existent" do
-    attempt_claim('zimon', 'xx', nil, "does not exist")
+  test 'non-existent' do
+    attempt_claim('zimon', 'xx', nil, 'does not exist')
   end
 
-  test "incorrect password" do
+  test 'incorrect password' do
     attempt_claim('simon', 'xx', mocked_fetcher, 'Claim unsuccessful')
   end
 
-  test "already owned" do
+  test 'already owned' do
     TspotSite.find_by_name('mysite').update!(user: users(:mary))
     attempt_claim('mysite', 'xx', nil, 'owned by someone else')
   end
 
-  test "success" do
+  test 'success' do
     site = TspotSite.find_by_name('mulder')
     assert site.is_stub?
-    attempt_claim('mulder', 'trustno1', mocked_fetcher, "claimed successfully")
+    attempt_claim('mulder', 'trustno1', mocked_fetcher, 'claimed successfully')
     refute site.reload.is_stub?
     assert_equal 'mulder', site.name
     assert_equal users(:bobby), site.user
   end
 
-  test "disowning" do
+  test 'disowning' do
     # User bobby owns a site
     site = TspotSite.find_by_name('mysite')
     site.update!(user: users(:bobby))
@@ -84,7 +84,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
 
     # Disown it
-    click_on "Disown"
+    click_on 'Disown'
     assert_current_path '/sites'
 
     # Confirm it's no longer visible and it was really disowned
@@ -92,7 +92,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_nil site.reload.user
   end
 
-  test "delete" do
+  test 'delete' do
     # User bobby owns a site
     site = TspotSite.find_by_name('mysite')
     site.update!(user: users(:bobby))
@@ -105,7 +105,7 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
 
     # Delete it
-    click_on "Delete"
+    click_on 'Delete'
     assert_current_path '/sites'
 
     # Confirm it's no longer visible and it was really deleted

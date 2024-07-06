@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class SitesTest < CapybaraIntegrationTest
   setup do
@@ -9,23 +9,23 @@ class SitesTest < CapybaraIntegrationTest
     sign_in @bobby
   end
 
-  test "visiting the index" do
+  test 'visiting the index' do
     visit sites_url
-    assert_selector "h1", text: "Your sites"
+    assert_selector 'h1', text: 'Your sites'
   end
 
-  test "creating and viewing a site" do
+  test 'creating and viewing a site' do
     # Create a site
     visit sites_url
-    click_on "Create site", class: 'btn'
-    fill_in "site_name", with: "bar"
-    click_on "Create"
+    click_on 'Create site', class: 'btn'
+    fill_in 'site_name', with: 'bar'
+    click_on 'Create'
 
     # Confirm we are sent back to sites index
     assert_current_path '/sites'
 
     # The index now includes a link to the new site
-    expected_url = "http://bar.example.com"
+    expected_url = 'http://bar.example.com'
     assert_selector %{td a[href="#{expected_url}"]}
 
     # Sanity check the new site
@@ -36,7 +36,7 @@ class SitesTest < CapybaraIntegrationTest
     assert site.looks_valid?
 
     # Visit the site and confirm it looks like a TiddlyWiki
-    click_on "bar"
+    click_on 'bar'
     assert_is_tiddlywiki
 
     # Sign out and confirm the site is still available
@@ -51,12 +51,12 @@ class SitesTest < CapybaraIntegrationTest
     # Confirm the private site is not available
     visit expected_url
     assert_is_401
-    assert_selector 'main p', text: "If this is your site"
+    assert_selector 'main p', text: 'If this is your site'
 
     # Tiddler json is not available
     visit "#{expected_url}/tiddlers.json"
     assert_equal 401, page.status_code
-    assert_equal "", page.body
+    assert_equal '', page.body
 
     # ..unless we sign in again
     sign_in @bobby
@@ -74,7 +74,7 @@ class SitesTest < CapybaraIntegrationTest
     sign_in @mary
     visit expected_url
     assert_is_403
-    assert_selector 'main p', text: "This private site"
+    assert_selector 'main p', text: 'This private site'
 
     # But if mary becomes the admin user...
     @mary.update(user_type: UserType.superuser)
@@ -90,45 +90,45 @@ class SitesTest < CapybaraIntegrationTest
     # * Test coverage for saving a site with invalid content.
   end
 
-  test "cloning form" do
+  test 'cloning form' do
     visit new_site_path(clone: 'mysite')
-    assert_selector 'h2', text: "Clone site"
-    assert_selector 'label', text: "Cloning from"
-    assert_selector 'form a', text: "mysite"
+    assert_selector 'h2', text: 'Clone site'
+    assert_selector 'label', text: 'Cloning from'
+    assert_selector 'form a', text: 'mysite'
     assert_no_selector 'label[for="site_empty_id_1"]'
     # See also test/controllers/sites_controller_test.rb for
     # some coverage of the submit
 
     # When the clone isn't found
     visit new_site_path(clone: 'notmysite')
-    assert_selector 'h2', text: "Create site"
-    assert_selector 'label', text: "Type"
+    assert_selector 'h2', text: 'Create site'
+    assert_selector 'label', text: 'Type'
     assert_selector 'label[for="site_empty_id_1"]'
 
     # ..which is the same as regular create
     visit new_site_path
-    assert_selector 'h2', text: "Create site"
-    assert_selector 'label', text: "Type"
+    assert_selector 'h2', text: 'Create site'
+    assert_selector 'label', text: 'Type'
     assert_selector 'label[for="site_empty_id_1"]'
   end
 
-  test "non-existent sites" do
+  test 'non-existent sites' do
     non_existent_site = 'http://bbar.example.com/'
 
     # You get a 404 when visiting a non-existent site
     visit non_existent_site
     assert_is_404
-    assert_selector 'main p', text: "Visit Tiddlyhost"
+    assert_selector 'main p', text: 'Visit Tiddlyhost'
 
     # ..whether you're signed in or not
     sign_out @bobby
     visit non_existent_site
     assert_is_404
     # ..but the text is slightly different
-    assert_selector 'main p', text: "Sign up at Tiddlyhost"
+    assert_selector 'main p', text: 'Sign up at Tiddlyhost'
   end
 
-  test "error pages" do
+  test 'error pages' do
     # Not testing the error handling here, just that the pages render
     [
       404,
@@ -159,51 +159,51 @@ class SitesTest < CapybaraIntegrationTest
 
         visit "#{url}.blah"
         assert_equal error_code, page.status_code
-        assert_equal "", page.body
+        assert_equal '', page.body
       end
     end
   end
 
-  test "updating site settings" do
+  test 'updating site settings' do
     visit sites_url
-    click_on "Settings", match: :first
+    click_on 'Settings', match: :first
 
-    fill_in "Name", with: "foo"
-    click_on "Update"
+    fill_in 'Name', with: 'foo'
+    click_on 'Update'
 
     # Back to the sites index after update
     assert_current_path '/sites'
-    assert_selector 'a[href="http://foo.example.com"]', text: "foo"
+    assert_selector 'a[href="http://foo.example.com"]', text: 'foo'
   end
 
-  test "uploading a site" do
+  test 'uploading a site' do
     visit sites_url
-    click_on "Upload", match: :first
+    click_on 'Upload', match: :first
     assert_equal 200, page.status_code
     # TODO: Test uploading
   end
 
   def assert_is_tiddlywiki
     assert_equal 200, page.status_code
-    assert_selector "meta[name=application-name][content=TiddlyWiki]", visible: false
-    assert_selector "div#storeArea", visible: false
+    assert_selector 'meta[name=application-name][content=TiddlyWiki]', visible: false
+    assert_selector 'div#storeArea', visible: false
   end
 
   def assert_is_404
-    assert_is_status(404, "Not Found")
+    assert_is_status(404, 'Not Found')
   end
 
   def assert_is_401
-    assert_is_status(401, "Forbidden")
+    assert_is_status(401, 'Forbidden')
   end
 
   def assert_is_403
-    assert_is_status(403, "Unauthorized")
+    assert_is_status(403, 'Unauthorized')
   end
 
   def assert_is_status(status_code, status_message)
     assert_equal status_code, page.status_code
-    assert_selector "title", text: "#{status_code} #{status_message}", visible: false
-    assert_selector "h1", text: "#{status_code} #{status_message}"
+    assert_selector 'title', text: "#{status_code} #{status_message}", visible: false
+    assert_selector 'h1', text: "#{status_code} #{status_message}"
   end
 end

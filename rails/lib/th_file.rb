@@ -76,7 +76,7 @@ class ThFile < TwFile
       #
       # Clear $:/UploadURL when using the put saver otherwise TW will
       # prioritize the upload saver
-      ""
+      ''
     else
       # The url for uploads is the same as the site url
       # Todo: Actually using just "/" would work just as well here I think

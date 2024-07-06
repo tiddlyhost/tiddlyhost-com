@@ -28,13 +28,13 @@ module SitesHelper
 
   def site_access(site)
     access_type = if site.redirect_to.present?
-      "redirected"
+      'redirected'
     elsif site.access_hub_listed?
-      "hub_listed"
+      'hub_listed'
     elsif site.access_public?
-      "public"
+      'public'
     else site.access_private?
-      "private"
+      'private'
     end
 
     access_icon(access_type) + access_type.humanize
@@ -47,19 +47,19 @@ module SitesHelper
       width: '0.95em',
     }.merge(opts)
 
-    case access_type when "redirected"
+    case access_type when 'redirected'
       bi_icon('arrow-right-circle', opts)
-    when "hub_listed", "hub"
+    when 'hub_listed', 'hub'
       bi_icon('search-heart', opts)
-    when "public"
+    when 'public'
       bi_icon('eye', opts)
-    when "private"
+    when 'private'
       bi_icon('eye-slash', opts)
     end
   end
 
   def hub_all_url
-    add_sort_and_template_params_maybe("/hub")
+    add_sort_and_template_params_maybe('/hub')
   end
 
   def hub_tag_url(tag_name)

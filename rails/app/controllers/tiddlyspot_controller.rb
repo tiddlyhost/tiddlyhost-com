@@ -79,7 +79,7 @@ class TiddlyspotController < ApplicationController
   def authenticate
     realm = "Authenticate to access private site '#{@site.name}'"
     @status_code = 401
-    @status_message = "Unauthorized"
+    @status_message = 'Unauthorized'
     message = render_to_string 'home/error_page'
     authenticate_or_request_with_http_basic(realm, message) do |username, passwd|
       @site.passwd_ok?(username, passwd)

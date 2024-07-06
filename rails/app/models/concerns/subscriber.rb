@@ -34,7 +34,7 @@ module Subscriber
 
   def checkout_session_for_price_id(price_id)
     self.payment_processor.checkout(
-      mode: "subscription",
+      mode: 'subscription',
       line_items: price_id,
       success_url: "#{Settings.main_site_url}/subscription",
       cancel_url: "#{Settings.main_site_url}/subscription"
@@ -71,7 +71,7 @@ module Subscriber
   # (This method is not used currently.)
   #
   def active_subscriptions
-    subscriptions.where(status: "active")
+    subscriptions.where(status: 'active')
   end
 
   # In practice we're expecting only stripe and only one pay customer

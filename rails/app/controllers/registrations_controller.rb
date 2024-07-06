@@ -44,6 +44,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def log_recaptch_detail(email, ok, detail)
-    th_log "Recaptcha #{ok ? "pass" : "fail"} for #{email}#{" #{detail.inspect}" if detail}"
+    th_log "Recaptcha #{ok ? 'pass' : 'fail'} for #{email}#{" #{detail.inspect}" if detail}"
   end
 end

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class DeviseControllerTest < ActionDispatch::IntegrationTest
   #
   # Not really testing devise here, just smoke testing the various forms
   #
-  test "home page" do
+  test 'home page' do
     {
       '/users/sign_in' => 'Log in',
       '/users/sign_up' => 'Create account',
@@ -17,12 +17,12 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
       get path
       assert_response :success
       assert_select 'input[type=submit]' do |input|
-        assert_equal button_text, input.first["value"], input.to_html
+        assert_equal button_text, input.first['value'], input.to_html
       end
     end
   end
 
-  test "account edit" do
+  test 'account edit' do
     {
       '/users/edit' => 'Update',
 
@@ -31,7 +31,7 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
       get path
       assert_response :success
       assert_select 'input[type=submit]' do |input|
-        assert_equal button_text, input.first["value"], input.to_html
+        assert_equal button_text, input.first['value'], input.to_html
       end
     end
   end

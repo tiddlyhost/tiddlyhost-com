@@ -3,15 +3,15 @@
 module SafeModeUrls
   extend ActiveSupport::Concern
 
-  TW5_SUFFIX = "#:safe".freeze
-  CLASSIC_SUFFIX = "#start:safe".freeze
+  TW5_SUFFIX = '#:safe'.freeze
+  CLASSIC_SUFFIX = '#start:safe'.freeze
 
   def safe_mode_url
     case tw_kind
-    when "tw5", "tw5x"
+    when 'tw5', 'tw5x'
       url + TW5_SUFFIX
 
-    when "classic"
+    when 'classic'
       # Beware that classic in safe mode can't save because
       # the ThostUploadPlugin will be disabled
       url + CLASSIC_SUFFIX

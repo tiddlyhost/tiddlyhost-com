@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class HubControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -8,7 +8,7 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     @site = sites(:mysite)
   end
 
-  test "hub index" do
+  test 'hub index' do
     get '/hub'
     assert_response :success
     assert_site_visible
@@ -20,7 +20,7 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     assert_site_not_visible
   end
 
-  test "hub tag urls" do
+  test 'hub tag urls' do
     get '/hub/tag/bananas'
     assert_response :success
     assert_site_not_visible
@@ -32,7 +32,7 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     assert_site_visible
   end
 
-  test "hub user urls" do
+  test 'hub user urls' do
     get '/hub/user/bobby'
     assert_response :success
     assert_site_visible
@@ -44,12 +44,12 @@ class HubControllerTest < ActionDispatch::IntegrationTest
     assert_site_not_visible
   end
 
-  test "a non existent user" do
+  test 'a non existent user' do
     get '/hub/user/doesntexist'
     assert_redirected_to '/hub'
   end
 
-  test "bogus sort values" do
+  test 'bogus sort values' do
     get '/hub?s=bogus'
     assert_response :success
   end

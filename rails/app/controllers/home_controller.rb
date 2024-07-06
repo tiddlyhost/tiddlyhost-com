@@ -47,7 +47,7 @@ class HomeController < ApplicationController
     if cookies[:dark_mode].present?
       cookies.delete(:dark_mode)
     else
-      cookies[:dark_mode] = "1"
+      cookies[:dark_mode] = '1'
     end
     head 200
   end

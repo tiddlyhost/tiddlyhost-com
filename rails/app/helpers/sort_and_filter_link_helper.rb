@@ -57,7 +57,7 @@ module SortAndFilterLinkHelper
   # This one does not provide the asc/desc flipping
   #
   def simple_sort_link(new_sort_by, klass = 'dropdown-item')
-    sel = "sel" if sort_by == new_sort_by&.to_s
+    sel = 'sel' if sort_by == new_sort_by&.to_s
     link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel])
   end
 
@@ -75,10 +75,10 @@ module SortAndFilterLinkHelper
 
   def filter_link(param_key, param_val)
     filter_opts = filter_params.dig(param_key&.to_sym, param_val&.to_sym) || {}
-    link_title = filter_opts[:title] || param_val&.to_s || "show all"
+    link_title = filter_opts[:title] || param_val&.to_s || 'show all'
 
     selected = params[param_key] == param_val&.to_s
-    klass = ["dropdown-item", (selected ? "sel" : "notsel")]
+    klass = ['dropdown-item', (selected ? 'sel' : 'notsel')]
 
     link_to(filter_link_url(param_key, param_val), class: klass) do
       if block_given?
@@ -125,8 +125,8 @@ module SortAndFilterLinkHelper
   #
   def sort_sql
     null_always_last = sort_null_always_last_vals.include?(sort_by)
-    asc_desc_sql = sort_desc? ? "DESC NULLS LAST" : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
-    Array.wrap(sort_opt).map { |expr| "#{expr} #{asc_desc_sql}" }.join(",")
+    asc_desc_sql = sort_desc? ? 'DESC NULLS LAST' : "ASC NULLS #{null_always_last ? 'LAST' : 'FIRST'}"
+    Array.wrap(sort_opt).map { |expr| "#{expr} #{asc_desc_sql}" }.join(',')
   end
 
   #--------------------------------------------------------

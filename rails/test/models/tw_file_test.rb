@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TwFileTest < ActiveSupport::TestCase
-  test "adding a tiddler" do
+  test 'adding a tiddler' do
     tw = TwFile.new(minimal_html(:tw5))
     tw.write_tiddlers({ 'foo' => 'bar' })
 
@@ -12,7 +12,7 @@ class TwFileTest < ActiveSupport::TestCase
     assert_equal 'bar', TwFile.new(tw.to_html).tiddler_content('foo')
   end
 
-  test "adding a tiddler with json script store" do
+  test 'adding a tiddler with json script store' do
     tw = TwFile.new(minimal_html(:tw5_json))
     tw.write_tiddlers({ 'foo' => 'bar' })
 
@@ -33,7 +33,7 @@ class TwFileTest < ActiveSupport::TestCase
     assert_equal([{ 'title' => 'foo' }], tw.tiddlers_data(skinny: true))
   end
 
-  test "tiddlyhost mods for tw5" do
+  test 'tiddlyhost mods for tw5' do
     ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite').tap do |tw|
       {
         '$:/UploadURL' => 'http://coolsite.example.com',
@@ -73,13 +73,13 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
-  test "tiddlyhost mods for classic" do
+  test 'tiddlyhost mods for classic' do
     ThFile.from_empty(:classic).apply_tiddlyhost_mods('coolsite').tap do |tw|
       [
         ['ThostUploadPlugin', false, "bidix.initOption('txtThostSiteName','coolsite');"],
         ['ThostUploadPlugin', false, "bidix.thostUpload.uploadChanges('#{Settings.subdomain_site_url("' + siteName + '")}');"],
-        ['ThostUploadPlugin', false, "config.macros.thostUpload = {"],
-        ['TiddlyHost', true, "is a hosting service for ~TiddlyWiki"],
+        ['ThostUploadPlugin', false, 'config.macros.thostUpload = {'],
+        ['TiddlyHost', true, 'is a hosting service for ~TiddlyWiki'],
 
       ].each do |tiddler_name, shadow, include_string|
         tiddler_content = tw.tiddler_content(tiddler_name, shadow: shadow)
@@ -90,13 +90,13 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
-  test "tiddlyhost mods do nothing for an encrypted tiddlywiki" do
+  test 'tiddlyhost mods do nothing for an encrypted tiddlywiki' do
     tw = ThFile.new(minimal_html(:encrypted))
     original_html = tw.to_html
     assert_equal original_html, tw.apply_tiddlyhost_mods('foo').to_html
   end
 
-  test "tiddlywiki validation" do
+  test 'tiddlywiki validation' do
     # Valid files
     %w[tw5 encrypted classic].each do |type|
       tw_file = TwFile.new(minimal_html(type))
@@ -132,7 +132,7 @@ class TwFileTest < ActiveSupport::TestCase
     refute TwFile.new(File.read("#{Rails.root}/app/assets/images/favicon.ico")).looks_valid?
   end
 
-  test "light get version" do
+  test 'light get version' do
     # Test with real empty files
     for_all_empties do |empty_file, tw_kind, tw_version|
       assert_equal [tw_kind, tw_version], TwFile.light_get_kind_and_version(File.read(empty_file))
@@ -148,18 +148,18 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
-  test "robust version" do
+  test 'robust version' do
     th_file = ThFile.from_empty(:tw5x)
-    th_file.stub(:tiddlywiki_version, "11.1.2") do
-      assert_equal "11.1.2", th_file.robust_version.to_s
-      assert th_file.version_higher_than("9.8.7")
-      assert_not th_file.version_higher_than("11.1.3-preview")
+    th_file.stub(:tiddlywiki_version, '11.1.2') do
+      assert_equal '11.1.2', th_file.robust_version.to_s
+      assert th_file.version_higher_than('9.8.7')
+      assert_not th_file.version_higher_than('11.1.3-preview')
     end
   end
 
-  test "external script tag" do
+  test 'external script tag' do
     for_all_empties do |empty_file, tw_kind, tw_version|
-      next unless tw_kind == "tw5x"
+      next unless tw_kind == 'tw5x'
 
       th_file = ThFile.from_file(empty_file)
 
@@ -172,7 +172,7 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
-  test "autosave behavior" do
+  test 'autosave behavior' do
     [
       [:tw5, false, 'no'],
       [:tw5x, true, 'yes'],

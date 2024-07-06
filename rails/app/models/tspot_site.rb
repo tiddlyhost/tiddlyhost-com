@@ -28,7 +28,7 @@ class TspotSite < ApplicationRecord
   scope :for_hub, -> { searchable.owned }
 
   # No tspot sites can be templates
-  scope :templates_only, -> { where("1 = 2") }
+  scope :templates_only, -> { where('1 = 2') }
 
   scope :no_stubs, -> { where.not(htpasswd: nil) }
   scope :stubs, -> { where(htpasswd: nil) }

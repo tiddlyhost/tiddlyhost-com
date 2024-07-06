@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class AdminControllerTest < ActionDispatch::IntegrationTest
-  test "feature flag disables this controller" do
+  test 'feature flag disables this controller' do
     Settings::Features.stub(:subscriptions_enabled?, false) do
       sign_in users(:bobby)
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class PayBootstrapUserMailerTest < ActionMailer::TestCase
   # See also test/mailers/previews/pay_bootstrap_user_mailer_preview.rb

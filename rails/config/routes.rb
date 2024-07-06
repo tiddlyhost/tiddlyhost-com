@@ -65,8 +65,8 @@ Rails.application.routes.draw do
     get 'admin/pool_stats'
 
     get 'hub', to: 'hub#index'
-    get "hub/tag/:tag", to: 'hub#tag', constraints: { tag: %r{.+} }
-    get "hub/user/:username", to: 'hub#user'
+    get 'hub/tag/:tag', to: 'hub#tag', constraints: { tag: %r{.+} }
+    get 'hub/user/:username', to: 'hub#user'
 
     get 'subscription', to: 'subscription#show'
     get 'subscription/plans', to: 'subscription#plans'
@@ -86,10 +86,10 @@ Rails.application.routes.draw do
 
         # Related to save history
         get :history
-        get "view_version/:blob_id", action: "view_version"
-        get "download_version/:blob_id", action: "download_version"
-        post "restore_version/:blob_id", action: "restore_version"
-        post "discard_version/:blob_id", action: "discard_version"
+        get 'view_version/:blob_id', action: 'view_version'
+        get 'download_version/:blob_id', action: 'download_version'
+        post 'restore_version/:blob_id', action: 'restore_version'
+        post 'discard_version/:blob_id', action: 'discard_version'
       end
     end
 
@@ -148,7 +148,7 @@ Rails.application.routes.draw do
   #
   # Error pages
   #
-  get '/404', to: "home#error_404"
-  get '/422', to: "home#error_422"
-  get '/500', to: "home#error_500"
+  get '/404', to: 'home#error_404'
+  get '/422', to: 'home#error_422'
+  get '/500', to: 'home#error_500'
 end
