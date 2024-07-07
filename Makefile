@@ -593,6 +593,17 @@ js-math-purge: js-math-clean
 
 #----------------------------------------------------------
 
+version-bump: require-var-VER
+	sed 's/major_version: ".*"/major_version: "$(VER)"/' -i rails/config/settings.yml
+	git add rails/config/settings.yml
+	git commit -m 'chore: Bump version to $(VER)' \
+	  -m 'Commit created with `VER=$(VER) make version-bump`'
+	git tag 'v$(VER)'
+	echo 'You probably want to do this also:'
+	echo '  git push origin v$(VER)'
+
+#----------------------------------------------------------
+
 stripe-dev-listen:
 	stripe listen --forward-to https://tiddlyhost.local/pay/webhooks/stripe --skip-verify
 
