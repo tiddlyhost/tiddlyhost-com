@@ -60,7 +60,6 @@ Rails.application.routes.draw do
     get 'admin/etc'
 
     get 'admin/raw_download'
-    get 'admin/csv_data'
     get 'admin/boom'
     get 'admin/pool_stats'
 
