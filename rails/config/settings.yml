@@ -20,7 +20,7 @@ defaults:
   db_host: <%= is_in_container ? "db" : "localhost" %>
   th_log_file: <%= is_in_container ? "/var/log/app/app.log" : "#{rails_root}/log/app.log" %>
 
-  major_version: "1.4"
+  major_version: "1.5"
 
   #banner_message:
   #  :icon: exclamation-triangle
