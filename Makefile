@@ -552,19 +552,6 @@ full-backup-and-snapshot: db-backup s3-snapshot-and-prune
 
 #----------------------------------------------------------
 
-# For credentials: source etc/openrc.sh
-openstack-info:
-	openstack server show thost
-
-# If you can't ping then...
-openstack-reboot:
-	openstack server reboot thost
-
-openstack-reboot-hard:
-	openstack server reboot --hard thost
-
-#----------------------------------------------------------
-
 PROD_INFO_URL=https://tiddlyhost.com/build-info.txt
 
 prod-info:
