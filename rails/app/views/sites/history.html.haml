@@ -20,6 +20,13 @@
           = render 'popover_help',
             html_content: "Identical checksums indicate identical saved versions."
 
+        %th
+          Label
+          = render 'popover_help',
+            html_content: text_join("Saved versions with labels will prioritized ",
+              "over saved versions without labels when pruning the saved version list. ",
+              "This allows you to keep important versions indefinitely.")
+
         %th.text-end.pe-3 Actions
 
     %tbody
@@ -28,7 +35,7 @@
 
         - if is_current
           %tr
-            %td.pt-4{ colspan: 6 }
+            %td.pt-4{ colspan: 7 }
               %b Current version:
 
         - fade_opac = fade_away_opacity(@site, i) unless feature_enabled?(:site_history)
@@ -49,6 +56,9 @@
           %td{ style: fade_opac }
             = cosmetic_saved_version_checksum(f)
 
+          %td{ style: fade_opac }
+            = f.attachment_label
+
           %td.text-end.pe-3.actions-menu-group
             - if is_current
               -# Regular actions menu for convenience
@@ -61,11 +71,11 @@
         - if is_current
           - if @saved_version_count > 1
             %tr
-              %td.pt-4{ colspan: 6 }
+              %td.pt-4{ colspan: 7 }
                 %b Older versions:
           - else
             %tr
-              %td.p-4{ colspan: 6, style: "border-bottom-width: 0px;" }
+              %td.p-4{ colspan: 7, style: "border-bottom-width: 0px;" }
                 %i.text-muted <br><br>No older versions found.
 
 
