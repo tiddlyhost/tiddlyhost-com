@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EmptyMigrationHelper
   def self.apply_empty_changes(yaml_in)
     YAML.load(yaml_in.strip_heredoc).each do |name, attrs|

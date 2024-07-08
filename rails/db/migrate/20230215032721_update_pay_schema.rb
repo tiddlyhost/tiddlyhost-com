@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class UpdatePaySchema < ActiveRecord::Migration[7.0]
   #
   # Produced this by looking at the diff between the old

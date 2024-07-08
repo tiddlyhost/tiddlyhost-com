@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SitesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_site, except: [:index, :new, :create, :view_toggle]

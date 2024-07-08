@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SitesHelper
   def site_link(site, opts = {})
     link_title = opts.delete(:link_title)

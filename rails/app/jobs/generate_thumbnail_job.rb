@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GenerateThumbnailJob < ApplicationJob
   queue_as :default
 

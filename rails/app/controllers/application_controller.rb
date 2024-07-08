@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationController < ActionController::Base
   before_action :redirect_www_requests
   before_action :permit_devise_params, if: :devise_controller?

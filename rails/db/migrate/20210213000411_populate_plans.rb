@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PopulatePlans < ActiveRecord::Migration[6.1]
   ## This migration is disabled.
   ## The creates are now in db/seeds.rb and the column default

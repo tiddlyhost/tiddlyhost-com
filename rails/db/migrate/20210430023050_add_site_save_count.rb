@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddSiteSaveCount < ActiveRecord::Migration[6.1]
   def up
     add_column :sites, :save_count, :integer, default: 0

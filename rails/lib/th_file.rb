@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ThFile < TwFile
   #
   # Note: Some of this is duplicated now in app/models/empty.rb

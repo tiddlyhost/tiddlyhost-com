@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddEmpties < ActiveRecord::Migration[6.1]
   def up
     create_table :empties do |t|

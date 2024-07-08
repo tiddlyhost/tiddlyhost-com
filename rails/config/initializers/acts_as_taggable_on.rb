@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # https://github.com/mbleigh/acts-as-taggable-on#configuration
 
 # Seems like a good idea I guess...

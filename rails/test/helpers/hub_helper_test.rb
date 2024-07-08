@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class HubHelperTest < ActionView::TestCase
   test 'nice view count' do
     {

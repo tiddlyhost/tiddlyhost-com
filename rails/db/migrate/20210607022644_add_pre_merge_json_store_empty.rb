@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddPreMergeJsonStoreEmpty < ActiveRecord::Migration[6.1]
   def up
     (Empty.find_or_create_by(name: 'tw5-json-store-test') do |e|

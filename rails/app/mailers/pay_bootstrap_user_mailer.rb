@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PayBootstrapUserMailer < Pay::UserMailer
   layout 'bootstrap-mailer'
   default template_path: 'pay/user_mailer'

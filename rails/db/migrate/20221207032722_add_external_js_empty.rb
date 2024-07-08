@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddExternalJsEmpty < ActiveRecord::Migration[6.1]
   def up
     data = YAML.load(<<-EOT.strip_heredoc)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #
 # Read settings from config/settings.yml and config/settings_local.yml
 #

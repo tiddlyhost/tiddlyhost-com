@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WithAccessCount
   def touch_accessed_at
     gentle_touch_timestamp(:accessed_at)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Recaptcha.configure do |config|
   if Rails.env.test?
     config.site_key = 'foo'

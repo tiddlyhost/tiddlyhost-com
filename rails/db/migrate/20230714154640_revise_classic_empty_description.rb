@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ReviseClassicEmptyDescription < ActiveRecord::Migration[7.0]
   def up
     # Should match what's in db/seeds/empties.yml

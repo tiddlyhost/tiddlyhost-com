@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ThostLogger < Logger
   TH_LOG_FILE = Settings.th_log_file
 

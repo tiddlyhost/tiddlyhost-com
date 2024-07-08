@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TwFile
   module TiddlerDiv
     def self.from_fields(fields, tw_doc)

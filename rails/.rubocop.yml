@@ -218,3 +218,12 @@ Layout/FirstArgumentIndentation:
 
 Layout/DotPosition:
   EnforcedStyle: trailing
+
+Style/FrozenStringLiteralComment:
+  # All strings are frozen by default for ruby 3.x and higher
+  EnforcedStyle: never
+
+# Not sure how to enable this without getting the complaints
+# about frozen string literals
+Style/MutableConstant:
+  Enabled: false

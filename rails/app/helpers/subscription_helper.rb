@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SubscriptionHelper
   def feature_descriptions_for(plan)
     feature_list = case plan

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #
 # Useful data for bringing up a new development environment
 #

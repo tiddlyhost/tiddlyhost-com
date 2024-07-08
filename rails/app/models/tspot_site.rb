@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TspotSite < ApplicationRecord
   # We need to tweak the validations a little so disable the default validations.
   # See lib/active_model/secure_password.rb in the active_model gem.

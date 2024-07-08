@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class FixTspotDefaults < ActiveRecord::Migration[6.1]
   def up
     change_column_default :tspot_sites, :is_searchable, from: nil, to: false

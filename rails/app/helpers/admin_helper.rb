@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AdminHelper
   def link_to_user_sites(text, user, opts = {})
     link_to(text, { controller: :admin,

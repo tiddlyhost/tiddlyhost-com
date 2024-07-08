@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddTwKindToSite < ActiveRecord::Migration[6.1]
   def change
     add_column :sites, :tw_kind, :string

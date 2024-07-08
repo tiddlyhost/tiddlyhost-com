@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RenamePrereleaseEmpty < ActiveRecord::Migration[6.1]
   def up
     #

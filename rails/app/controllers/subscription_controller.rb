@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SubscriptionController < ApplicationController
   before_action :authenticate_user!, except: :pricing
   before_action -> { require_feature_enabled!(:subscriptions) }

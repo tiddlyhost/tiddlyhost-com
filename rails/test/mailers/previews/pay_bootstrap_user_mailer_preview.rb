@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #
 # To preview emails:
 # - http://tiddlyhost.local:3333/rails/mailers/ or https://tiddlyhost.local/rails/mailers/

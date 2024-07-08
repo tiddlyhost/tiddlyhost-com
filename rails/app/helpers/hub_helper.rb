@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module HubHelper
   def hub_link_to(title, link, opts = {})
     tab_link_to(title, link, opts)
