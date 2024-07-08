@@ -1,0 +1,24 @@
+:ruby
+  id_prefix = local_assigns.fetch(:id_prefix, '')
+  title = local_assigns.fetch(:title, '')
+  submit = local_assigns.fetch(:submit, 'Submit')
+  cancel = local_assigns.fetch(:cancel, 'Cancel')
+
+.modal{ id: "#{id_prefix}modal", tabindex: "-1",
+  aria: { labelledby: "#{id_prefix}modal_title", hidden: "true" } }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5.modal-title{ id: "#{id_prefix}modal_title" }
+          = title
+        %button.btn-close{ type: "button", "data-bs-dismiss": "modal", "aria-label": "Close" }
+
+      .modal-body
+        -# Should be inserted dynamically
+
+      .modal-footer
+        %button.btn.btn-secondary{ type: "button", "data-bs-dismiss": "modal" }
+          = cancel
+        %button.btn.btn-primary{ type: "button",
+          onclick: "document.querySelector('##{id_prefix}modal .modal-body form').submit();" }
+          = submit

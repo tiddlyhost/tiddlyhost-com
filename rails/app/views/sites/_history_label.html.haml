@@ -1,0 +1,29 @@
+-#
+  Let's allow setting a label for the current version in demo/preview
+  mode even though it won't do anything very useful
+- if feature_enabled?(:site_history) || is_current
+  -#
+    This does an ajax get request to the url and runs the javascript
+    that comes which should open the modal dialog to edit a label
+  = link_to("/sites/#{site.id}/version_label/#{f.blob_id}",
+    remote: true, style: "text-decoration: none; color: inherit;") do
+    - if f.attachment_label
+      %span{ style: "margin-right: 0.25em" }= f.attachment_label
+    = bi_icon('pencil', height: '0.8em', width: '0.8em')
+
+  -# This does a "patch" with no label params to delete the label
+  - if f.attachment_label
+    = link_to("/sites/#{site.id}/version_label/#{f.blob_id}",
+      remote: false, method: :patch, style: "text-decoration: none; color: inherit;") do
+      = bi_icon('x-lg', height: '0.8em', width: '0.8em')
+
+- else
+  -# Demo/preview mode
+  - if f.attachment_label
+    = f.attachment_label
+  - else
+    -#
+      Similar to the actions menu, we don't provide the functionality but we show how it looks
+      Todo: Should do a pop up on click rather than directly linking the subscription page
+    = link_to("/subscription", style: "text-decoration: none; color: inherit;") do
+      = bi_icon('pencil', height: '0.8em', width: '0.8em')

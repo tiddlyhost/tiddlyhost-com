@@ -191,4 +191,50 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 3, new_blob_ids.count
     assert_equal blob_ids[0..-2], new_blob_ids
   end
+
+  test 'site history version labels' do
+    @user.update(user_type: UserType.superuser)
+    @site.content_upload('hey1')
+    @site.content_upload('hey2')
+
+    blob_ids = get_blob_ids(@site)
+    assert_equal 2, blob_ids.count
+
+    # Set a label
+    patch "/sites/#{@site.id}/version_label/#{blob_ids.last}", params: { attachment: { attachment_label: 'some label' } }
+    assert_redirected_to history_site_url(@site)
+
+    # Can we see the label?
+    get history_site_url(@site)
+    assert_select 'td.label_present', count: 1
+    assert_select 'td.label_present a span' do |span|
+      assert_equal 'some label', span.text
+    end
+
+    # Smoke test the modal dialog
+    assert_select 'div.modal#modal .modal-dialog .modal-content .modal-body' do |modal_body|
+      # Before it's opened, the body is empty
+      assert_equal '', modal_body.text.strip
+    end
+    assert_select 'div.modal#modal .modal-dialog .modal-content .modal-title' do |modal_body|
+      # There should be a title though
+      assert_equal 'Set label', modal_body.text.strip
+    end
+
+    # Smoke test the ajax js end point
+    # (No test coverage here for whether it open the modal dialog.)
+    get "/sites/#{@site.id}/version_label/#{blob_ids.last}", params: { format: :js }
+    #puts response.body
+    assert_match "/sites/#{@site.id}/version_label/#{blob_ids.last}", response.body
+    assert_match 'value=\"some label\"', response.body
+    assert_match "$('#modal').modal('show');", response.body
+
+    # Remove the label we added before
+    patch "/sites/#{@site.id}/version_label/#{blob_ids.last}"
+    assert_redirected_to history_site_url(@site)
+
+    # Confirm it's gone
+    get history_site_url(@site)
+    assert_select 'td.label_present', count: 0
+  end
 end

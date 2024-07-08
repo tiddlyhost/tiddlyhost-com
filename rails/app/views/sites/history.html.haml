@@ -51,7 +51,8 @@
 
           %td{ style: fade_opac }= cosmetic_saved_version_checksum(f)
 
-          %td{ style: "padding-right: 0; #{fade_opac}"}= f.attachment_label
+          %td{ style: "padding-right: 0; #{fade_opac}", class: ('label_present' if f.attachment_label) }
+            = render 'history_label', site: @site, f:, is_current:
 
           %td.text-end.pe-3.actions-menu-group{ style: "padding-left: 0;" }
             - if is_current
@@ -86,3 +87,6 @@
       %i
         Note that only newest #{@keep_count} versions will be kept. Once there
         are more than #{@keep_count}, the oldest saved versions will be deleted.
+
+-# Will be opened by the edit link in the history_label partial
+= render 'modal_wrapper', title: "Set label", submit: "Update"

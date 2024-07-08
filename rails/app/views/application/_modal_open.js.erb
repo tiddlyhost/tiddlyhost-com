@@ -1,0 +1,14 @@
+<%-
+  # The default is probably fine, but in case you need to override it..
+  modal_id = local_assigns.delete(:modal_id) || 'modal'
+
+  # The default is a partial that matches the action name
+  body_partial = local_assigns.delete(:body_partial) || action_name
+
+  # Render the form ready for use inside the modal
+  body_content = render(partial: body_partial, locals: local_assigns)
+
+  # In the user's browser insert the body content then open the dialog
+-%>
+$('#<%= modal_id %> .modal-body').html('<%= j(body_content) %>');
+$('#<%= modal_id %>').modal('show');

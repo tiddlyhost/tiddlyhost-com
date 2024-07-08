@@ -112,6 +112,10 @@ table.history-table {
             vertical-align: middle;
             font-size: 75%;
         }
+
+        // Don't show edit and delete buttons until you hover on the label text
+        td.label_present svg.bi { visibility: hidden; }
+        td.label_present:hover svg.bi { visibility: visible; }
     }
 }
 

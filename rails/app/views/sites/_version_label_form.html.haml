@@ -1,0 +1,8 @@
+-# haml-lint:disable InstanceVariables
+= form_for(@attachment, as: :attachment, method: :patch,
+  url: "/sites/#{@site.id}/version_label/#{@blob_id}") do |f|
+  = render layout: 'field_wrapper' do
+    = f.label :attachment_label do
+      Label for version #{cosmetic_saved_version_checksum(@attachment)},
+      saved #{nice_timestamp(@attachment.blob.created_at, brief: true)}:
+    = f.text_field :attachment_label, class: 'form-control'
