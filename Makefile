@@ -200,7 +200,7 @@ haml-lint-refresh-todos:
 haml-lint-with-todo:
 	$(DR) "bundle exec haml-lint --config .haml-lint_todo.yml"
 
-delint: haml-lint-with-todo
+delint: haml-lint-with-todo rubocop
 
 ansible-lint:
 	@ansible-lint -p ansible/playbooks/deploy.yml -x yaml[indentation],no-handler
