@@ -93,12 +93,18 @@ run-base:
 shell:
 	-$(DC) run --rm app bash
 
-# Figure out if there's already a container running and use exec or run accordingly
-EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
 D=docker
 DC=docker-compose
 DC_PROD=docker-compose -f docker-compose-prod.yml
+
+# Figure out if there's already a container running and use exec or run accordingly
+# Call it DCC for "Docker Compose Command"
+EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
 DCC=-$(DC) $(EXEC_OR_RUN) app bash -c
+
+# This is faster if you don't need the database or anything else
+# Let's call it DR for "Docker Run"
+DR=-$(DC) run --rm --no-deps app bash -c
 
 join:
 	$(DCC) bash
@@ -146,23 +152,23 @@ start: local-config cert app-log
 # Run bundle-install
 bundle-install:
 	@mkdir -p docker/bundle
-	-$(DC) run --rm --no-deps app bash -c "bin/bundle install"
+	$(DR) "bin/bundle install"
 
 # Run bundle-update
 bundle-update:
-	-$(DC) run --rm --no-deps app bash -c "bin/bundle update --quiet"
+	$(DR) "bin/bundle update --quiet"
 
 # Run bundle-clean
 bundle-clean:
-	-$(DC) run --rm --no-deps app bash -c "bin/bundle clean"
+	$(DR) "bin/bundle clean"
 
 # Run yarn install
 yarn-install:
-	-$(DC) run --rm --no-deps app bash -c "bin/yarn install"
+	$(DR) "bin/yarn install"
 
 # Run yarn upgrade
 yarn-upgrade:
-	-$(DC) run --rm --no-deps app bash -c "bin/yarn upgrade --silent --no-progress"
+	$(DR) "bin/yarn upgrade --silent --no-progress"
 
 # Update deps and make a commit
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
@@ -174,25 +180,25 @@ deps-update: pull-ruby build-base bundle-update yarn-upgrade
 #----------------------------------------------------------
 
 haml-lint:
-	$(DCC) 'bundle exec haml-lint'
+	$(DCC) "bundle exec haml-lint"
 
 rubocop:
-	docker-compose run --no-deps --rm app bash -c 'bundle exec rubocop'
+	$(DR) "bundle exec rubocop"
 
 # Example usage:
 #   ONLY=Layout/EmptyLinesAroundModuleBody,Layout/EmptyLinesAroundClassBody make rubycop-fix
 rubocop-fix:
-	docker-compose run --no-deps --rm app bash -c 'bundle exec rubocop --only $(ONLY) --autocorrect-all'
+	$(DR) "bundle exec rubocop --only $(ONLY) --autocorrect-all"
 	git commit -a \
 	  -m "rubocop: $$(echo $(ONLY) | cut -d, -f1)..." \
 	  -m "Rubocop autocorrect for the following:" \
 	  -m "$$(echo $(ONLY) | tr , '\n' | sed 's/^/- /')"
 
 haml-lint-refresh-todos:
-	$(DCC) 'bundle exec haml-lint --auto-gen-config'
+	$(DR) "bundle exec haml-lint --auto-gen-config"
 
 haml-lint-with-todo:
-	$(DCC) 'bundle exec haml-lint --config .haml-lint_todo.yml'
+	$(DR) "bundle exec haml-lint --config .haml-lint_todo.yml"
 
 delint: haml-lint-with-todo
 
@@ -205,16 +211,16 @@ ansible-lint:
 # (Beware this is not the same as --environment=production)
 #
 secrets:
-	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit"
+	$(DR) "EDITOR=vi bin/rails credentials:edit"
 
 dump-secrets:
-	-@$(DC) run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit" | head -n -1
+	@$(DR) "EDITOR=cat bin/rails credentials:edit" | head -n -1
 
 devel-secrets:
-	-$(DC) run --rm --no-deps app bash -c "EDITOR=vi bin/rails credentials:edit --environment=development"
+	$(DR) "EDITOR=vi bin/rails credentials:edit --environment=development"
 
 devel-dump-secrets:
-	-@$(DC) run --rm --no-deps app bash -c "EDITOR=cat bin/rails credentials:edit --environment=development" | head -n -1
+	@$(DR) "EDITOR=cat bin/rails credentials:edit --environment=development" | head -n -1
 
 #----------------------------------------------------------
 
