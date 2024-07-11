@@ -215,7 +215,7 @@ secrets:
 	$(DR) "EDITOR=vi bin/rails credentials:edit"
 
 dump-secrets:
-	@$(DR) "EDITOR=cat bin/rails credentials:edit" | head -n -1
+	@$(DR) "EDITOR=cat bin/rails credentials:edit" | tail -n +2
 
 #----------------------------------------------------------
 
