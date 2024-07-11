@@ -208,19 +208,14 @@ ansible-lint:
 #----------------------------------------------------------
 
 # View or edit encrypted secrets
-# (Beware this is not the same as --environment=production)
+# (Todo maybe: Switch to newer per-environment credentials and use
+# `--environment=production` and `--environment=development` here)
 #
 secrets:
 	$(DR) "EDITOR=vi bin/rails credentials:edit"
 
 dump-secrets:
 	@$(DR) "EDITOR=cat bin/rails credentials:edit" | head -n -1
-
-devel-secrets:
-	$(DR) "EDITOR=vi bin/rails credentials:edit --environment=development"
-
-devel-dump-secrets:
-	@$(DR) "EDITOR=cat bin/rails credentials:edit --environment=development" | head -n -1
 
 #----------------------------------------------------------
 
