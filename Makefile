@@ -177,12 +177,12 @@ haml-lint:
 	$(DCC) 'bundle exec haml-lint'
 
 rubocop:
-	docker-compose run --no-deps app bash -c 'bundle exec rubocop'
+	docker-compose run --no-deps --rm app bash -c 'bundle exec rubocop'
 
 # Example usage:
 #   ONLY=Layout/EmptyLinesAroundModuleBody,Layout/EmptyLinesAroundClassBody make rubycop-fix
 rubocop-fix:
-	docker-compose run --no-deps app bash -c 'bundle exec rubocop --only $(ONLY) --autocorrect-all'
+	docker-compose run --no-deps --rm app bash -c 'bundle exec rubocop --only $(ONLY) --autocorrect-all'
 	git commit -a \
 	  -m "rubocop: $$(echo $(ONLY) | cut -d, -f1)..." \
 	  -m "Rubocop autocorrect for the following:" \
