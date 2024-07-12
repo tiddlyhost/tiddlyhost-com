@@ -47,11 +47,7 @@
             MB
 
           %td{ style: fade_opac }
-            -#
-              Not the real checksum, we just want a way to
-              notice when two versions are identical
-
-            = Digest::SHA2.hexdigest(f.blob.checksum)[0..7]
+            = cosmetic_saved_version_checksum(f)
 
           %td.text-end.pe-3.actions-menu-group
             - if is_current

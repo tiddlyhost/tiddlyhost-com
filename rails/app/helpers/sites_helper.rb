@@ -38,6 +38,18 @@ module SitesHelper
     access_icon(access_type) + access_type.humanize
   end
 
+  # Used when displaying save history to show if two saved versions
+  # are identical, since I don't want to expose the real blob checksum.
+  def cosmetic_saved_version_checksum(attachment)
+    content_tag :span, class: ['font-monospace', 'th-text-90'] do
+      short_checksum(attachment.blob.checksum)
+    end
+  end
+
+  def short_checksum(str)
+    Digest::SHA2.hexdigest(str)[0..6]
+  end
+
   def access_icon(access_type, opts = {})
     opts = {
       fill: '#6c757d',
