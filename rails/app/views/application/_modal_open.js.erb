@@ -8,7 +8,10 @@
   # Render the form ready for use inside the modal
   body_content = render(partial: body_partial, locals: local_assigns)
 
-  # In the user's browser insert the body content then open the dialog
+  # In the user's browser insert the body content, open the dialog,
+  # then select the content of first text field so the user can start
+  # typing right away
 -%>
 $('#<%= modal_id %> .modal-body').html('<%= j(body_content) %>');
 $('#<%= modal_id %>').modal('show');
+$('#<%= modal_id %> .modal-body input[type=text]:first').focus().select();
