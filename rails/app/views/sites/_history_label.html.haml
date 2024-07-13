@@ -5,7 +5,7 @@
   -#
     This does an ajax get request to the url and runs the javascript
     that comes which should open the modal dialog to edit a label
-  = link_to("/sites/#{site.id}/version_label/#{f.blob_id}",
+  = link_to(version_label_form_site_path(site, f.blob_id),
     remote: true, style: "text-decoration: none; color: inherit;") do
     - if f.attachment_label
       %span{ style: "margin-right: 0.25em" }= f.attachment_label
@@ -13,7 +13,7 @@
 
   -# This does a "patch" with no label params to delete the label
   - if f.attachment_label
-    = link_to("/sites/#{site.id}/version_label/#{f.blob_id}",
+    = link_to(version_label_update_site_path(site, f.blob_id),
       remote: false, method: :patch, style: "text-decoration: none; color: inherit;") do
       = bi_icon('x-lg', height: '0.8em', width: '0.8em')
 
