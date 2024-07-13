@@ -8,22 +8,23 @@
     %thead
       %tr.enable-tooltips
         %th #
-        %th Timestamp
-        %th Saved
         %th
-          Size
-          = render 'popover_help',
-            html_content: "This column shows the compressed size which smaller than the site's actual size."
+          Timestamp
+          = render 'popover_help', html_content: "Times are shown in UTC."
+
+        %th Saved
+
+        %th
+          MB
+          = render 'popover_help', html_content: "The compressed file size in megabytes."
 
         %th
           Checksum
-          = render 'popover_help',
-            html_content: "Identical checksums indicate identical saved versions."
+          = render 'popover_help', html_content: "Identical checksums indicate identical saved versions."
 
         %th
           Label
-          = render 'popover_help',
-            html_content: text_join("Saved versions with labels will prioritized ",
+          = render 'popover_help', html_content: text_join("Saved versions with labels will prioritized ",
               "over saved versions without labels when pruning the saved version list. ",
               "This allows you to keep important versions indefinitely.")
 
@@ -40,26 +41,19 @@
 
         - fade_opac = fade_away_opacity(@site, i) unless feature_enabled?(:site_history)
         %tr
-          %td{ style: fade_opac }
-            #{i+1}.
+          %td{ style: fade_opac } #{i+1}.
 
-          %td{ style: fade_opac }
-            #{f.blob.created_at}
+          %td.th-text-smaller{ style: fade_opac }= f.blob.created_at.to_s.sub(/ UTC$/, '')
 
-          %td{ style: fade_opac }
-            #{nice_timestamp f.blob.created_at, brief: true}
+          %td{ style: fade_opac }= nice_timestamp f.blob.created_at, brief: true
 
-          %td{ style: fade_opac }
-            = as_megabytes(f.blob.byte_size)
-            MB
+          %td{ style: fade_opac }= as_megabytes(f.blob.byte_size)
 
-          %td{ style: fade_opac }
-            = cosmetic_saved_version_checksum(f)
+          %td{ style: fade_opac }= cosmetic_saved_version_checksum(f)
 
-          %td{ style: fade_opac }
-            = f.attachment_label
+          %td{ style: "padding-right: 0; #{fade_opac}"}= f.attachment_label
 
-          %td.text-end.pe-3.actions-menu-group
+          %td.text-end.pe-3.actions-menu-group{ style: "padding-left: 0;" }
             - if is_current
               -# Regular actions menu for convenience
               = render 'actions_menu', site: @site, is_tspot: @site.is_tspot?, menu_only: true, history_mode: true

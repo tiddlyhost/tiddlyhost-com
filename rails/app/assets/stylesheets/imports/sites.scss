@@ -102,6 +102,7 @@ table.history-table {
         color: #aaa;
         th {
             border-bottom-width: 0px;
+            white-space: nowrap;
         }
     }
 
@@ -109,7 +110,7 @@ table.history-table {
         td {
             // Makes the action button look more in line with the text
             vertical-align: middle;
-            font-size: 85%;
+            font-size: 75%;
         }
     }
 }
