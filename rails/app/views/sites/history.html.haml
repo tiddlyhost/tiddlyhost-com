@@ -85,8 +85,9 @@
   - elsif @saved_version_count > @keep_count - 10
     .p-3.text-muted.small
       %i
-        Note that only newest #{@keep_count} versions will be kept. Once there
-        are more than #{@keep_count}, the oldest saved versions will be deleted.
+        Note that only the newest #{@keep_count} versions will be kept. Once there
+        are more than #{@keep_count}, the oldest unlabeled saved versions will be
+        removed.
 
 -# Will be opened by the edit link in the history_label partial
 = render 'modal_wrapper', title: "Set label", submit: "Update"

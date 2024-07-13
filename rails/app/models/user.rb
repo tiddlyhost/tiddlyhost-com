@@ -133,6 +133,10 @@ class User < ApplicationRecord
     email == Settings.tiddlyhost_account_email
   end
 
+  def feature_enabled?(feature_name)
+    Settings.feature_enabled?(feature_name, self)
+  end
+
   # The default is set in config/initializers/devise
   def timeout_in
     return 12.hours if is_admin?

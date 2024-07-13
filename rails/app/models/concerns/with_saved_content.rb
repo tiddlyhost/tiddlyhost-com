@@ -149,7 +149,21 @@ module WithSavedContent
   end
 
   def prune_attachments_now
-    # Remove older attachments, keep the newest
-    saved_content_files.order('created_at DESC').offset(keep_count).each(&:purge)
+    if user.feature_enabled?(:site_history)
+      # When the site history feature is enabled we pay attention to whether
+      # the saved versions have labels. Revisions with a label will be kept
+      # in preference to revisions without a label
+      ordered_files = saved_content_files.
+        left_outer_joins(:attachment_label).
+        order(Arel.sql('attachment_labels.text IS NULL ASC')).
+        order('created_at DESC')
+    else
+      # Otherwise it's just based on the timestamp
+      ordered_files = saved_content_files.
+        order('created_at DESC')
+    end
+
+    # Keep so many and purge the rest
+    ordered_files.offset(keep_count).each(&:purge)
   end
 end

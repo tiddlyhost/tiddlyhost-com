@@ -124,19 +124,24 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 'foo123', @site.file_download
   end
 
-  test 'prune attachments respects keep count' do
+  def setup_some_saved_versions
     upload_content(@site, 'boop5')
     upload_content(@site, 'boop6')
-    boop6_blob_id = @site.reload.blob.id
+    @boop6_blob_id = @site.reload.blob.id
 
     upload_content(@site, 'boop7')
-    boop7_blob_id = @site.reload.blob.id
+    @boop7_blob_id = @site.reload.blob.id
 
     upload_content(@site, 'boop8')
-    boop8_blob_id = @site.reload.blob.id
+    @boop8_blob_id = @site.reload.blob.id
 
     upload_content(@site, 'boop9')
+
     assert_equal 5, @site.reload.saved_content_files.count
+  end
+
+  test 'prune attachments respects keep count' do
+    setup_some_saved_versions
 
     @site.stub(:keep_count, 100) do
       @site.prune_attachments_now
@@ -155,11 +160,11 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 'boop9', @site.file_download(@site.blob.id)
 
     # We can access older versions by their blob id
-    assert_equal 'boop8', @site.file_download(boop8_blob_id)
-    assert_equal 'boop7', @site.file_download(boop7_blob_id)
+    assert_equal 'boop8', @site.file_download(@boop8_blob_id)
+    assert_equal 'boop7', @site.file_download(@boop7_blob_id)
 
     # This one is gone now since we kept only three
-    assert_nil @site.file_download(boop6_blob_id)
+    assert_nil @site.file_download(@boop6_blob_id)
 
     # Create another site
     new_site = new_site_helper(name: 'newsite', user: @site.user)
@@ -168,6 +173,26 @@ class SiteTest < ActiveSupport::TestCase
 
     # Can't access blobs from other sites
     assert_nil @site.file_download(new_site_blob_id)
+  end
+
+  test 'prune attachments considers labels' do
+    setup_some_saved_versions
+
+    @site.stub(:keep_count, 3) do
+      Settings::Features.stub(:site_history_enabled?, true) do
+        # In the previous test we expected boop6 to be pruned
+        # Here we'll give it a label and then confirm it is kept
+        attachment = @site.specific_saved_content_file(@boop6_blob_id)
+        attachment.attachment_label = 'some label'
+        @site.prune_attachments_now
+
+        # As expected, boop6 was kept
+        assert_equal 'boop6', @site.file_download(@boop6_blob_id)
+
+        # Actually the newer boop7 was pruned instead
+        assert_nil @site.file_download(@boop7_blob_id)
+      end
+    end
   end
 
   test 'prune job scheduled' do
