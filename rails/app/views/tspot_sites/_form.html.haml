@@ -16,7 +16,7 @@
         (Currently it's not possible to rename Tiddlyspot sites.)
 
     = render layout: 'field_wrapper' do
-      = render 'sites/access_chooser', f: f
+      = render 'sites/access_chooser', f:
 
     = render layout: 'field_wrapper' do
       = f.label :description
@@ -46,7 +46,7 @@
             All visitors to this site will be redirected to the specified URL. Leave blank
             to not redirect. (Ignored if redirect to Tiddlyhost site is set above.)
 
-      = render 'site_common/allow_in_iframe', f: f
+      = render 'site_common/allow_in_iframe', f:
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       = f.submit 'Update', class: 'btn btn-primary'

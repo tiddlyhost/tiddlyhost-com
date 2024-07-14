@@ -31,10 +31,10 @@
 
         - else
           -# Show list of empties to choose from
-          = render 'type_chooser', f: f
+          = render 'type_chooser', f:
 
     = render layout: 'field_wrapper' do
-      = render 'access_chooser', f: f
+      = render 'access_chooser', f:
 
     = render layout: 'field_wrapper' do
       = f.label :description
@@ -47,9 +47,9 @@
       .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
 
     = render layout: 'advanced_wrapper' do
-      = render 'public_clone', f: f
-      = render 'site_common/allow_in_iframe', f: f
-      = render 'save_method_prefs', f: f
+      = render 'public_clone', f:
+      = render 'site_common/allow_in_iframe', f:
+      = render 'save_method_prefs', f:
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       = f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
