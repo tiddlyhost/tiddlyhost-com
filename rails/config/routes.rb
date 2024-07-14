@@ -83,6 +83,7 @@ Rails.application.routes.draw do
 
         # Related to save history
         get :history
+        get 'view_version/favicon.ico', action: 'view_version_favicon'
         get 'view_version/:blob_id', action: 'view_version', as: :view_version
         get 'download_version/:blob_id', action: 'download_version', as: :download_version
         post 'restore_version/:blob_id', action: 'restore_version', as: :restore_version

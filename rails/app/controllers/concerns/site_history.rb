@@ -35,6 +35,12 @@ module SiteHistory
     render html: @site.html_content_for_blob_id(@blob_id, is_logged_in: true).html_safe
   end
 
+  # Make the favicon request work. Needed because TiddlyWiki uses a relative link to
+  # the favicon file by default
+  def view_version_favicon
+    send_favicon(@site.favicon_asset_name)
+  end
+
   def download_version
     download_html_content(@site.download_content_for_blob_id(@blob_id), @site.name)
   end
