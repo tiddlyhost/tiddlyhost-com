@@ -2,6 +2,8 @@ rails/vendor
 rails/tmp
 rails/log
 rails/storage
+rails/storage1
+rails/storage2
 rails/tw_content/empties/prerelease.html
 rails/node_modules/
 rails/public/assets/

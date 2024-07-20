@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_07_224037) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_20_143120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -182,6 +182,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_224037) do
     t.boolean "prefer_upload_saver", default: false
     t.boolean "allow_public_clone", default: false
     t.integer "clone_count", default: 0
+    t.string "storage_service"
     t.index ["cloned_from_id"], name: "index_sites_on_cloned_from_id"
     t.index ["empty_id"], name: "index_sites_on_empty_id"
     t.index ["name"], name: "index_sites_on_name", unique: true
@@ -236,6 +237,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_224037) do
     t.boolean "deleted", default: false
     t.bigint "redirect_to_site_id"
     t.string "redirect_to_url"
+    t.string "storage_service"
     t.index ["name"], name: "index_tspot_sites_on_name", unique: true
     t.index ["user_id"], name: "index_tspot_sites_on_user_id"
   end

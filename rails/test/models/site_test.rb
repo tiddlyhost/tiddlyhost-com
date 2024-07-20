@@ -218,4 +218,32 @@ class SiteTest < ActiveSupport::TestCase
     assert @site.reload.thumbnail.present?
     assert_equal 'image/png', @site.thumbnail.blob.content_type
   end
+
+  test 'switching storage service' do
+    # Create three files with alternating storage services
+    @site.update(storage_service: 'test1')
+    @site.content_upload('foo123')
+
+    @site.update(storage_service: 'test2')
+    @site.content_upload('bar123')
+
+    @site.update(storage_service: 'test')
+    @site.content_upload('baz123')
+
+    # Sanity check
+    assert_equal 3, @site.saved_content_files.count
+    assert_equal(%w[test1 test2 test], @site.saved_content_files.map { |f| f.blob.service_name })
+    assert_equal 'test', @site.current_content.blob.service_name
+    assert_equal 'baz123', @site.uncached_file_download
+
+    # Delete the current file and sanity check
+    @site.current_content.purge
+    assert_equal 'test2', @site.reload.current_content.blob.service_name
+    assert_equal 'bar123', @site.uncached_file_download
+
+    # Delete the current file and sanity check
+    @site.current_content.purge
+    assert_equal 'test1', @site.reload.current_content.blob.service_name
+    assert_equal 'foo123', @site.uncached_file_download
+  end
 end

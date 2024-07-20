@@ -53,11 +53,13 @@ module WithSavedContent
   # in the active_storage gem to see how this hash gets
   # used and why we need these particular keys.
   #
-  def self.attachable_hash(html_string)
+  def self.attachable_hash(html_string, storage_service = nil)
     {
       io: StringIO.new(compress_html(html_string)),
       content_type: COMPRESSED_CONTENT_TYPE,
       filename: 'index.html',
+      # If this is nil the default from config.active_storage.service will be used
+      service_name: storage_service,
     }
   end
 
@@ -79,7 +81,7 @@ module WithSavedContent
       # rails won't do that, so that's why we include the existing blobs here.
       # (Reproduces the `replace_on_assign_to_many` config behavior from Rails 6)
       #
-      saved_content_files: [*current_attachables, attachable_hash(new_content)],
+      saved_content_files: [*current_attachables, attachable_hash(new_content, record&.storage_service)],
     }
   end
 

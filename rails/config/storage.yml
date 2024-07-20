@@ -2,9 +2,27 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
+# For testing multiple storage services
+test1:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage1") %>
+
+test2:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage2") %>
+
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
+
+# For testing multiple storage services
+local1:
+  service: Disk
+  root: <%= Rails.root.join("storage1") %>
+
+local2:
+  service: Disk
+  root: <%= Rails.root.join("storage2") %>
 
 amazon:
   service: S3
