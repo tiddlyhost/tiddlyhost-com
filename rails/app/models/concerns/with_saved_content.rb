@@ -149,7 +149,7 @@ module WithSavedContent
   end
 
   def prune_attachments_now
-    if user.feature_enabled?(:site_history)
+    if user&.feature_enabled?(:site_history)
       # When the site history feature is enabled we pay attention to whether
       # the saved versions have labels. Revisions with a label will be kept
       # in preference to revisions without a label
