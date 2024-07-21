@@ -31,6 +31,14 @@ amazon:
   region: <%= Settings.secrets(:amazon_s3, :region) %>
   bucket: <%= Settings.secrets(:amazon_s3, :bucket_name) %>
 
+wasabi1:
+  service: S3
+  endpoint: <%= Settings.secrets(:wasabi_trial_1, :endpoint_url) %>
+  access_key_id: <%= Settings.secrets(:wasabi_trial_1, :aws_server_public_key) %>
+  secret_access_key: <%= Settings.secrets(:wasabi_trial_1, :aws_server_secret_key) %>
+  region: <%= Settings.secrets(:wasabi_trial_1, :region) %>
+  bucket: <%= Settings.secrets(:wasabi_trial_1, :bucket_name) %>
+
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3
