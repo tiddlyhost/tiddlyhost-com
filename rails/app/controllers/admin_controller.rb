@@ -79,6 +79,7 @@ class AdminController < ApplicationController
     hub: 'is_searchable',
     rawmb: 'raw_byte_size',
     sites: 'COUNT(sites.id)',
+    storage: 'storage_service',
     template: 'allow_public_clone',
     tspotsites: 'COUNT(tspot_sites.id)',
     upload: 'prefer_upload_saver',

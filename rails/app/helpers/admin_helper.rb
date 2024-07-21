@@ -23,6 +23,14 @@ module AdminHelper
     link_to(text || '', { controller: :admin, action: :users, user: user.id }, opts)
   end
 
+  def default_storage_service
+    @default_storage_service ||= Rails.application.config.active_storage.service.to_s
+  end
+
+  def display_storage_service(site)
+    site.storage_service || default_storage_service
+  end
+
   def pagination_info(records)
     last_item_index = records.next_page.present? ?
       records.offset + records.per_page :
