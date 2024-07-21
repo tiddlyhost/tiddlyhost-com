@@ -105,17 +105,13 @@ class SiteTest < ActiveSupport::TestCase
     end
   end
 
-  def upload_content(site, content)
-    site.saved_content_files.attach([WithSavedContent.attachable_hash(content)])
-  end
-
   test 'attachment behavior' do
     # To begin with, site has no content (which is not a
     # realistic scenario, but it's what we have in fixtures.)
     refute @site.saved_content_files.attached?
 
     # Upload some content
-    upload_content(@site, 'foo123')
+    @site.content_upload('foo123')
 
     # The new schema has an attachment now
     assert @site.saved_content_files.attached?
@@ -125,17 +121,17 @@ class SiteTest < ActiveSupport::TestCase
   end
 
   def setup_some_saved_versions
-    upload_content(@site, 'boop5')
-    upload_content(@site, 'boop6')
+    @site.content_upload('boop5')
+    @site.content_upload('boop6')
     @boop6_blob_id = @site.reload.blob.id
 
-    upload_content(@site, 'boop7')
+    @site.content_upload('boop7')
     @boop7_blob_id = @site.reload.blob.id
 
-    upload_content(@site, 'boop8')
+    @site.content_upload('boop8')
     @boop8_blob_id = @site.reload.blob.id
 
-    upload_content(@site, 'boop9')
+    @site.content_upload('boop9')
 
     assert_equal 5, @site.reload.saved_content_files.count
   end
