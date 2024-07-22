@@ -22,12 +22,21 @@ module WithThumbnail
   # See `find_or_build_blob` in
   #  lib/active_storage/attached/changes/create_one.rb
   #
-  def self.attachable_thumbnail_hash(png_content)
+  def attachable_thumbnail_hash(png_content)
     {
       io: StringIO.new(png_content),
       content_type: 'image/png',
       filename: 'thumb.png',
+      key: create_thumb_blob_key,
     }
+  end
+
+  # Arguably not needed, but it feels better to have less opaque blob names in the data store
+  # The default key is just ActiveStorage::Blob.generate_unique_secure_token
+  # See lib/activestorage/app/models/active_storage/blob.rb
+  def create_thumb_blob_key
+    secure_token = ActiveStorage::Blob.generate_unique_secure_token
+    "thumb/#{self.class.name.underscore}/#{id}/#{secure_token}.png"
   end
 
   private
@@ -52,7 +61,7 @@ module WithThumbnail
 
     png = grover.to_png
 
-    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
+    update(thumbnail: attachable_thumbnail_hash(png))
   end
 
   # See also config/initializers/grover
