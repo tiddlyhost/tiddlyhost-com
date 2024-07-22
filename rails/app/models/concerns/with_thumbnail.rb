@@ -2,7 +2,7 @@ module WithThumbnail
   extend ActiveSupport::Concern
 
   included do
-    has_one_attached :thumbnail
+    has_one_attached :thumbnail, service: Settings.thumbs_storage_service
   end
 
   # Todo:
