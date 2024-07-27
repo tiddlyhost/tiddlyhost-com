@@ -138,8 +138,13 @@ class ThFile < TwFile
         modifier: 'TiddlyHost',
       },
 
-      # Used in the ThostUploadPlugin to ensure we don't render in readonly mode
-      # and to show the 'save to tiddlyhost' button
+      # The original idea for this was to read this value in the ThostUploadPlugin to decide
+      # whether to show the 'save to tiddlyhost' button, and perhaps to render in read-only
+      # mode. However the feedback from classic users is that having the save button unavailable
+      # is very disruptive, e.g. if you didn't notice that it was gone and added or modified some
+      # content, you're then unable to save the changes. So the default logic in ThostUploadPlugin
+      # was changed. This tiddler is still available so it is possible to restore that behavior if
+      # you prefer it that way.
       'TiddlyHostIsLoggedIn' => {
         text: status_is_logged_in(is_logged_in:, for_download:),
         modifier: 'TiddlyHost',

@@ -17,7 +17,22 @@ version.extensions.ThostUploadPlugin = { major: 1, minor: 0, revision: 1 };
 //
 
 if (!window.bidix) window.bidix = {};
-bidix.debugMode = false;
+
+// To change these defaults, create a tiddler named "ThostOptions" with tag
+// "systemConfig" and the following content:
+// window.bidix = { "editModeAlways": false, "uploadButtonAlways": false };
+
+// Set false if you want the chkHttpReadOnly cookie to decide whether to
+// render in read-only mode or edit mode when you're not logged in or when
+// the site is being viewed by others. Default true.
+if (!("editModeAlways" in bidix)) { bidix.editModeAlways = true; }
+
+// Set false to hide the "upload to tiddlyhost" button when you're not logged
+// in or when the site is being viewed by others. Default true.
+if (!("uploadButtonAlways" in bidix)) { bidix.uploadButtonAlways = true; }
+
+// For debugging. Default false.
+if (!("debugMode" in bidix)) { bidix.debugMode = false; }
 
 //
 // Upload Macro
@@ -192,7 +207,10 @@ bidix.initOption('txtThostSiteName','<%= site_name %>');
 // Tiddlyhost stuff
 //
 
-if (config.shadowTiddlers.TiddlyHostIsLoggedIn == "yes") {
+bidix.ownerLoggedIn = (config.shadowTiddlers.TiddlyHostIsLoggedIn &&
+  config.shadowTiddlers.TiddlyHostIsLoggedIn == "yes")
+
+if (bidix.editModeAlways || bidix.ownerLoggedIn) {
   // If user is logged in to Tiddlyhost and viewing their own site then
   // we disregard the original value of the chkHttpReadOnly cookie
   config.options.chkHttpReadOnly = false
@@ -200,7 +218,9 @@ if (config.shadowTiddlers.TiddlyHostIsLoggedIn == "yes") {
   // set it here to make sure TW is editable, unlike window.showBackstage
   // which is set after
   window.readOnly = false
+}
 
+if (bidix.uploadButtonAlways || bidix.ownerLoggedIn) {
   // Add the 'save to tiddlyhost' button after the regular save button
   config.shadowTiddlers.SideBarOptions = config.shadowTiddlers.SideBarOptions
     .replace(/(<<saveChanges>>)/,"$1<<thostUpload>>");
