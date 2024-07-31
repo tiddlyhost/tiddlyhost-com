@@ -94,6 +94,15 @@ class ThFile < TwFile
 
       # Provide a way for TiddlyWikis to detect when they're able to be saved
       '$:/status/IsLoggedIn' => status_is_logged_in(is_logged_in:, for_download:),
+
+      # Used in `$:/core/templates/social-metadata` for social media preview metadata.
+      # (It seems like it would be unexpected for these to be set in a downloaded file,
+      # so set them to an empty string if we're preparing for a download.)
+      # Todo maybe: Allow the user to customize the preview image url, perhaps by creating
+      # it as a shadow tiddler
+      '$:/SiteUrl' => (for_download ? '' : Settings.subdomain_site_url(site_name)),
+      '$:/SiteDomain' => (for_download ? '' : Settings.subdomain_site_host(site_name)),
+      '$:/SitePreviewImageUrl' => (for_download ? '' : Settings.site_thumbnail_url(site_name)),
     })
 
     # Since every save uploads the entire TiddlyWiki I want to discourage
