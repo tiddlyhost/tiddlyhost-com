@@ -82,6 +82,10 @@ class Settings
     ActionDispatch::Http::URL.full_url_for(Settings.url_defaults.merge(subdomain: site_name))
   end
 
+  def self.site_thumbnail_url(site_name)
+    "#{subdomain_site_url(site_name)}/thumb.png"
+  end
+
   def self.tiddlyspot_site_host(site_name)
     "#{site_name}.#{Settings.tiddlyspot_host}"
   end
