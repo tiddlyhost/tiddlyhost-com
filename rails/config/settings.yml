@@ -72,7 +72,7 @@ production:
     :host: tiddlyhost.com
     #:host: tiddlyhost.local
     :protocol: https
-  thumbs_storage_service: thumbs
+  thumbs_storage_service: thumbs2
 
   tiddlyspot_host: tiddlyspot.com
   #tiddlyspot_host: tiddlyspot.local
