@@ -140,4 +140,18 @@ class Settings
   def self.stripe_product_by_id(plan_id)
     OpenStruct.new(stripe_products&.values.map(&:values).flatten.find { |p| p[:id] == plan_id })
   end
+
+  # This is not elegant but should do what we want in config/storage.yml
+  def self.storage_config_yaml(service_name, secret_key)
+    config = secrets(secret_key)
+    <<-END_YAML.strip_heredoc.strip
+      #{service_name}:
+        service: S3
+        access_key_id: #{config[:aws_server_public_key]}
+        secret_access_key: #{config[:aws_server_secret_key]}
+        bucket: #{config[:bucket_name]}
+        region: #{config[:region]}
+        #{"endpoint: #{config[:endpoint_url]}" if config[:endpoint_url]}
+    END_YAML
+  end
 end
