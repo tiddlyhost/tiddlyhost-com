@@ -22,6 +22,9 @@ require_relative '../lib/settings'
 # Our custom logger
 require_relative '../app/middleware/logger_with_domain'
 
+# Accept header tweaks for TiddlyWiki
+require_relative '../app/middleware/tweak_accept_header'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -82,6 +85,9 @@ module App
     # See lib/logger_with_domain.rb
     config.middleware.insert_before(Rails::Rack::Logger, LoggerWithDomain)
     config.middleware.delete(Rails::Rack::Logger)
+
+    # See app/middleware/tweak_accept_header
+    config.middleware.insert_before(ActionDispatch::RequestId, TweakAcceptHeader)
 
     # Deprecated in Rails 7 so let's not use it
     #config.active_storage.replace_on_assign_to_many = false
