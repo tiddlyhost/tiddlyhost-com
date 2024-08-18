@@ -20,7 +20,7 @@ require 'rails/test_unit/railtie'
 require_relative '../lib/settings'
 
 # Our custom logger
-require_relative '../lib/logger_with_domain'
+require_relative '../app/middleware/logger_with_domain'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -43,7 +43,14 @@ module App
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.eager_load_paths << Rails.root.join('lib')
+    config.eager_load_paths.concat(%w[
+      app/middleware
+      lib
+    ].map do |path|
+      Rails.root.join(path).to_s
+    end)
+
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # For tiddlyhost and its wildcard subdomains
     config.hosts << Settings.main_site_host

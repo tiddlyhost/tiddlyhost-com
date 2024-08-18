@@ -205,7 +205,7 @@ Style/CommentAnnotation:
 
 Style/FormatStringToken:
   Exclude:
-  - "lib/logger_with_domain.rb"
+  - "app/middleware/logger_with_domain.rb"
   - "lib/thost_logger.rb"
 
 Style/OpenStructUse:
