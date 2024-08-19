@@ -9,6 +9,8 @@
       = link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
     - else
       = link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
+      - if show_history_link?(site) && !local_assigns[:history_mode]
+        = link_to(history_site_path(site), class: 'btn btn-light', title: 'Save history') { bi_icon('clock-history', height: '1em') }
       = link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
       = link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
 
