@@ -1,1 +1,8 @@
-# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+User-agent: *
+# Don't index millions of tag/user/kind/sort combinations for hub-listed sites
+Disallow: /hub/tag/
+Disallow: /hub/user/
+Disallow: /hub?k=
+Disallow: /hub?s=
+# Treat us gently
+Crawl-delay: 20

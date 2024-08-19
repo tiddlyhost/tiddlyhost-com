@@ -2,7 +2,6 @@
 # A few common requests that we don't want to pass through to rails
 #
 location = /ads.txt { return 404; }
-location = /robots.txt { return 404; }
 
 location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; }
 location ~ \.sql\.(?:xz|zip|z)(?:$|\?) { return 404; }
