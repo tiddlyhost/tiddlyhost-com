@@ -4,18 +4,20 @@
 location = /ads.txt { return 404; }
 
 location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; }
-location ~ \.sql\.(?:xz|zip|z)(?:$|\?) { return 404; }
+location ~ \.sql\.(?:xz|zip|z|gz)(?:$|\?) { return 404; }
 location ~ /wlwmanifest\.xml(?:$|\?) { return 404; }
+location ~ \.git/(?:config|HEAD) { return 404; }
+location ~ /wp-admin/ { return 404; }
+location ~ /wp-includes/ { return 404; }
+location ~ /wp-content/ { return 404; }
+location ~ /wp-plugins/ { return 404; }
+location ~ /\.well-known/ { return 404; }
 
-location /wp-content/ { return 404; }
-location /wp-includes/ { return 404; }
-location /wp-admin/ { return 404; }
-location /wp-plugins/ { return 404; }
+location ~ ^/_ts_ { return 404; }
+location ~ ^/_ts/ { return 404; }
+location ~ ^/_sites/ { return 404; }
 
-location /_ts_ { return 404; }
-location /_ts/ { return 404; }
-location /_sites/ { return 404; }
-
+location = /sitemap.xml { return 404; }
 location = /index.xml { return 404; }
 
 #
