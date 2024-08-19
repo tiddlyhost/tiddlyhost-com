@@ -33,4 +33,21 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'account save changes' do
+    user = User.create!(email: 'barry@tables.com', name: 'Barry', username: 'Baz', password: 'Abcd1234')
+    user.confirm
+    sign_in user
+
+    # Without the password it should fail
+    put '/users', params: { user: { name: 'Bazza' } }
+    assert_response :success # I guess??
+    # Todo: Should assert that the expected validation message appears
+    assert_equal 'Barry', user.reload.name
+
+    # With the password it should succeed
+    put '/users', params: { user: { name: 'Bazza', current_password: 'Abcd1234' } }
+    assert_redirected_to '/'
+    assert_equal 'Bazza', user.reload.name
+  end
 end
