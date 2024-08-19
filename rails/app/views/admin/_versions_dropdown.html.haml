@@ -14,5 +14,7 @@
         #{i+1}.
       %div{ style: "width: 16em;" }
         = link_to(blob.key, { action: :raw_download, type: site.class.name, id: site.id, blob_id: blob.id })
+      %div{ style: "width: 4em;" }
+        = blob.service_name
       %div
         = nice_timestamp blob.created_at
