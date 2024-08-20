@@ -19,6 +19,17 @@ module WithThumbnail
     thumbnail.present? && thumbnail.blob.created_at > current_content.blob.created_at
   end
 
+  # If Settings.thumbs_storage_service changed since the thumbnail was
+  # created, this can be used to copy it over to the new storage service
+  # See also scripts/thumbnail_migrate
+  #
+  def sync_thumbnail_storage
+    return unless thumbnail.present?
+    return if thumbnail.blob.service_name == Settings.thumbs_storage_service
+
+    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(thumbnail.download))
+  end
+
   # See `find_or_build_blob` in
   #  lib/active_storage/attached/changes/create_one.rb
   #
