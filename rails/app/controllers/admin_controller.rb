@@ -202,6 +202,9 @@ class AdminController < ApplicationController
     @chart_data = chart_data(params[:chart])
   end
 
+  def storage
+  end
+
   private
 
   def default_sort

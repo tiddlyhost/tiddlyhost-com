@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get 'admin', to: 'admin#index'
 
     get 'admin/charts'
+    get 'admin/storage'
     get 'admin/users'
     get 'admin/sites'
     get 'admin/tspot_sites'

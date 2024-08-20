@@ -23,9 +23,12 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     sign_in @admin
     %w[
       /admin
+      /admin/charts
       /admin/users
       /admin/sites
       /admin/tspot_sites
+      /admin/storage
+      /admin/etc
 
     ].each do |page|
       get page

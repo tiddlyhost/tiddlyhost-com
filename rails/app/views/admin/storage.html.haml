@@ -1,0 +1,28 @@
+
+%h2 Storage
+
+= render 'tabs'
+
+%table.admin.table.table-striped{style: "width: auto; font-size: 1.1rem;"}
+  %thead
+    %th Type
+    %th Service
+    %th Bucket
+    %th Files
+    %th Bytes
+
+  - configs = Rails.application.config.active_storage.service_configurations
+
+  - ActiveStorage::Attachment.select('distinct name').map(&:name).each do |name|
+    - ActiveStorage::Blob.joins(:attachments).where(attachments: {name:}).select('distinct service_name').map(&:service_name).each_with_index do |service_name, i|
+      - count = ActiveStorage::Blob.joins(:attachments).where(attachments: {name:}, service_name:).count
+      - bytes = ActiveStorage::Blob.joins(:attachments).where(attachments: {name:}, service_name:).sum(:byte_size)
+
+      %tr
+        %td= name if i == 0
+        %td= service_name
+        %td= configs&.dig(service_name, 'bucket') || '-'
+        %td= count
+        %td= nice_view_count(bytes)
+
+-# Todo maybe: Show orphan counts
