@@ -29,6 +29,10 @@ class HomeController < ApplicationController
   def terms_of_use
   end
 
+  def favicon
+    send_favicon('favicon.ico')
+  end
+
   def error_404
     render_error_page(404, 'Not Found')
   end

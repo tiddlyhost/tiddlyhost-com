@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     get 'support', to: 'home#support'
     get 'privacy-policy', to: 'home#privacy_policy'
     get 'terms-of-use', to: 'home#terms_of_use'
+    get 'favicon.ico', to: 'home#favicon'
 
     get 'admin', to: 'admin#index'
 
