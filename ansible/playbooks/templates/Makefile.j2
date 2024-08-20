@@ -65,11 +65,13 @@ update:
 	sudo dnf update
 	@echo "** Consider if a reboot is needed"
 
-#
+# Show a log of ssh attempts
+ssh-logs:
+	 journalctl -q _AUDIT_TYPE=1112 _TRANSPORT=audit | tail -100
+
 # For some reason the thumbnail generator job doesn't timeout like
 # it should. These are helpful until I figure out a better plan.
 # (Update: Maybe not needed any more.)
-#
 showpuppet:
 	@ps -eo pid,ppid,etime,cmd | grep /opt/node_modules/puppeteer | grep -v grep | awk '{print $$1, $$2, $$3}'
 
