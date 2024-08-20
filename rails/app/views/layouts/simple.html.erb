@@ -3,6 +3,7 @@
   <head>
     <title><%= @title || "#{@status_code} #{@status_message}" %></title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= favicon_link_tag asset_path('favicon.ico') %>
   </head>
 
   <body class="simple-layout">
