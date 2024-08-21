@@ -30,6 +30,8 @@ local2:
 
 <%= Settings.storage_config_yaml(:trial2, :trial_2) %>
 
+<%= Settings.storage_config_yaml(:main, :trial_2) %>
+
 <%= Settings.storage_config_yaml(:thumbs, :thumbs_1) %>
 
 <%= Settings.storage_config_yaml(:thumbs2, :thumbs_2) %>

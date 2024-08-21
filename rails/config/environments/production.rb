@@ -37,8 +37,9 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :amazon
+  # Default storage for saved files, but note that it can be customized per site
+  # using the storage_service field
+  config.active_storage.service = :main
 
   # Nginx will handle SSL
   config.force_ssl = false
