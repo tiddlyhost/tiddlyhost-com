@@ -103,7 +103,6 @@ class ThFile < TwFile
       '$:/SiteUrl' => (for_download ? '' : Settings.subdomain_site_url(site_name)),
       '$:/SiteDomain' => (for_download ? '' : Settings.subdomain_site_host(site_name)),
       '$:/SitePreviewUrl' => (for_download ? '' : Settings.site_thumbnail_url(site_name)),
-      '$:/SitePreviewImageUrl' => (for_download ? '' : Settings.site_thumbnail_url(site_name)),
     })
 
     # Since every save uploads the entire TiddlyWiki I want to discourage
