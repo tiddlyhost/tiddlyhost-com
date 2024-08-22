@@ -49,6 +49,7 @@
       - cronie
       - nmap-ncat
       - python3-pip
+      - tmux
     tags:
     - deps
 
@@ -166,6 +167,15 @@
     tags:
     - scripts
 
+  - name: Create bash rc dir
+    become: false
+    ansible.builtin.file:
+      path: "{{ bash_rc_dir }}"
+      state: directory
+      mode: "0755"
+    tags:
+    - scripts
+
   - name: Copy up a Makefile and some scripts
     become: false
     ansible.builtin.template:
@@ -179,6 +189,7 @@
     - bin/certbot-revoke
     - bin/db-backup
     - bin/fetch-prerelease-empty
+    - .bashrc.d/setup.sh
     tags:
     - scripts
 

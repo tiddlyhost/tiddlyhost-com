@@ -21,6 +21,7 @@ all:
     home_dir: /home/{{ ansible_user }}
 
     bin_dir: "{{ home_dir }}/bin"
+    bash_rc_dir: "{{ home_dir }}/.bashrc.d"
     docker_dir: "{{ home_dir }}/docker"
     backups_dir: "{{ home_dir }}/backups"
     db_dump_file: "{{ backups_dir }}/dbdump.gz"
