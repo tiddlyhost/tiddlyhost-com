@@ -23,6 +23,6 @@
         %td= service_name
         %td= configs&.dig(service_name, 'bucket') || '-'
         %td= count
-        %td= nice_view_count(bytes)
+        %td= nice_byte_count(bytes)
 
 -# Todo maybe: Show orphan counts

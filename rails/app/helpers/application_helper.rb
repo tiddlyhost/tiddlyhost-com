@@ -1,6 +1,17 @@
 module ApplicationHelper
   include Recaptcha::Adapters::ViewMethods
 
+  def nice_byte_count(bytes, precision: 3)
+    number_to_human_size(bytes, precision:).delete_suffix(' Bytes')
+  end
+
+  VIEW_COUNT_UNITS = { unit: '', thousand: 'K', million: 'M', billion: 'B' }.freeze
+
+  def nice_view_count(view_count)
+    precision = view_count < 1000 ? 3 : 2
+    number_to_human(view_count, precision:, units: VIEW_COUNT_UNITS).delete(' ')
+  end
+
   def nav_link_to(title, link, opts = {})
     is_active = current_page?(link) ||
       # We redirect home to /sites when user is logged in
