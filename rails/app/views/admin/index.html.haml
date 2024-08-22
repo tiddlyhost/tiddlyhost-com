@@ -13,7 +13,7 @@
     = render 'stat_card', title: 'Tspots',      count: @tspot_site_count, big: true
     = render 'stat_card', title: 'Tspot views', count: nice_view_count(@tspot_view_count), big: true
 
-  = render 'stat_card', title: 'Storage',       count: storage_bytes(@total_site_bytes), big: true
+  = render 'stat_card', title: 'Storage',       count: nice_byte_count(@total_site_bytes, precision: 5), big: true
   %br
 
   = render 'stat_card', title: 'Active daily',          count: @active_daily, total: @user_count

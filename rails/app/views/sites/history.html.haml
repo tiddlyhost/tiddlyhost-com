@@ -15,8 +15,8 @@
         %th Saved
 
         %th
-          MB
-          = render 'popover_help', html_content: "The compressed file size in megabytes."
+          Size
+          = render 'popover_help', html_content: "The compressed file size."
 
         %th
           Checksum
@@ -47,7 +47,7 @@
 
           %td{ style: fade_opac }= nice_timestamp f.blob.created_at, brief: true
 
-          %td{ style: fade_opac }= as_megabytes(f.blob.byte_size)
+          %td{ style: fade_opac }= nice_byte_count_nbsp(f.blob.byte_size)
 
           %td{ style: fade_opac }= cosmetic_saved_version_checksum(f)
 

@@ -19,8 +19,8 @@
     - unless specific_user
       %th= sort_link 'Owner', :asc
     - unless params[:saved] == '0'
-      %th= sort_link 'Raw (MB)'
-      %th= 'Blob (MB)'
+      %th= sort_link 'Raw'
+      %th= 'Blob'
     %th= sort_link 'Storage', :asc
     %th= sort_link 'Last access'
     %th= sort_link 'Last update'
@@ -50,8 +50,8 @@
       - unless specific_user
         %td= link_to_user_sites(site.user.username_or_email, site.user) if site.user
       - unless params[:saved] == '0'
-        %td= as_megabytes site.raw_byte_size
-        %td= as_megabytes site.blob_byte_size
+        %td= nice_byte_count site.raw_byte_size
+        %td= nice_byte_count site.blob_byte_size
       %td= display_storage_service site
       %td= nice_timestamp site.accessed_at
       %td= nice_timestamp site.blob_created_at

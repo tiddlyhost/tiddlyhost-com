@@ -2,7 +2,13 @@ module ApplicationHelper
   include Recaptcha::Adapters::ViewMethods
 
   def nice_byte_count(bytes, precision: 3)
+    return '-' if bytes.nil?
+
     number_to_human_size(bytes, precision:).delete_suffix(' Bytes')
+  end
+
+  def nice_byte_count_nbsp(bytes)
+    nice_byte_count(bytes).gsub(' ', '&nbsp;').html_safe
   end
 
   VIEW_COUNT_UNITS = { unit: '', thousand: 'K', million: 'M', billion: 'B' }.freeze
@@ -91,17 +97,6 @@ module ApplicationHelper
     bool_val ?
       bi_icon('check-circle', fill: 'green') :
       bi_icon('dash-circle-dotted', fill: '#aaa')
-  end
-
-  def storage_bytes(bytes)
-    number_to_human_size(bytes, precision: 5, significant: true, delimiter: ',')
-  end
-
-  # Fixme: use number_to_human_size here too
-  def as_megabytes(bytes, precision: 2)
-    return '-' if bytes.nil?
-
-    number_with_precision(bytes.to_f / 1.megabyte, delimiter: ',', precision:)
   end
 
   def nice_timestamp(timestamp, brief: false)

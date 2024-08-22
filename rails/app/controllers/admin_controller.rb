@@ -77,7 +77,7 @@ class AdminController < ApplicationController
     put: 'prefer_put_saver',
     saves: 'save_count',
     hub: 'is_searchable',
-    rawmb: 'raw_byte_size',
+    raw: 'raw_byte_size',
     sites: 'COUNT(sites.id)',
     storage: 'storage_service',
     template: 'allow_public_clone',

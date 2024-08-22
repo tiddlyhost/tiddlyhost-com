@@ -4,4 +4,4 @@
     = site.tw_version_short
   - if site.raw_byte_size
     %span.mx-1.text-muted!= "&centerdot;"
-    !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
+    = nice_byte_count_nbsp(site.raw_byte_size)

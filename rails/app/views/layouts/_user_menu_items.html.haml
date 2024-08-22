@@ -45,7 +45,7 @@
     = link_to sites_path do
       #{current_user.all_sites.count}
       sites
-      (#{as_megabytes(current_user.total_storage_bytes)} MB)
+      (#{nice_byte_count(current_user.total_storage_bytes)})
   %br
 
 %li

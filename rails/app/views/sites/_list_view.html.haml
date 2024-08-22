@@ -50,7 +50,7 @@
 
         %td.small.smaller
           - if site.raw_byte_size
-            !="#{as_megabytes(site.raw_byte_size)}&nbsp;MB"
+            = nice_byte_count_nbsp(site.raw_byte_size)
           - else
             .text-muted -
 
