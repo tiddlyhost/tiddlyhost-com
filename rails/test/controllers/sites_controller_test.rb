@@ -12,6 +12,25 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get index as json' do
+    get sites_url(format: :json)
+    assert_response :success
+
+    JSON.parse(response.body).tap do |parsed|
+      assert_equal 1, parsed.count
+      assert_equal 'mysite', parsed[0]['name']
+    end
+  end
+
+  test 'should get site as json' do
+    get site_url(@site, format: :json)
+    assert_response :success
+
+    JSON.parse(response.body).tap do |parsed|
+      assert_equal 'mysite', parsed['name']
+    end
+  end
+
   test 'should get new' do
     get new_site_url
     assert_response :success
