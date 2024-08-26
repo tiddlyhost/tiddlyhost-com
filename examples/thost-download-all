@@ -2,10 +2,10 @@
 set -euo pipefail
 
 #
-# Bash script showing how to use curl to download a private site.
+# Bash script showing how to use curl to download all your sites.
 #
 # Example usage:
-#   ./thost-downloader yoursite youremail@example.com yourpassword
+#   ./thost-download-all youremail@example.com yourpassword
 #
 # To avoid including your password in scripts, you could do something like
 # this for example:
@@ -13,26 +13,21 @@ set -euo pipefail
 #   chmod 600 ~/.thostpass
 #
 # Then:
-#   ./thost-downloader yoursite youremail@example.com $(cat ~/.thostpass)
-#
-# Note that you don't need this for a public site. You can just do:
-#   curl -s https://$SITE.tiddlyhost.com/download -o $SITE.html
+#   ./thost-download-all youremail@example.com $(cat ~/.thostpass)
 #
 
 show_usage() {
   echo Usage:
-  echo "  $0 <sitename> <email> <password>"
+  echo "  $0 <email> <password>"
   exit 1
 }
 
-SITE=$1
-EMAIL=$2
-PASSWD=$3
+EMAIL=$1
+PASSWD=$2
 
 DOWNLOAD_DIR=${DOWNLOAD_DIR:-./downloads}
 mkdir -p $DOWNLOAD_DIR
 
-[[ -z "$SITE" ]] && show_usage
 [[ -z "$EMAIL" ]] && show_usage
 [[ -z "$PASSWD" ]] && show_usage
 
@@ -58,11 +53,15 @@ OK=$($CURL -I "https://$TIDDLYHOST/sites" | head -1 | grep '200 OK')
 
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
-# Download the site
-file="${DOWNLOAD_DIR}/${SITE}.html"
-#file="${DOWNLOAD_DIR}/${SITE}.${TIMESTAMP}.html"
-echo "Downloading site ${SITE} to ${file}"
-$CURL "https://$SITE.tiddlyhost.com/download" -o "$file"
+# Get a list of all sites with their urls
+# (To keep this example simple we'll skip Tiddlyspot sites.)
+SITES=$($CURL "https://tiddlyhost.com/sites.json" | jq -r '.[]|select(.is_tspot==false)|.name')
+
+for s in $SITES; do
+  file="${DOWNLOAD_DIR}/${s}.${TIMESTAMP}.html"
+  echo "Downloading site ${s} to ${file}"
+  $CURL "https://$s.tiddlyhost.com/download" -o "${file}"
+done
 
 # Clean up
 rm -f $COOKIES

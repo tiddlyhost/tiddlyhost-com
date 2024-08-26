@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 #
 # Bash script showing how to use curl to save to a Tiddlyhost site.
 #
@@ -25,7 +27,7 @@ FILE=$2
 EMAIL=$3
 PASSWD=$4
 
-DOWNLOAD_DIR=${DOWNLOAD_DIR:-.}
+DOWNLOAD_DIR=${DOWNLOAD_DIR:-./downloads}
 mkdir -p $DOWNLOAD_DIR
 
 [[ -z "$SITE" ]] && show_usage
@@ -38,27 +40,30 @@ mkdir -p $DOWNLOAD_DIR
 TIDDLYHOST=tiddlyhost.com
 SIGN_IN=https://$TIDDLYHOST/users/sign_in
 COOKIES=$(mktemp)
+trap "rm -f $COOKIES" EXIT
 CURL="curl -s --cookie-jar $COOKIES --cookie $COOKIES"
 
 # Read authenticity_token
-TOKEN=$( $CURL $SIGN_IN | grep '"csrf-token"' | cut -d'"' -f4 )
+TOKEN=$($CURL $SIGN_IN | grep '"csrf-token"' | cut -d'"' -f4)
 
 # Log in
 $CURL -X POST $SIGN_IN \
   -d "authenticity_token=$TOKEN" \
   -d "user[email]=$EMAIL" \
   -d "user[password]=$PASSWD" \
-  > /dev/null
+  -o /dev/null
 
-# Confirm that auth worked
-OK=$( $CURL -I "https://$TIDDLYHOST/sites" | head -1 | grep '200 OK' )
-[[ -z "$OK" ]] && echo "Authentication failed." && exit 1
+# Check we logged in succesfully
+OK=$($CURL -I "https://$TIDDLYHOST/sites" | head -1 | grep '200 OK')
+[[ -z "$OK" ]] && echo "Login failed." && exit 1
+
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
 # Download a copy just in case something goes wrong
 $CURL "https://$SITE.$TIDDLYHOST/download" -o $DOWNLOAD_DIR/$SITE.$(date +%Y%m%d%H%M%S).backup.html
 
 # Now upload the new TiddlyWiki file
-OK=$( $CURL -i -X PUT --data-binary "@$FILE" \
+OK=$($CURL -i -X PUT --data-binary "@$FILE" \
   -H "Content-Type: text/html;charset=UTF-8" \
   "https://$SITE.$TIDDLYHOST/" | grep '204 No Content')
 
@@ -70,4 +75,4 @@ else
 fi
 
 # Clean up
-rm $COOKIES
+rm -f $COOKIES
