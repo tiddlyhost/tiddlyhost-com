@@ -348,16 +348,13 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_response expected_status
   end
 
-  # The header used by TiddlyWiki is actually not a valid mime type. This
-  # tests the workaround in app/middleware/tweak_accept_header to handle it.
-  test 'accept header workaround' do
+  # The header used by TiddlyWiki for the head request in the put saver is
+  # actually not a valid mime type. This confirms that we handle it anyway.
+  test 'invalid accept header' do
     head '/', headers: { 'Accept' => '*/*;charset=UTF-8' }
     assert_response :success
 
-    # We only tweak it for a HEAD request so this still fails
-    # Would get a 406 status in production (or integration test probably)
-    assert_raises(ActionDispatch::Http::MimeNegotiation::InvalidType) do
-      get '/', headers: { 'Accept' => '*/*;charset=UTF-8' }
-    end
+    get '/', headers: { 'Accept' => '*/*;charset=UTF-8' }
+    assert_response :success
   end
 end
