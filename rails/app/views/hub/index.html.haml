@@ -67,7 +67,7 @@
 
   = render 'search_box'
 
-.hub
+.hub{ class: ("clone-button-on-hover" unless @show_templates) }
   - @sites.each do |site|
     = render 'site_tile', site: site, mode: 'hub'
 

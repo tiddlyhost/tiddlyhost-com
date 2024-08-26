@@ -1,4 +1,11 @@
-- is_tspot = site.is_a?(TspotSite)
+
+:ruby
+  is_tspot = site.is_a?(TspotSite)
+  is_templates = @show_templates.present?
+
+  # Decide about clone/download buttons
+  is_cloneable = site.cloneable_by_public?
+  clone_buttons = is_cloneable && mode == "hub"
 
 .site{ id: site.name }
   .thumb-container
@@ -8,6 +15,26 @@
       - else
         .image-placeholder{ title: "Preview image not yet available" }
           = bi_icon('image', fill: '#ddd')
+
+  - if clone_buttons
+    -# Show the new style clone and download buttons
+    .clone-download-buttons
+      = link_to "#{site.url}/download", class: 'btn btn-sm btn-light' do
+        #{bi_icon('download', height: '1.2em', fill: '#777')}Download
+      = link_to new_site_path(clone: site.name), class: 'btn btn-sm btn-light' do
+        #{bi_icon('files', height: '1.2em', fill: '#777')}Clone
+
+    - unless is_templates
+      -# Same thing but it will be visible pre-hover
+      .clone-download-buttons.mini-clone-download-buttons
+        = link_to "#{site.url}/download", class: 'btn btn-sm btn-light' do
+          #{bi_icon('download', height: '1.2em', fill: '#777')}
+        = link_to new_site_path(clone: site.name), class: 'btn btn-sm btn-light' do
+          #{bi_icon('files', height: '1.2em', fill: '#777')}
+
+  - else
+    -# Clumsy alignment tweak for when the buttons are not there
+    %div{ style: "margin-bottom: 0.2em;" }
 
   .name{ title: site.long_name }
     = site_link site, target: site.long_name
@@ -22,19 +49,6 @@
       = render 'site_kind_info', site: site
 
   .description
-    - if mode == "hub" && site.cloneable_by_public?
-      -# Show a clone button
-      .float-end.enable-tooltips
-        = link_to(new_site_path(clone: site.name),
-          "data-bs-toggle"=>"tooltip",
-          "data-bs-placement"=>"right",
-          class: 'clone-btn btn btn-sm px-2 py-1 mx-1 my-0', style: 'border-style: none;',
-          title: 'Create a new site using this template') do
-          = bi_icon('files', height: '1.2em', fill: '#777')
-          %div{ style: "font-size: 60%; margin-top: -1px;" }Clone
-        .py-0.my-0{ style: "font-size: 70%; text-align: center; font-weight: bold; line-height: 1em;" }
-          = site.clone_count
-
     = span_with_title(site.description)
 
   - if mode == "hub"
@@ -45,7 +59,7 @@
       = render 'site_owner', user: site.user
 
       %span.views
-        = views_and_updated_text(site).html_safe
+        = views_and_updated_text(site, show_clone_count: is_templates).html_safe
 
   - unless site.tag_list.empty?
     .site-tags.pt-1

@@ -34,6 +34,48 @@ h1 {
     margin-right: 0;
 }
 
+.hub.clone-button-on-hover {
+  .site {
+    // Do some finessing of the clone/download buttons to
+    // Make them appear above the thumbnail but only on hover
+    .clone-download-buttons {
+      @extend .mx-2;
+      margin-top: -2rem ! important;
+      margin-bottom: 0.7rem ! important;
+      visibility: hidden;
+      border-color: transparent;
+    }
+
+    // It's meant to be a visual indicator that there
+    // are some buttons that will appear when you hover.
+    // (But for touch screen maybe you can tap them..?)
+    .mini-clone-download-buttons {
+      justify-content: flex-end;
+      visibility: visible;
+      margin-top: -1.6rem ! important;
+      margin-right: 0.2rem ! important;
+      gap: 0 ! important;
+      .btn {
+        flex-grow: 0;
+        flex-shrink: 1;
+        border-style: none;
+        background-color: transparent;
+        padding: 2px;
+        font-size: 65%;
+      }
+    }
+
+    &:hover {
+      .clone-download-buttons {
+        visibility: visible;
+      }
+      .mini-clone-download-buttons {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
 .site-tile-owner {
     opacity: 60%;
 
@@ -62,12 +104,36 @@ h1 {
 .hub, .sites-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 6rem;
+    gap: 2rem 4rem;
 
     .site {
+        &:hover {
+          background-color: white;
+          border: 1px solid #efefef;
+        }
         vertical-align: top;
-        width: 13rem;
+        width: 15rem;
         margin: 0; // gap should handle the spacing
+        border-radius: 0.25rem;
+        border: 1px solid transparent;
+        padding: 0.8rem;
+
+        .clone-download-buttons {
+          @extend .m-2;
+          @extend .mx-0;
+          display: flex;
+          gap: 0.5em;
+
+          .btn {
+            @extend .m-0;
+            font-size: 70%;
+            flex-grow: 1;
+            flex-shrink: 0;
+            padding-top: 0.2em!important;
+            padding-bottom: 0.2em!important;
+            color: var(--bs-link-color-rgb);
+          }
+        }
 
         .description {
             margin-left: 0.25em;
@@ -97,15 +163,15 @@ h1 {
         }
 
         .thumb-container {
-            margin: 0.25em 0;
-
             img {
-                width: 11.5rem;
+                border-radius: 0.25rem;
+                width: 100%;
             }
 
             .image-placeholder {
-                width: 11.5rem;
-                height: 7.64rem;
+                border-radius: 0.25rem;
+                width: 100%;
+                aspect-ratio: 1.5;
                 margin: 0px;
                 border: 1px solid #e6e6e6;
                 display: flex;
@@ -158,6 +224,29 @@ h1 {
                         fill: var(--bs-gray-600);
                     }
                 }
+            }
+            &:hover {
+              border: 1px solid transparent;
+              background-color: #2e2f31;
+            }
+            .clone-download-buttons {
+              .btn {
+                background-color: var(--bs-gray-700);
+                border-color: var(--bs-gray-800) !important;
+
+                &:hover {
+                  background-color: var(--bs-gray-600);
+                  border-color: var(--bs-gray-700) !important;
+                }
+              }
+            }
+            .mini-clone-download-buttons {
+              .btn {
+                background-color: transparent;
+                svg.bi {
+                  fill: #222;
+                }
+              }
             }
         }
     }
