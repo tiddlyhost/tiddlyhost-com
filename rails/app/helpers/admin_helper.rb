@@ -61,4 +61,12 @@ module AdminHelper
       'plain'
     end
   end
+
+  def attachment_names
+    ActiveStorage::Attachment.select('distinct name').map(&:name)
+  end
+
+  def attachment_service_names_for_attachment(name)
+    ActiveStorage::Blob.joins(:attachments).where(attachments: { name: }).select('distinct service_name').map(&:service_name)
+  end
 end
