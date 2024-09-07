@@ -59,6 +59,8 @@ class User < ApplicationRecord
   scope :active_week,              ->        { signed_in_since(1.week.ago) }
   scope :active_month,             ->        { signed_in_since(1.month.ago) }
 
+  after_create :local_dev_first_user_upgrade if Rails.env.development?
+
   def username_or_name
     username.presence || name
   end
@@ -147,5 +149,19 @@ class User < ApplicationRecord
   # https://www.rubydoc.info/github/plataformatec/devise/Devise/Models/Confirmable#after_confirmation-instance_method
   def after_confirmation
     th_log("Account #{id} #{email} confirmation")
+  end
+
+  def local_dev_first_user_upgrade
+    # Only in development mode...
+    return unless Rails.env.development?
+
+    # Only for the first user created...
+    return unless User.count == 1
+
+    # Upgrade to admin user
+    update(user_type: UserType.superuser)
+
+    # And skip the devise email confirmation
+    skip_confirmation!
   end
 end

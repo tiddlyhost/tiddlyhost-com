@@ -94,21 +94,15 @@ confirmation link by running this:
 
 Click that link and then you should be able to sign in.
 
+Note: For the very first user created, the confirmation step will be skipped
+and you'll be logged in immediately.
+
 Click "Create Site" to create a site. Note that you need to use a site name
 that matches something that you added to your /etc/hosts file, aaa or bbb for
 example.
 
 Click on the site to open it. Accept the certificate warnings again. Click the
 save button and confirm your site was able to be saved.
-
-To give your local user admin permissions, do the following:
-
-    make console
-    User.first.update(user_type_id: 2)
-    exit
-
-Now reload the Tiddlyhost page in your browser and you should see the "Admin"
-link.
 
 Create other sites or other local accounts as required.
 
