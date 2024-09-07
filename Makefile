@@ -296,7 +296,13 @@ CORE_JS_URL=https://tiddlywiki.com/tiddlywikicore-$(VER).js
 download-core-js:
 	cd rails/public && curl -sL $(CORE_JS_URL) -O
 
-download-empties: download-empty-tw5 download-empty-tw5x download-empty-feather download-empty-classic download-empty-prerelease download-core-js
+download-core-js-prerelease:
+	PRERELEASE_VER=$$(curl -s --range 0-1000 $(EMPTY_URL_prerelease) | grep '<meta name="tiddlywiki-version"' | cut -d'"' -f4) && \
+	CORE_JS_PRERELEASE_URL=https://tiddlywiki.com/prerelease/tiddlywikicore-$${PRERELEASE_VER}.js && \
+	  cd rails/public && \
+	  curl -sL $${CORE_JS_PRERELEASE_URL} -O
+
+download-empties: download-empty-tw5 download-empty-tw5x download-empty-feather download-empty-classic download-empty-prerelease download-core-js download-core-js-prerelease
 
 PROD_PRERELEASE=docker/config/prerelease.html
 $(PROD_PRERELEASE): $(EMPTY_DIR)/prerelease.html
@@ -419,7 +425,7 @@ build-ready: no-uncommitted-diffs no-uncommitted-rails-files
 build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
-build-prod: build-ready build-info js-math download-empty-prerelease gzip-core-js-files
+build-prod: build-ready build-info js-math download-empty-prerelease download-core-js-prerelease gzip-core-js-files
 	$(DC_PROD) build --progress plain app
 
 build-prod-ci:
