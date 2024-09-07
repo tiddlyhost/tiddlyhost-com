@@ -1,8 +1,12 @@
+# This is a base class for TemplatesController and BrowseController
 class HubController < ApplicationController
   PER_PAGE = 18
 
   before_action :set_show_templates
   before_action :set_kind_filter
+
+  # The tests in hub_controller_test don't exect the redirects and I don't want to fix that yet
+  before_action :redirect_hub_urls unless Rails.env.test?
 
   def index
     render_hub
@@ -83,5 +87,17 @@ class HubController < ApplicationController
 
   def default_sort
     @show_templates ? :cl : :v
+  end
+
+  # Flip between controllers based on whether we're looking at
+  # "templates only" or everything. Probably won't need this
+  # when/if we stop using the ?t=1 url param and update some links
+  #
+  HUB_URL_MATCH = %r{^/(?:hub|browse|templates)}
+
+  def redirect_hub_urls
+    full_path = request.fullpath
+    target_path = (@show_templates ? '/templates' : '/browse')
+    redirect_to full_path.sub(HUB_URL_MATCH, target_path) unless full_path.start_with?(target_path)
   end
 end

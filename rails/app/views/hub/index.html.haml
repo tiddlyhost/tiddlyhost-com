@@ -10,7 +10,10 @@
     - else
       = bi_icon('person-fill') + @user.name
   - else
-    Explore
+    - if @show_templates
+      Templates
+    - else
+      Browse
 
   = render 'templates_switch', show_templates: @show_templates
 

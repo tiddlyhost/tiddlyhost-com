@@ -63,9 +63,12 @@ Rails.application.routes.draw do
     get 'admin/boom'
     get 'admin/pool_stats'
 
-    get 'hub', to: 'hub#index'
-    get 'hub/tag/:tag', to: 'hub#tag', constraints: { tag: /.+/ }
-    get 'hub/user/:username', to: 'hub#user'
+    # These are variations on the same thing with a shared base class
+    %w[hub browse templates].each do |c|
+      get c, to: "#{c}#index"
+      get "#{c}/tag/:tag", to: "#{c}#tag", constraints: { tag: /.+/ }
+      get "#{c}/user/:username", to: "#{c}#user"
+    end
 
     get 'subscription', to: 'subscription#show'
     get 'subscription/plans', to: 'subscription#plans'
