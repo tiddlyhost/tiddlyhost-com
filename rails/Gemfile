@@ -18,6 +18,14 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Might become a rails dependency soon?
+# (Removed from stdlib starting Ruby 3.5)
+gem 'logger'
+
+# Used in lib/settings
+# (Removed from stdlib starting Ruby 3.5)
+gem 'ostruct'
+
 # Background jobs
 gem 'daemons'
 gem 'delayed_job_active_record'
