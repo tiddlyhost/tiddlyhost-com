@@ -4,6 +4,7 @@ class HubController < ApplicationController
 
   before_action :set_show_templates
   before_action :set_kind_filter
+  before_action :set_default_title
 
   # The tests in hub_controller_test don't exect the redirects and I don't want to fix that yet
   before_action :redirect_hub_urls unless Rails.env.test?
@@ -83,6 +84,13 @@ class HubController < ApplicationController
   def set_kind_filter
     params.delete(:k) unless params[:k].in?(filter_params[:k].keys.map(&:to_s))
     @kind_filter = params[:k]
+  end
+
+  def set_default_title
+    # Not expected to run in the base class since the child class will define it
+    # ...but the tests still use HubController so we need this to avoid a test
+    # error calling page_entries_info (which is a will_paginate helper)
+    @thing_name = 'Site'
   end
 
   def default_sort

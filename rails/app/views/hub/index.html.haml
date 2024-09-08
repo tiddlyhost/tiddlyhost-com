@@ -1,5 +1,3 @@
-- thing = @show_templates ? "Template" : "Site"
-
 %h1
   - if @tag.present?
     = bi_icon('tag') + @tag
@@ -10,35 +8,29 @@
     - else
       = bi_icon('person-fill') + @user.name
   - else
-    - if @show_templates
-      Templates
-    - else
-      Browse
+    = @default_title
 
   = render 'templates_switch', show_templates: @show_templates
 
 %p.small
-  - if @show_templates
-    Create a site using a template by clicking the clone button.
-  - else
-    Discover content created and shared by Tiddlyhost users.
+  = @explanation_text
 
 %p.text-muted{ style: 'font-size: 95%' }
   - if @tag.present?
-    #{thing}s tagged with
+    #{@thing_name}s tagged with
     %b= @tag + '.'
   - elsif @user.present?
-    #{thing}s created by Tiddlyhost user
+    #{@thing_name}s created by Tiddlyhost user
     %b= @user.username + '.'
 
 %div{ style: "margin-bottom: 2em;" }
   %ul.nav.nav-tabs
-    = hub_link_to("All #{thing.downcase}s", hub_all_url)
+    = hub_link_to("All #{@thing_name.downcase}s", hub_all_url)
     - @tag_tabs.each do |tag|
       = hub_tag_link_to(tag)
 
 .page_info.text-muted
-  = page_entries_info(@sites, model: thing)
+  = page_entries_info(@sites, model: @thing_name)
   = "tagged with #{@tag}" if @tag.present?
   = "matching '#{search_text}'" if search_text
 
