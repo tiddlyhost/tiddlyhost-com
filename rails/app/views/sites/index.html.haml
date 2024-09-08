@@ -10,6 +10,10 @@
       = link_to_user_hub_with_count(current_user)
 
   .float-end.sites-menu-container.small{ style: "margin-top: -0.6rem;" }
+
+    .d-inline-block.sites-menu
+      = render 'search_box'
+
     .d-inline-block.sites-menu
       = link_to("#", class: 'ms-2 btn btn-sm dropdown-toggle', title: 'Site kind filter',
         role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do

@@ -130,6 +130,15 @@ table.history-table {
     .btn {
         @extend .th-muted;
     }
+
+    .search {
+      // See also hub.scss which provides some styles for this
+      @extend .th-muted;
+      input {
+        width: 7rem;
+        font-size: 90%;
+      }
+    }
 }
 
 .actions-menu-group {

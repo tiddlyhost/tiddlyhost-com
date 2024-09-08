@@ -14,11 +14,11 @@ module HubQuery
   # good so maybe it's not worth all the hoop jumping. Or we could add another
   # timestamp for saved_at and have it touched only when a save happens.
 
-  def self.sites_for_user(user, sort_by:)
+  def self.sites_for_user(user, sort_by:, search: nil)
     # Not really paginated or hub related...
     # Todo: Cap site count per user or do pagination
     paginated_sites(
-      page: nil, per_page: 1000, sort_by:, tag: nil, user:, search: nil, for_hub: false,
+      page: nil, per_page: 1000, sort_by:, tag: nil, user:, search:, for_hub: false,
       extra_fields_in_select: [
         :tw_kind,
         :tw_version,

@@ -46,7 +46,7 @@ class SitesController < ApplicationController
       format.html do
         @grid_view = cookies[:grid_view].present?
         @total_storage_bytes = current_user.total_storage_bytes
-        @sites = HubQuery.sites_for_user(current_user, sort_by: sort_sql)
+        @sites = HubQuery.sites_for_user(current_user, search: search_text, sort_by: sort_sql)
         @site_count = @sites.count
         @filtered_sites = filter_results(@sites)
         @filtered_site_count = @filtered_sites.count
