@@ -14,6 +14,8 @@ rails/node_modules/*
 rails/tmp/*
 rails/log/*
 rails/storage/*
+rails/storage1/*
+rails/storage2/*
 rails/test/*
 rails/public/packs-test/*
 rails/vendor/*
