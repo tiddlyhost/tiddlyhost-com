@@ -41,7 +41,7 @@ module Subscriber
 
   def subscription_info
     if subscribed?
-      if subscription.processor_plan
+      if subscription&.processor_plan
         Settings.stripe_product_by_id(subscription.processor_plan)
       else
         # Workaround/hack for this error:
