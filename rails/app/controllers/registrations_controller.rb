@@ -24,7 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :username])
 
     ok = verify_recaptcha(action: 'signup')
-    log_recaptch_detail(sign_up_params['email'].strip, ok, recaptcha_reply)
+    log_recaptch_detail(sign_up_params['email'], ok, recaptcha_reply)
     return if ok
 
     self.resource = resource_class.new(sign_up_params)
@@ -38,6 +38,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def log_recaptch_detail(email, ok, detail)
-    th_log "Recaptcha #{ok ? 'pass' : 'fail'} for #{email}#{" #{detail.inspect}" if detail}"
+    th_log "Recaptcha #{ok ? 'pass' : 'fail'} for '#{email}'#{" #{detail.inspect}" if detail}"
   end
 end
