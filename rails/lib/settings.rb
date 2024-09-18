@@ -144,6 +144,8 @@ class Settings
   # This is not elegant but should do what we want in config/storage.yml
   def self.storage_config_yaml(service_name, secret_key)
     config = secrets(secret_key)
+    return unless config
+
     <<-END_YAML.strip_heredoc.strip
       #{service_name}:
         service: S3
