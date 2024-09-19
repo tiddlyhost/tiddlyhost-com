@@ -106,6 +106,10 @@ class Settings
     "#{major_version}.#{build_info['build_number']}-#{Settings.short_sha}"
   end
 
+  def self.recaptcha_enabled?
+    Settings.secrets(:recaptcha, :site_key).present?
+  end
+
   def self.feature_enabled?(feature_name, user)
     # A way to grant access to particular users manually
     if user

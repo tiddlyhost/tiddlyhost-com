@@ -18,6 +18,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   # https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise#deviseregistrationscontroller
   def check_recaptcha
+    return unless Settings.recaptcha_enabled?
+
     # The permit_devise_params before action defined in ApplicationController didn't run yet,
     # so do this here as well so that the name and username params can be preserved when doing
     # resource_class.new(sign_up_param) below.

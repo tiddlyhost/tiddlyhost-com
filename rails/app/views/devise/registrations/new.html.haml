@@ -6,12 +6,13 @@
 
     = render 'devise/shared/error_messages', resource: resource
 
-    - if flash[:recaptcha_error].present?
-      = render layout: 'field_wrapper', locals: { pb: 'pb-0' } do
-        .alert.alert-warning
-          = flash[:recaptcha_error]
+    - if Settings.recaptcha_enabled?
+      - if flash[:recaptcha_error].present?
+        = render layout: 'field_wrapper', locals: { pb: 'pb-0' } do
+          .alert.alert-warning
+            = flash[:recaptcha_error]
 
-    = recaptcha_v3(action: 'signup')
+      = recaptcha_v3(action: 'signup')
 
     -#
       Avoid "timeout-or-duplicate" recaptcha errors when a
