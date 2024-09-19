@@ -30,14 +30,14 @@ pull-ruby:
 
 # Build base docker image
 # (The build args are important here, the build will fail without them)
-_build-base: cleanup
+build-base:
 	$(DC) build --progress plain --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
 fast-build-base:
 	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
-build-base: _build-base push-base
+build-push-base: cleanup build-base push-base
 	NO_COMMIT=1 bin/pin-digest.sh docker.io/sbaird/tiddlyhost-base:latest docker/Dockerfile.prod "Tiddlyhost base image rebuilt"
 
 # To set up your environment right after doing a git clone
@@ -175,7 +175,7 @@ yarn-upgrade:
 
 # Update deps and make a commit
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
-deps-update: pull-ruby build-base bundle-update yarn-upgrade
+deps-update: pull-ruby build-push-base bundle-update yarn-upgrade
 	git add $(LOCK_FILES)
 	git commit -m 'chore: Refresh base images and update dependencies' \
 	  -m 'Commit created with `make deps-update`'
