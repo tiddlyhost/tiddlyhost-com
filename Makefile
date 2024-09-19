@@ -24,6 +24,11 @@ GROUP_ID ?= $(shell id -g)
 RUBY_VER=3.3
 RUBY_TAG=$(RUBY_VER)-slim
 
+# Set it to plain for detailed build output
+ifdef PROGRESS
+  PROGRESS_OPT=--progress $(PROGRESS)
+endif
+
 pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
 	NO_COMMIT=1 bin/pin-digest.sh docker.io/library/ruby:$(RUBY_TAG) docker/Dockerfile.base "Newer ruby base image pulled from docker hub"
@@ -31,11 +36,11 @@ pull-ruby:
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base:
-	$(DC) build --progress plain --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+	$(DC) $(PROGRESS_OPT) build --no-cache --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 # Use this if you're hacking on docker/Dockerfile.base and building repeatedly
 fast-build-base:
-	$(DC) build --progress plain --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
+	$(DC) $(PROGRESS_OPT) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 build-push-base: cleanup build-base push-base
 	NO_COMMIT=1 bin/pin-digest.sh docker.io/sbaird/tiddlyhost-base:latest docker/Dockerfile.prod "Tiddlyhost base image rebuilt"
@@ -426,13 +431,13 @@ build-info:
 	@bin/create-build-info.sh | tee rails/public/build-info.txt
 
 build-prod: build-ready build-info js-math download-empty-prerelease download-core-js-prerelease gzip-core-js-files
-	$(DC_PROD) build --progress plain app
+	$(DC_PROD) $(PROGRESS_OPT) build app
 
 build-prod-ci:
 	$(DC_PROD) build app
 
 fast-build-prod: build-info
-	$(DC_PROD) build --progress plain app
+	$(DC_PROD) $(PROGRESS_OPT) build app
 
 push-base:
 	$(D) --config etc/docker-conf push sbaird/tiddlyhost-base
