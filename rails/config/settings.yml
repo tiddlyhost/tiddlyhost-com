@@ -53,7 +53,7 @@ development:
   url_defaults:
     :host: tiddlyhost.local
     # By "in container" we actually mean running with
-    # docker-compose up with the nginx front end
+    # `docker compose up` with nginx handling requests
     :protocol: <%= is_in_container ? "https" : "http" %>
     :port: <%= is_in_container ? nil : 3333 %>
 

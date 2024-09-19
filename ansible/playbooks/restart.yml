@@ -10,4 +10,4 @@
   tasks:
   - name: Restart
     command:
-      cmd: /usr/local/bin/docker-compose -f {{ home_dir }}/docker-compose.yml restart {{ restart_list }}
+      cmd: /usr/bin/docker compose -f {{ home_dir }}/docker-compose.yml restart {{ restart_list }}

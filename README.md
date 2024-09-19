@@ -37,10 +37,8 @@ rails directly.
 
 ### Prepare environment
 
-You need to have
-[docker](https://docs.docker.com/get-docker/) and
-[docker-compose](https://docs.docker.com/compose/install/)
-installed on your system.
+You need to have docker and docker compose
+[installed on your system](https://docs.docker.com/engine/install/).
 
 Check out the code:
 
@@ -125,8 +123,8 @@ You can also shut down and clean up like this:
 
     make cleanup
 
-Note that the make tasks are mostly just wrappers for docker-compose so you
-can use your own docker-compose commands directly if you prefer. See the
+Note that the make tasks are mostly just wrappers for `docker compose` so you
+can use your own `docker compose` commands directly if you prefer. See the
 Makefile for details.
 
 Run `make` by itself to see a full list of make commands. Read the Makefile to

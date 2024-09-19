@@ -20,14 +20,14 @@ DB_USER=postgres
 case "$ACTION" in
   restore)
     # Load the database from a pg_dump file
-    sudo docker-compose exec -T "$DB_SERVICE" bash -c \
+    sudo docker compose exec -T "$DB_SERVICE" bash -c \
       "psql --username=$DB_USER --set ON_ERROR_STOP=on"
     ;;
 
   *)
     # Dump out the database using pg_dump
     DB_NAME=$3
-    sudo docker-compose exec -T "$DB_SERVICE" bash -c \
+    sudo docker compose exec -T "$DB_SERVICE" bash -c \
       "pg_dump --dbname=$DB_NAME --username=$DB_USER --create"
     ;;
 

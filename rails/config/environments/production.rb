@@ -52,7 +52,7 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # 'cache' here is the hostname of the memcached container inside
-  # the docker environment created by docker-compose
+  # the docker environment created by docker compose
   config.cache_store = :mem_cache_store, 'cache', { value_max_bytes: 8.megabytes }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).

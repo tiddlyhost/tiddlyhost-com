@@ -21,7 +21,7 @@ Rails.application.configure do
     config.action_controller.enable_fragment_cache_logging = true
 
     # 'cache' here is the hostname of the memcached container inside
-    # the docker environment created by docker-compose
+    # the docker environment created by docker compose
     config.cache_store = :mem_cache_store, 'cache', { value_max_bytes: 8.megabytes }
 
     config.public_file_server.headers = {

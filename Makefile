@@ -94,8 +94,8 @@ shell:
 	-$(DC) run --rm app bash
 
 D=docker
-DC=docker-compose
-DC_PROD=docker-compose -f docker-compose-prod.yml
+DC=docker compose
+DC_PROD=docker compose -f docker-compose-prod.yml
 
 # Figure out if there's already a container running and use exec or run accordingly
 # Call it DCC for "Docker Compose Command"
