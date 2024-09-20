@@ -9,7 +9,8 @@ services:
     - "443:443"
     volumes:
     - ./docker/letsencrypt:/etc/letsencrypt:Z
-    - ./docker/nginx-conf:/etc/nginx/conf.d:Z
+    - ./docker/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:Z
+    - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:Z
     - ./docker/nginx-html:/opt/nginx-html:Z
 
   app:

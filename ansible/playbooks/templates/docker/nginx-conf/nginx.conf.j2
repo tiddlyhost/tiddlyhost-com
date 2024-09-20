@@ -1,0 +1,70 @@
+#-----------------------------------------------------------------------
+# Most of this is as per the default config. See:
+#   docker run --rm -it nginx /bin/bash -c 'cat /etc/nginx/nginx.conf'
+#-----------------------------------------------------------------------
+
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    #-------------------------------------------------
+    # From here down is the Tiddlyhost specific config
+    #-------------------------------------------------
+
+    # SSL certs
+    ssl_certificate /etc/letsencrypt/live/{{ primary_host }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ primary_host }}/privkey.pem;
+
+    server {
+        # Redirect all http requests to https for Tiddlyhost
+        listen 80;
+        server_name {{ primary_host }} *.{{ primary_host }};
+        return 301 https://$host$request_uri;
+    }
+
+    {% if tiddlyspot_host is defined and tiddlyspot_host -%}
+    server {
+        # For Tiddlyspot accept both http and https
+        # (Required since site names with dots can't use the cert)
+        listen 80;
+        listen 443 ssl;
+        server_name {{ tiddlyspot_host }} *.{{ tiddlyspot_host }};
+
+        include server-common.conf;
+    }
+
+    {% endif -%}
+
+    server {
+        # Tiddlyhost via https
+        listen 443 ssl;
+        server_name {{ primary_host }} *.{{ primary_host }};
+
+        include server-common.conf;
+    }
+}

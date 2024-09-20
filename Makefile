@@ -83,7 +83,7 @@ docker/%: ansible/playbooks/templates/docker/%.j2
 	  < $< > $@
 	@echo $@ created using $<
 
-local-nginx: docker/nginx-conf/app.conf docker/nginx-conf/commonconf
+local-nginx: docker/nginx-conf/nginx.conf docker/nginx-conf/server-common.conf
 local-rails: docker/config/settings_local.yml
 
 local-config: local-nginx local-rails

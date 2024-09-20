@@ -326,8 +326,8 @@
       dest: "{{ nginx_conf_dir }}/{{ item }}"
       mode: "0600"
     with_items:
-    - app.conf
-    - commonconf
+    - nginx.conf
+    - server-common.conf
     tags:
     - app
 
