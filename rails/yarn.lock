@@ -1580,12 +1580,12 @@ available-typed-arrays@^1.0.7:
     possible-typed-array-names "^1.0.0"
 
 babel-loader@^8.2.2:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.3.0.tgz#124936e841ba4fe8176786d6ff28add1f134d6a8"
-  integrity sha512-H8SvsMF+m9t15HNLMipppzkC+Y2Yq+v3SonZyU70RBL/h1gxPkH08Ot8pEE9Z4Kd+czyWJClmFS8qzIP9OZ04Q==
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.4.1.tgz#6ccb75c66e62c3b144e1c5f2eaec5b8f6c08c675"
+  integrity sha512-nXzRChX+Z1GoE6yWavBQg6jDslyFF3SDjl2paADuoQtQW10JqShJt62R6eJQ5m/pjJFDT8xgKIWSP85OY8eXeA==
   dependencies:
     find-cache-dir "^3.3.1"
-    loader-utils "^2.0.0"
+    loader-utils "^2.0.4"
     make-dir "^3.1.0"
     schema-utils "^2.6.5"
 
@@ -2019,9 +2019,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001646:
-  version "1.0.30001660"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001660.tgz#31218de3463fabb44d0b7607b652e56edf2e2355"
-  integrity sha512-GacvNTTuATm26qC74pt+ad1fW15mlQ/zuTzzY1ZoIzECTP8HURDfF43kNxPgf7H1jmelCBQTTbBNxdSXOA7Bqg==
+  version "1.0.30001662"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001662.tgz#3574b22dfec54a3f3b6787331da1040fe8e763ec"
+  integrity sha512-sgMUVwLmGseH8ZIrm1d51UbrhqMCH3jvS7gF/M6byuHOnKyLOBL7W8yz5V02OHwgLGA36o/AFhWzzh4uc5aqTA==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -2036,21 +2036,6 @@ chalk@^2.0, chalk@^2.4.1, chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
-
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.1:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.6.0.tgz#197c6cc669ef2a8dc5e7b4d97ee4e092c3eb0d5b"
-  integrity sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==
-  dependencies:
-    anymatch "~3.1.2"
-    braces "~3.0.2"
-    glob-parent "~5.1.2"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.6.0"
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 chokidar@^2.1.8:
   version "2.1.8"
@@ -2070,6 +2055,28 @@ chokidar@^2.1.8:
     upath "^1.1.1"
   optionalDependencies:
     fsevents "^1.2.7"
+
+chokidar@^3.4.1:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.6.0.tgz#197c6cc669ef2a8dc5e7b4d97ee4e092c3eb0d5b"
+  integrity sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==
+  dependencies:
+    anymatch "~3.1.2"
+    braces "~3.0.2"
+    glob-parent "~5.1.2"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.6.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
+chokidar@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-4.0.0.tgz#4d603963e5dd762dc5c7bb1cb5664e53a3002225"
+  integrity sha512-mxIojEAQcuEvT/lyXq+jf/3cO/KoA6z4CeNDGGevTybECPOMFCnQy3OPahluUkbqgPNGw5Bi78UC7Po6Lhy+NA==
+  dependencies:
+    readdirp "^4.0.1"
 
 chownr@^1.1.1:
   version "1.1.4"
@@ -2869,9 +2876,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.5.4:
-  version "1.5.23"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.23.tgz#6dabd8f7fec5cbf618b732ff4c42950dcc7a3be5"
-  integrity sha512-mBhODedOXg4v5QWwl21DjM5amzjmI1zw9EPrPK/5Wx7C8jt33bpZNrC7OhHUG3pxRtbLpr3W2dXT+Ph1SsfRZA==
+  version "1.5.25"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.25.tgz#492ade1cde401332b9b75aa0c55fd5e1550ca66c"
+  integrity sha512-kMb204zvK3PsSlgvvwzI3wBIcAw15tRkYk+NQdsjdDtcQWTp2RABbMQ9rUBy8KNEOM+/E6ep+XC3AykiWZld4g==
 
 elliptic@^6.5.3, elliptic@^6.5.5:
   version "6.5.7"
@@ -4440,7 +4447,7 @@ loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
-loader-utils@^2.0.0:
+loader-utils@^2.0.0, loader-utils@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-2.0.4.tgz#8b5cb38b5c34a9a018ee1fc0e6a066d1dfcc528c"
   integrity sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw==
@@ -6192,6 +6199,11 @@ readdirp@^2.2.1:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
+readdirp@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-4.0.1.tgz#b2fe35f8dca63183cd3b86883ecc8f720ea96ae6"
+  integrity sha512-GkMg9uOTpIWWKbSsgwb5fA4EavTR+SG/PMPoAY8hkhHfEEY0/vqljY+XHqtDf2cr2IJtoNRDbrrEpZUiZCkYRw==
+
 readdirp@~3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.6.0.tgz#74a370bd857116e245b29cc97340cd431a02a6c7"
@@ -6436,11 +6448,11 @@ sass-loader@10.1.1:
     semver "^7.3.2"
 
 sass@^1.38.0:
-  version "1.78.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.78.0.tgz#cef369b2f9dc21ea1d2cf22c979f52365da60841"
-  integrity sha512-AaIqGSrjo5lA2Yg7RvFZrlXDBCp3nV4XP73GrLGvdRWWwk+8H3l0SDvq/5bA4eF+0RFPLuWUk3E+P1U/YqnpsQ==
+  version "1.79.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.79.2.tgz#e0ee2877eaadaf17b4086fd15783e625bb77447e"
+  integrity sha512-YmT1aoF1MwHsZEu/eXhbAJNsPGAhNP4UixW9ckEwWCvPcVdVF0/C104OGDVEqtoctKq0N+wM20O/rj+sSPsWeg==
   dependencies:
-    chokidar ">=3.0.0 <4.0.0"
+    chokidar "^4.0.0"
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
@@ -7094,9 +7106,9 @@ terser@^4.1.2:
     source-map-support "~0.5.12"
 
 terser@^5.3.4:
-  version "5.32.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.32.0.tgz#ee811c0d2d6b741c1cc34a2bc5bcbfc1b5b1f96c"
-  integrity sha512-v3Gtw3IzpBJ0ugkxEX8U0W6+TnPKRRCWGh1jC/iM/e3Ki5+qvO1L1EAZ56bZasc64aXHwRHNIQEzm6//i5cemQ==
+  version "5.33.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.33.0.tgz#8f9149538c7468ffcb1246cfec603c16720d2db1"
+  integrity sha512-JuPVaB7s1gdFKPKTelwUyRq5Sid2A3Gko2S0PncwdBq7kN9Ti9HPWDQ06MPsEDGsZeVESjKEnyGy68quBk1w6g==
   dependencies:
     "@jridgewell/source-map" "^0.3.3"
     acorn "^8.8.2"
