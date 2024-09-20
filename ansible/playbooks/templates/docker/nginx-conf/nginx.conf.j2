@@ -32,6 +32,11 @@ http {
 
     keepalive_timeout  65;
 
+    # Default is 60s which can be exceeded sometimes, either for a very large
+    # TiddlyWiki, or the server is slow for some other reason. Bump it up to
+    # reduce the likelihood 504 gateway timeout page.
+    proxy_read_timeout 180s;
+
     #gzip  on;
 
     #-------------------------------------------------
