@@ -292,11 +292,8 @@
 
   - name: Pull latest images
     # So docker compose doesn't try to build
-    community.docker.docker_compose:
+    community.docker.docker_compose_v2_pull:
       project_src: "{{ home_dir }}"
-      pull: true
-      # Will be restarted later
-      recreate: never
     tags:
     - app
     - fast-upgrade
