@@ -17,8 +17,7 @@ Unlike the original Tiddlyspot, Tiddlyhost features:
 * Open source code
 
 For more information please see
-[FAQ](https://github.com/simonbaird/tiddlyhost/wiki/FAQ).
-
+[FAQ](https://github.com/tiddlyhost/tiddlyhost-com/wiki/FAQ).
 
 Current Status
 --------------
@@ -26,8 +25,7 @@ Current Status
 Tiddlyhost is in active development.
 
 For status updates see the
-[Journal](https://github.com/simonbaird/tiddlyhost/wiki/Journal).
-
+[Journal](https://github.com/tiddlyhost/tiddlyhost-com/wiki/Journal).
 
 Getting Started (for developers)
 --------------------------------
@@ -42,8 +40,8 @@ You need to have docker and docker compose
 
 Check out the code:
 
-    git clone git@github.com:simonbaird/tiddlyhost.git
-    cd tiddlyhost
+    git clone git@github.com:tiddlyhost/tiddlyhost-com.git
+    cd tiddlyhost-com
 
 ### Build the development container and set up rails
 
@@ -129,7 +127,6 @@ Makefile for details.
 
 Run `make` by itself to see a full list of make commands. Read the Makefile to
 learn more about what they do.
-
 
 License
 -------

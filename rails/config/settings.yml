@@ -2,11 +2,11 @@
 # May be overridden by values in settings_local.yml
 
 defaults:
-  github_url: https://github.com/simonbaird/tiddlyhost
-  issues_url: https://github.com/simonbaird/tiddlyhost/issues
-  docs_url: https://github.com/simonbaird/tiddlyhost/wiki
-  faq_url: https://github.com/simonbaird/tiddlyhost/wiki/FAQ
-  create_issue_url: https://github.com/simonbaird/tiddlyhost/issues/new
+  github_url: https://github.com/tiddlyhost/tiddlyhost-com
+  issues_url: https://github.com/tiddlyhost/tiddlyhost-com/issues
+  docs_url: https://github.com/tiddlyhost/tiddlyhost-com/wiki
+  faq_url: https://github.com/tiddlyhost/tiddlyhost-com/wiki/FAQ
+  create_issue_url: https://github.com/tiddlyhost/tiddlyhost-com/issues/new
   prod_main_site_url: https://tiddlyhost.com
   tiddlyhost_account_email: tiddlyhost@gmail.com
   devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
@@ -28,7 +28,7 @@ defaults:
   #  :html: |
   #    Beware, Tiddlyhost is in the early stages of development and may be
   #    unstable. If you experience problems or have a feature suggestion, please create an
-  #    issue in <a href="https://github.com/simonbaird/tiddlyhost/issues">GitHub</a>.
+  #    issue in <a href="https://github.com/tiddlyhost/tiddlyhost-com/issues">GitHub</a>.
 
   plan_descriptions:
     :free:

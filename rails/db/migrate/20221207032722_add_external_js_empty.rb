@@ -4,7 +4,7 @@ class AddExternalJsEmpty < ActiveRecord::Migration[6.1]
       tw5x:
         title: TiddlyWiki External Core (Experimental)
         description: TiddlyWiki with the core javascript split into a separate file
-        info_link: https://github.com/simonbaird/tiddlyhost/issues/171
+        info_link: https://github.com/tiddlyhost/tiddlyhost-com/issues/171
         tooltip: >-
           Use with caution. With the core javascript in a separate, cacheable
           file the main file is smaller which makes loading and saving faster.

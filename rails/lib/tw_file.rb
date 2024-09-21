@@ -168,7 +168,7 @@ class TwFile
     if json_store?
       # Assume we're using TW 5.2 and later
       # Note that we don't support shadow tidders for the json store,
-      # see https://github.com/simonbaird/tiddlyhost/issues/341
+      # see https://github.com/tiddlyhost/tiddlyhost-com/issues/341
       append_json_store(tiddlers)
 
     else
