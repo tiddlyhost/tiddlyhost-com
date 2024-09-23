@@ -1,0 +1,22 @@
+
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+    local_logs_dir: "../../../logs"
+
+  tasks:
+  - name: Extract logs
+    shell: |
+      docker compose logs {{ item }} > {{ home_dir }}/{{ item }}.log
+    with_items:
+    - web
+
+  - name: Download logs
+    fetch:
+      src: "{{ home_dir }}/{{ item }}.log"
+      dest: "{{ local_logs_dir }}/{{ item }}.log"
+      flat: yes
+    with_items:
+    - web

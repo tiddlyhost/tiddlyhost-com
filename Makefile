@@ -456,6 +456,7 @@ PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.ym
 DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit prod
 RESTART=$(PLAY) ansible/playbooks/restart.yml --limit prod
 BACKUP=$(PLAY) ansible/playbooks/backup.yml --limit prod
+FETCH_LOGS=$(PLAY) ansible/playbooks/fetch-logs.yml --limit prod
 
 LOCAL_DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit localhost --ask-become-pass --connection local
 
@@ -519,6 +520,9 @@ db-backup:
 	zcat $(DB_BACKUPS)/$(TIMESTAMP)/dbdump.gz | grep '^-- ' | head -3
 	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)
 	du -h -s $(DB_BACKUPS)
+
+fetch-logs:
+	$(FETCH_LOGS)
 
 s3-bucket-name: require-var-BUCKET_NAME
 
