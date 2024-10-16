@@ -193,6 +193,9 @@ haml-lint:
 rubocop:
 	$(DR) "bundle exec rubocop"
 
+brakeman:
+	$(DR) "bin/brakeman"
+
 # Example usage:
 #   ONLY=Layout/EmptyLinesAroundModuleBody,Layout/EmptyLinesAroundClassBody make rubycop-fix
 rubocop-fix:
