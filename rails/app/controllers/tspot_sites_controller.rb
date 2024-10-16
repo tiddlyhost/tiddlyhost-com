@@ -39,8 +39,8 @@ class TspotSitesController < ApplicationController
 
   # POST /tspot_sites/claim
   def claim
-    return redirect_to action: :claim_form \
-      unless (@site_name = params[:site_name].strip.presence)
+    @site_name = params[:site_name].strip.presence
+    return redirect_to action: :claim_form unless @site_name
 
     @site = TspotSite.find_and_populate(@site_name, request.ip)
 
