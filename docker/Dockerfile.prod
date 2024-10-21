@@ -6,7 +6,7 @@
 # See also docker/Dockerfile.base
 #
 # https://hub.docker.com/r/sbaird/tiddlyhost-base
-FROM docker.io/sbaird/tiddlyhost-base:latest@sha256:bf5567fb9a769698b0e667ce22b12ad051c379d8b6796a9a82528b75e39d7c47
+FROM docker.io/sbaird/tiddlyhost-base:latest@sha256:e16993d2eaf2bf0ee4dddeb9354e3b93c614adf2c033d6bd3a8026a2150ce3df
 
 ARG APP_USER=appuser
 ARG APP_PATH=/opt/app
