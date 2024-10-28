@@ -105,11 +105,13 @@ DC_PROD=docker compose -f docker-compose-prod.yml
 # Figure out if there's already a container running and use exec or run accordingly
 # Call it DCC for "Docker Compose Command"
 EXEC_OR_RUN=$(shell [[ $$($(DC) ps --services --filter status=running | grep app ) ]] && echo 'exec' || echo 'run --rm')
-DCC=-$(DC) $(EXEC_OR_RUN) app bash -c
+DCCF=$(DC) $(EXEC_OR_RUN) app bash -c
+DCC=-$(DCCF)
 
 # This is faster if you don't need the database or anything else
 # Let's call it DR for "Docker Run"
-DR=-$(DC) run --rm --no-deps app bash -c
+DRF=$(DC) run --rm --no-deps app bash -c
+DR=-$(DRF)
 
 join:
 	$(DCC) bash
@@ -188,10 +190,10 @@ deps-update: pull-ruby build-push-base bundle-update yarn-upgrade
 #----------------------------------------------------------
 
 haml-lint:
-	$(DCC) "bundle exec haml-lint"
+	$(DCCF) "bundle exec haml-lint"
 
 rubocop:
-	$(DR) "bundle exec rubocop"
+	$(DRF) "bundle exec rubocop"
 
 brakeman:
 	$(DR) "bin/brakeman"
