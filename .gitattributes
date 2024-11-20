@@ -1,0 +1,2 @@
+rails/bin/bundle eol=lf
+rails/bin/rails eol=lf
