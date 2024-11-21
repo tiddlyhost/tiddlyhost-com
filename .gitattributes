@@ -1,0 +1,3 @@
+rails/bin/* eol=lf
+docker/* eol=lf
+bin/* eol=lf
