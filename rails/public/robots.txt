@@ -4,5 +4,17 @@ Disallow: /hub/tag/
 Disallow: /hub/user/
 Disallow: /hub?k=
 Disallow: /hub?s=
+Disallow: /browse/tag/
+Disallow: /browse/user/
+Disallow: /browse?k=
+Disallow: /browse?s=
+Disallow: /explore/tag/
+Disallow: /explore/user/
+Disallow: /explore?k=
+Disallow: /explore?s=
+Disallow: /templates/tag/
+Disallow: /templates/user/
+Disallow: /templates?k=
+Disallow: /templates?s=
 # Treat us gently
 Crawl-delay: 20
