@@ -64,7 +64,8 @@ Rails.application.routes.draw do
     get 'admin/pool_stats'
 
     # These are variations on the same thing with a shared base class
-    %w[hub browse templates].each do |c|
+    # See also HubController#redirect_hub_urls
+    %w[hub browse explore templates].each do |c|
       get c, to: "#{c}#index"
       get "#{c}/tag/:tag", to: "#{c}#tag", constraints: { tag: /.+/ }
       get "#{c}/user/:username", to: "#{c}#user"

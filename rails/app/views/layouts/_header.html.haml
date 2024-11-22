@@ -20,7 +20,7 @@
         -# Links for logged in users
         %ul.navbar-nav.me-auto.mb-lg-0
           = nav_link_to "Home", root_path
-          = nav_link_to "Browse", '/browse'
+          = nav_link_to "Explore", '/explore'
           = nav_link_to "Templates", '/templates?t=1'
 
           - if user_is_admin?
@@ -55,7 +55,7 @@
         -# Links for not logged in users
         %ul.navbar-nav.me-auto
           = nav_link_to "Home", root_path
-          = nav_link_to "Browse", '/browse'
+          = nav_link_to "Explore", '/explore'
           = nav_link_to "Templates", '/templates?t=1'
           = nav_link_to "Sign up", new_user_registration_path
 

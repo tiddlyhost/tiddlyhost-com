@@ -1,4 +1,4 @@
-# This is a base class for TemplatesController and BrowseController
+# This is a base class for TemplatesController and ExploreController
 class HubController < ApplicationController
   PER_PAGE = 18
 
@@ -101,11 +101,11 @@ class HubController < ApplicationController
   # "templates only" or everything. Probably won't need this
   # when/if we stop using the ?t=1 url param and update some links
   #
-  HUB_URL_MATCH = %r{^/(?:hub|browse|templates)}
+  HUB_URL_MATCH = %r{^/(?:hub|browse|explore|templates)}
 
   def redirect_hub_urls
     full_path = request.fullpath
-    target_path = (@show_templates ? '/templates' : '/browse')
+    target_path = (@show_templates ? '/templates' : '/explore')
     redirect_to full_path.sub(HUB_URL_MATCH, target_path) unless full_path.start_with?(target_path)
   end
 end
