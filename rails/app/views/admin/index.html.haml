@@ -26,8 +26,8 @@
   = render 'stat_card', title: 'Never updated sites',   count: @never_updated_sites, total: @site_count
   = render 'stat_card', title: 'Private sites',         count: @private_count, total: @site_count
   = render 'stat_card', title: 'Public sites',          count: @public_count, total: @site_count
-  = render 'stat_card', title: 'Public non-hub sites',  count: @public_non_searchable_count, total: @site_count
-  = render 'stat_card', title: 'Hub sites',             count: @searchable_count, total: @site_count
+  = render 'stat_card', title: 'Public non-searchable sites', count: @public_non_searchable_count, total: @site_count
+  = render 'stat_card', title: 'Public searchable sites',     count: @searchable_count, total: @site_count
 
   - if Settings.tiddlyspot_enabled?
     %br
