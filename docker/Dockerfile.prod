@@ -26,7 +26,7 @@ RUN bundle install
 
 # Install node modules
 COPY --chown=$APP_USER:$APP_USER rails/package.json rails/yarn.lock ./
-RUN ln -s ../node_modules && yarn install --production
+RUN yarn install --production
 
 # Install the rails app, including some static files placed under rails/public,
 # excluding what's listed in .dockerignore

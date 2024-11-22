@@ -1,6 +1,7 @@
 # These volume mounts used when running containers can be ignored when building
-# (Todo maybe: put them in their own directory so we can use a wildcard here)
+# (Todo maybe: use a wildcard here)
 docker/bundle
+docker/node_modules
 docker/config
 docker/dotcache
 docker/letsencrypt
@@ -10,7 +11,6 @@ docker/postgresql-data
 docker/secrets
 
 # Rails stuff that should not be copied into the prod container
-rails/node_modules/*
 rails/tmp/*
 rails/log/*
 rails/storage/*
