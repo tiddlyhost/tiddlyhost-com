@@ -8,7 +8,9 @@
       = bi_icon('exclamation-circle', fill: 'orange', style: 'margin-right: -1px;')
       Note: A redirect is in effect for this site. See details in <i>Advanced settings</i> below.
 
-  - %w[ public private hub_listed ].each do |choice|
+  - { 'private' => 'Private',
+    'public' => 'Public',
+    'hub_listed' => 'Public & searchable' }.each do |choice, choice_title|
     - is_selected = @site.send("access_#{choice}?")
 
     %div{ class: ('selected' if is_selected) }
@@ -17,7 +19,7 @@
 
         .title
           = access_icon(choice, style: "margin-right: 0;")
-          = choice.humanize
+          = choice_title
 
         - case choice when "public"
           = render 'popover_help',
@@ -37,10 +39,10 @@
         - when "hub_listed"
           = render 'popover_help',
             html_content: text_join("Best for showcasing interesting, well maintained sites for people to discover.",
-            "Note that the name, description and tags will be searchable in the Tiddlyhost Hub.")
+            "Note that the name, description and tags will be searchable on the Explore page.")
           .description
-            Your site will be accessible on the internet and also be listed and searchable in the
-            = link_to('Tiddlyhost Hub', '/hub', target: "_blank")
+            Your site will be accessible on the internet and also be listed and searchable on the
+            = link_to('Explore page', '/explore', target: "_blank")
 
   -#
     "_access_choice" is not a real attribute of the site record but these

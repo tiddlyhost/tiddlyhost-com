@@ -39,12 +39,12 @@
     = render layout: 'field_wrapper' do
       = f.label :description
       = f.text_area :description, class: 'form-control'
-      .form-text Optional. A short description of the site, visible in Tiddlyhost Hub for hub listed sites.
+      .form-text Optional. A short description of the site, visible on the Explore page for searchable sites.
 
     = render layout: 'field_wrapper' do
       = f.label :tag_list, 'Tags'
       = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
-      .form-text Optional. A comma delimited list of tags, visible in Tiddlyhost Hub for hub listed sites.
+      .form-text Optional. A comma delimited list of tags, visible on the Explore page for searchable sites.
 
     = render layout: 'advanced_wrapper' do
       = render 'public_clone', f:

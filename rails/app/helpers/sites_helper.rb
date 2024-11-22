@@ -33,9 +33,16 @@ module SitesHelper
     elsif site.access_private?
       'private'
     end
+
+    # We don't call it "Hub listed" any more
+    access_title = if access_type == 'hub_listed'
+      'Searchable'
+    else
+      access_type.humanize
+    end
     # rubocop: enable Layout/IndentationWidth
 
-    access_icon(access_type) + access_type.humanize
+    access_icon(access_type) + access_title
   end
 
   # Used when displaying save history to show if two saved versions

@@ -25,7 +25,7 @@ class SitesController < ApplicationController
   FILTER_PARAMS = {
     # Fixme maybe: These filters could probably be moved into the db query
     access: {
-      hub: { filter: ->(s) { s.select(&:hub_listed?) }, title: 'hub listed' },
+      hub: { filter: ->(s) { s.select(&:hub_listed?) }, title: 'searchable' },
       public: { filter: ->(s) { s.select(&:is_public?).reject(&:hub_listed?) } },
       private: { filter: ->(s) { s.select(&:is_private?) } },
     },
