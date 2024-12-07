@@ -132,7 +132,14 @@ h1 {
             padding-top: 0.2em!important;
             padding-bottom: 0.2em!important;
             color: var(--bs-link-color-rgb);
-            border-radius: 0.5rem;
+            border-radius: 0.25rem;
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+            background-color: var(--bs-gray-200);
+
+            &:hover {
+                  background-color: var(--bs-gray-400);
+                  border-color: var(--bs-gray-500) !important;
+            }
           }
         }
 
@@ -232,18 +239,20 @@ h1 {
             }
             .clone-download-buttons {
               .btn {
-                background-color: var(--bs-gray-700);
-                border-color: var(--bs-gray-800) !important;
+                background-color: var(--bs-gray-600);
+                border-color: var(--bs-gray-900) !important;
+                background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
 
                 &:hover {
-                  background-color: var(--bs-gray-600);
-                  border-color: var(--bs-gray-700) !important;
+                  background-color: var(--bs-gray-500);
+                  border-color: var(--bs-gray-900) !important;
                 }
               }
             }
             .mini-clone-download-buttons {
               .btn {
-                background-color: transparent;
+                background-color: transparent !important;
+                background-image: none !important;
                 svg.bi {
                   fill: #222;
                 }
