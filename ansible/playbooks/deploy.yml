@@ -4,11 +4,11 @@
   become_user: root
 
   vars:
-    certbot_dns_credentials: ../../etc/certbot-dns-user-credentials.yml
-    docker_config_json: ../../etc/docker-conf/config.json
-    docker_compose_file: ../../docker-compose-prod.yml
-    master_key_file: ../../rails/config/master.key
-    credentials_file: ../../rails/config/credentials.yml.enc
+    certbot_dns_credentials: "{{ local_root }}/etc/certbot-dns-user-credentials.yml"
+    docker_config_json: "{{ local_root }}/etc/docker-conf/config.json"
+    docker_compose_file: "{{ local_root }}/docker-compose-prod.yml"
+    master_key_file: "{{ local_root }}/rails/config/master.key"
+    credentials_file: "{{ local_root }}/rails/config/credentials.yml.enc"
 
     certbot_dir_config: "{{ docker_dir }}/letsencrypt"
     certbot_dir_work: "{{ home_dir }}/.certbot/work"
@@ -197,7 +197,7 @@
   - name: Copy cache info scripts
     become: false
     ansible.builtin.copy:
-      src: "../../bin/{{ item }}"
+      src: "{{ local_root }}/bin/{{ item }}"
       dest: "{{ bin_dir }}/{{ item }}"
       mode: "0755"
     with_items:
@@ -340,7 +340,7 @@
   - name: Copy nginx html files
     become: false
     ansible.builtin.copy:
-      src: ../../docker/nginx-html/{{ item }}
+      src: "{{ local_root }}/docker/nginx-html/{{ item }}"
       dest: "{{ nginx_html_dir }}/{{ item }}"
       mode: "0644"
     with_items:

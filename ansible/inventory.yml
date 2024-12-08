@@ -17,6 +17,8 @@ all:
     localhost: {}
 
   vars:
+    local_root: ../..
+
     root_home_dir: /root
     home_dir: /home/{{ ansible_user }}
 
