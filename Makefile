@@ -526,9 +526,6 @@ db-backup:
 	du -h -s $(DB_BACKUPS)/$(TIMESTAMP)
 	du -h -s $(DB_BACKUPS)
 
-fetch-logs:
-	$(FETCH_LOGS)
-
 s3-bucket-name: require-var-BUCKET_NAME
 
 # Assume you have suitable s3 credentials available
@@ -573,6 +570,19 @@ s3-extract:
 
 full-backup: db-backup s3-backup
 full-backup-and-snapshot: db-backup s3-snapshot-and-prune
+
+#----------------------------------------------------------
+
+fetch-logs:
+	$(FETCH_LOGS)
+
+extract-save-times:
+	hack/nginx-log-parser.rb csv < ../logs/web.log > ../logs/save-times-$(TIMESTAMP).csv
+
+dedupe-save-times:
+	cat ../logs/save-times-*.csv | sort | uniq | tee ../logs/save-times.csv
+
+fresh-save-times: fetch-logs extract-save-times dedupe-save-times
 
 #----------------------------------------------------------
 

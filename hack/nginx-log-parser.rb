@@ -1,5 +1,9 @@
 #!/usr/bin/ruby
 
+require 'json'
+require 'csv'
+
+# Regex to split out each field in an nginx log line
 log_regex = /
   ^                                     # Start of line
   (?<prefix>\S+)\s+\|                   # Docker image log prefix
@@ -24,13 +28,16 @@ log_regex = /
   $                                     # End of line
 /x
 
-
-def is_site_save?
-  (@request_method == "PUT" || @request_method == "POST") && @request_uri == "/" && @host =~ /[a-z-]+\.tiddlyhost\.com/
+# Determine if a particular log line is for a site save
+def is_site_save?(captures)
+  (captures["request_method"] =~ /PUT|POST/) &&
+    captures["request_uri"] == "/" &&
+    captures["host"] =~ /[a-z-]+\.tiddlyhost\.com/
 end
 
-def os
-  case @http_user_agent
+# Determine the OS based on the request user agent
+def derive_os(user_agent)
+  case user_agent
   when /\(Windows/
     "Windows"
   when /\(Linux/, /\(X11/
@@ -46,29 +53,35 @@ def os
   when /^curl/
     "curl"
   else
-    "Other: #{@http_user_agent}"
+    "Other: #{user_agent}"
   end
 end
 
-output = []
-ARGF.each do |line|
-  match = log_regex.match(line)
-  if match
+site_save_lines = []
+STDIN.read.lines.each do |raw|
+  # Parse the log line using the regex above
+  captures = log_regex.match(raw)&.named_captures || {}
 
-    match.names.each do |n|
-      #puts "@#{n} = #{match[n]}"
-      instance_variable_set("@#{n}", match[n])
-    end
+  # Add an extra attribute for the os
+  captures["os"] = derive_os(captures["http_user_agent"])
 
-    #puts @request_method
-    if is_site_save?
-      output << {request_time: @request_time, os: os}
-    end
-  end
+  # Keep only if it's a save request
+  site_save_lines << { raw:, captures: } if is_site_save?(captures)
 end
 
-sorted = output.sort_by{|line| [line[:os], line[:request_time].to_f]}
+# Decide what to output
+output = case ARGV[0]
+when "csv"
+  ->(line) { %w( time_local host os request_time ).map{ |attr| line[:captures][attr] }.to_csv }
 
-sorted.each do |line|
-  puts [line[:os],line[:request_time]].join(",")
+when "allvalues"
+  ->(line) { line[:captures].to_json }
+
+else
+  ->(line) { line[:raw] }
+end
+
+# Output
+site_save_lines.each do |line|
+  puts output[line]
 end
