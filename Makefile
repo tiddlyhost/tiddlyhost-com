@@ -573,16 +573,23 @@ full-backup-and-snapshot: db-backup s3-snapshot-and-prune
 
 #----------------------------------------------------------
 
+LOGS_DIR=../logs
+
 fetch-logs:
 	$(FETCH_LOGS)
+	mv $(LOGS_DIR)/web.log $(LOGS_DIR)/web-$(TIMESTAMP).log
 
 extract-save-times:
-	hack/nginx-log-parser.rb csv < ../logs/web.log > ../logs/save-times-$(TIMESTAMP).csv
+	cat $(LOGS_DIR)/web-*.log | hack/nginx-log-parser.rb csv > $(LOGS_DIR)/save-times-$(TIMESTAMP).csv
 
-dedupe-save-times:
-	cat ../logs/save-times-*.csv | sort | uniq | tee ../logs/save-times.csv
+# Todo maybe: Deduping and keeping the raw log data would be better
+collect-and-dedupe-save-times:
+	cat $(LOGS_DIR)/save-times*.csv | sort | uniq > $(LOGS_DIR)/save-times.csv
 
-fresh-save-times: fetch-logs extract-save-times dedupe-save-times
+save-time-stats:
+	@hack/save-time-stats.rb < $(LOGS_DIR)/save-times.csv
+
+fresh-save-times: fetch-logs extract-save-times collect-and-dedupe-save-times save-time-stats
 
 #----------------------------------------------------------
 

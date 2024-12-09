@@ -3,8 +3,21 @@
 require 'json'
 require 'csv'
 
+# Regex to parse the nginx time_local string
+TIME_LOCAL_REGEX = /
+  ^
+  (?<dd>\d{2})
+  \/
+  (?<mmm>\S{3})
+  \/
+  (?<yyyy>\d{4})
+  :
+  (?<etc>.*)
+  $
+/x
+
 # Regex to split out each field in an nginx log line
-log_regex = /
+LOG_REGEX = /
   ^                                     # Start of line
   (?<prefix>\S+)\s+\|                   # Docker image log prefix
   \s+(?<remote_addr>\S+)                # Remote address
@@ -53,26 +66,42 @@ def derive_os(user_agent)
   when /^curl/
     "curl"
   else
-    "Other: #{user_agent}"
+    #"Other: #{user_agent}"
+    "Other"
   end
+end
+
+def derive_sortable_timestamp(time_local)
+  captures = TIME_LOCAL_REGEX.match(time_local)
+  # Aim for ISO 8601 format
+  sprintf("%4s-%2d-%2sT%s",
+    captures['yyyy'],
+    Date::ABBR_MONTHNAMES.index(captures['mmm']),
+    captures['dd'],
+    captures['etc'].sub(' +0000', 'Z'))
 end
 
 site_save_lines = []
 STDIN.read.lines.each do |raw|
   # Parse the log line using the regex above
-  captures = log_regex.match(raw)&.named_captures || {}
+  captures = LOG_REGEX.match(raw)&.named_captures
+
+  # Skip anything that is not a site save
+  next unless captures && is_site_save?(captures)
 
   # Add an extra attribute for the os
   captures["os"] = derive_os(captures["http_user_agent"])
 
-  # Keep only if it's a save request
-  site_save_lines << { raw:, captures: } if is_site_save?(captures)
+  # Fix weird date format
+  captures["timestamp"] = derive_sortable_timestamp(captures["time_local"])
+
+  site_save_lines << { raw:, captures: }
 end
 
 # Decide what to output
 output = case ARGV[0]
 when "csv"
-  ->(line) { %w( time_local host os request_time ).map{ |attr| line[:captures][attr] }.to_csv }
+  ->(line) { %w( timestamp host os request_time ).map{ |attr| line[:captures][attr] }.to_csv }
 
 when "allvalues"
   ->(line) { line[:captures].to_json }
