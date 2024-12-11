@@ -195,7 +195,7 @@ class SitesController < ApplicationController
       require(:site).
       permit(
         :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
-        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone,
+        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone, :skip_etag_check,
         :empty_id).
       merge(user_id: current_user.id)
   end
@@ -205,7 +205,7 @@ class SitesController < ApplicationController
       require(:site).
       permit(
         :name, :description, :is_private, :is_searchable, :tag_list, :allow_in_iframe,
-        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone)
+        :prefer_put_saver, :prefer_upload_saver, :allow_public_clone, :skip_etag_check)
   end
 
   # Sets @site_to_clone which will be nil if there's no clone param or if the

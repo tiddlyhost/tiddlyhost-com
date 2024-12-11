@@ -153,6 +153,7 @@ class Site < ApplicationRecord
     return true if is_tw5? && use_put_saver? != default_to_put_saver?
     return true if allow_public_clone?
     return true if allow_in_iframe?
+    return true if skip_etag_check?
 
     false
   end

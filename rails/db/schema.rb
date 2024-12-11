@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_20_143120) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_11_163231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -183,6 +183,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_143120) do
     t.boolean "allow_public_clone", default: false
     t.integer "clone_count", default: 0
     t.string "storage_service"
+    t.boolean "skip_etag_check", default: false
     t.index ["cloned_from_id"], name: "index_sites_on_cloned_from_id"
     t.index ["empty_id"], name: "index_sites_on_empty_id"
     t.index ["name"], name: "index_sites_on_name", unique: true

@@ -269,6 +269,20 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       response.body.squish)
   end
 
+  test 'put save will overwrite if skip_etag_check option is set' do
+    assert @site.use_put_saver?
+    new_content = @site.th_file.
+      write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
+
+    @site.update(skip_etag_check: true)
+
+    put_save_site_as_user(user: @site.user, site: @site, content: new_content,
+      headers: { 'If-Match' => 'someotheretag' }, expected_status: 204)
+
+    assert_equal '', response.body
+    assert_equal 'Hi', @site.th_file.tiddler_content('NewTiddler')
+  end
+
   test 'put save requires auth' do
     assert @site.use_put_saver?
     new_content = @site.th_file.

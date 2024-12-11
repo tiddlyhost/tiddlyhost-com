@@ -1,0 +1,11 @@
+= render layout: 'field_wrapper' do
+  .form-check.enable-tooltips
+    = f.check_box :skip_etag_check, class: 'form-check-input'
+    = f.label :skip_etag_check, class: 'form-check-label' do
+      Ignore "file changed on server" check when saving
+
+      = render 'popover_help',
+        html_content: 'Check this box if you think the "file changed on |
+          server" error is incorrectly preventing you from saving. |
+          It is recommended to use this option temporarily when |
+          needed, rather than leave it permanently set.' |

@@ -211,6 +211,8 @@ class TiddlywikiController < ApplicationController
   end
 
   def site_save_would_overwrite?
+    return false if @site.skip_etag_check?
+
     expected_etag = request.headers['If-Match']
     expected_etag.present? && expected_etag != @site.tw_etag
   end
