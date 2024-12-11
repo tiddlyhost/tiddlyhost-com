@@ -15,6 +15,9 @@ sandbox:
 console:
 	$(DCC) 'bin/rails console'
 
+soft-restart:
+	$(DCC) 'touch tmp/restart.txt'
+
 webshell:
 	$(DC) exec web bash
 
