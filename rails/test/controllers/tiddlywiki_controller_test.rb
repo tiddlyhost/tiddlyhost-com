@@ -263,10 +263,9 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
       write_tiddlers({ 'NewTiddler' => 'Hi' }).to_html
     put_save_site_as_user(user: @site.user, site: @site, content: new_content,
       headers: { 'If-Match' => 'someotheretag' }, expected_status: 412)
-    assert_equal(
-      %(The site has been updated since you first loaded it. Saving now would cause those
-      updates to be overwritten. Try reloading and then reapplying your changes.).squish,
-      response.body.squish)
+    assert_match(
+      /^It appears that the site has been updated since you first loaded it/,
+      response.body)
   end
 
   test 'put save will overwrite if skip_etag_check option is set' do

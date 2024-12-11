@@ -131,9 +131,13 @@ class TiddlywikiController < ApplicationController
           # - Some kind of "force overwrite" option if they decide the other
           #   changes are less important
           #
-          err_message = 'The site has been updated since you first loaded it. ' \
-            "Saving now would cause those updates to be overwritten.\n\n" \
-            'Try reloading and then reapplying your changes.'
+          err_message = 'It appears that the site has been updated since you first ' \
+            'loaded it. Saving now would cause those updates to be overwritten.' \
+            "\n\n" \
+            'Try doing a shift+reload to ensure you have the latest changes, then ' \
+            "reapply your edits. (If that doesn't work for some reason, there is an " \
+            'option you can set in the Tiddlyhost advanced site settings to ignore ' \
+            'this error and save anyway.)'
           render status: 412, plain: err_message
 
         else
