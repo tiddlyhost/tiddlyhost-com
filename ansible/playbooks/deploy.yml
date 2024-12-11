@@ -462,6 +462,16 @@
     - fast-upgrade
     - migration
 
+  - name: Post-migration rails restart
+    community.docker.docker_container_exec:
+      container: th_app
+      command: touch tmp/restart.txt
+    when: db_migrate.changed
+    tags:
+    - app
+    - fast-upgrade
+    - migration
+
   - name: Show database migration output
     ansible.builtin.debug:
       var: db_migrate.stdout
