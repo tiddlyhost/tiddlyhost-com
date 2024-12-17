@@ -614,13 +614,13 @@ JS_MATH_FONTS_ZIP=jsMath-fonts-1.3.zip
 JS_MATH_ZIP_PATH=$(TOP_DIR)/etc/$(JS_MATH_ZIP)
 JS_MATH_FONTS_ZIP_PATH=$(TOP_DIR)/etc/$(JS_MATH_FONTS_ZIP)
 
-JS_MATH_DOWNLOADS=https://sourceforge.net/projects/jsmath/files
+JS_MATH_DOWNLOADS=https://master.dl.sourceforge.net/project/jsmath
 
 $(JS_MATH_ZIP_PATH):
-	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP)/download -o $@
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP) -o $@
 
 $(JS_MATH_FONTS_ZIP_PATH):
-	curl -sL $(JS_MATH_DOWNLOADS)/jsMath%20Image%20Fonts/1.3/$(JS_MATH_FONTS_ZIP)/download -o $@
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath%20Image%20Fonts/1.3/$(JS_MATH_FONTS_ZIP) -o $@
 
 rails/public/jsMath/jsMath.js: $(JS_MATH_ZIP_PATH) $(JS_MATH_FONTS_ZIP_PATH)
 	cd rails/public && unzip -q $(JS_MATH_ZIP_PATH)
