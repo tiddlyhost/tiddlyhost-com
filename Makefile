@@ -445,10 +445,10 @@ fast-build-prod: build-info
 	$(DC_PROD) $(PROGRESS_OPT) build app
 
 push-base:
-	$(D) --config etc/docker-conf push sbaird/tiddlyhost-base
+	$(D) --config etc/credentials/docker push sbaird/tiddlyhost-base
 
 push-prod:
-	$(D) --config etc/docker-conf push sbaird/tiddlyhost
+	$(D) --config etc/credentials/docker push sbaird/tiddlyhost
 
 # Fixme: There are too many options here...
 build-push:            delint tests build-prod push-prod

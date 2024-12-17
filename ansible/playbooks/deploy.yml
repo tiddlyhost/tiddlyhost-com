@@ -4,8 +4,8 @@
   become_user: root
 
   vars:
-    certbot_dns_credentials: "{{ local_root }}/etc/certbot-dns-user-credentials.yml"
-    docker_config_json: "{{ local_root }}/etc/docker-conf/config.json"
+    certbot_dns_credentials: "{{ local_root }}/etc/credentials/aws/certbot-dns-user.yml"
+    docker_config_json: "{{ local_root }}/etc/credentials/docker/config-pull.json"
     docker_compose_file: "{{ local_root }}/docker-compose-prod.yml"
     master_key_file: "{{ local_root }}/rails/config/master.key"
     credentials_file: "{{ local_root }}/rails/config/credentials.yml.enc"
