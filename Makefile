@@ -611,17 +611,20 @@ prod-diff:
 JS_MATH_ZIP=jsMath-3.3g.zip
 JS_MATH_FONTS_ZIP=jsMath-fonts-1.3.zip
 
+JS_MATH_ZIP_PATH=$(TOP_DIR)/etc/$(JS_MATH_ZIP)
+JS_MATH_FONTS_ZIP_PATH=$(TOP_DIR)/etc/$(JS_MATH_FONTS_ZIP)
+
 JS_MATH_DOWNLOADS=https://sourceforge.net/projects/jsmath/files
 
-$(JS_MATH_ZIP):
-	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP)/download -o $(JS_MATH_ZIP)
+$(JS_MATH_ZIP_PATH):
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP)/download -o $@
 
-$(JS_MATH_FONTS_ZIP):
-	curl -sL $(JS_MATH_DOWNLOADS)/jsMath%20Image%20Fonts/1.3/$(JS_MATH_FONTS_ZIP)/download -o $(JS_MATH_FONTS_ZIP)
+$(JS_MATH_FONTS_ZIP_PATH):
+	curl -sL $(JS_MATH_DOWNLOADS)/jsMath%20Image%20Fonts/1.3/$(JS_MATH_FONTS_ZIP)/download -o $@
 
-rails/public/jsMath/jsMath.js: $(JS_MATH_ZIP) $(JS_MATH_FONTS_ZIP)
-	cd rails/public && unzip -q ../../$(JS_MATH_ZIP)
-	cd rails/public/jsMath && unzip -q ../../../$(JS_MATH_FONTS_ZIP)
+rails/public/jsMath/jsMath.js: $(JS_MATH_ZIP_PATH) $(JS_MATH_FONTS_ZIP_PATH)
+	cd rails/public && unzip -q $(JS_MATH_ZIP_PATH)
+	cd rails/public/jsMath && unzip -q $(JS_MATH_FONTS_ZIP_PATH)
 	@touch rails/public/jsMath/jsMath.js # so make doesn't think it's stale
 
 js-math: rails/public/jsMath/jsMath.js
@@ -630,7 +633,7 @@ js-math-clean:
 	rm -rf rails/public/jsMath
 
 js-math-purge: js-math-clean
-	rm -f $(JS_MATH_ZIP) $(JS_MATH_FONTS_ZIP)
+	rm -f $(JS_MATH_ZIP_PATH) $(JS_MATH_FONTS_ZIP_PATH)
 
 #----------------------------------------------------------
 

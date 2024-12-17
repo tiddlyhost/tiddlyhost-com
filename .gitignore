@@ -29,4 +29,3 @@ docker/bundle
 docker/node_modules
 docker/dotcache
 etc/
-jsMath*.zip
