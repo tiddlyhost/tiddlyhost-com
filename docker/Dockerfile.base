@@ -79,13 +79,13 @@ RUN \
   gem update --system --silent --no-document
 
 # Install scripts to start rails and delayed job
-COPY --chown=$APP_USER:$APP_USER ./docker/start-rails.sh ./docker/start-delayed-job.sh /bin/
+COPY --chown=$APP_USER:$APP_USER docker/start-rails.sh docker/start-delayed-job.sh /bin/
 
 WORKDIR $APP_PATH
 USER $APP_USER
 
 # Install some helpful bash aliases for use inside the container
-COPY ./docker/.bash_aliases ./docker/.irbrc /home/$APP_USER/
+COPY docker/.bash_aliases docker/.irbrc /home/$APP_USER/
 
 # Writes to /home/$APP_USER/.bundle/config
 RUN bundle config set --global path $_BUNDLE_PATH
