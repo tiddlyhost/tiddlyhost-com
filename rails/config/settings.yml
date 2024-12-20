@@ -21,7 +21,7 @@ defaults:
   th_log_file: <%= is_in_container ? "/var/log/app/app.log" : "#{rails_root}/log/app.log" %>
   thumbs_storage_service: local
 
-  major_version: "1.5"
+  major_version: "1.6"
 
   #banner_message:
   #  :icon: exclamation-triangle
