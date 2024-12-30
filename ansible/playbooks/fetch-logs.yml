@@ -14,6 +14,7 @@
       docker compose logs {{ item }} > {{ logs_dir }}/{{ item }}.log
     with_items:
     - web
+    - app
 
   - name: Download logs
     fetch:
@@ -22,3 +23,4 @@
       flat: yes
     with_items:
     - web
+    - app
