@@ -394,7 +394,7 @@ classic-update: ver-set download-empty-classic
 	git add \
 	  $(EMPTIES_DIR)/classic.html \
 	  $(EMPTIES_DIR)/classic/$(VER).html
-	git commit -m 'chore: Upgrade TiddlyWiki Classic empties to $(VER)' \
+	git commit -m 'chore: Upgrade TiddlyWiki Classic empty to $(VER)' \
 	  -m 'Commit created with `VER=$(VER) make classic-update`'
 
 #----------------------------------------------------------
