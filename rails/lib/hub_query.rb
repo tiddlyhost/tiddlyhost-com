@@ -127,6 +127,10 @@ module HubQuery
       taggable_type: 'TspotSite'
     ))
 
+    # Not sure why, but now and again we get one of these without
+    # an associated tag
+    tagging = tagging.reject { |t| t.tag.nil? }
+
     # Do our own counts because the built in taggings_count value
     # is for all sites, not just sites visible in the hub
     tagging.
