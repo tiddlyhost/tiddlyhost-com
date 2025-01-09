@@ -653,6 +653,22 @@ stripe-dev-listen:
 
 #----------------------------------------------------------
 
+# I usually work in devel branch locally and update main now
+# and again. (This doesn't really belong here, but nevermind.)
+
+git-push:
+	git push origin devel:devel
+
+# Try not to do this often
+git-push-hard:
+	git push -f origin devel:devel
+
+# Expecting this to be a fast forward
+update-main: git-push
+	git push origin devel:main
+
+#----------------------------------------------------------
+
 /tmp/Simon\ Baird.png:
 	@curl -s -o '$@' \
 	  https://www.gravatar.com/avatar/bfaba91f41f0c01aba1ef0751458b537
