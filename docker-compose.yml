@@ -48,7 +48,7 @@ services:
     volumes:
     - ./rails:/opt/app:Z
     - ./docker/bundle:/opt/bundle:Z
-    - ./node_modules:/opt/node_modules:Z
+    - ./docker/node_modules:/opt/node_modules:Z
     - ./docker/log:/var/log/app:Z
     - ./docker/dotcache:/home/appuser/.cache:Z
     command: /bin/start-delayed-job.sh
