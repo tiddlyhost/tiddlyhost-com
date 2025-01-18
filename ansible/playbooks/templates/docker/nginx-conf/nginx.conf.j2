@@ -25,7 +25,7 @@ http {
                       '"$http_referer" "$http_user_agent" "$http_x_forwarded_for" '
                       'rt=$request_time uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time';
 
-    access_log  /var/log/nginx/access.log  main;
+    access_log /var/log/nginx/access.log main buffer=32k flush=30s;
 
     sendfile        on;
     #tcp_nopush     on;
