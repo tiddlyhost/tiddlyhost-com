@@ -577,7 +577,6 @@ LOGS_DIR=../logs
 
 fetch-logs:
 	$(FETCH_LOGS)
-	mv $(LOGS_DIR)/web.log $(LOGS_DIR)/web-$(TIMESTAMP).log
 
 extract-save-times:
 	cat $(LOGS_DIR)/web-*.log | hack/nginx-log-parser.rb csv > $(LOGS_DIR)/save-times-$(TIMESTAMP).csv

@@ -19,7 +19,7 @@
   - name: Download logs
     fetch:
       src: "{{ logs_dir }}/{{ item }}.log"
-      dest: "{{ local_logs_dir }}/{{ item }}.log"
+      dest: "{{ local_logs_dir }}/{{ item }}-{{ ansible_date_time.iso8601_basic_short }}.log"
       flat: yes
     with_items:
     - web
