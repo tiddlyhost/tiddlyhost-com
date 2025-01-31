@@ -17,6 +17,7 @@ linters:
     exclude:
       - "app/views/admin/_running_job_site_links.html.haml"
       - "app/views/application/_advanced_wrapper.html.haml"
+      - "app/views/application/_site_tile.html.haml"
       - "app/views/sites/_access_chooser.html.haml"
       - "app/views/sites/_form.html.haml"
       - "app/views/sites/_grid_view.html.haml"
