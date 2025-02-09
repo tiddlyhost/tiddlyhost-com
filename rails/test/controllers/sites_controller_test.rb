@@ -256,4 +256,26 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     get history_site_url(@site)
     assert_select 'td.label_present', count: 0
   end
+
+  test 'download all' do
+    sign_in users(:mary)
+
+    # Create site
+    post sites_url, params: { site: { name: 'foo', is_private: '0', empty_id: 1 } }
+
+    # Download all
+    get download_all_sites_url
+
+    # Check the response
+    assert_response :success
+    assert_equal 'application/zip', response.headers['Content-Type']
+    assert_equal "attachment; filename=\"thostsites.zip\"; filename*=UTF-8''thostsites.zip", response.headers['Content-Disposition']
+
+    # Check the zip file
+    Zip::InputStream.open(StringIO.new(response.body)) do |zip|
+      entry = zip.get_next_entry
+      assert_equal('foo.html', entry.name)
+      assert_match(/meta name="application-name" content="TiddlyWiki"/, zip.read.force_encoding('UTF-8'))
+    end
+  end
 end

@@ -1,12 +1,14 @@
 class SitesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_site, except: [:index, :new, :create, :view_toggle]
+  before_action :set_site, except: [:index, :new, :create, :view_toggle, :download_all]
+  before_action :set_sites, only: [:index, :download_all]
   before_action :set_empties_list, only: [:new, :create]
   before_action :set_site_to_clone, only: [:new, :create]
 
   include SortAndFilterLinkHelper
 
   include SiteHistory
+  include ZipDownloadAll
 
   SORT_OPTIONS = {
     compressed: 'size',
@@ -45,15 +47,10 @@ class SitesController < ApplicationController
     respond_to do |format|
       format.html do
         @grid_view = cookies[:grid_view].present?
-        @total_storage_bytes = current_user.total_storage_bytes
-        @sites = HubQuery.sites_for_user(current_user, search: search_text, sort_by: sort_sql)
-        @site_count = @sites.count
-        @filtered_sites = filter_results(@sites)
-        @filtered_site_count = @filtered_sites.count
       end
 
       format.json do
-        @sites = HubQuery.sites_for_user(current_user, sort_by: 'id')
+        @sites = @sites.sort_by(&:id)
       end
     end
   end
@@ -184,6 +181,17 @@ class SitesController < ApplicationController
   def set_site
     @site = current_user.sites.find(params[:id])
     redirect_to sites_url, notice: 'Site not found' unless @site
+  end
+
+  def set_sites
+    # Fixme: When search text is present @site_count and @filtered_site_count
+    # can be the same because the gext filtering happens in sql. This makes a
+    # few parts of the UI behave unexpectedly.
+    @sites = HubQuery.sites_for_user(current_user, search: search_text, sort_by: sort_sql)
+    @site_count = @sites.count
+    @filtered_sites = filter_results(@sites)
+    @filtered_site_count = @filtered_sites.count
+    @total_storage_bytes = current_user.total_storage_bytes
   end
 
   def set_empties_list

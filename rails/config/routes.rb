@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     resources :sites do
       collection do
         get :view_toggle
+        get :download_all
       end
 
       member do

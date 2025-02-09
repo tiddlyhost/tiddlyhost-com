@@ -63,6 +63,9 @@ gem 'acts-as-taggable-on', '~> 10.0'
 # https://github.com/smartinez87/exception_notification
 gem 'exception_notification'
 
+# For download all button
+gem 'rubyzip'
+
 # Why not...
 gem 'haml-rails'
 

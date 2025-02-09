@@ -417,6 +417,7 @@ DEPENDENCIES
   recaptcha
   redcarpet (~> 3.6)
   rexml
+  rubyzip
   sass-rails (>= 6)
   selenium-webdriver
   simplecov

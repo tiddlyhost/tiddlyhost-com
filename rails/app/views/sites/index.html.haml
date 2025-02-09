@@ -98,3 +98,8 @@
     = link_to({ controller: :tspot_sites, action: :claim_form }, class: 'btn') do
       = bi_icon('flag')
       Claim Tiddlyspot site
+
+  - if @filtered_site_count > 0
+    = link_to({ controller: :sites, action: :download_all }.merge(params.permit(:q, :kind, :access,:s)), class: 'btn') do
+      = bi_icon('file-earmark-zip')
+      Download all
