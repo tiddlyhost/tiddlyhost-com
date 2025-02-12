@@ -15,7 +15,7 @@ class SitesTest < CapybaraIntegrationTest
   test 'creating and viewing a site' do
     # Create a site
     visit sites_url
-    click_on 'Create site', class: 'btn'
+    click_on 'Create', class: 'btn'
     fill_in 'site_name', with: 'bar'
     click_on 'Create'
 
@@ -99,13 +99,13 @@ class SitesTest < CapybaraIntegrationTest
 
     # When the clone isn't found
     visit new_site_path(clone: 'notmysite')
-    assert_selector 'h2', text: 'Create site'
+    assert_selector 'h2', text: 'Create'
     assert_selector 'label', text: 'Type'
     assert_selector 'label[for="site_empty_id_1"]'
 
     # ..which is the same as regular create
     visit new_site_path
-    assert_selector 'h2', text: 'Create site'
+    assert_selector 'h2', text: 'Create'
     assert_selector 'label', text: 'Type'
     assert_selector 'label[for="site_empty_id_1"]'
   end

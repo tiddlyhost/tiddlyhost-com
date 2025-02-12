@@ -2,7 +2,7 @@
 %h1 Your sites
 
 - if @sites.empty?
-  %p Click 'Create site' below to create your first TiddlyWiki site.
+  %p Click 'Create' below to create your first TiddlyWiki site.
 
 - else
   - if current_user.has_hub_link?
@@ -84,22 +84,23 @@
   - else
     = render 'list_view'
 
-
 .create-buttons.mx-2.my-4.py-2
-  = link_to new_site_path, class: 'btn me-3' do
+  = link_to new_site_path, class: 'btn me-3', title: 'Create a site' do
     = bi_icon('plus-lg', style: "margin-right: 1px;")
-    Create site
+    Create
 
-  = link_to '/hub?t=1', class: 'btn me-3' do
+  = link_to '/hub?t=1', class: 'btn me-3', title: 'Create a site using a template' do
     = bi_icon('files')
     Create from template
 
   - if Settings.tiddlyspot_enabled?
-    = link_to({ controller: :tspot_sites, action: :claim_form }, class: 'btn') do
+    = link_to({ controller: :tspot_sites, action: :claim_form },
+      class: 'btn', title: 'Claim ownership of an existing Tiddlyspot site') do
       = bi_icon('flag')
       Claim Tiddlyspot site
 
   - if @filtered_site_count > 0
-    = link_to({ controller: :sites, action: :download_all }.merge(params.permit(:q, :kind, :access,:s)), class: 'btn') do
+    = link_to({ controller: :sites, action: :download_all }.merge(params.permit(:q, :kind, :access,:s)),
+      class: 'btn', title: "Download #{pluralize(@filtered_site_count, "site")} zipped") do
       = bi_icon('file-earmark-zip')
       Download all
