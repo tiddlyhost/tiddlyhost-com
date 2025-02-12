@@ -184,13 +184,22 @@ class SitesController < ApplicationController
   end
 
   def set_sites
-    # Fixme: When search text is present @site_count and @filtered_site_count
-    # can be the same because the gext filtering happens in sql. This makes a
-    # few parts of the UI behave unexpectedly.
-    @sites = HubQuery.sites_for_user(current_user, search: search_text, sort_by: sort_sql)
+    # Doing some extra work here so that @site_count is correct when user is doing a text
+    # search. It's needed because search filtering is done in sql before filter_results,
+    # (and I don't feel like changing that).
+    @sites = HubQuery.sites_for_user(current_user, sort_by: sort_sql)
+
+    if search_text.present?
+      # This is inefficient because we're doing the whole query again, but hopefully it won't matter
+      sites_after_search = HubQuery.sites_for_user(current_user, search: search_text, sort_by: sort_sql)
+    else
+      sites_after_search = @sites
+    end
+    @filtered_sites = filter_results(sites_after_search)
+
     @site_count = @sites.count
-    @filtered_sites = filter_results(@sites)
     @filtered_site_count = @filtered_sites.count
+
     @total_storage_bytes = current_user.total_storage_bytes
   end
 
