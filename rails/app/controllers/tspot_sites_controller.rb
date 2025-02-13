@@ -13,7 +13,7 @@ class TspotSitesController < ApplicationController
 
   # GET /sites/1/download
   def download
-    download_html_content(@site.html_content, @site.name)
+    download_html_content(@site.download_content, @site.name)
   end
 
   # GET /tspot_sites/1/edit

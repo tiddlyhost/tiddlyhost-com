@@ -57,6 +57,8 @@ class TspotSite < ApplicationRecord
     end
   end
 
+  alias_method :download_content, :html_content
+
   def fetched_html
     site_cache(:fetched_html) do
       logger.info "  TspotSite fetch for #{name}"
