@@ -230,7 +230,14 @@ class TwFile
   def self.robust_version(version_string)
     return version_string if version_string.is_a?(Gem::Version)
 
-    Gem::Version.new(version_string)
+    # Special handling for the template "tiddlywiki-starter-kit" which
+    # has a non-standard version_string. Not sure why exactly, but it's
+    # currently 5.3.6–lite which can't be parsed by Gem::Version.new.
+    # Note also: The "–" char here is not a regular "-".
+    adjusted_version_string = version_string.sub(/–lite$/, '')
+
+    # Use this because it does version comparisons correctly
+    Gem::Version.new(adjusted_version_string)
   end
 
   private
