@@ -199,6 +199,10 @@ Style/Alias:
 Lint/SafeNavigationChain:
   Enabled: false
 
+# Doesn't matter much
+Lint/UselessConstantScoping:
+  Enabled: false
+
 # TODO instead of Todo, etc. Let's come back to it.
 Style/CommentAnnotation:
   Enabled: false
