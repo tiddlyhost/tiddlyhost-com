@@ -23,9 +23,10 @@
             .site-tags= clickable_site_tags(site)
 
         %td{ style: "text-align: right; padding: 0.3em 1em;" }
-          - if site.thumbnail.present?
+          - thumbnail = site.thumbnail_with_fallback
+          - if thumbnail.present?
             = link_to site.url, target: site.long_name do
-              = image_tag rails_storage_proxy_path(site.thumbnail), class: "thumbnail-small"
+              = image_tag rails_storage_proxy_path(thumbnail), class: "thumbnail-small"
 
         %td.small.pt-2
           = kind_logo(site)

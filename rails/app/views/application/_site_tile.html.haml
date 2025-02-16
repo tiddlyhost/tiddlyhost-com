@@ -10,8 +10,9 @@
 .site{ id: site.name }
   .thumb-container
     = link_to site.url, target: site.long_name do
-      - if site.thumbnail.present?
-        = image_tag rails_storage_proxy_path(site.thumbnail), class: 'thumbnail-large'
+      - thumbnail = site.thumbnail_with_fallback
+      - if thumbnail.present?
+        = image_tag rails_storage_proxy_path(thumbnail), class: 'thumbnail-large'
       - else
         .image-placeholder{ title: "Preview image not yet available" }
           = bi_icon('image', fill: '#ddd')

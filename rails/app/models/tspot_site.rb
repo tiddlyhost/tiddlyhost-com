@@ -152,6 +152,10 @@ class TspotSite < ApplicationRecord
     false
   end
 
+  def cloned_from
+    nil
+  end
+
   # True if any non-default advanced settings are present
   def has_advanced_settings?
     return true if allow_in_iframe?

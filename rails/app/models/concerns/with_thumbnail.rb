@@ -5,6 +5,16 @@ module WithThumbnail
     has_one_attached :thumbnail, service: Settings.thumbs_storage_service
   end
 
+  def thumbnail_with_fallback
+    # Note: IIUC the present? method for an active_storage association checks for blob
+    # existence, so I don't think we can do `thumbnail && cloned_from&.thumbnail` here
+    return thumbnail if thumbnail.present?
+    return cloned_from.thumbnail if cloned_from&.thumbnail.present?
+
+    # TODO: If empties had a thumbnail we could use that here too
+    nil
+  end
+
   # Todo:
   # - Can we at least set long-ish cache headers?
   # - Do we need to cache to reduce s3 traffic?
