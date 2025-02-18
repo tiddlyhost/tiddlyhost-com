@@ -74,9 +74,13 @@ class TspotFetcher
     end
   end
 
+  def raw_site_file(file_name)
+    fetch_key(site_key(file_name))
+  end
+
   def site_file(file_name)
-    raw_string = fetch_key(site_key(file_name))
-    massage_encoding(raw_string)
+    raw_string = raw_site_file(file_name)
+    massage_encoding(raw_string || '')
   end
 
   def site_key(file_name)
