@@ -154,8 +154,16 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to 'http://mysite.example.com'
   end
 
-  test "viewing a site that doesn't exist" do
+  test 'non-existing site produces 404' do
     host! "notexist.#{Settings.tiddlyspot_host}"
+    get '/'
+    assert_404
+  end
+
+  test 'empty html site produces 404' do
+    site = TspotSite.find_by_name('mysite')
+    site.content_upload('')
+    host! "mysite.#{Settings.tiddlyspot_host}"
     get '/'
     assert_404
   end

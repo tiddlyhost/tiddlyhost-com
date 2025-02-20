@@ -5,6 +5,7 @@ class TiddlyspotController < ApplicationController
 
   before_action :find_site, only: [:serve, :download, :thumb_png, :save]
   before_action :redirect_maybe, only: [:serve] # Todo: consider the others
+  before_action :blank_html_check, only: [:serve, :download, :thumb_png, :save]
   before_action :authenticate, only: [:serve, :download, :thumb_png], if: :auth_required?
 
   skip_before_action :verify_authenticity_token, only: [:save, :options]
@@ -68,6 +69,13 @@ class TiddlyspotController < ApplicationController
 
   def redirect_maybe
     redirect_to @site.redirect_to if @site.redirect_to.present?
+  end
+
+  # When a site with a missing index.html gets populated, the html_content becomes an
+  # empty string. Treat that as a 404. (At some point I'll delete sites like this.)
+  # Do this after redirect_maybe to avoid doing an unnecessary blob fetch in find_site.
+  def blank_html_check
+    render :site_not_found, status: 404 unless @site.html_content.present?
   end
 
   def auth_required?
