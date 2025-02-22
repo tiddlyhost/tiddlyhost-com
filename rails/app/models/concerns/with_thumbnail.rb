@@ -19,7 +19,11 @@ module WithThumbnail
   # - Can we at least set long-ish cache headers?
   # - Do we need to cache to reduce s3 traffic?
 
-  DEBOUNCE_WAIT = 2.minutes
+  if Rails.env.production?
+    DEBOUNCE_WAIT = 2.minutes
+  else
+    DEBOUNCE_WAIT = 10.seconds
+  end
 
   def update_thumbnail_later
     GenerateThumbnailJob.set(wait: DEBOUNCE_WAIT).perform_later(self.class.name, self.id)
