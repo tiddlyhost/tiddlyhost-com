@@ -2,7 +2,11 @@ module WithThumbnail
   extend ActiveSupport::Concern
 
   included do
-    has_one_attached :thumbnail, service: Settings.thumbs_storage_service
+    has_one_attached :thumbnail
+  end
+
+  def thumbnail_storage_service
+    is_private? ? Settings.thumbs_storage_service : Settings.public_thumbs_storage_service
   end
 
   def thumbnail_with_fallback
@@ -33,25 +37,26 @@ module WithThumbnail
     thumbnail.present? && thumbnail.blob.created_at > current_content.blob.created_at
   end
 
-  # If Settings.thumbs_storage_service changed since the thumbnail was
-  # created, this can be used to copy it over to the new storage service
-  # See also scripts/thumbnail_migrate
+  # If the storage service config was changed since the thumbnail was created,
+  # this can be used to copy the blob from the old service to the new service.
+  # See also scripts/thumbnail_migrate which makes use of this method.
   #
   def sync_thumbnail_storage
     return unless thumbnail.present?
-    return if thumbnail.blob.service_name == Settings.thumbs_storage_service
+    return if thumbnail.blob.service_name == thumbnail_storage_service
 
-    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(thumbnail.download))
+    thumbnail.attach(WithThumbnail.attachable_thumbnail_hash(thumbnail.download, thumbnail_storage_service))
   end
 
   # See `find_or_build_blob` in
   #  lib/active_storage/attached/changes/create_one.rb
   #
-  def self.attachable_thumbnail_hash(png_content)
+  def self.attachable_thumbnail_hash(png_content, service_name)
     {
       io: StringIO.new(png_content),
       content_type: 'image/png',
       filename: 'thumb.png',
+      service_name:,
     }
   end
 
@@ -77,7 +82,11 @@ module WithThumbnail
 
     png = grover.to_png
 
-    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
+    thumbnail_attach(png)
+  end
+
+  def thumbnail_attach(png)
+    thumbnail.attach(WithThumbnail.attachable_thumbnail_hash(png, thumbnail_storage_service))
   end
 
   # See also config/initializers/grover

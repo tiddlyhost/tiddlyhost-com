@@ -36,6 +36,8 @@ local2:
 
 <%= Settings.storage_config_yaml(:thumbs2, :thumbs_2) %>
 
+<%= Settings.storage_config_yaml(:thumbs_public, :thumbs_3) %>
+
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3

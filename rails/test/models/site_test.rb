@@ -219,6 +219,19 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 'image/png', @site.thumbnail.blob.content_type
   end
 
+  test 'thumbnail storage service' do
+    [
+      [true, 'test1'],
+      [false, 'test2'],
+
+    ].each do |is_private, expected|
+      @site.update(is_private:)
+      @site.send(:thumbnail_attach, 'bogus')
+      assert @site.thumbnail.present?
+      assert_equal expected, @site.thumbnail.blob.service_name
+    end
+  end
+
   test 'switching storage service' do
     # Create three files with alternating storage services
     @site.update(storage_service: 'test1')
