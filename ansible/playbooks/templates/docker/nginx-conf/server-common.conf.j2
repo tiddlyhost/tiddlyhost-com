@@ -3,22 +3,22 @@
 #
 location = /ads.txt { return 404; }
 
-location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; }
-location ~ \.sql\.(?:xz|zip|z|gz)(?:$|\?) { return 404; }
-location ~ /wlwmanifest\.xml(?:$|\?) { return 404; }
-location ~ \.git/(?:config|HEAD) { return 404; }
-location ~ /wp-admin/ { return 404; }
-location ~ /wp-includes/ { return 404; }
-location ~ /wp-content/ { return 404; }
-location ~ /wp-plugins/ { return 404; }
-location ~ /\.well-known/ { return 404; }
+location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; access_log off; }
+location ~ \.sql\.(?:xz|zip|z|gz)(?:$|\?) { return 404; access_log off; }
+location ~ /wlwmanifest\.xml(?:$|\?) { return 404; access_log off; }
+location ~ \.git/(?:config|HEAD) { return 404; access_log off; }
+location ~ /wp-admin/ { return 404; access_log off; }
+location ~ /wp-includes/ { return 404; access_log off; }
+location ~ /wp-content/ { return 404; access_log off; }
+location ~ /wp-plugins/ { return 404; access_log off; }
+location ~ /\.well-known/ { return 404; access_log off; }
 
-location ~ ^/_ts_ { return 404; }
-location ~ ^/_ts/ { return 404; }
-location ~ ^/_sites/ { return 404; }
+location ~ ^/_ts_ { return 404; access_log off; }
+location ~ ^/_ts/ { return 404; access_log off; }
+location ~ ^/_sites/ { return 404; access_log off; }
 
-location = /sitemap.xml { return 404; }
-location = /index.xml { return 404; }
+location = /sitemap.xml { return 404; access_log off; }
+location = /index.xml { return 404; access_log off; }
 
 #
 # Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
