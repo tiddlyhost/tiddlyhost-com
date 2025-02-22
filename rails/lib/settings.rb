@@ -158,6 +158,7 @@ class Settings
         bucket: #{config[:bucket_name]}
         region: #{config[:region]}
         #{"endpoint: #{config[:endpoint_url]}" if config[:endpoint_url]}
+        #{'public: true' if config[:public]}
     END_YAML
   end
 end

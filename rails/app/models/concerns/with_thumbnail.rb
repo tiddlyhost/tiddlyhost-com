@@ -2,7 +2,11 @@ module WithThumbnail
   extend ActiveSupport::Concern
 
   included do
-    has_one_attached :thumbnail, service: Settings.thumbs_storage_service
+    has_one_attached :thumbnail
+  end
+
+  def thumbnail_storage_service
+    is_private? ? Settings.thumbs_storage_service : Settings.public_thumbs_storage_service
   end
 
   def thumbnail_with_fallback
@@ -33,25 +37,26 @@ module WithThumbnail
     thumbnail.present? && thumbnail.blob.created_at > current_content.blob.created_at
   end
 
-  # If Settings.thumbs_storage_service changed since the thumbnail was
-  # created, this can be used to copy it over to the new storage service
-  # See also scripts/thumbnail_migrate
+  # If the storage service config was changed since the thumbnail was created,
+  # this can be used to copy the blob from the old service to the new service.
+  # See also scripts/thumbnail_migrate which makes use of this method.
   #
   def sync_thumbnail_storage
     return unless thumbnail.present?
-    return if thumbnail.blob.service_name == Settings.thumbs_storage_service
+    return if thumbnail.blob.service_name == thumbnail_storage_service
 
-    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(thumbnail.download))
+    thumbnail_attach(thumbnail.download)
   end
 
   # See `find_or_build_blob` in
   #  lib/active_storage/attached/changes/create_one.rb
   #
-  def self.attachable_thumbnail_hash(png_content)
+  def self.attachable_thumbnail_hash(png_content, service_name)
     {
       io: StringIO.new(png_content),
       content_type: 'image/png',
       filename: 'thumb.png',
+      service_name:,
     }
   end
 
@@ -77,7 +82,21 @@ module WithThumbnail
 
     png = grover.to_png
 
-    update(thumbnail: WithThumbnail.attachable_thumbnail_hash(png))
+    thumbnail_attach(png)
+  end
+
+  def thumbnail_attach(png)
+    old_blob = thumbnail.blob
+
+    # Create a new blob to avoid a "can't modify frozen attributes" error
+    attachable_hash = WithThumbnail.attachable_thumbnail_hash(png, thumbnail_storage_service)
+    new_blob = ActiveStorage::Blob.create_and_upload!(**attachable_hash)
+
+    # Attach the new blob
+    thumbnail.attach(new_blob)
+
+    # If the old blob exists it is now an orphan so make sure to purge it
+    old_blob&.purge_later
   end
 
   # See also config/initializers/grover

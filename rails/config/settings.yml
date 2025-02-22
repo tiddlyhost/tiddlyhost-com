@@ -19,7 +19,8 @@ defaults:
   hub_tag_tab_count: 6
   db_host: <%= is_in_container ? "db" : "localhost" %>
   th_log_file: <%= is_in_container ? "/var/log/app/app.log" : "#{rails_root}/log/app.log" %>
-  thumbs_storage_service: local
+  thumbs_storage_service: local1
+  public_thumbs_storage_service: local2
 
   major_version: "1.6"
 
@@ -65,7 +66,8 @@ test:
     :protocol: http
 
   tiddlyspot_host: tiddlyspot-example.com
-  thumbs_storage_service: test
+  thumbs_storage_service: test1
+  public_thumbs_storage_service: test2
 
 production:
   url_defaults:
@@ -73,6 +75,7 @@ production:
     #:host: tiddlyhost.local
     :protocol: https
   thumbs_storage_service: thumbs2
+  public_thumbs_storage_service: thumbs_public
 
   tiddlyspot_host: tiddlyspot.com
   #tiddlyspot_host: tiddlyspot.local

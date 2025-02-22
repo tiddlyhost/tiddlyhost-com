@@ -10,6 +10,7 @@ test1:
 test2:
   service: Disk
   root: <%= Rails.root.join("tmp/storage2") %>
+  public: true
 
 local:
   service: Disk
@@ -23,6 +24,7 @@ local1:
 local2:
   service: Disk
   root: <%= Rails.root.join("storage2") %>
+  public: true
 
 <%= Settings.storage_config_yaml(:amazon, :amazon_s3) %>
 
@@ -35,6 +37,8 @@ local2:
 <%= Settings.storage_config_yaml(:thumbs, :thumbs_1) %>
 
 <%= Settings.storage_config_yaml(:thumbs2, :thumbs_2) %>
+
+<%= Settings.storage_config_yaml(:thumbs_public, :thumbs_3) %>
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
