@@ -466,7 +466,7 @@ FETCH_LOGS=$(PLAY) ansible/playbooks/fetch-logs.yml --limit prod
 LOCAL_DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit localhost --ask-become-pass --connection local
 
 full-deploy:
-	$(DEPLOY) --skip-tags cleanup
+	$(DEPLOY)
 
 deploy-deps:
 	$(DEPLOY) --tags=deps

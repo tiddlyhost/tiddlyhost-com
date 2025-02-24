@@ -484,6 +484,8 @@
   - name: Clean up unused docker images
     community.docker.docker_prune:
       images: true
+    async: 600
+    poll: 10
     tags:
     - cleanup
 
