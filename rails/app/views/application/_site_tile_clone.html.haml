@@ -3,7 +3,7 @@
   .ms-1.p-1
     - if site.thumbnail.present?
       = link_to site.url, target: site.long_name do
-        = image_tag(rails_storage_proxy_path(site.thumbnail),
+        = image_tag(thumbnail_url(site.thumbnail),
           class: "thumbnail-large", style: "width: 6em;")
 
   .p-1.flex-fill

@@ -22,6 +22,24 @@ module SitesHelper
     link_to(site.download_url, opts, &)
   end
 
+  def thumbnail_url(thumbnail)
+    # TODO: The blob.url doesn't work in a local dev environment
+    # with disk based active storage, hence this production test.
+    # Maybe this can be fixed..?
+    return rails_storage_proxy_path(thumbnail) unless Rails.env.production?
+
+    if thumbnail.record.is_private?
+      # TODO: Could/should we use the one-time blob url here with the
+      # credentials in the X-Amz params? Or, should we use the url_for
+      # redirect urls..?
+      rails_storage_proxy_path(thumbnail)
+    else
+      # Public sites can have public thumbnails
+      # TODO: Could/should we use url_for redirect urls here also..?
+      thumbnail.blob.url
+    end
+  end
+
   def site_access(site)
     # rubocop: disable Layout/IndentationWidth
     access_type = if site.redirect_to.present?

@@ -12,7 +12,7 @@
     = link_to site.url, target: site.long_name do
       - thumbnail = site.thumbnail_with_fallback
       - if thumbnail.present?
-        = image_tag rails_storage_proxy_path(thumbnail), class: 'thumbnail-large'
+        = image_tag thumbnail_url(thumbnail), class: 'thumbnail-large'
       - else
         .image-placeholder{ title: "Preview image not yet available" }
           = bi_icon('image', fill: '#ddd')
