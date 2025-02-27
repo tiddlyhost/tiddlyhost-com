@@ -499,10 +499,6 @@ deploy-secrets:
 deploy-foo:
 	$(DEPLOY) --tags=foo --diff
 
-# To change some docker configuration locally since dnf update seems to reverts it
-local-docker-fix:
-	$(LOCAL_DEPLOY) --tags=local-docker-fix
-
 restart-jobs:
 	$(RESTART) -e restart_list=jobs
 
