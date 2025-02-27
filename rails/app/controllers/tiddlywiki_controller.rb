@@ -32,6 +32,7 @@ class TiddlywikiController < ApplicationController
 
     update_view_count_and_access_timestamp
 
+    nginx_no_buffering_header
     render html: @site.html_content(is_logged_in: user_owns_site?).html_safe
   end
 
@@ -96,6 +97,7 @@ class TiddlywikiController < ApplicationController
     # Downloads count as a view
     update_view_count_and_access_timestamp
 
+    nginx_no_buffering_header
     download_html_content(@site.download_content, @site.name)
   end
 

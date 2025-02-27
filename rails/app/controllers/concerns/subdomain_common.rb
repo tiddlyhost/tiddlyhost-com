@@ -12,4 +12,10 @@ module SubdomainCommon
   def etag_header
     response.set_header 'ETag', @site.tw_etag
   end
+
+  # This should instruct nginx to stream the large response
+  # directly to the client rather than buffer it
+  def nginx_no_buffering_header
+    response.set_header 'X-Accel-Buffering', 'no'
+  end
 end
