@@ -5,7 +5,7 @@
 
 - if user.has_username?
   %span{ title: user.name }
-    = link_to user.username, hub_user_url(user.username)
+    = link_to user.username, hub_user_url(user.username), rel: 'nofollow'
 - else
   = user.name
 

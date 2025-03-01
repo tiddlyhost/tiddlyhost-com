@@ -45,7 +45,7 @@ module SortAndFilterLinkHelper
       klass = nil
     end
 
-    link_to(sort_link_url(new_sort_by), class: [klass, extra_klass].compact) do
+    link_to(sort_link_url(new_sort_by), class: [klass, extra_klass].compact, rel: 'nofollow') do
       link_title
     end
   end
@@ -56,7 +56,7 @@ module SortAndFilterLinkHelper
   #
   def simple_sort_link(new_sort_by, klass = 'dropdown-item')
     sel = 'sel' if sort_by == new_sort_by&.to_s
-    link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel])
+    link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel], rel: 'nofollow')
   end
 
   def filter_link_group(param_key, &)
@@ -78,7 +78,7 @@ module SortAndFilterLinkHelper
     selected = params[param_key] == param_val&.to_s
     klass = ['dropdown-item', (selected ? 'sel' : 'notsel')]
 
-    link_to(filter_link_url(param_key, param_val), class: klass) do
+    link_to(filter_link_url(param_key, param_val), class: klass, rel: 'nofollow') do
       if block_given?
         yield param_val, link_title
       else

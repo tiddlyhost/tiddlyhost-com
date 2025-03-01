@@ -127,7 +127,7 @@ module SitesHelper
 
   def clickable_site_tags(site)
     safe_join(site.tag_list.map do |tag_name|
-      link_to tag_name, hub_tag_url(tag_name)
+      link_to tag_name, hub_tag_url(tag_name), rel: 'nofollow'
     end, ' ')
   end
 
