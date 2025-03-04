@@ -24,7 +24,7 @@ class HubController < ApplicationController
       render_hub
     else
       # TODO: 404 page here maybe
-      redirect_to '/hub'
+      redirect_to '/explore'
     end
   end
 

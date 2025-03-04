@@ -44,7 +44,7 @@ class HubControllerTest < ActionDispatch::IntegrationTest
 
   test 'a non existent user' do
     get '/hub/user/doesntexist'
-    assert_redirected_to '/hub'
+    assert_redirected_to '/explore'
   end
 
   test 'bogus sort values' do

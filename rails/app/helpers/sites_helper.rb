@@ -95,15 +95,15 @@ module SitesHelper
   end
 
   def hub_all_url
-    add_sort_and_template_params_maybe('/hub')
+    add_sort_and_template_params_maybe('/explore')
   end
 
   def hub_tag_url(tag_name)
-    add_sort_and_template_params_maybe("/hub/tag/#{ERB::Util.url_encode(tag_name)}")
+    add_sort_and_template_params_maybe("/explore/tag/#{ERB::Util.url_encode(tag_name)}")
   end
 
   def hub_user_url(username)
-    add_sort_and_template_params_maybe("/hub/user/#{ERB::Util.url_encode(username)}")
+    add_sort_and_template_params_maybe("/explore/user/#{ERB::Util.url_encode(username)}")
   end
 
   # Todo: Could this be replaced by something in SortAndFilterLinkHelper?
