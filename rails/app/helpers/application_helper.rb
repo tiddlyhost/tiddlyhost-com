@@ -23,6 +23,9 @@ module ApplicationHelper
       # We redirect home to /sites when user is logged in
       (current_page?(sites_path) && link == root_path) ||
       # Highlight Hub link for all Hub pages
+      # FIXME: This is probably not going to be working, (but
+      # maybe it doesn't matter since the active class doesn't
+      # do much anyhow..?)
       (controller_name == 'hub' && link == '/hub') ||
       # Highlight Admin link for all Admin pages
       (controller_name == 'admin' && link == '/admin')
