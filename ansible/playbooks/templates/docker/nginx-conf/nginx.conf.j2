@@ -49,17 +49,15 @@ http {
     ssl_certificate_key /etc/letsencrypt/live/{{ primary_host }}/privkey.pem;
 
     server {
-        # Redirect all http requests to https for Tiddlyhost
+        # Redirect most http requests to https
         listen 80;
-        server_name {{ primary_host }} *.{{ primary_host }};
+        server_name {{ primary_host }} {% if tiddlyspot_host is defined and tiddlyspot_host %}{{ tiddlyspot_host }} {% endif %}*.{{ primary_host }};
         return 301 https://$host$request_uri;
     }
 
     {% if tiddlyspot_host is defined and tiddlyspot_host -%}
     server {
         # Tiddlyspot splash page
-        # Todo: Remove port 80 and add to the SSL redirect above
-        listen 80;
         listen 443 ssl;
         server_name {{ tiddlyspot_host }};
         include server-common.conf;
