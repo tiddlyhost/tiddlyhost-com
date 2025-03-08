@@ -15,6 +15,9 @@
     with_items:
     - web
     - app
+    - jobs
+    - cache
+    - db
 
   - name: Download logs
     fetch:
@@ -24,3 +27,6 @@
     with_items:
     - web
     - app
+    - jobs
+    - cache
+    - db
