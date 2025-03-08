@@ -57,22 +57,37 @@ http {
 
     {% if tiddlyspot_host is defined and tiddlyspot_host -%}
     server {
-        # For Tiddlyspot accept both http and https
-        # (Required since site names with dots can't use the cert)
+        # Tiddlyspot splash page
+        # Todo: Remove port 80 and add to the SSL redirect above
         listen 80;
         listen 443 ssl;
-        server_name {{ tiddlyspot_host }} *.{{ tiddlyspot_host }};
+        server_name {{ tiddlyspot_host }};
+        include server-common.conf;
+    }
 
+    server {
+        # Individual Tiddlyspot sites
+        # These accept both http and https for legacy reasons
+        # (Site names with dots in them can't use the SSL cert)
+        listen 80;
+        listen 443 ssl;
+        server_name *.{{ tiddlyspot_host }};
         include server-common.conf;
     }
 
     {% endif -%}
 
     server {
-        # Tiddlyhost via https
+        # Main Tiddlyhost web UI
         listen 443 ssl;
-        server_name {{ primary_host }} *.{{ primary_host }};
+        server_name {{ primary_host }};
+        include server-common.conf;
+    }
 
+    server {
+        # Individual Tiddlyhost sites
+        listen 443 ssl;
+        server_name *.{{ primary_host }};
         include server-common.conf;
     }
 }
