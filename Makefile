@@ -292,9 +292,13 @@ EMPTY_DIR=rails/tw_content/empties
 
 EMPTY_URL_tw5=https://tiddlywiki.com/empty.html
 EMPTY_URL_tw5x=https://tiddlywiki.com/empty-external-core.html
-EMPTY_URL_feather=https://feather.wiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html
 EMPTY_URL_classic=https://classic.tiddlywiki.com/empty.html
 EMPTY_URL_prerelease=https://tiddlywiki.com/prerelease/empty.html
+
+EMPTY_URL_feather=https://feather.wiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html
+EMPTY_URL_featherx=https://feather.wiki/builds/v1.8.x/FeatherWiki-bones$(FEATHER_BIRD).html
+EMPTY_URL_feather_plumage=https://feather.wiki/builds/v1.8.x/FeatherWiki-plumage_$(FEATHER_BIRD).css
+EMPTY_URL_feather_bones=https://feather.wiki/builds/v1.8.x/FeatherWiki-bones_$(FEATHER_BIRD).js
 
 CURL_FETCH=curl -sL $(EMPTY_URL_$1) -o $(EMPTY_DIR)/$1.html
 
@@ -312,7 +316,14 @@ download-core-js-prerelease:
 	  cd rails/public && \
 	  curl -sL $${CORE_JS_PRERELEASE_URL} -O
 
+# (No download-empty-featherx yet since I'm building it locally)
 download-empties: download-empty-tw5 download-empty-tw5x download-empty-feather download-empty-classic download-empty-prerelease download-core-js download-core-js-prerelease
+
+# For Feather Wiki js and css
+# (Actually I'm building the "bones" locally also since it requires the
+# changes from https://codeberg.org/Alamantus/FeatherWiki/pulls/208 )
+download-plumage-and-bones:
+	cd rails/public && curl -sLO $(EMPTY_URL_feather_bones) && curl -sLO $(EMPTY_URL_feather_plumage)
 
 PROD_PRERELEASE=docker/config/prerelease.html
 $(PROD_PRERELEASE): $(EMPTY_DIR)/prerelease.html
@@ -320,16 +331,18 @@ $(PROD_PRERELEASE): $(EMPTY_DIR)/prerelease.html
 
 prod-prerelease: $(PROD_PRERELEASE)
 
-# Now that we have Feather Wiki included in ansible/fetch_empties
-# this isn't used regularly, but keep it in case I ever want to
-# build my own Feather Wiki empty for some reason.
-#
-FEATHER_BUILD=../FeatherWiki/builds/FeatherWiki_$(FEATHER_BIRD).html
+# Usually this is downloaded using download-empties, but this can be used
+# to copy in locally built Feather Wiki empty
 FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
-$(FEATHER_EMPTY): $(FEATHER_BUILD)
-	cp $? $@
+$(FEATHER_EMPTY):
+	cp ../FeatherWiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html $@
 
-feather-empty: $(FEATHER_EMPTY)
+# Built locally with https://codeberg.org/Alamantus/FeatherWiki/pulls/208
+FEATHERX_EMPTY=$(EMPTY_DIR)/featherx.html
+$(FEATHERX_EMPTY):
+	cp ../FeatherWiki/builds/v1.8.x/FeatherWiki-bare_$(FEATHER_BIRD).html $@
+
+feather-empty: $(FEATHER_EMPTY) $(FEATHERX_EMPTY)
 
 refresh-empties: empty-versions clear-empties download-empties
 
