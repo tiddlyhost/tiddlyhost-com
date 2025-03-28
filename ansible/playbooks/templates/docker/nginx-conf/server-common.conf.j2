@@ -3,6 +3,7 @@
 #
 location = /ads.txt { return 404; }
 
+# Todo somehow: We want /store.php (only) to be proxied the same as @app
 location ~ \.(?:php|jsp|asp|aspx|env|sql)(?:$|\?) { return 404; access_log off; }
 location ~ \.sql\.(?:xz|zip|z|gz)(?:$|\?) { return 404; access_log off; }
 location ~ /wlwmanifest\.xml(?:$|\?) { return 404; access_log off; }

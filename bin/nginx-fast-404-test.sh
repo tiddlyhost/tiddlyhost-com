@@ -9,6 +9,7 @@ TIDDLYHOST=https://tiddlyhost.local
 #TIDDLYHOST=https://tiddlyhost.com
 
 PATHS='
+  /store.php
   /foo.php
   /wp-includes/
   /wp-includes/foo.php
