@@ -13,6 +13,8 @@ location ~ /wp-includes/ { return 404; access_log off; }
 location ~ /wp-content/ { return 404; access_log off; }
 location ~ /wp-plugins/ { return 404; access_log off; }
 location ~ /\.well-known/ { return 404; access_log off; }
+location ~ ^/core/modules/ { return 404; access_log off; }
+location ~ ^/plugins/ { return 404; access_log off; }
 
 location ~ ^/_ts_ { return 404; access_log off; }
 location ~ ^/_ts/ { return 404; access_log off; }

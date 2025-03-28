@@ -31,6 +31,8 @@ PATHS='
   /_ts/
   /_ts_sites/
   /_sites/foo
+  /core/modules/foo
+  /plugins/foo
   /known-elephant
 '
 
