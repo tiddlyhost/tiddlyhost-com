@@ -26,7 +26,7 @@ class RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :username])
 
     ok = verify_recaptcha(action: 'signup')
-    log_recaptch_detail(sign_up_params['email'], ok, recaptcha_reply)
+    log_recaptcha_detail(sign_up_params['email'], ok, recaptcha_reply)
     return if ok
 
     # Help a real user being rejected with "error-codes"=>["browser-error"]
@@ -42,7 +42,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def log_recaptch_detail(email, ok, detail)
+  def log_recaptcha_detail(email, ok, detail)
     th_log "Recaptcha #{ok ? 'pass' : 'fail'} for '#{email}'#{" #{detail.inspect}" if detail}"
   end
 end
