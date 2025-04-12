@@ -29,6 +29,9 @@ class RegistrationsController < Devise::RegistrationsController
     log_recaptch_detail(sign_up_params['email'], ok, recaptcha_reply)
     return if ok
 
+    # Help a real user being rejected with "error-codes"=>["browser-error"]
+    return if Settings.secrets(:recaptcha, :email_allow_list)&.include?(sign_up_params['email'])
+
     self.resource = resource_class.new(sign_up_params)
     resource.validate # Look for any other validation errors besides reCAPTCHA
     set_minimum_password_length
