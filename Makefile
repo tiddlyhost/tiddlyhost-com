@@ -433,6 +433,8 @@ no-uncommitted-diffs:
 	  echo "Aborting due to uncommitted diffs!"; \
 	  git diff --numstat; \
 	  exit 1; \
+	else \
+	  echo "Uncommitted diffs check okay"; \
 	fi
 
 no-uncommitted-rails-files:
@@ -440,6 +442,8 @@ no-uncommitted-rails-files:
 	  echo "Aborting due to uncommitted files under rails directory!"; \
 	  git status rails --porcelain; \
 	  exit 1; \
+	else \
+	  echo "Uncommitted files under rails check okay"; \
 	fi
 
 # Avoid accidentally deploying junk
