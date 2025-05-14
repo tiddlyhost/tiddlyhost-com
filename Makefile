@@ -680,8 +680,10 @@ git-push-hard:
 	git push -f origin devel:devel
 
 # Expecting this to be a fast forward
-update-main: git-push
+git-update-main: git-push
 	git push origin devel:main
+	git checkout main && git merge --ff-only devel
+	git checkout devel
 
 #----------------------------------------------------------
 
