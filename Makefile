@@ -429,9 +429,13 @@ redo-cert: clear-cert cert
 #----------------------------------------------------------
 
 no-uncommitted-diffs:
+	@# Update the index to avoid bogus diffs due to a stale git
+	@# index, or something like that..?
+	@git update-index -q --refresh
 	@if ! git diff-index --quiet HEAD --; then \
 	  echo "Aborting due to uncommitted diffs!"; \
-	  git diff --numstat; \
+		git diff --stat; \
+		git status --short; \
 	  exit 1; \
 	else \
 	  echo "Uncommitted diffs check okay"; \
