@@ -172,6 +172,9 @@ bundle-update:
 bundle-clean:
 	$(DR) "bin/bundle clean"
 
+app-update:
+	$(DR) "bin/rails app:update"
+
 # Run yarn install
 yarn-install:
 	$(DR) "bin/yarn install"
