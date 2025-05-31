@@ -216,6 +216,12 @@ Style/OpenStructUse:
   Exclude:
   - "lib/settings.rb"
 
+# Had this on for a while, but became tired of it.
+# Forces single quotes always for all non-interpolated strings.
+# (Could maybe exclude it for just bin/*, and Gemfile but whatever)
+Style/StringLiterals:
+  Enabled: false
+
 Layout/FirstArgumentIndentation:
   Exclude:
   - "lib/hub_query.rb"
