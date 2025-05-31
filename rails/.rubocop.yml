@@ -8,6 +8,10 @@ AllCops:
   # TODO: Add the suggested extensions
   SuggestExtensions: false
 
+# Complains about * vs *args in bin/setup
+Style/ArgumentsForwarding:
+  Enabled: false
+
 # I thought we liked these..?
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
