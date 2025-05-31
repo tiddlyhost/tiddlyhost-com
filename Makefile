@@ -193,7 +193,7 @@ haml-lint:
 	$(DCCF) "bundle exec haml-lint"
 
 rubocop:
-	$(DRF) "bundle exec rubocop"
+	$(DRF) "bin/rubocop"
 
 brakeman:
 	$(DR) "bin/brakeman"
@@ -201,7 +201,7 @@ brakeman:
 # Example usage:
 #   ONLY=Layout/EmptyLinesAroundModuleBody,Layout/EmptyLinesAroundClassBody make rubycop-fix
 rubocop-fix:
-	$(DR) "bundle exec rubocop --only $(ONLY) --autocorrect-all"
+	$(DR) "bin/rubocop --only $(ONLY) --autocorrect-all"
 	git commit -a \
 	  -m "rubocop: $$(echo $(ONLY) | cut -d, -f1)..." \
 	  -m "Rubocop autocorrect for the following:" \
