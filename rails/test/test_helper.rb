@@ -11,6 +11,13 @@ require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/mock'
 
+module Warning
+  def self.warn(msg)
+    # Suppress warning that will (hopefully) soon be fixed by https://github.com/rails/marcel/pull/123
+    super unless msg =~ %r{lib/marcel/magic.rb:120: warning: literal string will be frozen in the future}
+  end
+end
+
 def for_all_empties
   Dir["#{Rails.root}/tw_content/empties/*"].each do |kind_dir|
     Dir["#{kind_dir}/*.html"].each do |empty_file|
