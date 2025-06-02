@@ -44,4 +44,6 @@ jobs:
         run: bin/rails db:create
 
       - name: Run tests
+        env:
+          GROVER_NO_SANDBOX: true
         run: bin/rails test
