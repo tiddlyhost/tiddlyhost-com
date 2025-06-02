@@ -37,9 +37,7 @@ jobs:
           bundler-cache: true
 
       - name: Install node modules
-        run: |
-          mkdir ../node_modules
-          bin/rails yarn:install
+        run: bin/rails yarn:install
 
       - name: Create database
         run: bin/rails db:create

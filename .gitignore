@@ -18,7 +18,6 @@ rails/config/credentials/development.key
 rails/config/credentials/development.yml.enc
 rails/.byebug_history
 rails/coverage
-node_modules/
 docker/letsencrypt
 docker/nginx-conf
 docker/postgresql-data
