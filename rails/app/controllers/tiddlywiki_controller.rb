@@ -251,7 +251,7 @@ class TiddlywikiController < ApplicationController
       "\n",
       tiddler_data['text'],
       "\n",
-    ].flatten.join
+    ].join
   end
 
   # So browsers are permitted to do fetches from different domains
