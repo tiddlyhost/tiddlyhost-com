@@ -150,8 +150,8 @@ class TwFileTest < ActiveSupport::TestCase
     th_file = ThFile.from_empty(:tw5x)
     th_file.stub(:tiddlywiki_version, '11.1.2') do
       assert_equal '11.1.2', th_file.robust_version.to_s
-      assert th_file.version_higher_than('9.8.7')
-      assert_not th_file.version_higher_than('11.1.3-preview')
+      assert th_file.version_higher_than?('9.8.7')
+      assert_not th_file.version_higher_than?('11.1.3-preview')
     end
   end
 

@@ -94,7 +94,7 @@ class TwFile
   end
 
   def external_core_script_tag
-    script_path = version_higher_than('5.2.5') ? '/html/body/script' : '/html/script'
+    script_path = version_higher_than?('5.2.5') ? '/html/body/script' : '/html/script'
     doc.at_xpath("#{script_path}[contains(@src, 'tiddlywikicore')]")
   end
 
@@ -219,7 +219,7 @@ class TwFile
     end
   end
 
-  def version_higher_than(version_string)
+  def version_higher_than?(version_string)
     robust_version > TwFile.robust_version(version_string)
   end
 
