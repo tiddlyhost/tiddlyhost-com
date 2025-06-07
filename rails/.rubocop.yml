@@ -153,7 +153,7 @@ Layout/LineEndStringConcatenationIndentation:
   Enabled: false
 
 # Meh..
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 
 Style/NestedTernaryOperator:
