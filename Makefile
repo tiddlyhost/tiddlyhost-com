@@ -183,12 +183,19 @@ yarn-install:
 yarn-upgrade:
 	$(DR) "bin/yarn upgrade --silent --no-progress"
 
-# Update deps and make a commit
+# Precompile the bootstrap email sass
+# (Currently shows many warnings,
+# see https://github.com/bootstrap-email/bootstrap-email/issues/277)
+bootstrap-email-sass-precompile:
+	$(DR) "bin/rails bootstrap_email:sass_precompile"
+
+# Update deps, make a commit, run tests
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
 deps-update: pull-ruby build-push-base bundle-update yarn-upgrade
 	git add $(LOCK_FILES)
 	git commit -m 'chore: Refresh base images and update dependencies' \
 	  -m 'Commit created with `make deps-update`'
+	$(MAKE) bootstrap-email-sass-precompile test delint
 
 #----------------------------------------------------------
 
