@@ -8,10 +8,10 @@ services:
     - "80:80"
     - "443:443"
     volumes:
-    - ./docker/letsencrypt:/etc/letsencrypt:Z
-    - ./docker/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:Z
-    - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:Z
-    - ./docker/nginx-html:/opt/nginx-html:Z
+    - ./docker/letsencrypt:/etc/letsencrypt:z
+    - ./docker/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:z
+    - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:z
+    - ./docker/nginx-html:/opt/nginx-html:z
 
   app:
     image: sbaird/tiddlyhost-base:latest
@@ -20,11 +20,11 @@ services:
     - db
     - cache
     volumes:
-    - ./rails:/opt/app:Z
-    - ./docker/bundle:/opt/bundle:Z
-    - ./docker/node_modules:/opt/app/node_modules:Z
-    - ./docker/log:/var/log/app:Z
-    - ./docker/dotcache:/home/appuser/.cache:Z
+    - ./rails:/opt/app:z
+    - ./docker/bundle:/opt/bundle:z
+    - ./docker/node_modules:/opt/app/node_modules:z
+    - ./docker/log:/var/log/app:z
+    - ./docker/dotcache:/home/appuser/.cache:z
     command: /bin/start-rails.sh
 
     security_opt:
@@ -46,11 +46,11 @@ services:
     - db
     - cache
     volumes:
-    - ./rails:/opt/app:Z
-    - ./docker/bundle:/opt/bundle:Z
-    - ./docker/node_modules:/opt/node_modules:Z
-    - ./docker/log:/var/log/app:Z
-    - ./docker/dotcache:/home/appuser/.cache:Z
+    - ./rails:/opt/app:z
+    - ./docker/bundle:/opt/bundle:z
+    - ./docker/node_modules:/opt/node_modules:z
+    - ./docker/log:/var/log/app:z
+    - ./docker/dotcache:/home/appuser/.cache:z
     command: /bin/start-delayed-job.sh
 
     security_opt:

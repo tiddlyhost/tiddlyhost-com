@@ -9,10 +9,10 @@ services:
     - "80:80"
     - "443:443"
     volumes:
-    - ./docker/letsencrypt:/etc/letsencrypt:Z
-    - ./docker/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:Z
-    - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:Z
-    - ./docker/nginx-html:/opt/nginx-html:Z
+    - ./docker/letsencrypt:/etc/letsencrypt:z
+    - ./docker/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:z
+    - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:z
+    - ./docker/nginx-html:/opt/nginx-html:z
     - rails-static:/opt/rails-static
 
   app:
@@ -24,11 +24,11 @@ services:
     - cache
 
     volumes:
-    - ./docker/log:/var/log/app:Z
-    - ./docker/secrets/master.key:/opt/app/config/master.key:Z,ro
-    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:Z,ro
-    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:Z,ro
-    - ./docker/config/prerelease.html:/opt/app/tw_content/empties/prerelease.html:Z
+    - ./docker/log:/var/log/app:z
+    - ./docker/secrets/master.key:/opt/app/config/master.key:z,ro
+    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:z,ro
+    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:z,ro
+    - ./docker/config/prerelease.html:/opt/app/tw_content/empties/prerelease.html:z
     - rails-static:/opt/app/public
 
     security_opt:
@@ -49,10 +49,10 @@ services:
     - cache
 
     volumes:
-    - ./docker/log:/var/log/app:Z
-    - ./docker/secrets/master.key:/opt/app/config/master.key:Z,ro
-    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:Z,ro
-    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:Z,ro
+    - ./docker/log:/var/log/app:z
+    - ./docker/secrets/master.key:/opt/app/config/master.key:z,ro
+    - ./docker/secrets/credentials.yml.enc:/opt/app/config/credentials.yml.enc:z,ro
+    - ./docker/config/settings_local.yml:/opt/app/config/settings_local.yml:z,ro
 
     command: /bin/start-delayed-job.sh
 
