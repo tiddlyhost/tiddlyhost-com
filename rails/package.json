@@ -11,7 +11,7 @@
     "jquery": "^3.6.0",
     "puppeteer": "^19.8.0",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^6.0.0"
   },
   "version": "0.1.0",
   "devDependencies": {
