@@ -35,4 +35,18 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
   end
+
+  test 'search sites' do
+    sign_in @admin
+    # The q param is a text search
+    get '/admin/sites', params: { q: "text" }
+    assert_response :success
+  end
+
+  test 'search users' do
+    sign_in @admin
+    # The q param is a text search
+    get '/admin/users', params: { q: "text" }
+    assert_response :success
+  end
 end
