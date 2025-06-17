@@ -45,6 +45,11 @@ jobs:
       - name: Create database
         run: bin/rails db:create
 
+      # Run this first because it produces many deprecation warnings
+      # which would otherwise make the test output look untidy
+      - name: Precompile email styles
+        run: bin/rails bootstrap_email:sass_precompile
+
       - name: Run tests
         env:
           GROVER_NO_SANDBOX: true
