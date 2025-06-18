@@ -183,6 +183,13 @@ yarn-install:
 yarn-upgrade:
 	$(DR) "bin/yarn upgrade --silent --no-progress"
 
+# For debugging assets build
+assets-precompile:
+	$(DR) "bin/rails assets:clean assets:precompile"
+
+prod-assets-precompile:
+	$(DR) "RAILS_ENV=production bin/rails assets:clean assets:precompile"
+
 # Precompile the bootstrap email sass
 # (Currently shows many warnings,
 # see https://github.com/bootstrap-email/bootstrap-email/issues/277)
