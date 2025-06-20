@@ -38,6 +38,9 @@ Style/SymbolArray:
 Style/WordArray:
   Enabled: false
 
+Style/CollectionQuerying:
+  Enabled: false
+
 # I prefer no space for actual commented out code,
 # as opposed to actual commentary
 Layout/LeadingCommentSpace:
