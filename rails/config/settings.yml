@@ -22,7 +22,7 @@ defaults:
   thumbs_storage_service: local1
   public_thumbs_storage_service: local2
 
-  major_version: "1.6"
+  major_version: "1.7"
 
   #banner_message:
   #  :icon: exclamation-triangle
