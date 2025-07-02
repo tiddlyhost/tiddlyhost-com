@@ -41,4 +41,4 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 RUN EDITOR=: bin/rails credentials:edit && bin/rails assets:clean assets:precompile
 
 # Start rails
-CMD /bin/start-rails.sh
+CMD ["/bin/start-rails.sh"]
