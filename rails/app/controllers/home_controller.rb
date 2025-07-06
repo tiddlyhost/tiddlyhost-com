@@ -45,12 +45,9 @@ class HomeController < ApplicationController
     render_error_page(500, 'Internal Server Error')
   end
 
-  def mode_toggle
-    if cookies[:dark_mode].present?
-      cookies.delete(:dark_mode)
-    else
-      cookies[:dark_mode] = '1'
-    end
+  def mode_cycle
+    current_theme = cookies[:theme_mode]
+    cookies[:theme_mode] = helpers.next_theme_mode(current_theme)
     head 200
   end
 

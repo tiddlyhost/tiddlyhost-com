@@ -162,29 +162,6 @@ module ApplicationHelper
     super(*[coll_or_options, options].compact)
   end
 
-  def _dark_mode_toggle_link(theme, screen_size)
-    icon_type = theme == :light ? 'sun' : 'moon-stars'
-    text = "#{theme.to_s.titleize} mode"
-    icon = bi_icon(icon_type)
-
-    # screen size :small is for when the burger menu is showing, e.g. on a phone
-    link_content = screen_size == :small ? safe_join([icon, text]) : icon
-    screen_size_class = screen_size == :small ? 'd-block d-sm-none' : 'd-none d-sm-block'
-
-    nav_link_to(link_content, home_mode_toggle_path, remote: true, title: text,
-      li_class: "#{screen_size_class} #{icon_type}-btn mode-toggle-btn")
-  end
-
-  def dark_mode_toggle_link
-    # Four buttons but only one will be visible at a time
-    safe_join([
-      _dark_mode_toggle_link(:light, :big),
-      _dark_mode_toggle_link(:dark, :big),
-      _dark_mode_toggle_link(:light, :small),
-      _dark_mode_toggle_link(:dark, :small),
-    ])
-  end
-
   # Todo: Use this for all the menu links instead of just
   # these ones from the site history page
   #
@@ -207,5 +184,67 @@ module ApplicationHelper
   #
   def text_join(*strings)
     strings.join(' ')
+  end
+
+  # Related to light/dark/auto theme switching
+  #
+  VALID_THEME_MODES = %w[auto light dark]
+
+  DEFAULT_THEME_MODE = VALID_THEME_MODES.first
+
+  THEME_TITLES = {
+    "auto" => "Auto",
+    "light" => "Light",
+    "dark" => "Dark",
+  }
+
+  THEME_ICONS = {
+    "auto" => "circle-half",
+    "light" => "sun",
+    "dark" => "moon-stars",
+  }
+
+  def theme_mode(cookie_value = nil)
+    cookie_value ||= cookies[:theme_mode]
+    return cookie_value if cookie_value.in? VALID_THEME_MODES
+
+    DEFAULT_THEME_MODE
+  end
+
+  def next_theme_mode(cookie_value = nil)
+    current_index = VALID_THEME_MODES.find_index(theme_mode(cookie_value)) || 0
+    VALID_THEME_MODES[(current_index + 1) % VALID_THEME_MODES.length]
+  end
+
+  def theme_title(cookie_value = nil)
+    THEME_TITLES[theme_mode(cookie_value)]
+  end
+
+  def theme_icon(cookie_value = nil)
+    THEME_ICONS[theme_mode(cookie_value)]
+  end
+
+  def _theme_mode_cycle_link(theme, screen_size)
+    link_icon = theme_icon(theme.to_s)
+    link_text = theme_title(theme.to_s)
+
+    # screen size :small is for when the burger menu is showing, e.g. on a phone
+    link_content = screen_size == :small ? safe_join([bi_icon(link_icon), link_text]) : bi_icon(link_icon)
+    screen_size_class = screen_size == :small ? 'd-block d-sm-none' : 'd-none d-sm-block'
+
+    nav_link_to(link_content, home_mode_cycle_path, remote: true, title: link_text,
+      li_class: "#{screen_size_class} #{link_icon}-btn mode-cycle-btn")
+  end
+
+  def theme_mode_cycle_link
+    # We render six buttons but only one of them will be visible at a time
+    safe_join([
+      _theme_mode_cycle_link(:auto, :big),
+      _theme_mode_cycle_link(:light, :big),
+      _theme_mode_cycle_link(:dark, :big),
+      _theme_mode_cycle_link(:auto, :small),
+      _theme_mode_cycle_link(:light, :small),
+      _theme_mode_cycle_link(:dark, :small),
+    ])
   end
 end

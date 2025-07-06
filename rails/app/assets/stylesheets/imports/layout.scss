@@ -114,16 +114,26 @@ main {
     padding: 1em 1em 8em 1em;
 }
 
+// Todo: https://blog.superails.com/ruby-on-rails-dark-mode has a
+// nicer way to do theme switching that would not require using
+// javascript to set the data-bs-theme attribute
 [data-bs-theme="light"] {
     main { @extend .bg-light; }
     footer { background-color: var(--bs-gray-300); }
-    .mode-toggle-btn.sun-btn { display: none !important; }
 }
 
 [data-bs-theme="dark"] {
     footer { background-color: var(--bs-secondary-bg); }
-    .mode-toggle-btn.moon-stars-btn { display: none !important; }
 }
+
+// We cycle between three modes like this:
+// "auto" -> "light" -> "dark" -> "auto" -> ...
+// Let's make the visible button indicate the current mode
+// (rather than the mode that you'd get if you click it).
+// Todo: Use classes based on the the mode so this is tidier.
+[data-theme-mode="auto"]  { .mode-cycle-btn.moon-stars-btn, .mode-cycle-btn.sun-btn         { display: none !important; } }
+[data-theme-mode="light"] { .mode-cycle-btn.moon-stars-btn, .mode-cycle-btn.circle-half-btn { display: none !important; } }
+[data-theme-mode="dark"]  { .mode-cycle-btn.sun-btn,        .mode-cycle-btn.circle-half-btn { display: none !important; } }
 
 @media (min-width: 576px) {
     // So the body bg color doesn't show through after the footer

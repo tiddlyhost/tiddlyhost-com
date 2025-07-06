@@ -131,18 +131,38 @@ $(document).ready(function(){
     e.preventDefault();
   });
 
-  $('.mode-toggle-btn').on('click', function(e){
-    var currentTheme = $('html').attr('data-bs-theme');
-    var newTheme = currentTheme == "dark" ? "light" : "dark";
-    $('html').attr('data-bs-theme', newTheme)
+  // Three-way theme cycling: auto -> light -> dark -> auto ...
+  // See also mode_cycle in the HomeController which does the same
+  // thing server side to persist it in a cookie
+  $('.mode-cycle-btn').on('click', function(e){
+    var currentMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
+    var nextMode;
+    if (currentMode === 'light') {
+      nextMode = 'dark';
+    } else if (currentMode === 'dark') {
+      nextMode = 'auto';
+    } else {
+      nextMode = 'light';
+    }
+    document.documentElement.setAttribute('data-theme-mode', nextMode);
+    setTheme(nextMode);
   });
 
   const setTheme = function (theme) {
     if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.documentElement.setAttribute('data-bs-theme', 'dark')
+    } else if (theme === 'auto') {
+      document.documentElement.setAttribute('data-bs-theme', 'light')
     } else {
       document.documentElement.setAttribute('data-bs-theme', theme)
     }
   }
+
+  const initTheme = function () {
+    var currentMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
+    setTheme(currentMode)
+  }
+
+  initTheme()
 
 });

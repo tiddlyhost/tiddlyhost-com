@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
     get 'home/index'
     get 'home/after_registration'
-    get 'home/mode_toggle'
+    get 'home/mode_cycle'
 
     get 'about', to: 'home#about'
     get 'pricing', to: 'subscription#pricing'

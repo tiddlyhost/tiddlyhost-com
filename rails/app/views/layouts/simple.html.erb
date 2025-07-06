@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html data-bs-theme="<%= bs_theme %>">
+<html data-theme-mode="<%= theme_mode %>">
   <head>
     <title><%= @title || "#{@status_code} #{@status_message}" %></title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%#
+      # This is used only for calling initTheme to set the theme. Todo: It would be
+      # better to load just the javascript needed for that instead of everything
+     %>
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body class="simple-layout">
