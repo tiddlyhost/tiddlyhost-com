@@ -109,7 +109,7 @@ GEM
       nokogiri (~> 1.6)
       premailer (~> 1.7)
       sass-embedded (~> 1.53)
-    brakeman (7.0.2)
+    brakeman (7.1.0)
       racc
     builder (3.3.0)
     byebug (12.0.0)
