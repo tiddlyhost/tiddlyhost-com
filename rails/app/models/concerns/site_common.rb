@@ -43,31 +43,34 @@ module SiteCommon
   end
 
   KINDS = {
-    'tw5'     => 'TiddlyWiki (self-contained)',
-    'tw5x'    => 'TiddlyWiki (external core)',
-    'classic' => 'TiddlyWiki Classic',
-    'feather' => 'Feather Wiki',
-    'sitelet' => 'siteleteer',
+    'tw5'      => 'TiddlyWiki (self-contained)',
+    'tw5x'     => 'TiddlyWiki (external core)',
+    'classic'  => 'TiddlyWiki Classic',
+    'feather'  => 'Feather Wiki',
+    'featherx' => 'Feather Wiki (external javascript)',
+    'sitelet'  => 'siteleteer',
   }.freeze
 
   KIND_LOGOS = {
     # Todo maybe: A different image for 'tw'
-    'tw'      => 'tw5-icon.ico',
-    'tw5'     => 'tw5-icon.ico',
-    'tw5x'    => 'tw5x-icon.ico',
-    'classic' => 'classic-icon.ico',
-    'feather' => 'feather-icon.svg',
-    'sitelet' => 'siteleteer-logo.svg',
+    'tw'       => 'tw5-icon.ico',
+    'tw5'      => 'tw5-icon.ico',
+    'tw5x'     => 'tw5x-icon.ico',
+    'classic'  => 'classic-icon.ico',
+    'feather'  => 'feather-icon.svg',
+    'featherx' => 'feather-icon.svg',
+    'sitelet'  => 'siteleteer-logo.svg',
   }.freeze
 
   # (These are not currently used)
   KIND_URLS = {
-    'tw5'     => 'https://tiddlywiki.com/',
+    'tw5'      => 'https://tiddlywiki.com/',
     # Todo: Think of a better url for tw5x
-    'tw5x'    => CGI.escape('https://tiddlywiki.com/#:[[Using the external JavaScript template]] HelloThere'),
-    'classic' => 'https://classic.tiddlywiki.com/',
-    'feather' => 'https://feather.wiki/',
-    'sitelet' => 'https://alamantus.codeberg.page/siteleteer/',
+    'tw5x'     => CGI.escape('https://tiddlywiki.com/#:[[Using the external JavaScript template]] HelloThere'),
+    'classic'  => 'https://classic.tiddlywiki.com/',
+    'feather'  => 'https://feather.wiki/',
+    'featherx' => 'https://feather.wiki/',
+    'sitelet'  => 'https://alamantus.codeberg.page/siteleteer/',
   }.freeze
 
   KIND_VALS = KINDS.keys.freeze
