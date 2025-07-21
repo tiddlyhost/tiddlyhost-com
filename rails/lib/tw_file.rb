@@ -45,13 +45,17 @@ class TwFile
   # heavy on memory resources. Provide a way to find the TW kind and
   # version without doing that.
   #
+  # Todo: This is kinda messy. Refactor maybe.
+  #
   def self.light_get_kind_and_version(html_content)
     # For TW5
     match = html_content.match(/^<meta name="tiddlywiki-version" content="([a-zA-Z0-9\-\._]+)"/m)
     if match
       if html_content.match(/^<script src=".*tiddlywikicore.*\.js" onerror="alert/m)
+        # External core javascript
         return ['tw5x', match[1]]
       else
+        # Internal core javascript
         return ['tw5', match[1]]
       end
     end
@@ -59,19 +63,31 @@ class TwFile
     # For classic
     match = html_content.match(
       /^var version = { ?title: "TiddlyWiki", major: (\d+), minor: (\d+), revision: (\d+),/m)
-    return ['classic', match[1..3].join('.')] if match
+    if match
+      return ['classic', match[1..3].join('.')]
+    end
 
-    # For FeatherWiki
-    # (Compressed versions don't have the quotes hence the "? here)
+    # For Feather Wiki
+    # (Compressed versions don't have the quotes hence the "? in the regex here)
     if html_content.match(/<meta name="?application-name"? content="Feather Wiki">/)
       match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
-      return ['feather', match[1]] if match
+      if match
+        if html_content.match(/<script id="?a"? src="?FeatherWiki-bones_\w+.js"?>/)
+          # External javascript
+          return ['featherx', match[1]]
+        else
+          # Inline javascript
+          return ['feather', match[1]]
+        end
+      end
     end
 
     # For siteleteer
     if html_content.match(/<meta name="application-name" content="siteleteer-tiddlyhost">/)
       match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
-      ['sitelet', match[1]] if match
+      if match
+        ['sitelet', match[1]]
+      end
     end
   end
 
