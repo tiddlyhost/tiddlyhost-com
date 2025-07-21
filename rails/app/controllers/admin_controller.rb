@@ -58,7 +58,8 @@ class AdminController < ApplicationController
     currentsignin: 'current_sign_in_at',
     description: "NULLIF(sites.description, '')",
     email: 'email',
-    empty: 'empties.name',
+    # Fixme: this one doesn't work
+    #empty: 'empties.name',
     av: ['use_gravatar', 'use_libravatar'],
     id: 'id',
     iframes: 'allow_in_iframe',
