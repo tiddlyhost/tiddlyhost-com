@@ -7,6 +7,7 @@ all:
 
       # Todo: Should create this user rather than assume it exists and has sudo
       ansible_user: fedora
+      ansible_python_interpreter: /usr/bin/python3.13
 
       # For letsencrypt
       cert_hosts:
