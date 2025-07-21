@@ -111,8 +111,8 @@ class Site < ApplicationRecord
   end
 
   def use_put_saver?
-    # Feather wiki always uses put saver
-    return true if is_feather?
+    # These always use put saver
+    return true if is_feather? || is_sitelet?
 
     # Classic always uses upload saver
     return false if is_classic?

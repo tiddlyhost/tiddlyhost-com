@@ -77,3 +77,14 @@
   info_link: https://feather.wiki/
   tooltip: With external javascript the initial html file is just 616 bytes. Currently
     requires a custom build of Feather Wiki.
+- id: 21
+  name: sitelet
+  title: siteleteer
+  description: An even lighter and simpler single-page wiki from the creator of Feather
+    Wiki.
+  enabled: true
+  display_order: 25
+  primary: false
+  info_link: https://alamantus.codeberg.page/siteleteer/
+  tooltip: To see how it works, view the clean and very readable page source. Requires
+    a custom build of siteleteer.

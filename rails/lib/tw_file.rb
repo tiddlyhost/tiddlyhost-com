@@ -63,8 +63,16 @@ class TwFile
 
     # For FeatherWiki
     # (Compressed versions don't have the quotes hence the "? here)
-    match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
-    ['feather', match[1]] if match
+    if html_content.match(/<meta name="?application-name"? content="Feather Wiki">/)
+      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
+      return ['feather', match[1]] if match
+    end
+
+    # For siteleteer
+    if html_content.match(/<meta name="application-name" content="siteleteer-tiddlyhost">/)
+      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
+      ['sitelet', match[1]] if match
+    end
   end
 
   # We can't be certain, but we can sanity check a few things to
@@ -72,6 +80,7 @@ class TwFile
   #
   def looks_valid?
     return true if is_feather?
+    return true if is_sitelet?
 
     # The application name is present
     tiddlywiki_title == 'TiddlyWiki' &&
@@ -86,11 +95,15 @@ class TwFile
   end
 
   def is_tw5?
-    !is_classic? && !is_feather?
+    !(is_classic? || is_feather? || is_sitelet?)
   end
 
   def is_feather?
     get_meta('application-name') == 'Feather Wiki'
+  end
+
+  def is_sitelet?
+    get_meta('application-name') == 'siteleteer-tiddlyhost'
   end
 
   def external_core_script_tag
@@ -104,6 +117,7 @@ class TwFile
 
   def kind
     return 'feather' if is_feather?
+    return 'sitelet' if is_sitelet?
     return 'classic' if is_classic?
     return 'tw5x' if is_external_core?
 
@@ -120,6 +134,7 @@ class TwFile
 
   def tiddlywiki_version
     return featherwiki_version if is_feather?
+    return siteleteer_version if is_sitelet?
 
     tiddlywiki_version_tw5 || tiddlywiki_version_classic
   end
@@ -146,6 +161,10 @@ class TwFile
   end
 
   def featherwiki_version
+    get_meta('version')
+  end
+
+  def siteleteer_version
     get_meta('version')
   end
 

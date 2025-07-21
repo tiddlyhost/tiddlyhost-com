@@ -164,15 +164,10 @@ class ThFile < TwFile
   def apply_tiddlyhost_mods(site_name, for_download: false, local_core: false, use_put_saver: false, is_logged_in: false)
     if is_tw5?
       apply_tw5_mods(site_name, for_download:, local_core:, use_put_saver:, is_logged_in:)
-
     elsif is_classic?
       apply_classic_mods(site_name, for_download:, is_logged_in:)
-
-    else # FeatherWiki
-      # No hackery for FeatherWiki currently
-
     end
-
+    # No modifications for Feather Wiki or siteleteer
     self
   end
 

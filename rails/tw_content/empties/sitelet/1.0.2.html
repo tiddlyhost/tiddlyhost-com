@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="version" content="1.0.2">
+<meta name="application-name" content="siteleteer-tiddlyhost">
+<title>siteleteer</title>
+<style id="css">
+:root {
+	--text: #000;
+	--font: serif;
+	--size: 13pt;
+	--space: .5rem;
+	--pad: var(--space) calc(var(--space) * 2);
+	--bg: #FAFFED;
+	--accent1: #3D9519;
+	--accent2: #080278;
+	--dull: #F8B503;
+	--bad: #A4114A;
+	--link-style: underline;
+	--btn-pad: calc(var(--space) / 2) var(--space);
+	--btn-border: none;
+	--rounded: 3px;
+	--max-width: 1200px;
+}
+* {
+	box-sizing: border-box;
+	font-family: var(--font);
+	color: var(--text);
+	font-size: var(--size);
+	line-height: 1.15em;
+	background: transparent;
+}
+* * {
+	font-family: inherit;
+	color: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+*[hidden],
+dialog:not([open]),
+main>section,
+#results:empty {
+	display: none;
+}
+code,
+kbd {
+	font-family: monospace;
+	font-size: .8em;
+}
+code {
+	background: var(--dull);
+	padding: calc(var(--space) / 3) calc(var(--space) / 2);
+}
+pre>code {display: block}
+dialog[open] {
+	display: block;
+	background: var(--bg);
+}
+html {background: var(--bg)}
+body>header,
+#settings,
+main {
+	padding: var(--pad);
+	width: 100%;
+	max-width: var(--max-width);
+}
+nav ul li a:empty::after,
+main:empty::after,
+main>section article:empty::after {
+	content: "No content";
+}
+*+* {margin: var(--space) 0 0}
+main>section+section {margin: 0}
+#wiki a {color: var(--accent1)}
+#wiki #desc {margin-left: var(--space)}
+#actions {
+	display: flex;
+	gap: var(--space);
+	align-items: center;
+}
+#actions>* {margin: 0}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: calc(var(--space) * 3) 0;
+}
+main,
+main>section>h1,
+form h1 {
+	margin-top: 0;
+}
+h1 {font-size: 2.2rem}
+h2 {font-size: 1.8rem}
+h3,
+#wiki #name {
+	font-size: 1.5rem;
+}
+h4 {font-size: 1.15rem}
+h1,
+h2,
+h3,
+h4,
+h5,
+#wiki #name {
+	font-weight: bold;
+}
+h5,
+h6 {
+	font-style: italic;
+}
+h6 {font-weight: normal}
+a {
+	color: var(--accent2);
+	text-decoration: var(--link-style);
+}
+button {
+	background: var(--accent1);
+	color: #fff;
+	border: var(--btn-border);
+	border-radius: var(--rounded);
+	padding: var(--btn-pad);
+	cursor: pointer;
+	font-weight: 500;
+}
+button.other {background: var(--accent2)}
+button.dull {
+	background: var(--dull);
+	font-weight: normal;
+	color: var(--text);
+}
+button.bad {background: var(--bad)}
+label {
+	display: block;
+	font-weight: 500;
+}
+#putStatus {
+	color: var(--dull);
+	display: inline-block;
+	width: 1rem;
+}
+#putStatus.fade {
+	color: var(--accent1);
+	opacity: 0;
+	transition: opacity 1s cubic-bezier(1,0,1,0);
+}
+input,
+textarea,
+select,
+option {
+	padding: var(--btn-pad);
+	background: var(--bg);
+	border: 1px solid var(--text);
+	border-radius: var(--rounded);
+}
+textarea {
+	min-height: 300px;
+	width: 100%;
+	max-width: 600px;
+}
+nav ul {
+	margin: var(--space) 0;
+	padding: var(--space) 0;
+	border-top: 1px solid var(--text);
+	list-style: none;
+}
+nav ul li {
+	display: inline-block;
+	margin: var(--space);
+}
+.sm {font-size: .8em}
+#search {position: relative}
+#results {
+	position: absolute;
+	background: var(--bg);
+	border: 1px solid #000;
+	top: calc(var(--size) + .25rem);
+	left: 0;
+	width: 100%;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 0;
+	border-radius: var(--rounded);
+	z-index: 9;
+}
+#results a {
+	display: block;
+	width: 100%;
+	padding: var(--btn-pad);
+	margin: 0;
+	color: #000;
+}
+#results a:hover {
+	color: #fff;
+	background: var(--accent2);
+}
+mark {
+	background: var(--accent1);
+	color: white;
+}
+main>section>footer>time {cursor: help}
+main>section>footer>time::before {content: 'Updated '}
+</style>
+</head>
+<body>
+<header>
+	<section id="wiki">
+		<a href="javascript:go()" id="name">New Sitelet</a>
+		<span id="desc">The base of your new minisite!</span>
+	</section>
+	<section id="actions">
+		<div id="search" style="flex:1">
+			<input type="search" placeholder="Search">
+			<div id="results"></div>
+		</div>
+		<div style="flex:2;text-align:right">
+			<button id="settingsBtn" class="dull" onclick="settings()">Settings</button>
+			<button id="newBtn" class="other" onclick="add()">New Page</button>
+			<button id="saveBtn" onclick="save()">Save</button>
+			<button id="putSaveBtn" onclick="putSave()" hidden>Save to server</button>
+			<span id="putStatus" hidden></span>
+		</div>
+	</section>
+	<details>
+		<summary style="cursor:pointer;">Menu</summary>
+		<nav><ul></ul></nav>
+	</details>
+</header>
+<dialog id="settings">
+	<h1>Settings</h1>
+	<form method="dialog" onsubmit="update(event.target)">
+		<label>Wiki Name<br><input name="name"></label>
+		<label>Wiki Description<br><input name="desc"></label>
+		<label>Wiki CSS<br><textarea name="css"></textarea></label>
+		<footer>
+			<button type="submit">Save</button>
+			<button type="button" class="dull" onclick="settings(true)">Cancel</button>
+		</footer>
+	</form>
+</dialog>
+<main></main>
+<script defer>
+// Aliases for space savings
+const w = window;
+w.q = (s, el) => (el ?? document).querySelector(s);
+w.qa = (s, el) => (el ?? document).querySelectorAll(s);
+w.gebi = i => document.getElementById(i);
+w.ce = t => document.createElement(t);
+w.main = q('main');
+w.nav = q('nav ul');
+w.sBar = q('#search input');
+w.res = q('#results');
+w.hideRes = () => res.innerHTML = '';
+// Get and/or set the URL hash
+w.h = hash => (!hash ? true : location.hash = hash) && (!location.hash ? null : decodeURIComponent(location.hash.substring(1)));
+// The current page id
+w.current = null;
+// Get current page Elements as array
+w.pages = () => Array.from(qa('main > section'));
+// Get page details as object from Element
+w.info = el => ({
+	id: el.id,
+	name: q('h1', el).textContent,
+	src: q('pre', el)?.textContent ?? '',
+});
+// Get the names of all settings form inputs
+w.settingFields = () => Array.from(qa('#settings :is(input, textarea, select)[name]')).map(el => el.name);
+// Return a nav li element for the given page Element
+w.navItem = el => {
+	const { id, name } = info(el);
+	const li = ce('li');
+	li.innerHTML = /*html*/`<a href="javascript:go('${id}')" id="nav${id}">${name}</a>`;
+	return li;
+};
+// Show (default) or hide the given page Element
+w.show = (el, y = true) => el.style.display = (y ? 'block' : '');
+// Enable typing tab characters in all textarea Elements without class `notab`
+w.handleTab = () => {
+	qa('textarea:not(.notab)').forEach(t => t.onkeydown = function (e) {
+		if (e.key === 'Tab' && !e.shiftKey) {
+			const s = this;
+			const tab = '\t';
+			if (t !== s) s.focus();
+			const safeInsert = document.execCommand('insertText', false, tab);
+			if (!safeInsert) {
+				s.setRangeText(tab, s.selectionStart || 0, s.selectionEnd || 0, 'end');
+				s.dispatchEvent(new InputEvent('input', { tab, inputType: 'insertText' }));
+			}
+			e.preventDefault();
+		}
+	});
+};
+// Parse [[wiki links]]
+w.wikiLinks = src => src.replace(/\[\[([^\]\|]+)(\|[^\]]+)?\]\]/g, (m, name, text) => `<a href="javascript:go('${name}')">${text ? text.substring(1) : name}</a>`);
+// Show page Element with given name or id, or home page if none is given. If back == true, don't update url hash
+w.go = (page, back = false) => {
+	if (current) edit(current, false);
+	const pp = pages();
+	pp.forEach(el => show(el, false));
+	const pg = gebi(page) ?? pp.find(el => info(el).name === page);
+	if (pg) {
+		const { name } = info(pg);
+		document.title = name;
+		if (!back) h(name);
+		show(pg);
+		current = pg.id;
+	} else if (page) {
+		add(page);
+	} else if (pp[0]) {
+		go(pp[0].id);
+	} else {
+		location.hash = '';
+	}
+};
+// Show (default) or hide settings dialog
+w.settings = close => {
+	const s = q('#settings');
+	if (close === true) return s.close();
+	const form = q('form', s);
+	settingFields().forEach(n => form[n].value = q('#' + n)?.innerHTML?.trim() ?? '');
+	handleTab();
+	s.show();
+};
+// Save the settings dialog & update innerHTML of all elements with ids matching the input name
+w.update = form => settingFields().forEach(n => q('#' + n).innerHTML = form[n].value);
+// Show (default) or hide a form to edit the page with given id. Also updates nav entry.
+w.edit = (id, y = true) => {
+	const pg = gebi(id);
+	if (pg) {
+		const { name, src } = info(pg);
+		const eId = `edit${id}`;
+		if (!y) {
+			const f = q(`#${eId}`);
+			render(!f ? null : id); // If the page was re-sorted, re-render everything so nav updates as well
+			show(pg);
+			if (f) f.parentElement.removeChild(f);
+			return;
+		}
+		go(id);
+		show(pg, false);
+		const pp = pages();
+		const pos = pp.findIndex(p => p.id == id);
+		const f = ce('form');
+		f.id = eId;
+		f.innerHTML = /*html*/`<h1>Edit</h1>
+<label>Name <input name="name" value="${name}"></label>
+<label>Markdown Content<br><textarea name="text">${src}</textarea></label>
+<label>Sort Position <select name="pos">${pp.map((p, i) => `<option${i === pos ? ' selected' : ''}>${i}</option>`).join('')}</select></label>
+<footer><button type="submit">Save</button> <button type="button" class="dull" onclick="edit(${id}, false)">Cancel</button> <button type="button" class="bad" onclick="del(${id})">Delete</button></footer>`;
+		f.onsubmit = e => {
+			e.preventDefault();
+			q('h1', pg).textContent = f.name.value.trim();
+			q('pre', pg).textContent = f.text.value;
+			q('footer>time', pg).textContent = new Date().toLocaleString();
+			const newPos = parseInt(f.pos.value);
+			if (newPos !== pos) {
+				pp.splice(newPos, 0, pp.splice(pos, 1)[0]);
+				main.innerHTML = '';
+				pp.forEach(p => main.appendChild(p));
+			}
+			go(id);
+		};
+		pg.parentElement.insertBefore(f, pg);
+		handleTab();
+		f.name.focus();
+	}
+};
+// Create a new page Element & start editing
+w.add = (title = '') => {
+	const p = ce('section');
+	p.id = Date.now();
+	const t = new Date().toLocaleString();
+	p.innerHTML = /*html*/`<h1>${title}</h1>
+<pre hidden></pre>
+<article></article>
+<footer>
+	<time title="Created ${t}">${t}</time> <button class="dull editBtn" onclick="edit(${p.id})">Edit</button>
+</footer>`;
+	main.appendChild(p);
+	nav.appendChild(navItem(p));
+	edit(p.id);
+};
+// Delete the page with the given id
+w.del = id => {
+	if (confirm('Delete page?')) {
+		const p = gebi(id);
+		if (p) p.parentElement.removeChild(p);
+		const na = gebi(`nav${id}`);
+		if (na) na.closest('ul').removeChild(na.parentElement);
+		const e = gebi(`edit${id}`);
+		if (e) e.parentElement.removeChild(e);
+		go();
+	}
+};
+// Check all pages for text matching the given term
+w.search = term => {
+	clearTimeout(res.debounce);
+	res.debounce = setTimeout(() => {
+		hideRes();
+		if (!term) return;
+		const re = new RegExp(term, 'i');
+		const mark = t => t.replace(re, '<mark>$&</mark>');
+		const lc = term.toLowerCase();
+		pages().map(p => {
+			const i = info(p);
+			const tmp = ce('div');
+			tmp.innerHTML = md(wikiLinks(i.src));
+			i.txt = `${i.name} ${tmp.textContent}`;
+			return i;
+		})
+			// Get only pages that contain the search term anywhere in any form
+			.filter(({txt}) => txt.match(re) !== null)
+			// Compare index of literal text plus case-insensitive text
+			.sort((a, b) => {
+				const ai = a.txt.indexOf(term);
+				let aici = a.txt.toLowerCase().indexOf(lc);
+				if (aici < 0) aici = Infinity;
+				const bi = b.txt.indexOf(term);
+				let bici = b.txt.toLowerCase().indexOf(lc);
+				if (bici < 0) bici = Infinity;
+				if (ai >= 0 && bi < 0) return -1;
+				if (ai < 0 && bi >= 0) return -1;
+				if (ai < 0 && bi < 0) {
+					if (aici === bici) return 0;
+					return aici < bici ? -1 : 1;
+				}
+				if (ai === bi) return 0;
+				return ai < bi ? -1 : 1;
+			})
+			// Repopulate search responses el with term highlighted
+			.forEach((p) => {
+				const txt = p.txt.replace(p.name, '');
+				const i = txt.toLowerCase().indexOf(lc);
+				const pre = txt.length < 1 ? '' : txt.substring(i - 50, i + term.length + 50);
+				res.innerHTML += /*html*/`<a href="javascript:go(${p.id})" onclick="res.innerHTML = ''">${mark(p.name)}<p class="sm">${mark(pre)}</p></a>`;
+			});
+	}, 300);
+};
+// If page id given, re-render stored Markdown directly into the element & update nav text
+w.render = (pId = null) => {
+	if (!pId) nav.innerHTML = '';
+	(!pId ? pages() : [gebi(pId)]).forEach(p => {
+		const { id, name, src } = info(p);
+		q('pre', p).setAttribute('hidden', '');
+		const a = q('article', p);
+		a.innerHTML = md(wikiLinks(src));
+		a.removeAttribute('hidden');
+		if (!pId) {
+			nav.appendChild(navItem(p));
+		} else {
+			gebi(`nav${id}`).textContent = name;
+		}
+	});
+};
+// Reset to default state, remove rendered Markdown, start download of HTML file, and reset to current view.
+w.save = (html = false) => {
+	go(); // go to home page
+	const pp = pages();
+	sBar.value = '';
+	res.innerHTML = '';
+	pp.forEach(p => {
+		const txt = q('pre', p).removeAttribute('hidden');
+		const a = q('article', p);
+		a.setAttribute('hidden', true);
+		a.innerHTML = '';
+		const edit = gebi(`edit${p.id}`);
+		if (edit) edit.parentElement.removeChild(edit);
+	});
+	const name = q('#wiki #name').textContent;
+	document.title = name;
+	const doc = /*html*/`<!DOCTYPE html><html lang="en">
+<head>${document.head.innerHTML}</head>
+<body>${document.body.innerHTML}</body></html>`;
+	render();
+	if (pp[0] && pp[0].name !== h()) history.back();
+	// Return the content instead of saving
+	if (html) return doc;
+	// Create & click anchor tag with download attribute
+	const a = ce('a');
+	a.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(doc));
+	const filename = name.toLowerCase().replace(/\W/g, '_') + '.html';
+	a.setAttribute('download', filename);
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+};
+// Unhide the put save button if webdav is detected
+w.putEnable = () => {
+	if (!location.protocol.startsWith('http')) return;
+	fetch(location.href, { method: 'OPTIONS' }).then(res => {
+		if (res.ok && res.headers.get('dav')) {
+			// Show put save button and put status
+			qa('#putSaveBtn, #putStatus').forEach(e => e.removeAttribute('hidden'));
+			// Tweak original save button text
+			q('#saveBtn').textContent = 'Save locally';
+		}
+	}).catch(err => {})
+}
+// Do a put save to the server
+w.putSave = () => {
+	const doc = save(true);
+	const s = q('#putStatus');
+	// Show wait indicator
+	s.textContent = "\u22ef";
+	s.classList.remove('fade');
+	var headers = { "Content-Type": "text/html;charset=UTF-8" };
+	fetch(location.href, { method: "PUT", headers, body: doc }).then(res => {
+		if (res.ok) {
+			// Show success indicator briefly
+			s.textContent = "\u2714";
+			s.classList.add('fade');
+		} else {
+			s.textContent = "";
+			alert("Save failed!");
+		}
+	}).catch(err => {
+		s.textContent = "";
+		alert("Save failed!");
+	})
+}
+// Use save function if Ctrl+S is used
+w.addEventListener('keydown', e => {
+	if ((e.ctrlKey || e.metaKey) && e.key === 's' && !e.shiftKey) {
+		e.preventDefault();
+		save();
+	}
+});
+// Ensure correct page displays when Back button is pressed.
+w.addEventListener('popstate', e => {
+	go(h(), true);
+});
+// Trigger search on input and focus of search bar
+['input', 'focus'].forEach(e => sBar.addEventListener(e, ({ target }) => search(target.value)));
+// Hide search results when search bar not focused
+sBar.addEventListener('blur', () => setTimeout(hideRes, 99));
+
+// Initialize the view
+(() => {
+	putEnable();
+	render();
+	go(h());
+})();
+
+/**
+ * Markdown parser modified beyond recognition from md.js <https://github.com/thysultan/md.js>
+ * @licence MIT
+ * Supported Features:
+ * - HTML
+ * - headings h1–h6+ (# h1, ## h2, ### h3, etc.)
+ * - paragraphs (\n\n)
+ * - line breaks (	\n)
+ * - blockquotes (> text)
+ * - horizontal rule (---, ***, - - -, * * *)
+ * - code blocks (```)
+ * - inline code (`code`)
+ * - images with alt text & optional title (![alt](image_src "optional title"))
+ * - inline Markdown links with optional title ([link text](link_url "optional title"))
+ * - auto links & email linking (<http://url.domain>, <person@email.example>)
+ * - lists with indentation (- list item, * list item, + list item)
+ * - checkboxes ([ ], [x])
+ * - bold, italic (**bold**, __bold__, *italic*, _italic_, ***bold & italic***, ___bold & italic___, **_bold & italic_**, etc.)
+ * - strikethrough (~~strikethrough~~)
+ * - escaped characters (\*, \_)
+ *
+ * @param	{string} src
+ * @return {string}
+ */
+function md(src) {
+	if (!src) return '';
+
+	const chr = {
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#39;',
+		'&': '&amp;',
+		'[': '&#91;',
+		']': '&#93;',
+		'(': '&#40;',
+		')': '&#41;',
+		'_': '&#95;',
+		'*': '&ast;',
+		'`': '&#96;',
+	};
+	// Save non-& char map values without `&` to more easily check for double-escaped htmlEntity values
+	const esc2 = Object.keys(chr).filter(c => c != '&').map(c => chr[c].replace(c != '&' ? '&' : '', ''));
+
+	// Get the HTML entity for the character from the char map
+	const ent = str => str.replace(/[<>&\(\)\[\]"']/g, c => (chr[c] || c))
+		.replace(new RegExp(`&amp;(${esc2.join('|')})`, 'g'), '&$1');
+
+	var code = []; // Code Blocks
+	var cIdx = 0; // Code index
+	var html = []; // HTML tags
+	var hIdx = 0; // HTML index
+
+	// to allow matching trailing paragraphs
+	var l = src.length;
+	if (src[l - 1] !== '\n' && src[l - 2] !== '\n') {
+		src += '\n\n';
+	}
+
+	// escaped characters
+	src = src.replace(/\\(.)/g, (m, c) => (chr[c] || m))
+		// collect code blocks and replace with placeholder
+		// we do this to avoid code blocks matching the paragraph regexp
+		.replace(/```(.*)\n([^\0]+?)```(?!```)/gm, (m, lang, block) => {
+			code[cIdx] = { lang, block: ent(block) };
+			return `{code-${cIdx++}}`;
+		})
+		// inline code
+		.replace(/`([^`]+?)`/g, (m, c) => `<code>${ent(c)}</code>`)
+		// auto links
+		.replace(/<([^>\s]+(\/\/|@)[^>\s]+)>/g, (m, url, method) => `[${url}](${method === '@' ? 'mailto:' : ''}${url})`)
+		// links
+		.replace(/(!?)\[([^\]]*?)\]\(([^\s\n]*)(?:| "(.*)")\)/gm, (m, img, txt, url, title) => {
+			txt = ent(txt);
+			// try to decode url before re-encoding it in case it has encoded values to prevent encoding the % character
+			try { url = decodeURI(url); } catch { } // using try/catch because a malformed URI throws an error
+			url = encodeURI(url);
+			title = title ? ` title="${ent(title)}"` : '';
+			if (img) return `<img src="${url}" alt="${txt}"${title}>`;
+			return `<a href="${url}"${title}>${txt}</a>`;
+		})
+		// HTML tags
+		.replace(/(<\/?[a-zA-Z]+[^>]*>)/gm, (m, tag) => {
+			html[hIdx] = tag;
+			return `{html-${hIdx++}}`;
+		})
+		// blockquotes
+		.replace(/^[ \t]*>+ (.*)/gm, '<blockquote>\n$1\n</blockquote>')
+		.replace(/(<\/blockquote>\n?<blockquote>)+?/g, '')
+		// headings
+		.replace(/^(#+) +(.*)/gm, (m, hash, txt) => `<h${hash.length}>${txt}</h${hash.length}>`)
+		// headings h1 (commonmark)
+		.replace(/^([^\n\t ])(.*)\n====+/gm, '<h1>$1$2</h1>')
+		// headings h2 (commonmark)
+		.replace(/^([^\n\t ])(.*)\n----+/gm, '<h2>$1$2</h2>')
+		// horizontal rule
+		.replace(/\n( *[-*]){3,}\n/gm, '<hr>')
+		// checkboxes
+		.replace(/\[( |x)\]/g, (m, checked) => `<input type="checkbox" disabled${checked.toLowerCase() === 'x' ? ' checked' : ''}>`)
+		// line breaks
+		.replace(/	+\n/gm, '<br>')
+		// paragraphs - exclude lists, already-rendered HTML, & whitespace
+		.replace(/^([^-\+\*\d<\t \n])([^]*?)(?:\n\n)/gm, (m, leadChr, body) => `<p>${leadChr}${body}</p>\n`)
+		// lists
+		.replace(/^([\t ]*)(?:(-|\+|\*)|(\d+(?:\)|\.))) (.*)/gm, (m, lead, b, numbered, txt) => {
+			lead = lead.replace(/	/g, '\t');
+			const type = numbered ? 'o' : 'u';
+			return `${lead}<${type}l><li>${txt}</li></${type}l>`;
+		});
+
+	// This handles *almost* all combinations, but some indented lists combining ul & ol don't render right
+	var indentRE = /<\/li><\/(u|o)l>\n(\t+)<(u|o)l><li>(.*)<\/li><\/(u|o)l>/;
+	while (src.match(indentRE)) {
+		src = src.replace(indentRE, (m, pEnd, tabs, cStart, txt, cEnd) => {
+			if (tabs.length > 0) {
+				tabs = tabs.substring(1);
+				if (tabs.length > 0) tabs = '\n' + tabs;
+			}
+			return `${tabs}<${cStart}l><li>${txt}</li></${cEnd}l></li></${pEnd}l>`;
+		});
+	}
+
+	// Combine lists
+	src = src.replace(/(<\/ul>\n?[ \t]*<ul>)+?/g, '')
+		.replace(/(<\/ol>\n?[ \t]*<ol>)+?/g, '')
+		// strong
+		.replace(/\*\*([^\n*]+?)\*\*/g, '<strong>$1</strong>')
+		.replace(/__([^\n_]+?)__/g, '<strong>$1</strong>')
+		// emphasis
+		.replace(/\*([^\n*]+?)\*/g, '<em>$1</em>')
+		.replace(/_([^\n_]+?)_/g, '<em>$1</em>')
+		// strike through
+		.replace(/(?:~~)([^~]+?)(?:~~)/g, '<del>$1</del>');
+
+	// replace html tag placeholders
+	for (let i = 0; i < hIdx; i++) {
+		src = src.replace(`{html-${i}}`, html[i]);
+	}
+
+	// replace code block placeholders
+	for (let i = 0; i < cIdx; i++) {
+		const { lang, block } = code[i];
+		src = src.replace(
+			`{code-${i}}`,
+			`<pre><code${lang ? ` class="language-${lang}"` : ''}>${ent(block)}</code></pre>`
+		);
+	}
+
+	return src.trim();
+}
+</script>
+</body>
+</html>

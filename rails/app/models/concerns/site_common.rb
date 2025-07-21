@@ -47,6 +47,7 @@ module SiteCommon
     'tw5x'    => 'TiddlyWiki (external core)',
     'classic' => 'TiddlyWiki Classic',
     'feather' => 'Feather Wiki',
+    'sitelet' => 'siteleteer',
   }.freeze
 
   KIND_LOGOS = {
@@ -56,6 +57,7 @@ module SiteCommon
     'tw5x'    => 'tw5x-icon.ico',
     'classic' => 'classic-icon.ico',
     'feather' => 'feather-icon.svg',
+    'sitelet' => 'siteleteer-logo.svg',
   }.freeze
 
   # (These are not currently used)
@@ -65,6 +67,7 @@ module SiteCommon
     'tw5x'    => CGI.escape('https://tiddlywiki.com/#:[[Using the external JavaScript template]] HelloThere'),
     'classic' => 'https://classic.tiddlywiki.com/',
     'feather' => 'https://feather.wiki/',
+    'sitelet' => 'https://alamantus.codeberg.page/siteleteer/',
   }.freeze
 
   KIND_VALS = KINDS.keys.freeze
