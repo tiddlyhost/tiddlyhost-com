@@ -427,6 +427,20 @@ classic-update: ver-set download-empty-classic
 	git commit -m 'chore: Upgrade TiddlyWiki Classic empty to $(VER)' \
 	  -m 'Commit created with `VER=$(VER) make classic-update`'
 
+# And for siteleteer
+#   VER=1.0.2 make siteleteer-update
+SITELETEER_DIR=../siteleteer-tiddlyhost
+siteleteer-update: ver-set
+	# Beware there's no version tags or downnloads here. Assume that you
+	# have prepared the right version in $(SITELETEER_DIR) beforhand.
+	cp $(SITELETEER_DIR)/siteleteer.html $(EMPTIES_DIR)/sitelet.html
+	cp $(EMPTIES_DIR)/sitelet.html $(EMPTIES_DIR)/sitelet/$(VER).html
+	git add \
+	  $(EMPTIES_DIR)/sitelet.html \
+	  $(EMPTIES_DIR)/sitelet/$(VER).html
+	git commit -m 'chore: Upgrade siteleteer empty to $(VER)' \
+	  -m 'Commit created with `VER=$(VER) make siteleteer-update`'
+
 #----------------------------------------------------------
 
 # Generate an SSL cert
