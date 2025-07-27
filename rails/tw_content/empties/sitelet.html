@@ -509,20 +509,24 @@ w.putSave = () => {
 	s.textContent = "\u22ef";
 	s.classList.remove('fade');
 	var headers = { "Content-Type": "text/html;charset=UTF-8" };
-	fetch(location.href, { method: "PUT", headers, body: doc }).then(res => {
+	fetch(location.href, { method: "PUT", headers, body: doc }).then(r =>
+		r.text().then(text => ({ ok: r.ok, status: r.status, text: text }))
+	).then(res => {
 		if (res.ok) {
 			// Show success indicator briefly
 			s.textContent = "\u2714";
 			s.classList.add('fade');
 		} else {
 			s.textContent = "";
-			alert("Save failed!");
+			const msg = res.text || `Status ${res.status}`;
+			alert(`Save failed!\n\n${msg}`);
 		}
 	}).catch(err => {
 		s.textContent = "";
-		alert("Save failed!");
+		alert(`Save failed!\n\n${err}`);
 	})
 }
+
 // Use save function if Ctrl+S is used
 w.addEventListener('keydown', e => {
 	if ((e.ctrlKey || e.metaKey) && e.key === 's' && !e.shiftKey) {
