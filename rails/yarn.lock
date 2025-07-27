@@ -892,9 +892,9 @@
   integrity sha512-q6XAnWQDIMA3+FTiOYajoYqySkO+JSat0ytXGSuRdq9uXE7o92gzuQwQM14xaCRlBLGq3v5miDGC4vkVTn54xA==
 
 "@jsonjoy.com/json-pack@^1.0.3":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@jsonjoy.com/json-pack/-/json-pack-1.2.0.tgz#e658900e81d194903171c42546e1aa27f446846a"
-  integrity sha512-io1zEbbYcElht3tdlqEOFxZ0dMTYrHz9iMf0gqn1pPjZFTCgM5R4R5IMA20Chb2UPYYsxjzs8CgZ7Nb5n2K2rA==
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@jsonjoy.com/json-pack/-/json-pack-1.4.0.tgz#9ec96358c50c89398f3fff533a59fefb57337826"
+  integrity sha512-Akn8XZqN3xO9YGcgvIiTauBBXTP92QSvw6EcGha+p5nm7brhbwvev5gw4fi+ouLGrBpfPpb72+S5pxl4mkMIGQ==
   dependencies:
     "@jsonjoy.com/base64" "^1.1.1"
     "@jsonjoy.com/util" "^1.1.2"
@@ -902,9 +902,9 @@
     thingies "^1.20.0"
 
 "@jsonjoy.com/util@^1.1.2", "@jsonjoy.com/util@^1.3.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
-  integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.8.0.tgz#3b5d276f8c7ebab0599d92a81c829e4874920ec8"
+  integrity sha512-HeR0JQNEdBozt+FrfyM5T0X3R+fIN0D+BRDkxPP5o41fTWzHfeZEqtK16aTW8haU+h+SG7XYq9PP5kobvOmkSA==
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.5"
@@ -2983,9 +2983,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.5.173:
-  version "1.5.190"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.190.tgz#f0ac8be182291a45e8154dbb12f18d2b2318e4ac"
-  integrity sha512-k4McmnB2091YIsdCgkS0fMVMPOJgxl93ltFzaryXqwip1AaxeDqKCGLxkXODDA5Ab/D+tV5EL5+aTx76RvLRxw==
+  version "1.5.191"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.191.tgz#8ae49a471447b1ceaf1d4d183a9000082f52363c"
+  integrity sha512-xcwe9ELcuxYLUFqZZxL19Z6HVKcvNkIwhbHUz7L3us6u12yR+7uY89dSl570f/IqNthx8dAw3tojG7i4Ni4tDA==
 
 elliptic@^6.5.3, elliptic@^6.5.5:
   version "6.6.1"
@@ -4721,9 +4721,9 @@ media-typer@0.3.0:
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
 memfs@^4.6.0:
-  version "4.17.2"
-  resolved "https://registry.yarnpkg.com/memfs/-/memfs-4.17.2.tgz#1f71a6d85c8c53b4f1b388234ed981a690c7e227"
-  integrity sha512-NgYhCOWgovOXSzvYgUW0LQ7Qy72rWQMGGFJDoWg4G30RHd3z77VbYdtJ4fembJXBy8pMIUA31XNAupobOQlwdg==
+  version "4.22.1"
+  resolved "https://registry.yarnpkg.com/memfs/-/memfs-4.22.1.tgz#9b46a37c63170e8f464225e99736bdabbb8ee360"
+  integrity sha512-uycbtnFiSEgN+bD+UUoM4yjcZGc0N/XGxgvpag+LiHE5AgDPjMq+0n4vQqKAA/dinEWqk0DeYSVZbSearHDYzw==
   dependencies:
     "@jsonjoy.com/json-pack" "^1.0.3"
     "@jsonjoy.com/util" "^1.3.0"
