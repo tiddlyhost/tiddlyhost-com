@@ -1,6 +1,6 @@
 class AddSiteleteerEmpty < ActiveRecord::Migration[7.2]
   def up
-    (Empty.find_or_create_by(name: 'sitelet') do |e|
+    Empty.find_or_create_by(name: 'sitelet') do |e|
       e.title = 'siteleteer'
       e.description = 'An even lighter and simpler single-page wiki from
         the creator of Feather Wiki.'.squish
@@ -10,7 +10,7 @@ class AddSiteleteerEmpty < ActiveRecord::Migration[7.2]
       e.primary = false
       e.tooltip = 'To see how it works, view the clean and very readable page
         source. Requires a custom build of siteleteer.'.squish
-    end).update(enabled: true) # Make sure it's enabled in case you did a rollback
+    end.update(enabled: true) # Make sure it's enabled in case you did a rollback
   end
 
   def down
