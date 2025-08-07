@@ -14,9 +14,6 @@ all:
       - "{{ primary_host }}"
       - "{{ tiddlyspot_host }}"
 
-    # See local-docker-fix in Makefile
-    localhost: {}
-
   vars:
     local_root: ../..
 
