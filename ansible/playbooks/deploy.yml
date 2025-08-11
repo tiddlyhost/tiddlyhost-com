@@ -50,6 +50,7 @@
       - nmap-ncat
       - python3-pip
       - tmux
+      - awscli
     tags:
     - deps
 
@@ -121,7 +122,8 @@
     - bin/certbot-create
     - bin/certbot-renew
     - bin/certbot-revoke
-    - bin/db-backup
+    - bin/db-dump-to-file
+    - bin/db-backup-to-s3
     - bin/fetch-prerelease-empty
     - .bashrc.d/setup.sh
     tags:
@@ -145,7 +147,7 @@
     ansible.builtin.cron:
       name: thost db backup
       user: root
-      job: "{{ bin_dir }}/db-backup"
+      job: "{{ bin_dir }}/db-dump-to-file"
       minute: "5"
       hour: "*/8"
     tags:

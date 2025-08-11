@@ -3,7 +3,7 @@ set -euo pipefail
 #
 # Intended to be used for a postgres upgrade.
 #
-# See also ansible/playbooks/templates/bin/db-backup.j2
+# See also ansible/playbooks/templates/bin/db-dump-to-file.j2
 # which is similar but for a different purpose.
 #
 # Example usage:

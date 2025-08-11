@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Configuration
+BACKUP_LOG="{{ home_dir }}/backup.log"
+S3_ENABLED="{{ s3_backup_enabled | default('False') }}"
+S3_BUCKET="{{ s3_backup_bucket | default('') }}"
+
+# Logging function
+log() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S.%N') - $1" >> "$BACKUP_LOG"
+}
+
+# Check if backup file exists
+if [[ -f "{{ db_dump_file }}" ]]; then
+  log "Dump file found:"
+  log "$(ls -l {{ db_dump_file }})"
+else
+  log "ERROR: Dump file not found at {{ db_dump_file }}"
+  exit 1
+fi
+
+# Upload to S3 if enabled
+if [[ "$S3_ENABLED" == "True" && -n "$S3_BUCKET" ]]; then
+  TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
+  S3_KEY="dbdump_$TIMESTAMP.gz"
+
+  log "Uploading..."
+  if aws s3 cp {{ db_dump_file }} "s3://$S3_BUCKET/$S3_KEY" --profile s3-backups --no-progress; then
+    log "Uploaded to s3://$S3_BUCKET/$S3_KEY"
+
+    # Optional: Clean up old S3 backups (keep last N days)
+    if [[ "{{ s3_backup_retention_days | default('30') }}" != "0" ]]; then
+      CUTOFF_DATE=$(date -d "{{ s3_backup_retention_days | default('30') }} days ago" '+%Y%m%d')
+      log "Removing backups older than $CUTOFF_DATE"
+      aws s3 ls "s3://$S3_BUCKET" --profile s3-backups | while read -r line; do
+        BACKUP_DATE=$(echo "$line" | awk '{print $4}' | grep -o '[0-9]\{8\}')
+        if [[ -n "$BACKUP_DATE" && "$BACKUP_DATE" -lt "$CUTOFF_DATE" ]]; then
+          OLD_KEY=$(echo "$line" | awk '{print $4}')
+          log "Deleting s3://$S3_BUCKET/$OLD_KEY"
+          aws s3 rm "s3://$S3_BUCKET/$OLD_KEY" --profile s3-backups
+        fi
+      done
+    fi
+  else
+    log "ERROR: Upload failed!"
+    exit 1
+  fi
+else
+  log "ERROR: Backups disabled or not configured"
+  exit 1
+fi

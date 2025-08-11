@@ -11,7 +11,13 @@
   - name: Make a fresh backup of the database
     # There should be regular backups triggered by cron,
     # but let's do an additional backup right now.
-    command: "{{ bin_dir }}/db-backup"
+    command: "{{ bin_dir }}/db-dump-to-file"
+
+  - name: Upload latest to S3 backup bucket
+    command: "{{ bin_dir }}/db-backup-to-s3"
+    # Right now the aws credential we want to use is not visible
+    # to the root user, so don't become root for this
+    become: false
 
   - name: Download all the files
     # Beware it will overwrite existing files

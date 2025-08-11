@@ -26,4 +26,9 @@ all:
     backups_dir: "{{ home_dir }}/backups"
     db_dump_file: "{{ backups_dir }}/dbdump.gz"
 
+    # S3 backup configuration
+    s3_backup_enabled: true
+    s3_backup_bucket: "tiddlyhost-backups"
+    s3_backup_retention_days: 0
+
     prerelease_empty: https://tiddlywiki.com/prerelease/empty.html
