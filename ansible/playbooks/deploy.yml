@@ -383,6 +383,12 @@
       not "already exists" in db_create.stderr
     tags:
     - db-create
+    # This fails currently due to some collation problems.
+    # I'll fix the collation problems, but regardless of that,
+    # it seems dangerous and weird to run it every time and
+    # rely on the error handling in rails and/or postgres to
+    # notice the db exists already
+    when: false
 
   - name: Apply database migrations
     community.docker.docker_container_exec:
