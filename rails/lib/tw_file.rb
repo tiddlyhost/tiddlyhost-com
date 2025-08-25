@@ -49,7 +49,7 @@ class TwFile
   #
   def self.light_get_kind_and_version(html_content)
     # For TW5
-    match = html_content.match(/^<meta name="tiddlywiki-version" content="([a-zA-Z0-9\-\._]+)"/m)
+    match = html_content.match(/^<meta name="tiddlywiki-version" content="([a-zA-Z0-9\-._]+)"/m)
     if match
       if html_content.match(/^<script src=".*tiddlywikicore.*\.js" onerror="alert/m)
         # External core javascript
@@ -70,7 +70,7 @@ class TwFile
     # For Feather Wiki
     # (Compressed versions don't have the quotes hence the "? in the regex here)
     if html_content.match(/<meta name="?application-name"? content="Feather Wiki">/)
-      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
+      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-._]+)"?/)
       if match
         if html_content.match(/<script id="?a"? src="?FeatherWiki-bones_\w+.js"?>/)
           # External javascript
@@ -84,7 +84,7 @@ class TwFile
 
     # For siteleteer
     if html_content.match(/<meta name="application-name" content="siteleteer-tiddlyhost">/)
-      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-\._]+)"?/)
+      match = html_content.match(/<meta name="?version"? content="?([a-zA-Z0-9\-._]+)"?/)
       if match
         ['sitelet', match[1]]
       end

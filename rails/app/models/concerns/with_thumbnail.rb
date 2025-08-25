@@ -70,7 +70,7 @@ module WithThumbnail
 
     # Similar to inject_external_core_url_prefix but probably uses less memory
     use_html = file_download.
-      sub(/(<script src=")(tiddlywikicore-[\d\.]+.js")/, "\\1#{core_url_prefix}/\\2")
+      sub(/(<script src=")(tiddlywikicore-[\d.]+.js")/, "\\1#{core_url_prefix}/\\2")
 
     grover = Grover.new(use_html, **grover_opts)
 
