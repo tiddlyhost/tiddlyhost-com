@@ -1,9 +1,21 @@
 #!/bin/bash
 
+BACKUP_LOG="{{ home_dir }}/backup.log"
+
+# This script usually runs as root, but we don't want to
+# make the log file unwritable by non-root users
+chown "{{ ansible_user }}" "$BACKUP_LOG"
+
+# Logging function
+log() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S.%N') - $1" >> "$BACKUP_LOG"
+}
+
 # Ensure the backups dir exists
 mkdir -p {{ backups_dir }}
 
 # Keep a few old backups
+log "Rotating dump files"
 for i in {12..0}; do
   [[ -f {{ db_dump_file }}.$i ]] && mv {{ db_dump_file }}.$i {{ db_dump_file }}.$((i+1))
 done
@@ -11,5 +23,7 @@ mv {{ db_dump_file }} {{ db_dump_file }}.0
 
 # Make a new backup
 # (This usually runs as root, but keep the sudo here anyway.)
+log "Dumping..."
 sudo docker compose -f {{ home_dir }}/docker-compose.yml exec -T db bash -c \
   'pg_dump --dbname={{ db_name }} --username={{ db_user }} --create' | gzip > {{ db_dump_file }}
+log "Dumped to {{ db_dump_file }}"
