@@ -12,4 +12,14 @@
 
   // Open PRs against devel branch instead of main
   "baseBranches": ["devel"],
+
+  "packageRules": [
+    {
+      "matchManagers": ["bundler"],
+      // Seems there's always a new version of this. Let's update
+      // it now and again rather than generate an endless PR stream.
+      "matchPackageNames": ["aws-sdk-s3"],
+      "enabled": false
+    },
+  ],
 }
