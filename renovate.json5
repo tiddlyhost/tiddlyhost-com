@@ -21,5 +21,11 @@
       "matchPackageNames": ["aws-sdk-s3"],
       "enabled": false
     },
-  ],
+    {
+      // I mainly care about the ruby gems. For node modules, I'll
+      // continue to update them manually using `make deps-update`.
+      "matchManagers": ["yarn"],
+      "enabled": false
+    },
+  ]
 }
