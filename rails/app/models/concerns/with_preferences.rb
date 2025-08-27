@@ -13,6 +13,17 @@ module WithPreferences
 
         update(preferences: preferences.merge(pref_name.to_s => value))
       end
+
+      define_method("#{pref_name}_pref_next") do
+        current_value = send("#{pref_name}_pref")
+        CycleHelper.cycle_next(current_value, allowed_values)
+      end
+
+      define_method("#{pref_name}_pref_cycle") do
+        new_value = send("#{pref_name}_pref_next")
+        send("#{pref_name}_pref=", new_value)
+        new_value
+      end
     end
   end
 end

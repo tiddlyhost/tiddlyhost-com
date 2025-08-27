@@ -79,4 +79,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'dark', @user.reload.theme_mode_pref
     assert_raises(ArgumentError) { @user.theme_mode_pref = 'purple' }
   end
+
+  test 'cycling user preferences' do
+    # Used in SitesController#view_toggle
+    assert_equal 'list', @user.list_mode_pref
+    assert_equal 'grid', @user.list_mode_pref_cycle
+    assert_equal 'list', @user.list_mode_pref_cycle
+
+    # (Actually not used anywhere)
+    assert_equal 'auto', @user.theme_mode_pref
+    assert_equal 'light', @user.theme_mode_pref_cycle
+    assert_equal 'dark', @user.theme_mode_pref_cycle
+    assert_equal 'auto', @user.theme_mode_pref_cycle
+  end
 end
