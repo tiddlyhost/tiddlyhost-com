@@ -46,7 +46,7 @@ class SitesController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @grid_view = cookies[:grid_view].present?
+        @grid_view = current_user.list_mode_pref == "grid"
       end
 
       format.json do
@@ -56,11 +56,7 @@ class SitesController < ApplicationController
   end
 
   def view_toggle
-    if cookies[:grid_view].present?
-      cookies.delete(:grid_view)
-    else
-      cookies[:grid_view] = '1'
-    end
+    current_user.list_mode_pref_cycle
     # Preserve filter and sort params
     redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({ action: :index }))
   end
