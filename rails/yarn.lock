@@ -1059,10 +1059,10 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.1"
 
-"@rails/activestorage@^7.0.0":
-  version "7.2.202"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.202.tgz#a4fcd43b1b18c9c382606ea69a38cebf76fd3e68"
-  integrity sha512-VGC7MimZsM65ac2u3kQulonGnD0BRfULNe8xCsr86ONCefC50td6GdNgpdDPoCQFnakx4Yvnj9Ni2Q+y3KpHww==
+"@rails/activestorage@^8.0.0":
+  version "8.0.201"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-8.0.201.tgz#2d6dd9e7be24b2d57c83124d8189a06f27c8278b"
+  integrity sha512-nwc2UnffHA3lgStYP01JUF9ni9dZTPX7YJESj5qRjrox4Q3oA7bDErKySP6bS9fOTcwtrPvTHBH95gKpLEic6Q==
   dependencies:
     spark-md5 "^3.0.1"
 
