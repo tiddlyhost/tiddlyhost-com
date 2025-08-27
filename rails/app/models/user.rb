@@ -2,6 +2,12 @@ class User < ApplicationRecord
   include AdminSearchable
   include Subscriber
 
+  PREFERENCES = {
+    list_mode: %w[list grid],
+    theme_mode: %w[auto light dark],
+  }
+  include WithPreferences
+
   #
   # Include devise modules. Others available are:
   # :omniauthable

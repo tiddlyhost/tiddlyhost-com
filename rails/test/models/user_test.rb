@@ -67,4 +67,16 @@ class UserTest < ActiveSupport::TestCase
       assert_equal allowed_username.strip, @user.reload.username
     end
   end
+
+  test 'user preferences' do
+    assert_equal 'list', @user.list_mode_pref
+    @user.list_mode_pref = 'grid'
+    assert_equal 'grid', @user.reload.list_mode_pref
+    assert_raises(ArgumentError) { @user.list_mode_pref = 'carousel' }
+
+    assert_equal 'auto', @user.theme_mode_pref
+    @user.theme_mode_pref = 'dark'
+    assert_equal 'dark', @user.reload.theme_mode_pref
+    assert_raises(ArgumentError) { @user.theme_mode_pref = 'purple' }
+  end
 end
