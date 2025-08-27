@@ -1,0 +1,15 @@
+//
+// Configuration for Mend Renovate
+// https://developer.mend.io/
+//
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Use recommended defaults
+  "extends": [
+    "config:recommended"
+  ],
+
+  // Open PRs against devel branch instead of main
+  "baseBranches": ["devel"],
+}
