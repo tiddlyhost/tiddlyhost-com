@@ -33,7 +33,10 @@ class SitesController < ApplicationController
     },
     kind: SiteCommon::KINDS.to_a.to_h { |k, v| [k.to_sym,
       { filter: ->(ss) { ss.select { |s| s.tw_kind == k.to_s } }, title: v }
-    ]}
+    ]},
+    # So this gets included in sort_filter_param_keys. The search_text
+    # filtering is done separately in set_sites. (Fixme: It's confusing.)
+    q: {},
   }.freeze
 
   NULL_ALWAYS_LAST = %w[
@@ -59,7 +62,7 @@ class SitesController < ApplicationController
   def view_toggle
     current_user.list_mode_pref_cycle
     # Preserve filter and sort params
-    redirect_to url_for(params.permit(:controller, :action, :access, :s).merge({ action: :index }))
+    redirect_to url_for(params.permit(:controller, :action, :s, :access, :kind, :q).merge({ action: :index }))
   end
 
   # Any site that's been saved recently would probably already
