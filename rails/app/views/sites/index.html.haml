@@ -10,7 +10,7 @@
       = link_to_user_hub_with_count(current_user)
 
   .float-end.sites-menu-container.small{ style: "margin-top: -0.6rem;" }
-    = render 'filter_and_sort', sites: @sites, grid_view: @grid_view
+    = render 'filter_and_sort', sites: @sites, list_mode: @list_mode, list_mode_next: @list_mode_next
 
   .ps-1.ms-2.mb-3.th-text-small
     - if @filtered_site_count != @site_count
@@ -21,10 +21,8 @@
     = nice_byte_count(@total_storage_bytes)
     storage used.
 
-  - if @grid_view
-    = render 'grid_view'
-  - else
-    = render 'list_view'
+  -# 'list_view' or 'grid_view'
+  = render "#{@list_mode}_view"
 
 .create-buttons.mx-2.my-4.py-2
   = link_to new_site_path, class: 'btn me-3', title: 'Create a site' do

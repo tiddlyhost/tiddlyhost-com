@@ -46,7 +46,8 @@ class SitesController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @grid_view = current_user.list_mode_pref == "grid"
+        @list_mode = current_user.list_mode_pref
+        @list_mode_next = current_user.list_mode_pref_next
       end
 
       format.json do

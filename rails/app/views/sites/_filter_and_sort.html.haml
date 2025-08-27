@@ -53,6 +53,6 @@
 
 .d-inline-block.sites-menu
   = link_to({ controller: :sites, action: :view_toggle }.merge(params.permit(:q, :kind, :access, :s)),
-    class: "m-1 btn btn-sm", title: grid_view ? 'List view' : 'Grid view') do
+    class: "m-1 btn btn-sm", title: "#{list_mode_next.titleize} view") do
     View:
-    = bi_icon(grid_view ? 'list-ul' : 'grid', fill: '#666')
+    = bi_icon(list_mode_next == 'grid' ? 'grid' : 'list-ul', fill: '#666')
