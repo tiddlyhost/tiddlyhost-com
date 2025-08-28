@@ -48,7 +48,7 @@ class HomeController < ApplicationController
   # This persists the theme mode preference. There is some javascript to handle
   # changing it in the browser. We're counting on the behavior of helpers.next_theme_mode
   # being the same as what is happening in javascript, otherwise it will get out of sync.
-  # See also setTheme in app/javascript/packs/application.js, and
+  # See also setLightDark in app/javascript/packs/application.js, and
   # $('.mode-cycle-btn').on('click', ...
   def mode_cycle
     new_theme_mode = helpers.next_theme_mode

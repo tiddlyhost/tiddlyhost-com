@@ -11,6 +11,31 @@ import "bootstrap"
 Rails.start()
 ActiveStorage.start()
 
+window.setLightDark = function () {
+  const html = document.documentElement;
+
+  // Set by the server based on a cookie or user preference
+  // Could be "light", "dark", "auto"
+  const wanted = html.getAttribute('data-theme-mode');
+
+  // From the user's browser settings
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  var useTheme;
+  if (wanted == "dark" || (wanted != "light" && prefersDark))
+    useTheme = "dark";
+  else
+    useTheme = "light";
+
+  // This is what bootstrap (and our own styles) pay attention to
+  // Should be "light" or "dark", but not "auto"
+  html.setAttribute('data-bs-theme', useTheme);
+}
+
+// We want this to happen before the page is rendered to avoid a potential
+// FOUC, so that's why it's here and not in $(document).ready(...)
+setLightDark();
+
 $(document).ready(function(){
 
   var limitChars = function() {
@@ -133,36 +158,21 @@ $(document).ready(function(){
 
   // Three-way theme cycling: auto -> light -> dark -> auto ...
   // See also mode_cycle in the HomeController which does the same
-  // thing server side to persist it in a cookie
+  // thing server side to persist it in a cookie and a user preference
+  // if the user is logged in
   $('.mode-cycle-btn').on('click', function(e){
     var currentMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
     var nextMode;
-    if (currentMode === 'light') {
+
+    // Todo maybe: Use same algorithm as lib/cycle_helper
+    if (currentMode === 'light')
       nextMode = 'dark';
-    } else if (currentMode === 'dark') {
+    else if (currentMode === 'dark')
       nextMode = 'auto';
-    } else {
+    else
       nextMode = 'light';
-    }
+
     document.documentElement.setAttribute('data-theme-mode', nextMode);
-    setTheme(nextMode);
+    setLightDark();
   });
-
-  const setTheme = function (theme) {
-    if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-bs-theme', 'dark')
-    } else if (theme === 'auto') {
-      document.documentElement.setAttribute('data-bs-theme', 'light')
-    } else {
-      document.documentElement.setAttribute('data-bs-theme', theme)
-    }
-  }
-
-  const initTheme = function () {
-    var currentMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
-    setTheme(currentMode)
-  }
-
-  initTheme()
-
 });
