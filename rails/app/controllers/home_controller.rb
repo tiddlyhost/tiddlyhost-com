@@ -45,9 +45,15 @@ class HomeController < ApplicationController
     render_error_page(500, 'Internal Server Error')
   end
 
+  # This persists the theme mode preference. There is some javascript to handle
+  # changing it in the browser. We're counting on the behavior of helpers.next_theme_mode
+  # being the same as what is happening in javascript, otherwise it will get out of sync.
+  # See also setTheme in app/javascript/packs/application.js, and
+  # $('.mode-cycle-btn').on('click', ...
   def mode_cycle
-    current_theme = cookies[:theme_mode]
-    cookies[:theme_mode] = helpers.next_theme_mode(current_theme)
+    new_theme_mode = helpers.next_theme_mode
+    cookies[:theme_mode] = new_theme_mode
+    current_user.theme_mode_pref = new_theme_mode if current_user
     head 200
   end
 

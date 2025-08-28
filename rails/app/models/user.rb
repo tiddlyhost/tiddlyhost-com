@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   PREFERENCES = {
     list_mode: %w[list grid],
-    theme_mode: %w[auto light dark],
+    theme_mode: ThemeModeHelper::MODES,
   }
   include WithPreferences
 

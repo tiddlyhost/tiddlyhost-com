@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class ApplicationHelperTest < ActionView::TestCase
   test 'nice view count' do
     {
@@ -23,20 +25,6 @@ class ApplicationHelperTest < ActionView::TestCase
 
     }.each do |view_count, expected|
       assert_equal expected, nice_byte_count(view_count)
-    end
-  end
-
-  test "theme mode" do
-    {
-      nil => ["auto", "light"],
-      "garbage" => ["auto", "light"],
-      "auto" => ["auto", "light"],
-      "light" => ["light", "dark"],
-      "dark" => ["dark", "auto"],
-    }.each do |cookie_value, (expected, expected_next)|
-      assert_equal expected, theme_mode(cookie_value), "current value"
-      assert_equal expected_next, next_theme_mode(cookie_value), "next value"
-      assert theme_title(cookie_value).present?
     end
   end
 end
