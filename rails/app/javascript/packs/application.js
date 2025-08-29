@@ -36,9 +36,9 @@ window.setLightDark = function () {
 // FOUC, so that's why it's here and not in $(document).ready(...)
 setLightDark();
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-  var limitChars = function() {
+  var limitChars = function () {
     var inputField = $(this);
 
     if (inputField.attr('id') == 'site_name') {
@@ -75,21 +75,21 @@ $(document).ready(function(){
 
   // If user checks 'private', automatically uncheck 'hub listed'
   // If user checks 'hub listed', automatically uncheck 'private'
-  $('.private-checkbox').on('change', function(){ if ($(this).prop('checked')) { $('.hub-checkbox'    ).prop('checked', false); } });
-  $('.hub-checkbox'    ).on('change', function(){ if ($(this).prop('checked')) { $('.private-checkbox').prop('checked', false); } });
+  $('.private-checkbox').on('change', function () { if ($(this).prop('checked')) { $('.hub-checkbox').prop('checked', false); } });
+  $('.hub-checkbox').on('change', function () { if ($(this).prop('checked')) { $('.private-checkbox').prop('checked', false); } });
 
   // Same thing for libravatar/gravatar
-  $('#user_use_gravatar'  ).on('change', function(){ if ($(this).prop('checked')) { $('#user_use_libravatar').prop('checked', false); } });
-  $('#user_use_libravatar').on('change', function(){ if ($(this).prop('checked')) { $('#user_use_gravatar'  ).prop('checked', false); } });
+  $('#user_use_gravatar').on('change', function () { if ($(this).prop('checked')) { $('#user_use_libravatar').prop('checked', false); } });
+  $('#user_use_libravatar').on('change', function () { if ($(this).prop('checked')) { $('#user_use_gravatar').prop('checked', false); } });
 
   // Upload form UI tweaks
-  $('#site_tiddlywiki_file').on('change', function(){
+  $('#site_tiddlywiki_file').on('change', function () {
     var fileName = $(this).get(0).files.item(0).name;
     $('#upload-submit').prop('value', 'Upload file \"' + fileName + '\"').show();
   });
 
   // Trick to set cursor position to the end of the text in the search box
-  $("#search_box").each(function(){
+  $("#search_box").each(function () {
     var search_box = $(this);
     var orig_text = search_box.val();
     search_box.val('');
@@ -100,7 +100,7 @@ $(document).ready(function(){
   // its parent div and removing it from the other options' parent divs.
   // See also _nice_radio.scss.
   //
-  $('.nice-radio-container input:radio').on('click', function(){
+  $('.nice-radio-container input:radio').on('click', function () {
     $(this).closest('.nice-radio-container').find('> div').removeClass('selected');
     $(this).closest('div').addClass('selected');
   });
@@ -108,7 +108,7 @@ $(document).ready(function(){
   // For the "More options" link when creating a site.
   // See also the type_chooser scss and partial.
   //
-  $('.longer-link').on('click', function(e){
+  $('.longer-link').on('click', function (e) {
     $('.type-chooser').toggleClass('longer');
     e.preventDefault();
   });
@@ -117,7 +117,7 @@ $(document).ready(function(){
   // Set the hidden "real" boolean fields based on which one is clicked.
   // We're expecting one of "public", "private" and "hub_listed".
   //
-  $('input:radio[name="_access_choice"]').on('change', function(){
+  $('input:radio[name="_access_choice"]').on('change', function () {
     var choice = $(this).val();
     $("input#site_is_private, input#tspot_site_is_private").val(choice == "private");
     $("input#site_is_searchable, input#tspot_site_is_searchable").val(choice == "hub_listed");
@@ -126,13 +126,13 @@ $(document).ready(function(){
   // Enable boostrap popovers and tooltips
   //
   $('.enable-tooltips a[data-bs-toggle="popover"]').
-    on('click', function(e){ e.preventDefault(); }).
-    popover({ "trigger":"focus", "html":true });
+    on('click', function (e) { e.preventDefault(); }).
+    popover({ "trigger": "focus", "html": true });
 
   $('.enable-tooltips a[data-bs-toggle="tooltip"]').tooltip();
 
   // For show/hide password visibility
-  $('.passwd-btn').on('click', function(e){
+  $('.passwd-btn').on('click', function (e) {
     var inputGroup = $(this).closest('.input-group');
     var passwdInput = inputGroup.find('input')
 
@@ -160,7 +160,7 @@ $(document).ready(function(){
   // See also mode_cycle in the HomeController which does the same
   // thing server side to persist it in a cookie and a user preference
   // if the user is logged in
-  $('.mode-cycle-btn').on('click', function(e){
+  $('.mode-cycle-btn').on('click', function (e) {
     var currentMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
     var nextMode;
 
