@@ -40,7 +40,7 @@
       Claim Tiddlyspot site
 
   - if @filtered_site_count > 0
-    = link_to({ controller: :sites, action: :download_all }.merge(params.permit(:q, :kind, :access,:s)),
+    = link_to({ controller: :sites, action: :download_all }.merge(params.permit(:q, :kind, :access, :s, :tags)),
       class: 'btn', title: "Download #{pluralize(@filtered_site_count, "site")} zipped") do
       = bi_icon('file-earmark-zip')
       Download all

@@ -64,4 +64,7 @@
 
   - unless site.tag_list.empty?
     .site-tags.pt-1
-      = clickable_site_tags(site)
+      - if mode == "home"
+        = home_tag_links(site)
+      - else
+        = hub_tag_links(site)

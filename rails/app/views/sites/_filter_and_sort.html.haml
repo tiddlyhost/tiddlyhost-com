@@ -1,8 +1,20 @@
 .d-inline-block.sites-menu
   = render 'search_box'
 
+- if params[:tags].present?
+  .d-inline-block.sites-menu{ style: 'margin-right:0; padding-right:0;' }
+    %span.ms-2
+      %span.pe-1 Tag:
+      .site-tags{ style: 'display: inline-block; font-size: 110%;' }
+        -# It's not really a link, but make it an 'a' element so it gets the tag link styles
+        %a{ style: 'cursor: default; pointer-events: none;' }= params[:tags]
+      = link_to(filter_link_url(:tags, nil),
+        style: 'padding: 0; margin:0; margin-left: -0.5em; text-decoration: none; color: inherit;',
+        title: 'Clear tag filter') do
+        = bi_icon('x', height: '0.8em', style: 'padding:0; margin:0; margin-right: 0;')
+
 .d-inline-block.sites-menu
-  = link_to("#", class: 'ms-2 btn btn-sm dropdown-toggle', title: 'Site kind filter',
+  = link_to("#", class: "#{'ms-2 ' unless params[:tags].present?}btn btn-sm dropdown-toggle", title: 'Site kind filter',
     role: 'button', 'data-bs-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false') do
     - if params[:kind]
       %span.pe-1
@@ -52,7 +64,7 @@
       = sort_link 'origin', :asc, 'dropdown-item'
 
 .d-inline-block.sites-menu
-  = link_to({ controller: :sites, action: :view_toggle }.merge(params.permit(:q, :kind, :access, :s)),
+  = link_to({ controller: :sites, action: :view_toggle }.merge(params.permit(:q, :kind, :access, :s, :tags)),
     class: "m-1 btn btn-sm", title: "#{list_mode_next.titleize} view") do
     View:
     = bi_icon(list_mode_next == 'grid' ? 'grid' : 'list-ul', fill: '#666')

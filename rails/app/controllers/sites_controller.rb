@@ -37,6 +37,8 @@ class SitesController < ApplicationController
     # So this gets included in sort_filter_param_keys. The search_text
     # filtering is done separately in set_sites. (Fixme: It's confusing.)
     q: {},
+    # Tag filtering - filter is called with (sites, tag_name)
+    tags: { filter: ->(sites, tag_name) { sites.select { |s| s.tag_list.include?(tag_name) } } },
   }.freeze
 
   NULL_ALWAYS_LAST = %w[
@@ -62,7 +64,7 @@ class SitesController < ApplicationController
   def view_toggle
     current_user.list_mode_pref_cycle
     # Preserve filter and sort params
-    redirect_to url_for(params.permit(:controller, :action, :s, :access, :kind, :q).merge({ action: :index }))
+    redirect_to url_for(params.permit(:controller, :action, :s, :access, :kind, :q, :tags).merge({ action: :index }))
   end
 
   # Any site that's been saved recently would probably already

@@ -20,7 +20,7 @@
           - if site.description.present?
             .description= span_with_title(site.description)
           - unless site.tag_list.empty?
-            .site-tags= clickable_site_tags(site)
+            .site-tags= home_tag_links(site)
 
         %td{ style: "text-align: right; padding: 0.3em 1em;" }
           - thumbnail = site.thumbnail_with_fallback
