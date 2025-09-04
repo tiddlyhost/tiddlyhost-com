@@ -114,6 +114,14 @@ module ApplicationHelper
     "#{time_ago_in_words(timestamp).sub(/^(about|less than) /, '')} ago"
   end
 
+  def nice_timespan(start_time, end_time, brief: false)
+    return '-' unless start_time && end_time
+
+    content_tag :span, title: end_time.to_s do
+      distance_of_time_in_words(start_time, end_time, include_seconds: !brief).sub(/^(about|less than) /, '')
+    end
+  end
+
   # For use with overflow: hidden.
   # You can see the full text on hover.
   def span_with_title(text)

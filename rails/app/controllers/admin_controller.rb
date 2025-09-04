@@ -54,6 +54,7 @@ class AdminController < ApplicationController
     clone: 'cloned_from_id',
     clones: 'clone_count',
     created: 'created_at',
+    confirmed: 'confirmed_at',
     createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',
     description: "NULLIF(sites.description, '')",

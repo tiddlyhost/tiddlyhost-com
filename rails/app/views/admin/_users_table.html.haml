@@ -15,6 +15,7 @@
     %th= sort_link 'Current sign in'
     %th= sort_link 'Last sign in'
     %th= sort_link 'Created'
+    %th= sort_link 'Confirmed'
 
 %tbody
   - records.each do |user|
@@ -35,3 +36,5 @@
       %td= nice_timestamp user.current_sign_in_at
       %td= nice_timestamp user.last_sign_in_at
       %td= nice_timestamp user.created_at
+      -# Show the timespan since it is more interesting than the raw timestamp
+      %td= nice_timespan(user.created_at, user.confirmed_at)
