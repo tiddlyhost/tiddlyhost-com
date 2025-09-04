@@ -33,6 +33,10 @@ PATHS='
   /_sites/foo
   /core/modules/foo
   /plugins/foo
+  /.env
+  /.env.prod
+  /phpinfo
+  /_profiler/phpinfo
   /known-elephant
 '
 

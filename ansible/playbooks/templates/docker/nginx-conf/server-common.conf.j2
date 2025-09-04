@@ -15,6 +15,9 @@ location ~ /wp-plugins/ { return 404; access_log off; }
 location ~ /\.well-known/ { return 404; access_log off; }
 location ~ ^/core/modules/ { return 404; access_log off; }
 location ~ ^/plugins/ { return 404; access_log off; }
+location ~ ^/.env { return 404; access_log off; }
+location ~ ^/phpinfo { return 404; access_log off; }
+location ~ ^/_profiler { return 404; access_log off; }
 
 location ~ ^/_ts_ { return 404; access_log off; }
 location ~ ^/_ts/ { return 404; access_log off; }
