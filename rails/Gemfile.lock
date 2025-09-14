@@ -286,7 +286,7 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
-    recaptcha (5.20.1)
+    recaptcha (5.21.0)
     redcarpet (3.6.1)
     regexp_parser (2.11.2)
     reline (0.6.2)
