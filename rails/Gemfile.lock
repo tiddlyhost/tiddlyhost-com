@@ -239,7 +239,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (6.6.1)
+    puma (7.0.3)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.16)
@@ -417,7 +417,7 @@ DEPENDENCIES
   ostruct
   pay (~> 7.0)
   pg (~> 1.1)
-  puma (~> 6.0)
+  puma (~> 7.0)
   rails (~> 7.2.0)
   recaptcha
   redcarpet (~> 3.6)
