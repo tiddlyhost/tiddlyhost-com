@@ -131,7 +131,12 @@ class TwFile
     external_core_script_tag.present?
   end
 
+  def is_feather_external_core?
+    is_feather? && doc.at_xpath("/html/head/script[contains(@src, 'FeatherWiki-bones')]").present?
+  end
+
   def kind
+    return 'featherx' if is_feather_external_core?
     return 'feather' if is_feather?
     return 'sitelet' if is_sitelet?
     return 'classic' if is_classic?
