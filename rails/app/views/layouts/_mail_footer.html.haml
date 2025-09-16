@@ -12,4 +12,4 @@
 %p.text-center
   %small.text-gray-500{ style: "font-size: 60%;" }
     %br
-    = link_to "Version #{App::VERSION}", "#{root_url}about", class: "text-gray-400"
+    = link_to "Version #{Settings.app_version_with_sha}", "#{root_url}about", class: "text-gray-400"

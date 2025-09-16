@@ -99,6 +99,10 @@ class Settings
   end
 
   def self.app_version
+    "#{major_version}.#{build_info['build_number']}"
+  end
+
+  def self.app_version_with_sha
     "#{major_version}.#{build_info['build_number']}-#{Settings.short_sha}"
   end
 

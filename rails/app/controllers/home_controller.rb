@@ -11,7 +11,7 @@ class HomeController < ApplicationController
 
   def about
     @build_info = {
-      'version' => App::VERSION,
+      'version' => Settings.app_version,
       'empties' => Empty.versions,
       'short_sha' => Settings.short_sha(9),
     }.merge(Settings.build_info)

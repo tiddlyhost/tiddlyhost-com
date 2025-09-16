@@ -7,7 +7,7 @@
       %ul{ style: "padding-left: 0.5em; opacity: 70%;" }
         - unless Rails.env.production?
           %li Env: #{Rails.env}
-        %li Version: #{link_to App::VERSION, '/about'}
+        %li Version: #{link_to Settings.app_version, '/about'}
         - if feature_enabled?(:admin)
           %li Built: #{nice_timestamp(DateTime.parse(Settings.build_info['date']))}
         %li &copy; 2021-#{Time.now.year} Simon Baird
