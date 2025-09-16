@@ -37,6 +37,6 @@ class Empty < ApplicationRecord
   end
 
   def self.versions
-    self.for_select.map { |e| { name: e.name, version: e.tiddlywiki_version, kind: e.kind } }
+    self.for_select.map { |e| { name: e.name, version: e.tiddlywiki_version, kind: e.kind, title: e.title } }
   end
 end

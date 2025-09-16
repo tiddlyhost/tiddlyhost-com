@@ -93,5 +93,8 @@
       - @build_info['empties'].each do |e|
         %span.me-1
           = logo_for_kind(e[:kind])
-        = e[:version]
+        %div{ style: "display: inline-block; min-width: 3.5em;" }= e[:version]
+        %small.text-muted
+          %span{ style: "opacity: 0.4;" } ❮
+          #{e[:title]}
         %br
