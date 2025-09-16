@@ -8,7 +8,8 @@
         - unless Rails.env.production?
           %li Env: #{Rails.env}
         %li Version: #{link_to App::VERSION, '/about'}
-        %li Built: #{nice_timestamp(DateTime.parse(Settings.build_info['date']))}
+        - if feature_enabled?(:admin)
+          %li Built: #{nice_timestamp(DateTime.parse(Settings.build_info['date']))}
         %li &copy; 2021-#{Time.now.year} Simon Baird
 
     .col-md-3.col-6

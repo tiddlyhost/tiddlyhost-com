@@ -78,11 +78,6 @@
       Version:
     %td.p-1
       = App::VERSION
-  %tr
-    %td.p-1.pe-3.text-muted
-      Built:
-    %td.p-1
-      = nice_timestamp(DateTime.parse(@build_info['date']))
 
   = render "admin_about", build_info: @build_info
 
