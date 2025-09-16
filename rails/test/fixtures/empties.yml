@@ -1,23 +1,75 @@
+# See also db/seeds/empties
 ---
 tw5:
   id: 1
   name: tw5
-  title: TiddlyWiki
-  description: The current, modern version of TiddlyWiki, sometimes known as TiddlyWiki5.
-  info_link: https://tiddlywiki.com/
+  title: TiddlyWiki (self-contained)
+  description: The famous customizable personal wiki and non-linear notebook, with
+    internal core javascript.
   enabled: true
+  display_order: 10
+  primary: true
+  info_link: https://tiddlywiki.com/
+  tooltip: With an internal core plugin the site will be larger, loading and saving
+    will be slower, but the downloaded TiddlyWiki file will be usable offline even
+    without internet access.
 classic:
   id: 2
   name: classic
   title: TiddlyWiki Classic
-  description: "'Classic' is the original, old version of TiddlyWiki that hasn't been
-    updated much since 2011."
+  description: The original version of TiddlyWiki from before the 2012 "TiddlyWiki5"
+    rewrite.
+  enabled: true
+  display_order: 30
+  primary: true
   info_link: https://classic.tiddlywiki.com/
+  tooltip: Still used and developed by a small community. Fully supported on Tiddlyhost.
+feather:
+  id: 5
+  name: feather
+  title: Feather Wiki
+  description: A modern and light-weight single-page wiki with support for both Markdown
+    and WYSIWYG.
   enabled: true
+  display_order: 20
+  primary: true
+  info_link: https://feather.wiki/
+  tooltip: Feather Wiki is very small (around 50 KB) but it's extensible, supports
+    tagging, custom styles, publish mode, and more.
 tw5x:
-  id: 3
+  id: 6
   name: tw5x
-  title: TiddlyWiki External
-  description: TiddlyWiki (External Core)
-  info_link: https://tiddlywiki.com/
+  title: TiddlyWiki (external core)
+  description: The famous customizable personal wiki and non-linear notebook, with
+    external core javascript.
   enabled: true
+  display_order: 12
+  primary: true
+  info_link: https://tiddlywiki.com/
+  tooltip: With the core plugin hosted externally the site will be smaller, loading
+    and saving will be faster, but the downloaded TiddlyWiki file won't work without
+    internet access.
+featherx:
+  id: 20
+  name: featherx
+  title: Feather Wiki (external core)
+  description: Feathers & Bones version of Feather Wiki. Experimental tech-preview.
+    Use with caution.
+  enabled: true
+  display_order: 21
+  primary: false
+  info_link: https://feather.wiki/
+  tooltip: With external javascript the initial html file is just 616 bytes. Currently
+    requires a custom build of Feather Wiki.
+sitelet:
+  id: 21
+  name: sitelet
+  title: siteleteer
+  description: An even lighter and simpler single-page wiki from the creator of Feather
+    Wiki.
+  enabled: true
+  display_order: 25
+  primary: false
+  info_link: https://alamantus.codeberg.page/siteleteer/
+  tooltip: To see how it works, view the clean and very readable page source. Requires
+    a custom build of siteleteer.

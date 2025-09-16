@@ -29,6 +29,12 @@ def for_all_empties
   end
 end
 
+def for_all_kinds
+  Dir["#{Rails.root}/tw_content/empties/*.html"].each do |kind_file|
+    yield(File.basename(kind_file, '.html'))
+  end
+end
+
 module NewSiteHelper
   def new_site_helper(name:, user:, empty: :tw5, tiddlers: {}, empty_content: nil)
     empty = Empty.find_by_name(empty)

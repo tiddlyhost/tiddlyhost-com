@@ -146,6 +146,17 @@ class TwFileTest < ActiveSupport::TestCase
     end
   end
 
+  # Test the "heavy" version of determining the kind by parsing the html
+  test 'get kind' do
+    for_all_kinds do |tw_kind|
+      next if tw_kind == "prerelease"
+
+      empty = Empty.find_by_name(tw_kind)
+      assert empty, "No empty found for kind #{tw_kind}!"
+      assert_equal(tw_kind, empty.kind, "Derived kind was #{empty.kind}, expecting #{tw_kind}!")
+    end
+  end
+
   test 'robust version' do
     th_file = ThFile.from_empty(:tw5x)
     th_file.stub(:tiddlywiki_version, '11.1.2') do
