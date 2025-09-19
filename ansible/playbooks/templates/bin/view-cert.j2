@@ -1,0 +1,3 @@
+#!/bin/bash
+
+openssl x509 -in {{ certbot_dir_config }}/live/{{ primary_host }}/fullchain.pem -text -noout

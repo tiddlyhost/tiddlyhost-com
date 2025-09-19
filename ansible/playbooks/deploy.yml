@@ -122,6 +122,7 @@
     - bin/certbot-create
     - bin/certbot-renew
     - bin/certbot-revoke
+    - bin/view-cert
     - bin/db-dump-to-file
     - bin/db-backup-to-s3
     - bin/fetch-prerelease-empty
