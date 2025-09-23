@@ -125,9 +125,15 @@ module SitesHelper
     kind_logo(site, 'height: 1.2em; margin-right: 2px; margin-top: -2px;') + " #{site.kind_title} #{site.tw_version}" if site.tw_kind
   end
 
-  def hub_tag_links(site)
+  def hub_tag_links(site, crawler_protect: false)
     safe_join(site.tag_list.map do |tag_name|
-      link_to tag_name, hub_tag_url(tag_name), rel: 'nofollow'
+      if crawler_protect
+        # Convert to actual URL string for the data attribute
+        url_string = url_for(hub_tag_url(tag_name))
+        link_to tag_name, '#', rel: 'nofollow', 'data-crawler-protect-href': url_string
+      else
+        link_to tag_name, hub_tag_url(tag_name), rel: 'nofollow'
+      end
     end, ' ')
   end
 

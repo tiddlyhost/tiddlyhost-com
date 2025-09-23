@@ -57,7 +57,7 @@
       = render 'site_kind_info', site: site
 
     .owner
-      = render 'site_owner', user: site.user
+      = render 'site_owner', user: site.user, crawler_protect: true
 
       %span.views
         = views_and_updated_text(site, show_clone_count: is_templates).html_safe
@@ -67,4 +67,4 @@
       - if mode == "home"
         = home_tag_links(site)
       - else
-        = hub_tag_links(site)
+        = hub_tag_links(site, crawler_protect: true)

@@ -5,7 +5,10 @@
 
 - if user.has_username?
   %span{ title: user.name }
-    = link_to user.username, hub_user_url(user.username), rel: 'nofollow'
+    - if local_assigns[:crawler_protect]
+      = link_to user.username, '#', rel: 'nofollow', 'data-crawler-protect-href': url_for(hub_user_url(user.username))
+    - else
+      = link_to user.username, hub_user_url(user.username), rel: 'nofollow'
 - else
   = user.name
 

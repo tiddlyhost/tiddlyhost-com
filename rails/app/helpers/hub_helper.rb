@@ -3,8 +3,16 @@ module HubHelper
     tab_link_to(title, link, opts)
   end
 
-  def hub_tag_link_to(tag_name)
-    hub_link_to(bi_icon(:tag) + tag_name, hub_tag_url(tag_name))
+  def hub_tag_link_to(tag_name, crawler_protect: false)
+    if crawler_protect
+      # Convert to actual URL string for the data attribute
+      url_string = url_for(hub_tag_url(tag_name))
+      link_to('#', class: 'nav-link', rel: 'nofollow', 'data-crawler-protect-href': url_string) do
+        bi_icon(:tag) + tag_name
+      end
+    else
+      hub_link_to(bi_icon(:tag) + tag_name, hub_tag_url(tag_name))
+    end
   end
 
   def views_and_updated_text(hub_site, show_clone_count: false)

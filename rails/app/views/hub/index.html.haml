@@ -27,7 +27,7 @@
   %ul.nav.nav-tabs
     = hub_link_to("All #{@thing_name.downcase}s", hub_all_url)
     - @tag_tabs.each do |tag|
-      = hub_tag_link_to(tag)
+      = hub_tag_link_to(tag, crawler_protect: true)
 
 .page_info.text-muted
   = page_entries_info(@sites, model: @thing_name)
@@ -44,9 +44,9 @@
       - else
         show all
     .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
-      = filter_link(:k, nil)
+      = filter_link(:k, nil, crawler_protect: true)
       - filter_params[:k].keys.each do |k|
-        = filter_link(:k, k) do |_, title|
+        = filter_link(:k, k, crawler_protect: true) do |_, title|
           = logo_for_kind(k, "margin-right: 4px; height: 1.3em;")
           = title
 
@@ -58,7 +58,7 @@
       = sort_opt[:title]
     .dropdown-menu.hub-menu{ 'aria-labelledby': 'dropdownMenuLink' }
       - sort_options.keys.each do |k|
-        = simple_sort_link k
+        = simple_sort_link k, 'dropdown-item', crawler_protect: true
 
   = render 'search_box'
 

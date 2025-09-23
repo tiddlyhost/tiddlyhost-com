@@ -54,9 +54,19 @@ module SortAndFilterLinkHelper
   # Used in the hub
   # This one does not provide the asc/desc flipping
   #
-  def simple_sort_link(new_sort_by, klass = 'dropdown-item')
+  def simple_sort_link(new_sort_by, klass = 'dropdown-item', crawler_protect: false)
     sel = 'sel' if sort_by == new_sort_by&.to_s
-    link_to(sort_options[new_sort_by][:title], sort_link_url(new_sort_by), class: [klass, sel], rel: 'nofollow')
+    url = sort_link_url(new_sort_by)
+
+    if crawler_protect
+      # Convert hash to actual URL string for the data attribute
+      url_string = url_for(url)
+      link_to('#', class: [klass, sel], rel: 'nofollow', 'data-crawler-protect-href': url_string) do
+        sort_options[new_sort_by][:title]
+      end
+    else
+      link_to(sort_options[new_sort_by][:title], url, class: [klass, sel], rel: 'nofollow')
+    end
   end
 
   def filter_link_group(param_key, &)
@@ -71,18 +81,31 @@ module SortAndFilterLinkHelper
     filter_link_url(:q, nil)
   end
 
-  def filter_link(param_key, param_val)
+  def filter_link(param_key, param_val, crawler_protect: false)
     filter_opts = filter_params.dig(param_key&.to_sym, param_val&.to_sym) || {}
     link_title = filter_opts[:title] || param_val&.to_s || 'show all'
 
     selected = params[param_key] == param_val&.to_s
     klass = ['dropdown-item', (selected ? 'sel' : 'notsel')]
+    url = filter_link_url(param_key, param_val)
 
-    link_to(filter_link_url(param_key, param_val), class: klass, rel: 'nofollow') do
-      if block_given?
-        yield param_val, link_title
-      else
-        link_title
+    if crawler_protect
+      # Convert hash to actual URL string for the data attribute
+      url_string = url_for(url)
+      link_to('#', class: klass, rel: 'nofollow', 'data-crawler-protect-href': url_string) do
+        if block_given?
+          yield param_val, link_title
+        else
+          link_title
+        end
+      end
+    else
+      link_to(url, class: klass, rel: 'nofollow') do
+        if block_given?
+          yield param_val, link_title
+        else
+          link_title
+        end
       end
     end
   end

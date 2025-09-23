@@ -175,4 +175,14 @@ $(document).ready(function () {
     document.documentElement.setAttribute('data-theme-mode', nextMode);
     setLightDark();
   });
+
+  // Activate crawler-protected links after page load.
+  // The goal is to stop crawlers from endlessly following
+  // tag/user/sort/filter links.
+  $('a[data-crawler-protect-href]').each(function() {
+    var link = $(this);
+    var realHref = link.attr('data-crawler-protect-href');
+    link.attr('href', realHref);
+    link.removeAttr('data-crawler-protect-href');
+  });
 });
