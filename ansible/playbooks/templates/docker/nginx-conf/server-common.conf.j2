@@ -26,6 +26,27 @@ location ~ ^/_sites/ { return 404; access_log off; }
 location = /sitemap.xml { return 404; access_log off; }
 location = /index.xml { return 404; access_log off; }
 
+# Block explore tag/user URLs when accessed without referrer. Why?
+# So many crawlers are ignoring robots.txt and crawling these urls
+# endlessly, which eats up our CPU since the explore pages are quite
+# heavy. Most of them don't set a referrer, so let's try this as a
+# way to block that traffic.
+#
+# This might break some bookmarks, but I guess I can live with that
+# for now. Will see if anyone notices. (Maybe we could come up with
+# a special javascript redirect on the 404 page to fix that..?)
+location ~ ^/explore/(?:tag|user) {
+    if ($http_referer !~ "{{ primary_host }}") {
+        # Likely a crawler not a real user clicking a link
+        return 404;
+        # access_log off;
+    }
+    # Probably a human with a browser
+    # (Likely it will always routed to @app and never a static file
+    # but I'm not sure how to make it work here without try_files.)
+    try_files $uri @app;
+}
+
 #
 # Avoid '413 Request Entity Too Large' when saving TiddlyWikis.
 # Using 0 here means unlimited, but I'm thinking some kind of limit
