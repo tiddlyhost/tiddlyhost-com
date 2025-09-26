@@ -108,7 +108,7 @@ module SitesHelper
 
   # Todo: Could this be replaced by something in SortAndFilterLinkHelper?
   def add_sort_and_template_params_maybe(url)
-    sort_and_template_params = params.permit(:s, :t)
+    sort_and_template_params = params.slice(:s, :t).to_unsafe_h
     url += "?#{sort_and_template_params.to_query}" if sort_and_template_params.present?
     url
   end

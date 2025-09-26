@@ -175,7 +175,7 @@ module SortAndFilterLinkHelper
   # Add the new param but preserve existing params
   # Can be stringified with url_for
   def sort_filter_url(param_key, param_val)
-    params.permit(*sort_filter_param_keys).merge(param_key => param_val.to_s.presence)
+    params.slice(*sort_filter_param_keys).to_unsafe_h.merge(param_key => param_val.to_s.presence)
   end
 
   def sort_filter_param_keys
