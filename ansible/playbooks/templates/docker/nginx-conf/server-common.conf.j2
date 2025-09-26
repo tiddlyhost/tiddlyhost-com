@@ -26,25 +26,55 @@ location ~ ^/_sites/ { return 404; access_log off; }
 location = /sitemap.xml { return 404; access_log off; }
 location = /index.xml { return 404; access_log off; }
 
+#
 # Block explore tag/user URLs when accessed without referrer. Why?
 # So many crawlers are ignoring robots.txt and crawling these urls
 # endlessly, which eats up our CPU since the explore pages are quite
 # heavy. Most of them don't set a referrer, so let's try this as a
 # way to block that traffic.
 #
-# This might break some bookmarks, but I guess I can live with that
-# for now. Will see if anyone notices. (Maybe we could come up with
-# a special javascript redirect on the 404 page to fix that..?)
-location ~ ^/explore/(?:tag|user) {
-    if ($http_referer !~ "{{ primary_host }}") {
-        # Likely a crawler not a real user clicking a link
-        return 404;
-        # access_log off;
+# We will allow the "primary" /explore/tag/foo and /explore/user/foo
+# since maybe they are useful bookmarks, but we'll block if there are
+# any additional url params (other than the special "t=1" which is
+# present for all the /templates urls.)
+#
+location ~ ^/(?:templates|explore)/(?:tag|user)/ {
+    set $checks "";
+    # An alternative more restrictive idea for the referer:
+    #if ($http_referer !~ {{ primary_host }}) {
+    if ($http_referer = "") {
+        # No referer implies it might be a bot,
+        # (but it could also be from a bookmark)
+        set $checks "${checks}x";
     }
-    # Probably a human with a browser
-    # (Likely it will always routed to @app and never a static file
-    # but I'm not sure how to make it work here without try_files.)
-    try_files $uri @app;
+    if ($args != "") {
+        # There are some url params present
+        set $checks "${checks}x";
+    }
+    if ($args != "t=1") {
+        # There are params present other than the one special t=1
+        # param which is always there for /templates urls
+        set $checks "${checks}x";
+    }
+    if ($checks = "xxx") {
+        # If all three of the above are true, you are
+        # considered delinquint crawler, please go away
+        return 404;
+    }
+
+    #
+    # Fixme: For some reason `try_files $uri @app` does not work here. All this
+    # is identical to the location @app block. Should refactor so we are not
+    # repeating code from the location @app block, or figure out why try_files
+    # won't work. (Actually it might be that it works in production but not in
+    # local development, maybe related to the /opt/rails-static volume.)
+    #
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+    proxy_pass http://app:3333;
 }
 
 #
