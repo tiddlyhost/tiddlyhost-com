@@ -60,6 +60,7 @@ location ~ ^/(?:templates|explore)/(?:tag|user)/ {
         # If all three of the above are true, you are
         # considered delinquint crawler, please go away
         return 404;
+        access_log off;
     }
 
     #
