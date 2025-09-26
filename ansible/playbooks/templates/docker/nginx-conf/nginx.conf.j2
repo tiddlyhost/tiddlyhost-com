@@ -44,6 +44,9 @@ http {
     # From here down is the Tiddlyhost specific config
     #-------------------------------------------------
 
+    # Blocking specific IP addresses can be done here
+    #deny 123.123.123.123;
+
     # SSL certs
     ssl_certificate /etc/letsencrypt/live/{{ primary_host }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ primary_host }}/privkey.pem;
