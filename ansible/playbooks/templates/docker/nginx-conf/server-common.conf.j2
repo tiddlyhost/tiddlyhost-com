@@ -38,7 +38,7 @@ location = /index.xml { return 404; access_log off; }
 # any additional url params (other than the special "t=1" which is
 # present for all the /templates urls.)
 #
-location ~ ^/(?:templates|explore)/(?:tag|user)/ {
+location ~ ^/(?:templates|explore|hub)/(?:tag|user)/ {
     set $checks "";
     # An alternative more restrictive idea for the referer:
     #if ($http_referer !~ {{ primary_host }}) {
