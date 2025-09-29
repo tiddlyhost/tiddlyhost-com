@@ -54,10 +54,22 @@ class HubController < ApplicationController
 
   private
 
+  # This query very slow for some reason and it really doesn't
+  # matter how fresh the list is. Cache it.
+  TAGS_CACHE_EXPIRY = 12.hours
+  def most_used_tags_cached(show_templates)
+    cache_key = "popular_tags_#{show_templates}"
+    Rails.logger.info "Cache check for #{cache_key}"
+    Rails.cache.fetch(cache_key, expires_in: TAGS_CACHE_EXPIRY) do
+      Rails.logger.info "Cache miss for #{cache_key}"
+      HubQuery.most_used_tags(for_templates: show_templates).first(Settings.hub_tag_tab_count)
+    end
+  end
+
   def render_hub
     # Show a few popular tags in the tab bar.
     # (It's not the best UX for tag based site discovery, but good enough for now.)
-    @tag_tabs = HubQuery.most_used_tags(for_templates: @show_templates).first(Settings.hub_tag_tab_count)
+    @tag_tabs = most_used_tags_cached(@show_templates)
 
     # If there's a particular tag selected, show that in the tab bar also
     @tag_tabs.prepend(@tag) if @tag.present? && !@tag_tabs.include?(@tag)
