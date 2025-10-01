@@ -56,13 +56,14 @@ class HubController < ApplicationController
 
   # This query very slow for some reason and it really doesn't
   # matter how fresh the list is. Cache it.
-  TAGS_CACHE_EXPIRY = 12.hours
+  TAGS_CACHE_EXPIRY = Settings.hub_tag_cache_hours.hours
+  TAGS_COUNT = Settings.hub_tag_tab_count
   def most_used_tags_cached(show_templates)
     cache_key = "popular_tags_#{show_templates}"
     Rails.logger.info "Cache check for #{cache_key}"
     Rails.cache.fetch(cache_key, expires_in: TAGS_CACHE_EXPIRY) do
       Rails.logger.info "Cache miss for #{cache_key}"
-      HubQuery.most_used_tags(for_templates: show_templates).first(Settings.hub_tag_tab_count)
+      HubQuery.most_used_tags(for_templates: show_templates).first(TAGS_COUNT)
     end
   end
 

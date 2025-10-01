@@ -17,6 +17,7 @@ defaults:
   default_empty_name: tw5
   minimum_password_length: 8
   hub_tag_tab_count: 6
+  hub_tag_cache_hours: 12
   db_host: <%= is_in_container ? "db" : "localhost" %>
   th_log_file: <%= is_in_container ? "/var/log/app/app.log" : "#{rails_root}/log/app.log" %>
   thumbs_storage_service: local1
