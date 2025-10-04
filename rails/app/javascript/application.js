@@ -9,8 +9,42 @@ import * as ActiveStorage from "@rails/activestorage"
 import $ from "jquery"
 import * as bootstrap from "bootstrap"
 
-// Make jQuery available globally for the existing code and Bootstrap components
+// Make jQuery available globally
 window.$ = window.jQuery = $
+
+// Make Bootstrap available globally for the component initialization
+window.bootstrap = bootstrap
+
+// Add Bootstrap jQuery plugin compatibility layer
+// This allows legacy code to use $(...).modal(), $(...).popover(),
+// and $(...).tooltip().
+$.fn.modal = function(action) {
+  return this.each(function() {
+    const modalInstance = bootstrap.Modal.getOrCreateInstance(this);
+    if (action === 'show') {
+      modalInstance.show();
+    } else if (action === 'hide') {
+      modalInstance.hide();
+    } else if (action === 'toggle') {
+      modalInstance.toggle();
+    } else if (typeof action === 'object' || !action) {
+      // Initialize with options or just initialize
+      return modalInstance;
+    }
+  });
+};
+
+$.fn.popover = function(options) {
+  return this.each(function() {
+    new bootstrap.Popover(this, options);
+  });
+};
+
+$.fn.tooltip = function(options) {
+  return this.each(function() {
+    new bootstrap.Tooltip(this, options);
+  });
+};
 
 Rails.start()
 ActiveStorage.start()
