@@ -8,7 +8,7 @@
       # This is used only for calling setLightDark to set the theme. Todo: It would be
       # better to load just the javascript needed for that instead of everything
      %>
-    <%= javascript_pack_tag 'application' %>
+    <%= javascript_include_tag 'application', defer: true %>
   </head>
 
   <body class="simple-layout">

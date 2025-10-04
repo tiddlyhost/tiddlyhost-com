@@ -1,20 +1,21 @@
 {
   "name": "app",
   "private": true,
+  "scripts": {
+    "build": "esbuild app/javascript/application.js --bundle --sourcemap --format=iife --outdir=app/assets/builds --public-path=/assets",
+    "build:watch": "yarn build --watch"
+  },
   "dependencies": {
     "@popperjs/core": "^2.11.0",
     "@rails/activestorage": "^7.0.0",
     "@rails/ujs": "^7.0.0",
-    "@rails/webpacker": "5.4.4",
     "bootstrap": "^5.3.0-alpha1",
     "bootstrap-icons": "^1.10.0",
     "jquery": "^3.6.0",
-    "puppeteer": "^19.8.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "puppeteer": "^19.8.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^5.0.0"
+    "esbuild": "^0.25.10"
   }
 }

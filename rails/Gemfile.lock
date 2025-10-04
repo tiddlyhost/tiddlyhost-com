@@ -190,6 +190,8 @@ GEM
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     jmespath (1.6.2)
+    jsbundling-rails (1.3.1)
+      railties (>= 6.0.0)
     json (2.15.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
@@ -244,8 +246,6 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.16)
-    rack-proxy (0.7.7)
-      rack
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -331,7 +331,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    semantic_range (3.1.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -371,11 +370,6 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (5.4.4)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
@@ -409,6 +403,7 @@ DEPENDENCIES
   haml-rails
   haml_lint
   jbuilder (~> 2.7)
+  jsbundling-rails (~> 1.3)
   logger
   net-imap
   net-pop
@@ -430,7 +425,6 @@ DEPENDENCIES
   tzinfo-data
   validate_url
   web-console (>= 4.1.0)
-  webpacker (~> 5.0)
   will_paginate
 
 RUBY VERSION

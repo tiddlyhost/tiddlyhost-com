@@ -6,6 +6,7 @@ rails/storage1
 rails/storage2
 rails/tw_content/empties/prerelease.html
 rails/public/assets/
+rails/app/assets/builds/
 rails/public/tiddlywikicore-*-prerelease.js
 rails/public/tiddlywikicore-*.gz
 rails/public/packs/
