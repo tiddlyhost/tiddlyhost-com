@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "scripts": {
-    "build": "esbuild app/javascript/application.js --bundle --sourcemap --format=iife --outdir=app/assets/builds --public-path=/assets",
+    "build": "esbuild app/javascript/application.js --bundle --sourcemap --format=iife --outdir=app/assets/builds --public-path=/assets $([ \"$RAILS_ENV\" = \"production\" ] && echo '--minify' || echo '')",
     "build:watch": "yarn build --watch"
   },
   "dependencies": {
