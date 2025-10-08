@@ -79,14 +79,14 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's visible
     visit '/sites'
-    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
+    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-test-example.com"]', text: 'mysite'
 
     # Disown it
     click_on 'Disown'
     assert_current_path '/sites'
 
     # Confirm it's no longer visible and it was really disowned
-    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com', count: 0
+    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-test-example.com', count: 0
     assert_nil site.reload.user
   end
 
@@ -100,14 +100,14 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's visible
     visit '/sites'
-    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-example.com"]', text: 'mysite'
+    assert_selector '.sitelink a[href="http://mysite.tiddlyspot-test-example.com"]', text: 'mysite'
 
     # Delete it
     click_on 'Delete'
     assert_current_path '/sites'
 
     # Confirm it's no longer visible and it was really deleted
-    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-example.com', count: 0
+    assert_selector '.sitelink a', text: 'mysite.tiddlyspot-test-example.com', count: 0
     assert site.reload.deleted?
   end
 end

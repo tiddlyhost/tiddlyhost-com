@@ -34,7 +34,7 @@ class TwFileTest < ActiveSupport::TestCase
   test 'tiddlyhost mods for tw5' do
     ThFile.from_empty(:tw5).apply_tiddlyhost_mods('coolsite').tap do |tw|
       {
-        '$:/UploadURL' => 'http://coolsite.example.com',
+        '$:/UploadURL' => 'http://coolsite.tiddlyhost-test-example.com',
         '$:/UploadWithUrlOnly' => 'yes',
         '$:/config/AutoSave' => 'no',
 
@@ -177,7 +177,7 @@ class TwFileTest < ActiveSupport::TestCase
       assert_equal "tiddlywikicore-#{tw_version}.js", original_tag['src']
 
       modified_tag = th_file.inject_external_core_url_prefix.external_core_script_tag
-      assert_equal "http://example.com/tiddlywikicore-#{tw_version}.js", modified_tag['src']
+      assert_equal "http://tiddlyhost-test-example.com/tiddlywikicore-#{tw_version}.js", modified_tag['src']
     end
   end
 

@@ -119,7 +119,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     get '/'
     assert_response 401
 
-    sign_in_url = 'http://example.com/users/sign_in'
+    sign_in_url = 'http://tiddlyhost-test-example.com/users/sign_in'
     sign_in_url_with_redir = "#{sign_in_url}?s=#{@site.name}"
 
     # The sign in link includes the extra url param
@@ -236,7 +236,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     upload_save_site_as_user(user: users(:mary), site: @site, fixture_file: 'index.html',
       expected_status: 200, expect_success: false)
 
-    assert_equal "If this is your site please log in at\nhttp://example.com and try again.\n",
+    assert_equal "If this is your site please log in at\nhttp://tiddlyhost-test-example.com and try again.\n",
       response.body
   end
 
@@ -289,7 +289,7 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     put_save_site_as_user(user: users(:mary), site: @site, content: new_content,
       headers: { 'If-Match' => 'whatever' }, expected_status: 403)
     assert_equal(
-      'If this is your site please log in at http://example.com and try again.', response.body)
+      'If this is your site please log in at http://tiddlyhost-test-example.com and try again.', response.body)
   end
 
   def fetch_site_as_user(user: @user, site: @site, expected_status: 200)

@@ -23,7 +23,7 @@ class SitesTest < CapybaraIntegrationTest
     assert_current_path '/sites'
 
     # The index now includes a link to the new site
-    expected_url = 'http://bar.example.com'
+    expected_url = 'http://bar.tiddlyhost-test-example.com'
     assert_selector %(td a[href="#{expected_url}"])
 
     # Sanity check the new site
@@ -111,7 +111,7 @@ class SitesTest < CapybaraIntegrationTest
   end
 
   test 'non-existent sites' do
-    non_existent_site = 'http://bbar.example.com/'
+    non_existent_site = 'http://bbar.tiddlyhost-test-example.com/'
 
     # You get a 404 when visiting a non-existent site
     visit non_existent_site
@@ -171,7 +171,7 @@ class SitesTest < CapybaraIntegrationTest
 
     # Back to the sites index after update
     assert_current_path '/sites'
-    assert_selector 'a[href="http://foo.example.com"]', text: 'foo'
+    assert_selector 'a[href="http://foo.tiddlyhost-test-example.com"]', text: 'foo'
   end
 
   test 'uploading a site' do

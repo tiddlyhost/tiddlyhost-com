@@ -8,9 +8,9 @@ class TspotSiteTest < ActiveSupport::TestCase
   end
 
   test 'url' do
-    assert_equal 'mysite.tiddlyspot-example.com', @site.host
-    assert_equal 'http://mysite.tiddlyspot-example.com', @site.url
-    assert_equal 'http://tiddlyspot-example.com', Settings.tiddlyspot_url
+    assert_equal 'mysite.tiddlyspot-test-example.com', @site.host
+    assert_equal 'http://mysite.tiddlyspot-test-example.com', @site.url
+    assert_equal 'http://tiddlyspot-test-example.com', Settings.tiddlyspot_url
   end
 
   test 'is_stub' do

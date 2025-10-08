@@ -63,10 +63,10 @@ development:
 
 test:
   url_defaults:
-    :host: example.com
+    :host: tiddlyhost-test-example.com
     :protocol: http
 
-  tiddlyspot_host: tiddlyspot-example.com
+  tiddlyspot_host: tiddlyspot-test-example.com
   thumbs_storage_service: test1
   public_thumbs_storage_service: test2
 

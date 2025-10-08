@@ -12,7 +12,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     host! "www.#{Settings.tiddlyspot_host}"
     get '/'
     assert_redirected_to Settings.tiddlyspot_url_defaults
-    assert_redirected_to 'http://tiddlyspot-example.com/'
+    assert_redirected_to 'http://tiddlyspot-test-example.com/'
   end
 
   def mocked_site(name)
@@ -151,7 +151,7 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     site.update(redirect_to_site_id: 1)
     host! "mysite.#{Settings.tiddlyspot_host}"
     get '/'
-    assert_redirected_to 'http://mysite.example.com'
+    assert_redirected_to 'http://mysite.tiddlyhost-test-example.com'
   end
 
   test 'non-existing site produces 404' do
