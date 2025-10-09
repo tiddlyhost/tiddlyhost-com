@@ -259,4 +259,60 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 'test1', @site.reload.current_content.blob.service_name
     assert_equal 'foo123', @site.uncached_file_download
   end
+
+  test 'blob missing in storage' do
+    # It's a little confusing, but `main_blob_missing?` is true if there is a
+    # blob record but the storage service lost the file for it. So if we have
+    # no blob records at all then it's false. This is an edge case, since sites
+    # with zero saved versions in general don't exist.
+    assert_equal 0, @site.saved_version_count
+    assert_not @site.main_blob_missing?
+
+    # Upload some content so we do have a blob
+    @site.content_upload('test content')
+    assert_equal 1, @site.saved_version_count
+    blob = @site.reload.blob
+
+    # The blob is present in the storage service
+    assert WithSavedContent.blob_exists_in_storage?(blob)
+    assert_not @site.main_blob_missing?
+
+    # The blob is missing in the storage service
+    blob.service.stub(:exist?, ->(_key) { false }) do
+      assert_not WithSavedContent.blob_exists_in_storage?(blob)
+      assert @site.main_blob_missing?
+    end
+  end
+
+  test 'restore missing main blob' do
+    # Create two saved versions
+    @site.content_upload('older version')
+    old_blob = @site.reload.blob
+    @site.content_upload('current version')
+
+    # Sanity check
+    assert_equal 2, @site.reload.saved_version_count
+    assert_equal 'current version', @site.file_download
+
+    # Main blob is not missing, no restore is done
+    assert_raises(RuntimeError, "Main blob not missing!") do
+      @site.reload.restore_missing_main_blob!
+    end
+
+    # Main blob is missing, but no non-missing other blob was found
+    WithSavedContent.stub(:blob_exists_in_storage?, ->(_blob) { false }) do
+      assert_raises(RuntimeError, "No good blob found!") do
+        @site.reload.restore_missing_main_blob!
+      end
+    end
+
+    # Main blob missing, and there is an non-missing older blob available
+    WithSavedContent.stub(:blob_exists_in_storage?, ->(blob) { blob.id == old_blob.id }) do
+      @site.reload.restore_missing_main_blob!
+
+      # Should have created a new version with the older content
+      assert_equal 3, @site.reload.saved_content_files.count
+      assert_equal 'older version', @site.file_download
+    end
+  end
 end
