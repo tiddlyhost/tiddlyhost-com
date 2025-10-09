@@ -19,7 +19,11 @@ module WithSavedContent
 
   # Use the newest attachment from saved_content_files
   def current_content
-    @_current_content ||= saved_content_files.order('created_at DESC').limit(1).first
+    @_current_content ||= saved_content_files_newest_first.limit(1).first
+  end
+
+  def saved_content_files_newest_first
+    saved_content_files.order(created_at: :desc)
   end
 
   def saved_version_count
@@ -168,4 +172,46 @@ module WithSavedContent
     # Keep so many and purge the rest
     ordered_files.offset(keep_count).each(&:purge)
   end
+
+  #---------------------------------------------------------------------------
+  # See also scripts/recover_missing_blobs.rb
+  # (This doesn't really belong here, but never mind.)
+  #
+  # Sometimes a blob we're tracking doesn't actually exist in the storage
+  # service. Not sure how it happens. Was there an S3 outage? Did we have
+  # some server instability and the write failed? Did the blob record somehow
+  # switch storage back ends without moving the data? Was it deleted from
+  # the storage service? Did the key change somehow? Idk.
+  def self.blob_exists_in_storage?(some_blob)
+    some_blob.service.exist?(some_blob.key)
+  end
+
+  # If the current blob is missing from the storage service then the site is
+  # very broken. Trying to viewing it throws ActiveStorage::FileNotFoundError
+  # and users see a 500 internal server error.
+  def main_blob_missing?
+    blob.present? && !WithSavedContent.blob_exists_in_storage?(blob)
+  end
+
+  # Find the newest blob that is not missing in the storage service. This
+  # should be the best version to use for recovering the site. Changes from
+  # the lost blob will still be lost, but there's not much we can do about it.
+  def newest_good_blob
+    saved_content_files_newest_first.
+      includes(:blob).
+      map(&:blob).
+      compact.select { WithSavedContent.blob_exists_in_storage?(_1) }.
+      first
+  end
+
+  # Restore the broken site by uploading the most recent saved version of the
+  # site where the blob key really does exist in the storage service.
+  def restore_missing_main_blob!
+    raise "Main blob not missing!" unless main_blob_missing?
+    raise "No good blob found!" unless newest_good_blob.present?
+
+    # Similar to restore_version in the SiteHistory controller concern
+    content_upload(file_download(newest_good_blob.id))
+  end
+  #---------------------------------------------------------------------------
 end

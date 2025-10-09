@@ -2,6 +2,12 @@
 # Usage:
 #  rails runner scripts/recover_missing_blobs.rb
 #
+# Note: Some of the code here was recreated/copied into methods
+# defined in app/models/concerns/with_saved_content.rb. Since this
+# is mostly a "one-time" script for a specific incident, I decided
+# to keep it as it is. If I'm doing somethig like this in future I'll
+# make a new version and use the newer methods.
+#
 
 problem_sites = Site.where("updated_at > ?", 1.week.ago).select do |s|
   # Newest blob key is missing from the storage bucket
