@@ -32,7 +32,7 @@
 
       = render layout: 'field_wrapper' do
         = f.label :redirect_to_site_id, 'Redirect to one of your Tiddlyhost sites'
-        = f.select :redirect_to_site_id, current_user.sites.map{|s|[s.name, s.id]},
+        = f.select :redirect_to_site_id, current_user.sites.order(:name).map{|s|[s.name, s.id]},
           { include_blank: true }, { class: 'form-select' }
         %small.form-text.text-muted
           Visitors to this site will be redirected to the specified Tiddlyhost site.
