@@ -408,7 +408,7 @@ tw5-update: ver-set $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-c
 # You must specify the version manually here too:
 #   VER=1.7.0 make feather-update
 #
-FEATHER_BIRD=Meadowlark
+FEATHER_BIRD=Woodlark
 feather-update: ver-set download-empty-feather
 	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/$(VER).html
 	git add \
