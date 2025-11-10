@@ -52,7 +52,7 @@ class HomeController < ApplicationController
   # $('.mode-cycle-btn').on('click', ...
   def mode_cycle
     new_theme_mode = helpers.next_theme_mode
-    cookies[:theme_mode] = new_theme_mode
+    cookies[:theme_mode] = { value: new_theme_mode, expires: 20.years.from_now }
     current_user.theme_mode_pref = new_theme_mode if current_user
     head 200
   end
