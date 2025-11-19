@@ -57,7 +57,7 @@ gem 'will_paginate'
 gem 'validate_url'
 
 # https://github.com/mbleigh/acts-as-taggable-on
-gem 'acts-as-taggable-on', '~> 12.0'
+gem 'acts-as-taggable-on', '~> 13.0'
 
 # https://github.com/smartinez87/exception_notification
 gem 'exception_notification'
