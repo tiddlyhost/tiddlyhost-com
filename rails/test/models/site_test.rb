@@ -315,4 +315,87 @@ class SiteTest < ActiveSupport::TestCase
       assert_equal 'older version', @site.file_download
     end
   end
+
+  test 'tagging basic functionality' do
+    # Initially no tags
+    assert @site.tag_list.empty?
+    assert_equal 0, @site.tags.count
+
+    # Add some tags
+    @site.tag_list.add('ruby', 'rails', 'web-development')
+    @site.save!
+
+    # Verify tags were added
+    @site.reload
+    assert_equal 3, @site.tags.count
+    assert_includes @site.tag_list, 'ruby'
+    assert_includes @site.tag_list, 'rails'
+    assert_includes @site.tag_list, 'web-development'
+
+    # Remove a tag
+    @site.tag_list.remove('rails')
+    @site.save!
+
+    # Verify tag was removed
+    @site.reload
+    assert_equal 2, @site.tags.count
+    assert_includes @site.tag_list, 'ruby'
+    assert_not_includes @site.tag_list, 'rails'
+    assert_includes @site.tag_list, 'web-development'
+  end
+
+  test 'tag search functionality' do
+    # Create another site for testing search
+    other_site = new_site_helper(name: 'othersite', user: @site.user)
+
+    # Add tags to both sites
+    @site.tag_list = ['ruby', 'rails', 'programming']
+    @site.save!
+
+    other_site.tag_list = ['javascript', 'nodejs', 'programming']
+    other_site.save!
+
+    # Search for sites with 'ruby' tag
+    ruby_sites = Site.search_tags('ruby')
+    assert_includes ruby_sites, @site
+    assert_not_includes ruby_sites, other_site
+
+    # Search for sites with 'programming' tag
+    programming_sites = Site.search_tags('programming')
+    assert_includes programming_sites, @site
+    assert_includes programming_sites, other_site
+
+    # Search for sites with 'nonexistent' tag
+    nonexistent_sites = Site.search_tags('nonexistent')
+    assert_not_includes nonexistent_sites, @site
+    assert_not_includes nonexistent_sites, other_site
+
+    # Search with multiple words (any match)
+    multiple_sites = Site.search_tags('ruby javascript')
+    assert_includes multiple_sites, @site
+    assert_includes multiple_sites, other_site
+  end
+
+  test 'tag list manipulation' do
+    # Test setting tag list as string
+    @site.tag_list = 'foo, bar, baz'
+    @site.save!
+
+    @site.reload
+    assert_equal 3, @site.tags.count
+    assert_includes @site.tag_list, 'foo'
+    assert_includes @site.tag_list, 'bar'
+    assert_includes @site.tag_list, 'baz'
+
+    # Test setting tag list as array
+    @site.tag_list = ['one', 'two', 'three']
+    @site.save!
+
+    @site.reload
+    assert_equal 3, @site.tags.count
+    assert_includes @site.tag_list, 'one'
+    assert_includes @site.tag_list, 'two'
+    assert_includes @site.tag_list, 'three'
+    assert_not_includes @site.tag_list, 'foo'
+  end
 end
