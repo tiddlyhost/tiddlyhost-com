@@ -1,17 +1,26 @@
 require 'test_helper'
 
-class AdminControllerTest < ActionDispatch::IntegrationTest
+class SubscriptionControllerTest < ActionDispatch::IntegrationTest
   test 'feature flag disables this controller' do
-    Settings::Features.stub(:subscriptions_enabled?, false) do
-      sign_in users(:bobby)
-
-      get '/subscription'
-      assert_response :not_found
-
-      get '/subscription/plans'
+    Settings::Features.stubs(:subscriptions_enabled?).returns(false)
+    sign_in users(:bobby)
+    %w[/subscription /subscription/plans /pricing].each do |path|
+      get path
       assert_response :not_found
     end
   end
 
-  # Todo: Mock the stripe gem and test this controller properly
+  test 'routes with authentication' do
+    %w[/subscription /subscription/plans].each do |path|
+      get path
+      # Auth needed
+      assert_redirected_to new_user_session_path
+    end
+
+    %w[/pricing].each do |path|
+      get path
+      # No auth needed
+      assert_response :success
+    end
+  end
 end

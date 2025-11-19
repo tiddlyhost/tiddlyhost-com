@@ -10,6 +10,10 @@ require 'rails/test_help'
 require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/mock'
+require 'mocha/minitest'
+
+# Load test support modules
+Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
 
 module Warning
   def self.warn(msg)
@@ -53,6 +57,7 @@ end
 
 class ActiveSupport::TestCase
   include NewSiteHelper
+  include SubscriptionTestHelpers
 
   # Run tests in parallel with specified workers
   # (Simplecov doesn't handle parallel workers, so skip when running coverage tests)
@@ -67,6 +72,7 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   include NewSiteHelper
+  include SubscriptionTestHelpers
 
   setup do
     host! Settings.url_defaults[:host]
