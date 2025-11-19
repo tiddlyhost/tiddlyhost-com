@@ -190,9 +190,10 @@ assets-precompile:
 prod-assets-precompile:
 	$(DR) "RAILS_ENV=production bin/rails assets:clean assets:precompile"
 
-# Precompile the bootstrap email sass
-# (Currently shows many warnings,
-# see https://github.com/bootstrap-email/bootstrap-email/issues/277)
+# Precompile the bootstrap email sass, see lib/tasks/bootstrap_email.rake
+# Note: This was created initially because of the many SASS warnings which are
+# now all fixed, see https://github.com/bootstrap-email/bootstrap-email/pull/282
+# Keep it here anyway I guess.
 bootstrap-email-sass-precompile:
 	$(DR) "bin/rails bootstrap_email:sass_precompile"
 
