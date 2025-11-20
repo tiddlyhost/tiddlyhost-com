@@ -1,34 +1,29 @@
 module SubscriptionTestHelpers
+  MockStripeProduct = Struct.new(:id, :name, :price)
+
   # Centralized Stripe product mocking for consistent test behavior
   # Call this in your test setup to mock all the common Settings methods
   def setup_stripe_product_mocking
     # Mock standard product configurations
     Settings.stubs(:stripe_product).with(:free).returns(
-      OpenStruct.new(name: 'Free Plan', price: 0, id: nil)
-    )
+      MockStripeProduct.new(nil, 'Free Plan', 0))
     Settings.stubs(:stripe_product).with(:standard).returns(
-      OpenStruct.new(name: 'Standard Plan', price: 800, id: 'price_standard')
-    )
+      MockStripeProduct.new('price_standard', 'Standard Plan', 800))
     Settings.stubs(:stripe_product).with(:premium).returns(
-      OpenStruct.new(name: 'Premium Plan', price: 1500, id: 'price_premium')
-    )
+      MockStripeProduct.new('price_premium', 'Premium Plan', 1500))
 
     # Mock frequency-specific products
     Settings.stubs(:stripe_product).with(:standard, :monthly).returns(
-      OpenStruct.new(id: 'price_monthly_test', name: 'Standard Plan', price: 800)
-    )
+      MockStripeProduct.new('price_monthly_test', 'Standard Plan', 800))
     Settings.stubs(:stripe_product).with(:standard, :yearly).returns(
-      OpenStruct.new(id: 'price_yearly_test', name: 'Standard Plan', price: 8000)
-    )
+      MockStripeProduct.new('price_yearly_test', 'Standard Plan', 8000))
 
     # Mock product lookup by ID
     Settings.stubs(:stripe_product_by_id).with('price_test123').returns(
-      OpenStruct.new(name: 'Standard Plan', price: 800, id: 'price_test123')
-    )
+      MockStripeProduct.new('price_test123', 'Standard Plan', 800))
     # There is some fixture data that needs this
     Settings.stubs(:stripe_product_by_id).with('price_1MWtiXLudQhYOknor7RGBmCE').returns(
-      OpenStruct.new(name: 'Standard Plan', price: 800, id: 'price_1MWtiXLudQhYOknor7RGBmCE')
-    )
+      MockStripeProduct.new('price_1MWtiXLudQhYOknor7RGBmCE', 'Standard Plan', 800))
 
     # Mock fallback for unknown products
     Settings.stubs(:stripe_product).with(:nonexistent).returns(nil)
