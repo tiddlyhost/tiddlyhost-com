@@ -12,7 +12,7 @@ class PayBootstrapUserMailerTest < ActionMailer::TestCase
       pay_customer: @customer,
       pay_charge: @charge,
       date: Date.tomorrow,
-      payment_indent_id: @charge.payment_intent_id,
+      payment_intent_id: @charge.data['payment_intent_id'],
     }
   end
 
