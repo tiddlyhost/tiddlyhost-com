@@ -27,14 +27,12 @@ class TspotFetcherTest < ActiveSupport::TestCase
       Whatever
     EOT
 
-    @fetcher.stub(:htaccess_file, htaccess_content) do
-      assert @fetcher.is_public?
-    end
+    @fetcher.stubs(:htaccess_file).returns(htaccess_content)
+    assert @fetcher.is_public?
 
     # Anything not matching the regex is considered private
-    @fetcher.stub(:htaccess_file, 'anything non-matching') do
-      assert @fetcher.is_private?
-    end
+    @fetcher.stubs(:htaccess_file).returns('anything non-matching')
+    assert @fetcher.is_private?
   end
 
   test 'password checking' do

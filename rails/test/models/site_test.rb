@@ -139,17 +139,15 @@ class SiteTest < ActiveSupport::TestCase
   test 'prune attachments respects keep count' do
     setup_some_saved_versions
 
-    @site.stub(:keep_count, 100) do
-      @site.prune_attachments_now
-      # All versions are kept
-      assert_equal 5, @site.reload.saved_content_files.count
-    end
+    @site.stubs(:keep_count).returns(100)
+    @site.prune_attachments_now
+    # All versions are kept
+    assert_equal 5, @site.reload.saved_content_files.count
 
-    @site.stub(:keep_count, 3) do
-      @site.prune_attachments_now
-      # Three versions kept
-      assert_equal 3, @site.reload.saved_content_files.count
-    end
+    @site.stubs(:keep_count).returns(3)
+    @site.prune_attachments_now
+    # Three versions kept
+    assert_equal 3, @site.reload.saved_content_files.count
 
     # We can still access the current versions
     assert_equal 'boop9', @site.file_download
@@ -174,21 +172,20 @@ class SiteTest < ActiveSupport::TestCase
   test 'prune attachments considers labels' do
     setup_some_saved_versions
 
-    @site.stub(:keep_count, 3) do
-      Settings::Features.stub(:site_history_enabled?, true) do
-        # In the previous test we expected boop6 to be pruned
-        # Here we'll give it a label and then confirm it is kept
-        attachment = @site.specific_saved_content_file(@boop6_blob_id)
-        attachment.attachment_label = 'some label'
-        @site.prune_attachments_now
+    @site.stubs(:keep_count).returns(3)
+    Settings::Features.stubs(:site_history_enabled?).returns(true)
 
-        # As expected, boop6 was kept
-        assert_equal 'boop6', @site.file_download(@boop6_blob_id)
+    # In the previous test we expected boop6 to be pruned
+    # Here we'll give it a label and then confirm it is kept
+    attachment = @site.specific_saved_content_file(@boop6_blob_id)
+    attachment.attachment_label = 'some label'
+    @site.prune_attachments_now
 
-        # Actually the newer boop7 was pruned instead
-        assert_nil @site.file_download(@boop7_blob_id)
-      end
-    end
+    # As expected, boop6 was kept
+    assert_equal 'boop6', @site.file_download(@boop6_blob_id)
+
+    # Actually the newer boop7 was pruned instead
+    assert_nil @site.file_download(@boop7_blob_id)
   end
 
   test 'prune job scheduled' do
@@ -278,10 +275,9 @@ class SiteTest < ActiveSupport::TestCase
     assert_not @site.main_blob_missing?
 
     # The blob is missing in the storage service
-    blob.service.stub(:exist?, ->(_key) { false }) do
-      assert_not WithSavedContent.blob_exists_in_storage?(blob)
-      assert @site.main_blob_missing?
-    end
+    blob.service.stubs(:exist?).returns(false)
+    assert_not WithSavedContent.blob_exists_in_storage?(blob)
+    assert @site.main_blob_missing?
   end
 
   test 'restore missing main blob' do

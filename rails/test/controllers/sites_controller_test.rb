@@ -150,23 +150,22 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
   test 'site history access' do
     @site.content_upload('hey')
 
-    Settings::Features.stub(:site_history_enabled?, false) do
-      Settings::Features.stub(:site_history_preview_enabled?, false) do
-        # Can't access
-        get history_site_url(@site)
-        assert_response :not_found
-      end
+    # Test when both features are disabled
+    Settings::Features.stubs(:site_history_enabled?).returns(false)
+    Settings::Features.stubs(:site_history_preview_enabled?).returns(false)
+    get history_site_url(@site)
+    assert_response :not_found
 
-      Settings::Features.stub(:site_history_preview_enabled?, true) do
-        get history_site_url(@site)
-        assert_response :success
-      end
-    end
+    # Test when site_history_enabled is false but preview is enabled
+    Settings::Features.stubs(:site_history_enabled?).returns(false)
+    Settings::Features.stubs(:site_history_preview_enabled?).returns(true)
+    get history_site_url(@site)
+    assert_response :success
 
-    Settings::Features.stub(:site_history_enabled?, true) do
-      get history_site_url(@site)
-      assert_response :success
-    end
+    # Test when site_history_enabled is true
+    Settings::Features.stubs(:site_history_enabled?).returns(true)
+    get history_site_url(@site)
+    assert_response :success
   end
 
   def get_blob_ids(site)
@@ -186,12 +185,6 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     get history_site_url(@site)
     assert_response :success
 
-    Settings::Features.stub(:site_history_enabled?, false) do
-      # Restore an old version when feature is not enabled
-      post "/sites/#{@site.id}/restore_version/#{blob_ids.last}"
-      assert_response :not_found
-    end
-
     # Restore an old version
     post "/sites/#{@site.id}/restore_version/#{blob_ids.last}"
     assert_redirected_to history_site_url(@site)
@@ -209,6 +202,11 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     new_blob_ids = get_blob_ids(@site)
     assert_equal 3, new_blob_ids.count
     assert_equal blob_ids[0..-2], new_blob_ids
+
+    # Test restore when feature is disabled
+    Settings::Features.stubs(:site_history_enabled?).returns(false)
+    post "/sites/#{@site.id}/restore_version/#{blob_ids.first}"
+    assert_response :not_found
   end
 
   test 'site history version labels' do
