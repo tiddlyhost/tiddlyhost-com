@@ -697,6 +697,9 @@ version-bump: require-var-VER
 stripe-dev-listen:
 	stripe listen --forward-to https://tiddlyhost.local/pay/webhooks/stripe --skip-verify
 
+stripe-api-version:
+	@$(DCC) 'bin/rails runner "puts Stripe.api_version"'
+
 #----------------------------------------------------------
 
 # I usually work in devel branch locally and update main now
