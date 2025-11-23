@@ -156,9 +156,9 @@ class SubscriberTest < ActiveSupport::TestCase
 
   test 'active_subscriptions scope filters for active status' do
     # Mock the subscriptions association and active scope
-    mock_subscriptions = mock('subscriptions')
+    mock_subscriptions = mock('pay_subscriptions')
     mock_subscriptions.expects(:where).with(status: 'active').returns(['subscription1', 'subscription2'])
-    @user.stubs(:subscriptions).returns(mock_subscriptions)
+    @user.stubs(:pay_subscriptions).returns(mock_subscriptions)
 
     result = @user.active_subscriptions
     assert_equal ['subscription1', 'subscription2'], result

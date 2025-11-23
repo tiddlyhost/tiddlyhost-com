@@ -11,7 +11,7 @@ module Subscriber
 
     # Could possibly return multiple rows per user
     scope :join_subscriptions, lambda {
-      left_joins(:payment_processor).left_joins(:subscriptions)
+      left_joins(:payment_processor).left_joins(:pay_subscriptions)
     }
 
     # The distinct is because this is used to count users
@@ -69,7 +69,7 @@ module Subscriber
   # (This method is not used currently.)
   #
   def active_subscriptions
-    subscriptions.where(status: 'active')
+    pay_subscriptions.where(status: 'active')
   end
 
   # In practice we're expecting only stripe and only one pay customer

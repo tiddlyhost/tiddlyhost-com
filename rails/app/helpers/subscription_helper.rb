@@ -45,7 +45,7 @@ module SubscriptionHelper
     plan_name = user.subscription_info.name
 
     # Show asterix if they were once subscribed
-    indicator = '*' if plan_name == 'Free' && user.subscriptions.any?
+    indicator = '*' if plan_name == 'Free' && user.pay_subscriptions.any?
 
     # Show if they have an alternative payment method subscription
     indicator = ' (alt)' if user.alt_subscription.present?

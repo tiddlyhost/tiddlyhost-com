@@ -174,7 +174,7 @@ class UserSubscriptionIntegrationTest < ActiveSupport::TestCase
 
     # Verify the subscription is correct STI type
     found_user = users_with_active_subs.find(other_user.id)
-    user_subscription = found_user.subscriptions.active.first
+    user_subscription = found_user.pay_subscriptions.active.first
     assert_instance_of Pay::Stripe::Subscription, user_subscription
 
     # Cancel subscription and test scope excludes user
