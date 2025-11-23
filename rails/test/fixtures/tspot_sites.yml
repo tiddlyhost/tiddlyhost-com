@@ -9,12 +9,17 @@ mysite:
 simon:
   id: 2
   name: simon
+  # This is a stub - no htpasswd yet
 coolsite:
   id: 3
   name: coolsite
+  # Password here is 'trustno1' with salt 'mu'
+  htpasswd: mulder:muG/6sge3L4Sc
+  is_private: 0
 mulder:
   id: 4
   name: mulder
+  # This is a stub - no htpasswd yet for claiming tests
 privatestuff:
   id: 5
   name: privatestuff

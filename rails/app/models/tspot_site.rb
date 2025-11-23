@@ -33,83 +33,29 @@ class TspotSite < ApplicationRecord
 
   scope :not_deleted, -> { where(deleted: false) }
 
-  # The TspotFetcher class knows how to fetch a site from the
-  # dreamhost bucket. It can also determine if the site is public
-  # or private, and can fetch the htpasswd file for auth checks.
-  #
-  def fetcher
-    @_fetcher ||= TspotFetcher.new(name)
-  end
-
-  def fetcher=(fetcher)
-    @_fetcher = fetcher
-  end
+  # Legacy fetcher functionality has been removed since the S3 bucket
+  # is no longer available. Sites can no longer be "destubbed" from
+  # external sources.
 
   def html_content
-    if blob
-      file_download
+    # We'll be removing TspotSites without a blob soon, at which
+    # point this should not be needed
+    return "" unless blob
 
-    else
-      # In case the site's content has never been saved.
-      # (Probably not needed any more.)
-      fetched_html
-
-    end
+    file_download
   end
 
   alias_method :download_content, :html_content
 
-  def fetched_html
-    site_cache(:fetched_html) do
-      logger.info "  TspotSite fetch for #{name}"
-      fetcher.html_file
-    end
-  end
-
-  # Take the original Tiddlyspot site html and save it to a blob if it hasn't
-  # been done already. I used it to bulk migrate all unmigrated tspots.
-  # (Probably not useful any more since all tspot sites are now migrated.)
+  # There's no populating any more. Will rename this method in future.
+  # Return nil if the tspot site doesn't exist or if there is a record
+  # for it but it has no content.
   #
-  def ensure_migrated
-    return if blob
+  def self.find_and_populate(site_name)
+    site = not_deleted.find_by_name(site_name)
+    return nil unless site&.blob
 
-    content_upload(fetcher.html_file)
-  end
-
-  # If we never fetched the site's details then htpasswd will be
-  # nil. Let's call that a "stub".
-  #
-  def is_stub?
-    htpasswd.blank?
-  end
-
-  def self.fetched_site_to_attrs(fetched_site, ip_address = nil)
-    WithSavedContent.attachment_params(fetched_site.html_file).merge({
-      name: fetched_site.name,
-      is_private: fetched_site.is_private?,
-      htpasswd: fetched_site.htpasswd_file,
-      created_ip: ip_address&.to_s,
-    })
-  end
-
-  def fetcher_attrs
-    TspotSite.fetched_site_to_attrs(fetcher)
-  end
-
-  def ensure_destubbed(_ip_address = nil)
-    return self unless is_stub?
-
-    update(fetcher_attrs)
-    self
-  end
-
-  # Returns nil if the tspot site doesn't exist.
-  # Because we populated all known tspot sites in the database we
-  # no longer create a new record here, but we might need to use
-  # the fetcher to populate its content and metadata.
-  #
-  def self.find_and_populate(site_name, ip_address = nil)
-    not_deleted.find_by_name(site_name)&.ensure_destubbed(ip_address)
+    site
   end
 
   def use_legacy_password?
@@ -118,10 +64,20 @@ class TspotSite < ApplicationRecord
 
   def passwd_ok?(user, pass)
     if use_legacy_password?
-      TspotFetcher.passwd_match?(user, pass, htpasswd)
+      self.class.passwd_match?(user, pass, htpasswd)
     else
       user == name && authenticate(pass)
     end
+  end
+
+  # Legacy password authentication
+  def self.passwd_match?(given_username, given_passwd, htpasswd)
+    return false unless
+      given_username.present? && given_passwd.present? && htpasswd.present?
+
+    username, passwd_crypt = htpasswd.split(':')
+    salt = username[0, 2]
+    given_username == username && given_passwd.crypt(salt) == passwd_crypt
   end
 
   # Don't write to the legacy password. Instead create a new

@@ -15,40 +15,28 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to 'http://tiddlyspot-test-example.com/'
   end
 
-  def mocked_site(name)
+  def setup_site_with_content(name, content = 'some site html', is_private: false)
     host! "#{name}.#{Settings.tiddlyspot_host}"
 
-    mock = mock_helper do |m|
-      m.expect(:name, name)
-      m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
-      m.expect(:html_file, 'some site html')
-    end
-
-    yield mock if block_given?
-
-    mock
-  end
-
-  def with_mocked_site(mock, &)
-    TspotFetcher.stub(:new, mock, &)
+    site = TspotSite.find_by_name(name)
+    site.content_upload(content)
+    site.update!(
+      htpasswd: 'mulder:muG/6sge3L4Sc', # password 'trustno1'
+      is_private:
+    )
+    site
   end
 
   test 'viewing a public site' do
-    mock = mocked_site('coolsite') do |m|
-      m.expect(:is_private?, false)
-    end
-
-    with_mocked_site(mock) { get '/' }
-    assert_success('some site html', mock)
+    setup_site_with_content('coolsite', 'some site html', is_private: false)
+    get '/'
+    assert_success('some site html')
   end
 
   test 'viewing a public site with index.html' do
-    mock = mocked_site('coolsite') do |m|
-      m.expect(:is_private?, false)
-    end
-
-    with_mocked_site(mock) { get '/index.html' }
-    assert_success('some site html', mock)
+    setup_site_with_content('coolsite', 'some site html', is_private: false)
+    get '/index.html'
+    assert_success('some site html')
   end
 
   test 'viewing sites with weird names' do
@@ -63,61 +51,43 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
     ].each do |name|
       site.update!(name:)
-      mock = mocked_site(name) do |m|
-        m.expect(:is_private?, false)
-      end
-
-      with_mocked_site(mock) { get '/' }
-      assert_success('some site html', mock)
+      setup_site_with_content(name, 'some site html', is_private: false)
+      get '/'
+      assert_success('some site html')
     end
   end
 
   test 'downloading a public site' do
-    mock = mocked_site('coolsite') do |m|
-      m.expect(:is_private?, false)
-    end
-
-    with_mocked_site(mock) { get '/download' }
+    setup_site_with_content('coolsite', 'some site html', is_private: false)
+    get '/download'
     assert_match 'filename="coolsite.html"', response.headers['Content-Disposition']
-    assert_success('some site html', mock)
+    assert_success('some site html')
   end
 
   test 'viewing a private site without auth' do
-    mock = mocked_site('privatestuff') do |m|
-      m.expect(:is_private?, true)
-    end
-
-    with_mocked_site(mock) { get '/' }
-    assert_unauthorized(mock)
+    setup_site_with_content('privatestuff', 'some site html', is_private: true)
+    get '/'
+    assert_unauthorized
   end
 
   test 'downloading a private site without auth' do
-    mock = mocked_site('privatestuff') do |m|
-      m.expect(:is_private?, true)
-    end
-
-    with_mocked_site(mock) { get '/download' }
-    assert_unauthorized(mock)
+    setup_site_with_content('privatestuff', 'some site html', is_private: true)
+    get '/download'
+    assert_unauthorized
   end
 
   test 'viewing a private site with unsuccessful auth' do
-    mock = mocked_site('privatestuff') do |m|
-      m.expect(:is_private?, true)
-    end
-
-    with_mocked_site(mock) { get '/', headers: {
-      'Authorization' => "Basic #{Base64.encode64('notes:noidea')}" } }
-    assert_unauthorized(mock)
+    setup_site_with_content('privatestuff', 'some site html', is_private: true)
+    get '/', headers: {
+      'Authorization' => "Basic #{Base64.encode64('notes:noidea')}" }
+    assert_unauthorized
   end
 
   test 'viewing a private site with successful auth' do
-    mock = mocked_site('privatestuff') do |m|
-      m.expect(:is_private?, true)
-    end
-
-    with_mocked_site(mock) { get '/', headers: {
-      'Authorization' => "Basic #{Base64.encode64('mulder:trustno1')}" } }
-    assert_success('some site html', mock)
+    setup_site_with_content('privatestuff', 'some site html', is_private: true)
+    get '/', headers: {
+      'Authorization' => "Basic #{Base64.encode64('mulder:trustno1')}" }
+    assert_success('some site html')
   end
 
   test 'viewing site that was deleted' do
@@ -148,8 +118,14 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
 
   test 'redirect to thost site' do
     site = TspotSite.find_by_name('mysite')
-    site.update(redirect_to_site_id: 1)
-    host! "mysite.#{Settings.tiddlyspot_host}"
+    # Ensure it has a blob
+    site.content_upload("dummy content")
+
+    # Configure a redirect
+    site.update(redirect_to_site_id: Site.find_by_name("mysite").id)
+
+    # Confirm redirect happens
+    host! "mysite.tiddlyspot-test-example.com"
     get '/'
     assert_redirected_to 'http://mysite.tiddlyhost-test-example.com'
   end
@@ -168,41 +144,20 @@ class TiddlyspotControllerTest < ActionDispatch::IntegrationTest
     assert_404
   end
 
-  test 'viewing a stubbed site will cause it to be populated' do
-    # Create a stub tspot site
-    stubbed_site = TspotSite.create!(name: 'stubsite')
-    assert stubbed_site.is_stub?
-
-    mock = mocked_site('stubsite') do |m|
-      m.expect(:is_private?, false)
-    end
-
-    with_mocked_site(mock) { get '/' }
-    assert_success('some site html', mock)
-
-    # Sanity check
-    refute stubbed_site.reload.is_stub?
-    assert stubbed_site.blob.present?
-  end
-
   # Skip testing downloads with auth. I'm pretty sure they'll
   # behave correctly if all of the above is passing.
-
-  def assert_unauthorized(mock)
+  def assert_unauthorized
     assert_response :unauthorized
     assert_select 'h1', '401 Unauthorized', response.body
-    assert_mock mock
   end
 
-  def assert_success(expected_html, mock)
+  def assert_success(expected_html)
     assert_response :success
     assert_match expected_html, response.body
-    assert_mock mock
   end
 
-  def assert_404(mock = nil)
+  def assert_404
     assert_response 404
     assert_select 'h1', '404 Not Found', response.body
-    assert_mock mock if mock
   end
 end

@@ -13,13 +13,6 @@ class TspotSiteTest < ActiveSupport::TestCase
     assert_equal 'http://tiddlyspot-test-example.com', Settings.tiddlyspot_url
   end
 
-  test 'is_stub' do
-    refute @site.is_stub?
-
-    stub_site = TspotSite.create(name: 'stubby')
-    assert stub_site.is_stub?
-  end
-
   test 'deleting' do
     refute @site.deleted?
     assert TspotSite.not_deleted.include?(@site)

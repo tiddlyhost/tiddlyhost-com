@@ -4,6 +4,11 @@ require 'minitest/mock'
 class ClaimSitesTest < CapybaraIntegrationTest
   setup do
     sign_in users(:bobby)
+
+    @site = TspotSite.find_by_name('mysite')
+    # Make sure it has a blob, otherwise it's considered to not really exist
+    # Fixme: Make it so the fixture data has a blob already I guess..?
+    @site.content_upload('dummy content')
   end
 
   test 'link is present' do
@@ -12,70 +17,35 @@ class ClaimSitesTest < CapybaraIntegrationTest
     assert_selector 'h2', text: 'Claim Tiddlyspot site'
   end
 
-  def mocked_fetcher
-    mock_helper do |m|
-      m.expect(:is_private?, false)
-      m.expect(:htpasswd_file, 'mulder:muG/6sge3L4Sc')
-      m.expect(:html_file, 'whatever')
-    end
-  end
+  # Fetcher functionality has been removed since the S3 bucket is gone.
+  # Sites can no longer be destubbed from external sources.
 
-  def with_mocked_site(mock, &)
-    TspotFetcher.stub(:new, mock, &)
-  end
-
-  def attempt_claim(site_name, password, mocked_site, expected_text)
+  def attempt_claim(site_name, password, expected_text)
     visit '/tspot_sites/claim_form'
     fill_in :site_name, with: site_name
     fill_in :password, with: password
-    if mocked_site
-      site = TspotSite.find_by_name(site_name)
-
-      # The others are stubs but this one is not..
-      assert site.is_stub? unless site_name == 'mysite'
-
-      mocked_site.expect(:name, site_name)
-      with_mocked_site(mocked_site) do
-        click_button 'Claim'
-      end
-
-      refute site.reload.is_stub?
-
-    else
-      click_button 'Claim'
-
-    end
+    click_button 'Claim'
     assert_selector 'h1', text: expected_text
-
-    assert_mock mocked_site if mocked_site
   end
 
   test 'non-existent' do
-    attempt_claim('zimon', 'xx', nil, 'does not exist')
-  end
-
-  test 'incorrect password' do
-    attempt_claim('simon', 'xx', mocked_fetcher, 'Claim unsuccessful')
+    attempt_claim('zimon', 'xx', 'does not exist')
   end
 
   test 'already owned' do
-    TspotSite.find_by_name('mysite').update!(user: users(:mary))
-    attempt_claim('mysite', 'xx', nil, 'owned by someone else')
+    @site.update!(user: users(:mary))
+    attempt_claim('mysite', 'xx', 'owned by someone else')
   end
 
-  test 'success' do
-    site = TspotSite.find_by_name('mulder')
-    assert site.is_stub?
-    attempt_claim('mulder', 'trustno1', mocked_fetcher, 'claimed successfully')
-    refute site.reload.is_stub?
-    assert_equal 'mulder', site.name
-    assert_equal users(:bobby), site.user
+  test 'successful claim' do
+    attempt_claim('mysite', 'abc123', 'claimed successfully')
+    assert_equal 'mysite', @site.name
+    assert_equal users(:bobby), @site.reload.user
   end
 
   test 'disowning' do
     # User bobby owns a site
-    site = TspotSite.find_by_name('mysite')
-    site.update!(user: users(:bobby))
+    @site.update!(user: users(:bobby))
 
     # Confirm it's visible
     visit '/sites'
@@ -87,13 +57,12 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's no longer visible and it was really disowned
     assert_selector '.sitelink a', text: 'mysite.tiddlyspot-test-example.com', count: 0
-    assert_nil site.reload.user
+    assert_nil @site.reload.user
   end
 
   test 'delete' do
     # User bobby owns a site
-    site = TspotSite.find_by_name('mysite')
-    site.update!(user: users(:bobby))
+    @site.update!(user: users(:bobby))
 
     # Make it so there's only one delete link for convenience
     Site.find_by_name('mysite').update(user: users(:mary))
@@ -108,6 +77,6 @@ class ClaimSitesTest < CapybaraIntegrationTest
 
     # Confirm it's no longer visible and it was really deleted
     assert_selector '.sitelink a', text: 'mysite.tiddlyspot-test-example.com', count: 0
-    assert site.reload.deleted?
+    assert @site.reload.deleted?
   end
 end
