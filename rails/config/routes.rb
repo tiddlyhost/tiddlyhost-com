@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
     get 'subscription', to: 'subscription#show'
     get 'subscription/plans', to: 'subscription#plans'
+    get 'subscription/success', to: 'subscription#success'
 
     resources :sites do
       collection do

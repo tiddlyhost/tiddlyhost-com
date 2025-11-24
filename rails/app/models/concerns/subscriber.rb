@@ -34,7 +34,7 @@ module Subscriber
     self.payment_processor.checkout(
       mode: 'subscription',
       line_items: price_id,
-      success_url: "#{Settings.main_site_url}/subscription",
+      success_url: "#{Settings.main_site_url}/subscription/success",
       cancel_url: "#{Settings.main_site_url}/subscription"
     )
   end

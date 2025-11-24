@@ -24,8 +24,8 @@ class SubscriberTest < ActiveSupport::TestCase
     mock_processor.expects(:checkout).with(
       mode: 'subscription',
       line_items: 'price_monthly_test',
-      success_url: "http://tiddlyhost-test-example.com/subscription",
-      cancel_url: "http://tiddlyhost-test-example.com/subscription"
+      success_url: "#{Settings.main_site_url}/subscription/success",
+      cancel_url: "#{Settings.main_site_url}/subscription"
     ).returns('checkout_session_url')
 
     @user.stubs(:payment_processor).returns(mock_processor)
@@ -41,8 +41,8 @@ class SubscriberTest < ActiveSupport::TestCase
     mock_processor.expects(:checkout).with(
       mode: 'subscription',
       line_items: 'price_yearly_test',
-      success_url: "http://tiddlyhost-test-example.com/subscription",
-      cancel_url: "http://tiddlyhost-test-example.com/subscription"
+      success_url: "#{Settings.main_site_url}/subscription/success",
+      cancel_url: "#{Settings.main_site_url}/subscription"
     ).returns('checkout_session_url')
 
     @user.stubs(:payment_processor).returns(mock_processor)
@@ -65,7 +65,7 @@ class SubscriberTest < ActiveSupport::TestCase
     mock_processor.expects(:checkout).with(
       mode: 'subscription',
       line_items: 'price_12345',
-      success_url: "#{Settings.main_site_url}/subscription",
+      success_url: "#{Settings.main_site_url}/subscription/success",
       cancel_url: "#{Settings.main_site_url}/subscription"
     ).returns('checkout_session_url')
 

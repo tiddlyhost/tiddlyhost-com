@@ -1,0 +1,14 @@
+
+= render layout: 'form_wrapper', locals: { heading: 'Subscription successful' } do
+
+  .p-2.mt-4
+    .big
+      = bi_icon('check2-circle', height: "2.4em", width: "2.4em", style: "fill:green!important;")
+      Thank you for becoming a Tiddlyhost subscriber!
+
+  .p-2.mt-4.nice-buttons
+    Your subscription details should be visible shortly on the
+    = link_to subscription_path, class: 'btn', style: "opacity:75%!important;" do
+      = bi_icon('bag-check', style: "margin-left: 1px;")
+      Manage subscription
+    &nbsp;page.

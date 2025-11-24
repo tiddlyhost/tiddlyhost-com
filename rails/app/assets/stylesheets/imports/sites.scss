@@ -119,7 +119,7 @@ table.history-table {
     }
 }
 
-.create-buttons {
+.nice-buttons {
     .btn {
         @extend .th-text-90;
         @extend .th-muted;
@@ -152,7 +152,7 @@ table.history-table {
 }
 
 [data-bs-theme="light"] {
-    .create-buttons, .sites-menu, .actions-menu-group {
+    .nice-buttons, .sites-menu, .actions-menu-group {
         .btn {
             @extend .btn-light;
 
@@ -166,7 +166,7 @@ table.history-table {
 }
 
 [data-bs-theme="dark"] {
-    .create-buttons, .sites-menu, .actions-menu-group {
+    .nice-buttons, .sites-menu, .actions-menu-group {
         .btn {
             @extend .btn-dark;
             &:hover, &.show {

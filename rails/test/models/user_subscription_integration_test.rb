@@ -91,8 +91,8 @@ class UserSubscriptionIntegrationTest < ActiveSupport::TestCase
     @user.payment_processor.expects(:checkout).with(
       mode: 'subscription',
       line_items: 'price_monthly_test',
-      success_url: "http://tiddlyhost-test-example.com/subscription",
-      cancel_url: "http://tiddlyhost-test-example.com/subscription"
+      success_url: "#{Settings.main_site_url}/subscription/success",
+      cancel_url: "#{Settings.main_site_url}/subscription"
     ).returns({
       id: 'cs_test_real_123',
       url: 'https://checkout.stripe.com/pay/cs_test_real_123'

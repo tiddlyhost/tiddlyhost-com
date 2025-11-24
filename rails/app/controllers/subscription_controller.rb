@@ -14,6 +14,9 @@ class SubscriptionController < ApplicationController
     render :plans
   end
 
+  def success
+  end
+
   private
 
   def set_user_vars
