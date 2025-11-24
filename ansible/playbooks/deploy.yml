@@ -417,9 +417,12 @@
 
   - name: Post-migration rails restart
     community.docker.docker_container_exec:
-      container: th_app
+      container: "{{ item }}"
       command: touch tmp/restart.txt
     when: db_migrate.changed
+    with_items:
+    - th_app
+    - th_jobs
     tags:
     - app
     - fast-upgrade
