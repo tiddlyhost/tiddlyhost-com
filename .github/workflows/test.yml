@@ -47,8 +47,8 @@ jobs:
       - name: Create database
         run: bin/rails db:create
 
-      # Run this first because it produces many deprecation warnings
-      # which would otherwise make the test output look untidy
+      # Not strictly needed, because they'll be generated on demand
+      # automatically, but this makes the test output slightly tidier
       - name: Precompile email styles
         run: bin/rails bootstrap_email:sass_precompile
 
