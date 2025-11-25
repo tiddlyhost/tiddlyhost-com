@@ -14,7 +14,7 @@ services:
     - ./docker/nginx-html:/opt/nginx-html:z
 
   app:
-    image: sbaird/tiddlyhost-base:latest
+    image: docker.io/sbaird/tiddlyhost-base:latest
     container_name: th_app
     depends_on:
     - db
@@ -40,7 +40,7 @@ services:
       - GROUP_ID
 
   jobs:
-    image: sbaird/tiddlyhost-base:latest
+    image: docker.io/sbaird/tiddlyhost-base:latest
     container_name: th_jobs
     depends_on:
     - db

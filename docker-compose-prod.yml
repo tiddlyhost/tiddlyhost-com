@@ -16,7 +16,7 @@ services:
     - rails-static:/opt/rails-static
 
   app:
-    image: sbaird/tiddlyhost:latest
+    image: docker.io/sbaird/tiddlyhost:latest
     container_name: th_app
     restart: always
     depends_on:
@@ -41,7 +41,7 @@ services:
       dockerfile: docker/Dockerfile.prod
 
   jobs:
-    image: sbaird/tiddlyhost:latest
+    image: docker.io/sbaird/tiddlyhost:latest
     container_name: th_jobs
     restart: always
     depends_on:

@@ -17,6 +17,12 @@ GROUP_ID ?= $(shell id -g)
 
 #----------------------------------------------------------
 
+DOCKER_PUSH_ORG ?= docker.io/sbaird
+DOCKER_PUSH_REPO ?= $(DOCKER_PUSH_ORG)/tiddlyhost
+DOCKER_PUSH_REPO_BASE ?= $(DOCKER_PUSH_REPO)-base
+
+#----------------------------------------------------------
+
 # The idea here is that I want to pin the base image in Dockerfile.base
 # for reproducibility but also have an easy way to keep it updated when
 # a new version is available.
@@ -43,7 +49,7 @@ fast-build-base:
 	$(DC) $(PROGRESS_OPT) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID) app
 
 build-push-base: cleanup build-base push-base
-	NO_COMMIT=1 bin/pin-digest.sh docker.io/sbaird/tiddlyhost-base:latest docker/Dockerfile.prod "Tiddlyhost base image rebuilt"
+	NO_COMMIT=1 bin/pin-digest.sh $(DOCKER_PUSH_REPO_BASE):latest docker/Dockerfile.prod "Tiddlyhost base image rebuilt"
 
 # To set up your environment right after doing a git clone
 # Beware: This command runs `rails db:setup` which will clear out your local database
@@ -498,10 +504,10 @@ fast-build-prod: build-info
 	$(DC_PROD) $(PROGRESS_OPT) build app
 
 push-base:
-	$(D) --config etc/credentials/docker push sbaird/tiddlyhost-base
+	$(D) --config etc/credentials/docker push $(DOCKER_PUSH_REPO_BASE)
 
 push-prod:
-	$(D) --config etc/credentials/docker push sbaird/tiddlyhost
+	$(D) --config etc/credentials/docker push $(DOCKER_PUSH_REPO)
 
 # Fixme: There are too many options here...
 build-push:            delint tests build-prod push-prod

@@ -41,5 +41,5 @@ jobs:
       - name: Push image to docker hub
         run: |
           echo ${{ secrets.DOCKER_PUSH_TOKEN }} | docker login --username ${{ secrets.DOCKER_PUSH_USER }} --password-stdin
-          docker tag sbaird/tiddlyhost:latest sbaird/tiddlyhost:ci-test-build
-          docker push sbaird/tiddlyhost:ci-test-build
+          docker tag ${{ vars.DOCKER_PUSH_REPO }}:latest ${{ vars.DOCKER_PUSH_REPO }}:ci-test-build
+          docker push ${{ vars.DOCKER_PUSH_REPO }}:ci-test-build
