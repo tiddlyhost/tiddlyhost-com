@@ -31,10 +31,15 @@ jobs:
       - name: Run tests
         run: make test-ci
 
+        # NB: This build is experimental and not prod ready since it will be missing
+        # some core js files, and a few other things needed for production. (See the
+        # differences between `make build-prod` and `make build-prod-ci` in the Makefile.)
+        # Since the build is experimental and not prod-ready, don't push it to :latest.
       - name: Build main image
         run: make build-prod-ci
 
       - name: Push image to docker hub
         run: |
           echo ${{ secrets.DOCKER_PUSH_TOKEN }} | docker login --username ${{ secrets.DOCKER_PUSH_USER }} --password-stdin
-          docker push sbaird/tiddlyhost
+          docker tag sbaird/tiddlyhost:latest sbaird/tiddlyhost:ci-test-build
+          docker push sbaird/tiddlyhost:ci-test-build
