@@ -212,7 +212,7 @@ GEM
     matrix (0.4.3)
     mini_mime (1.1.5)
     minitest (5.26.2)
-    mocha (3.0.0)
+    mocha (3.0.1)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.0)
     net-imap (0.6.0)
