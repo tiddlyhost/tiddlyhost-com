@@ -22,11 +22,11 @@ class Settings
 
     read_settings = lambda do |settings_file|
       file_name = "#{rails_root}/#{settings_file}"
-      return nil unless File.exist?(file_name)
-
-      erb_template = ERB.new(File.read(file_name))
-      settings_yaml = erb_template.result_with_hash(is_in_container:, rails_root:)
-      YAML.load(settings_yaml) || {}
+      if File.exist?(file_name)
+        erb_template = ERB.new(File.read(file_name))
+        settings_yaml = erb_template.result_with_hash(is_in_container:, rails_root:)
+        YAML.load(settings_yaml) || {}
+      end
     end
 
     settings = read_settings['config/settings.yml']
