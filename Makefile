@@ -172,7 +172,7 @@ bundle-install:
 
 # Run bundle-update
 bundle-update:
-	$(DR) "bin/bundle update --quiet"
+	$(DR) "bin/bundle update --all --quiet"
 
 # Run bundle-clean
 bundle-clean:
