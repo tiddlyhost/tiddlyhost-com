@@ -127,6 +127,10 @@ group :test do
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver', '~> 4.2'
 
+  # Keep minitest below 6.0.0 to avoid some breaking changes
+  # Remove after Rails 8 upgrade (?)
+  gem 'minitest', '~> 5.25'
+
   gem 'mocha', require: false
   gem 'simplecov', require: false
 end
