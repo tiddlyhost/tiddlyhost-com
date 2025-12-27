@@ -41,6 +41,11 @@ gem 'redcarpet', '~> 3.6'
 # For memcached
 gem 'dalli'
 
+# Pin connection_pool to avoid breaking changes in 3.x related to
+# dalli and MemCacheStore
+# See: https://github.com/mperham/connection_pool/issues/210
+gem 'connection_pool', '< 3.0'
+
 # Added manually to fix error running tests...?
 gem 'rexml'
 
