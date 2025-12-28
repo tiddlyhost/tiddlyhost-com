@@ -27,5 +27,12 @@
       "matchManagers": ["yarn"],
       "enabled": false
     },
+    {
+      "matchManagers": ["docker"],
+      // The docker.io/sbaird/tiddlyhost-base digest in this file is
+      // updated with `make build-push-base` so don't create PRs for it.
+      "matchFileNames": ["docker/Dockerfile.prod"],
+      "enabled": false
+    },
   ]
 }
