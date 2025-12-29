@@ -235,7 +235,7 @@ GEM
       racc
     pay (11.4.3)
       rails (>= 7.0.0)
-    pg (1.6.2-x86_64-linux)
+    pg (1.6.3-x86_64-linux)
     pp (0.6.3)
       prettyprint
     premailer (1.27.0)
