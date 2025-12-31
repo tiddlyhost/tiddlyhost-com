@@ -87,7 +87,7 @@ gem 'spicy-proton'
 
 # For payments
 gem 'pay', '~> 11.4.0'
-gem 'stripe', '~> 18.0.0'
+gem 'stripe', '~> 18.1.0'
 
 # Needed after ruby 3.1 upgrade
 gem 'net-imap', require: false
