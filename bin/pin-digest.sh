@@ -7,7 +7,7 @@ MESSAGE=${3:-""}
 
 NO_COMMIT=${NO_COMMIT:-""}
 
-IMAGE_DIGEST="$( docker image inspect ${IMAGE_REF} --format '{{index .RepoDigests 0}}' | cut -d'@' -f2 )"
+IMAGE_DIGEST="$(skopeo inspect --no-tags docker://${IMAGE_REF} --format '{{.Digest}}')"
 
 REQUIRED="FROM ${IMAGE_REF}@${IMAGE_DIGEST}"
 CURRENT=$( grep -E "^FROM ${IMAGE_REF}" "${DOCKER_FILE}" )
