@@ -152,8 +152,10 @@ class TspotSite < ApplicationRecord
     Settings.feature_enabled?(:redirect_tspot_to_url, user)
   end
 
-  # No site history for tspot sites
+  # For legacy Tiddlyspot sites we don't provide the site history
+  # feature, but let's one keep some previous versions so we can
+  # help users recover from a broken save.
   def keep_count
-    1
+    Settings.keep_counts[:tiddlyspot]
   end
 end

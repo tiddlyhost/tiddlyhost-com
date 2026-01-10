@@ -50,6 +50,7 @@ defaults:
   keep_counts:
     :free: 4
     :standard: 100
+    :tiddlyspot: 4
 
 development:
   url_defaults:
