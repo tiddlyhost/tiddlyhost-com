@@ -7,7 +7,7 @@
 #
 
 # See https://hub.docker.com/_/ruby
-FROM docker.io/library/ruby:3.4-slim@sha256:d77fc2809d1e9b461bdd305694b6d69f036b477b9ab6f69cd677d88aede2f1eb
+FROM docker.io/library/ruby:3.4-slim@sha256:3370b8734f2af794a636614925378ca475699da8459e0394d86c66ec715e4268
 
 # The values will be passed in with --build-arg
 ARG USER_ID
