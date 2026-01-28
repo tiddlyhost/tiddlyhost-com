@@ -362,7 +362,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     stringio (3.2.0)
-    stripe (18.0.1)
+    stripe (18.3.0)
     sysexits (1.2.0)
     temple (0.10.4)
     thor (1.5.0)
@@ -439,7 +439,7 @@ DEPENDENCIES
   selenium-webdriver (~> 4.2)
   simplecov
   spicy-proton
-  stripe (~> 18.0.0)
+  stripe (~> 18.3.0)
   tzinfo-data
   validate_url
   web-console (>= 4.1.0)
