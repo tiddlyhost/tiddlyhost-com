@@ -167,7 +167,7 @@ GEM
     google-protobuf (4.33.5-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    grover (1.2.7)
+    grover (1.2.8)
       nokogiri (~> 1)
     haml (7.2.0)
       temple (>= 0.8.2)
