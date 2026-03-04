@@ -223,6 +223,10 @@ Style/OpenStructUse:
   Exclude:
   - "lib/settings.rb"
 
+Style/OneClassPerFile:
+  Exclude:
+  - "test/test_helper.rb"
+
 # Had this on for a while, but became tired of it.
 # Forces single quotes always for all non-interpolated strings.
 # (Could maybe exclude it for just bin/*, and Gemfile but whatever)
