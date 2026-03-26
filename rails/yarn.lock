@@ -166,9 +166,9 @@
     yargs "17.7.1"
 
 "@rails/activestorage@^7.0.0":
-  version "7.2.300"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.300.tgz#017a6047670341f12699c87cb5cf1e1d54e54eb1"
-  integrity sha512-UE3dtCTCBNTLUhuq8eZGKJkXE9NRAgOyzPZJyA7sGNivV/mDcN4949CfZG7CFx7R96IqmulvdfkwfrucPVynCg==
+  version "7.2.301"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.301.tgz#f7a9b1d162679eeb213ac205a6f0d9c230d793d8"
+  integrity sha512-z//AarxKd8xQBDljwKbFXXiP0VrF+KYilAol+ABrjei8x7y8ISQrwG0+9X8iPjYpCDFQYGRVeb2XnKilRFSeeg==
   dependencies:
     spark-md5 "^3.0.1"
 
