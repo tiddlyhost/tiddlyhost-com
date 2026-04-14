@@ -134,7 +134,7 @@ group :test do
 
   # Keep minitest below 6.0.0 to avoid some breaking changes
   # Remove after Rails 8 upgrade (?)
-  gem 'minitest', '~> 5.25'
+  gem 'minitest', '~> 6.0'
 
   gem 'mocha', require: false
   gem 'simplecov', require: false
