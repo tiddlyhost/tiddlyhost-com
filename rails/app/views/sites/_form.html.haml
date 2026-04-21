@@ -52,6 +52,7 @@
       = render 'site_common/allow_in_iframe', f:
       = render 'save_method_prefs', f:
       = render 'skip_etag_check', f:
+      = render 'custom_domain', site: @site, f:
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       = f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
