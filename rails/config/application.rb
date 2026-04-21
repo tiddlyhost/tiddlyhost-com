@@ -30,6 +30,7 @@ module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     # Todo: Should be updated soon
+    # Todo: We're using 8.0 now so this pretty stale!
     config.load_defaults 6.1
 
     # https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#new-activesupport-cache-serialization-format
