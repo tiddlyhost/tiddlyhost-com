@@ -36,6 +36,9 @@ module App
     # Todo: Should be removed carefully
     config.active_support.cache_format_version = 7.0
 
+    # Opt in to Rails 8.1 behavior for to_time timezone preservation
+    config.active_support.to_time_preserves_timezone = :zone
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
