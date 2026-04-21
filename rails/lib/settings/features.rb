@@ -17,6 +17,12 @@ module Settings::Features
     true
   end
 
+  def custom_domains_enabled?(user)
+    # While we're working on this feature I want to hide it
+    # from regular users.
+    user&.is_admin? || Rails.env.test?
+  end
+
   def redirect_tspot_to_url_enabled?(user)
     user&.is_admin? || user&.has_subscription?
   end
