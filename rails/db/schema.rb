@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_21_190211) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_21_202925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,24 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_21_190211) do
     t.string "text"
     t.bigint "active_storage_attachments_id"
     t.index ["active_storage_attachments_id"], name: "index_attachment_labels_on_active_storage_attachments_id"
+  end
+
+  create_table "custom_domains", force: :cascade do |t|
+    t.bigint "site_id", null: false
+    t.string "domain", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "verified_at"
+    t.string "verification_token"
+    t.datetime "last_verified_check_at"
+    t.integer "ssl_status", default: 0
+    t.datetime "ssl_issued_at"
+    t.datetime "ssl_expires_at"
+    t.datetime "certificate_renewal_attempted_at"
+    t.text "last_error"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_custom_domains_on_domain", unique: true
+    t.index ["site_id"], name: "index_custom_domains_on_site_id", unique: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -298,6 +316,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_21_190211) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "custom_domains", "sites"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"
   add_foreign_key "pay_charges", "pay_subscriptions", column: "subscription_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
