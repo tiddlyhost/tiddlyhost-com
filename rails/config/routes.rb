@@ -157,7 +157,9 @@ Rails.application.routes.draw do
   #
   # Error pages
   #
+  get '/400', to: 'home#error_400'
   get '/404', to: 'home#error_404'
+  get '/406', to: 'home#error_406'
   get '/422', to: 'home#error_422'
   get '/500', to: 'home#error_500'
 end

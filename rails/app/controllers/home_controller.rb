@@ -33,8 +33,16 @@ class HomeController < ApplicationController
     send_favicon('favicon.ico')
   end
 
+  def error_400
+    render_error_page(400, 'Bad Request')
+  end
+
   def error_404
     render_error_page(404, 'Not Found')
+  end
+
+  def error_406
+    render_error_page(406, 'Not Acceptable')
   end
 
   def error_422

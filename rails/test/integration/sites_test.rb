@@ -129,7 +129,9 @@ class SitesTest < CapybaraIntegrationTest
   test 'error pages' do
     # Not testing the error handling here, just that the pages render
     [
+      400,
       404,
+      406,
       422,
       500,
 
