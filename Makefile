@@ -399,11 +399,15 @@ ver-set: require-var-VER
 # The version number must be provided manually like this:
 #   VER=5.3.1 make tw5-update
 #
-tw5-update: ver-set $(TW5_DIR) download-empty-tw5 download-empty-tw5x download-core-js
+tw5-update: ver-set
+	@# Copy current tw5.html to tw5p.html before downloading new version
+	cp $(EMPTIES_DIR)/tw5.html $(EMPTIES_DIR)/tw5p.html
+	$(MAKE) download-empty-tw5 download-empty-tw5x download-core-js
 	cp $(EMPTIES_DIR)/tw5.html $(EMPTIES_DIR)/tw5/$(VER).html
 	cp $(EMPTIES_DIR)/tw5x.html $(EMPTIES_DIR)/tw5x/$(VER).html
 	git add \
 	  $(EMPTIES_DIR)/tw5.html \
+	  $(EMPTIES_DIR)/tw5p.html \
 	  $(EMPTIES_DIR)/tw5/$(VER).html \
 	  $(EMPTIES_DIR)/tw5x.html \
 	  $(EMPTIES_DIR)/tw5x/$(VER).html \
