@@ -224,7 +224,7 @@
 
   - name: Show renew output
     ansible.builtin.debug:
-      var: certbot_renew.stdout
+      var: certbot_renew.stdout_lines
     tags:
     - certs
 
@@ -430,7 +430,7 @@
 
   - name: Show database migration output
     ansible.builtin.debug:
-      var: db_migrate.stdout
+      var: db_migrate.stdout_lines
     when: db_migrate.changed
     tags:
     - app
