@@ -153,6 +153,10 @@ class TwFileTest < ActiveSupport::TestCase
 
       empty = Empty.find_by_name(tw_kind)
       assert empty, "No empty found for kind #{tw_kind}!"
+
+      # tw5p is the same kind as tw5, just a different version
+      next if tw_kind == "tw5p"
+
       assert_equal(tw_kind, empty.kind, "Derived kind was #{empty.kind}, expecting #{tw_kind}!")
     end
   end

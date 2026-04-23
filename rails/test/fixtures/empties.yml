@@ -73,3 +73,14 @@ sitelet:
   info_link: https://alamantus.codeberg.page/siteleteer/
   tooltip: To see how it works, view the clean and very readable page source. Requires
     a custom build of siteleteer.
+tw5p:
+  id: 22
+  name: tw5p
+  title: TiddlyWiki (previous version)
+  description: The previous stable version of TiddlyWiki, with internal core javascript.
+  enabled: true
+  display_order: 39
+  primary: false
+  info_link: https://tiddlywiki.com/
+  tooltip: It's recommended to use the latest version, but this older version is available
+    if needed, e.g. for plugin compatibility reasons.
