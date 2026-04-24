@@ -19,9 +19,11 @@ class CustomDomain < ApplicationRecord
     active? && ssl_issued?
   end
 
+  VERIFICATION_SUBDOMAIN = '_tiddlyhost-verification'
+
   # DNS TXT record name for verification
   def verification_record_name
-    "_tiddlyhost-verification.#{domain}"
+    "#{VERIFICATION_SUBDOMAIN}.#{domain}"
   end
 
   # DNS TXT record value for verification
@@ -37,6 +39,9 @@ class CustomDomain < ApplicationRecord
       Name:  #{verification_record_name}
       Type:  TXT
       Value: #{verification_record_value}
+
+      Note: Some DNS providers automatically append your domain name.
+      If so, use just #{VERIFICATION_SUBDOMAIN} as the name.
 
       After adding the record, click "Verify Domain" to continue.
       DNS changes can take a few minutes to propagate.

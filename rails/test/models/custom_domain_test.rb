@@ -252,6 +252,10 @@ class CustomDomainTest < ActiveSupport::TestCase
     assert_includes instructions, 'Verify Domain'
   end
 
+  test 'verification subdomain constant is available for UI' do
+    assert_equal '_tiddlyhost-verification', CustomDomain::VERIFICATION_SUBDOMAIN
+  end
+
   test 'belongs to site' do
     assert_equal @site, @custom_domain.site
   end
