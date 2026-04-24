@@ -67,6 +67,10 @@ class CustomDomain < ApplicationRecord
     )
   end
 
+  def mark_active!
+    update!(status: :active)
+  end
+
   def verify_now!
     VerifyCustomDomainJob.perform_later(id)
   end

@@ -19,6 +19,7 @@
     thost_log_dir: "{{ docker_dir }}/log"
     nginx_conf_dir: "{{ docker_dir }}/nginx-conf"
     nginx_html_dir: "{{ docker_dir }}/nginx-html"
+    nginx_domains_dir: "{{ docker_dir }}/nginx-domains"
     acme_challenge_dir: "{{ docker_dir }}/acme-challenge"
     rails_conf_dir: "{{ docker_dir }}/config"
     secrets_dir: "{{ docker_dir }}/secrets"
@@ -294,6 +295,15 @@
       mode: "0644"
     with_items:
     - custom502.html
+    tags:
+    - app
+
+  - name: Create nginx domains dir
+    become: false
+    ansible.builtin.file:
+      path: "{{ nginx_domains_dir }}"
+      state: directory
+      mode: "0755"
     tags:
     - app
 

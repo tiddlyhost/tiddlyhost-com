@@ -13,6 +13,26 @@ Rails.application.routes.draw do
   end
 
   #
+  # Individual sites on custom domains
+  #
+  constraints(lambda { |req|
+    req.domain != Settings.main_site_host &&
+      req.domain != Settings.tiddlyspot_host &&
+      CustomDomain.fully_active.exists?(domain: req.host)
+  }) do
+    match '/', to: 'tiddlywiki#serve', via: [:get, :options]
+    match '/tiddlers.json', to: 'tiddlywiki#json_content', via: [:get, :options]
+    match '/text/:title.tid', to: 'tiddlywiki#tid_content', via: [:get, :options]
+
+    get '/favicon.ico', to: 'tiddlywiki#favicon'
+    get '/download', to: 'tiddlywiki#download'
+    get '/thumb.png', to: 'tiddlywiki#thumb_png'
+
+    post '/', to: 'tiddlywiki#upload_save'
+    put '/', to: 'tiddlywiki#put_save'
+  end
+
+  #
   # Individual sites on tiddlyhost.com
   #
   constraints(lambda { |req|

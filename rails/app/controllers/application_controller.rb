@@ -34,6 +34,8 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_www_requests
+    return unless [Settings.main_site_host, Settings.tiddlyspot_host].include?(request.domain)
+
     redirect_to(redirect_www_to, status: 301) if request.subdomain == 'www'
   end
 

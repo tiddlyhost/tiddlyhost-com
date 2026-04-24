@@ -14,6 +14,7 @@ services:
     - ./docker/nginx-conf/server-common.conf:/etc/nginx/server-common.conf:z
     - ./docker/nginx-html:/opt/nginx-html:z
     - ./docker/acme-challenge:/var/www/acme:z
+    - ./docker/nginx-domains:/etc/nginx/custom-domains:z
     - rails-static:/opt/rails-static
 
   app:

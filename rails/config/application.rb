@@ -74,6 +74,9 @@ module App
       config.hosts << /.+\.#{Regexp.escape(Settings.tiddlyspot_host)}/
     end
 
+    # For custom domains (dynamic, checked against the database)
+    config.hosts << ->(host) { CustomDomain.fully_active.exists?(domain: host) }
+
     # (`domain: :all` might be useful here later maybe)
     config.session_store :cookie_store, domain: Settings.main_site_host
 

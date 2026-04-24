@@ -92,6 +92,9 @@ http {
         include server-common.conf;
     }
 
+    # Custom domain server blocks (generated per-domain after cert issuance)
+    include /etc/nginx/custom-domains/*.conf;
+
     server {
         # Catch-all for custom domains on port 80
         # Serves ACME challenges for SSL cert issuance, redirects everything else

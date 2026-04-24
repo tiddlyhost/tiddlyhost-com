@@ -7,13 +7,14 @@
 set -uo pipefail
 
 COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
-ACME_WEBROOT="{{ docker_dir }}/acme-challenge"
+ACME_WEBROOT="{{ acme_challenge_dir }}"
+NGINX_DOMAINS="{{ nginx_domains_dir }}"
 CERTBOT_CONFIG="{{ certbot_dir_config }}"
 CERTBOT_WORK="{{ certbot_dir_work }}"
 CERTBOT_LOGS="{{ certbot_dir_logs }}"
 EMAIL="{{ certbot_notification_email }}"
 
-mkdir -p "$ACME_WEBROOT"
+mkdir -p "$ACME_WEBROOT" "$NGINX_DOMAINS"
 
 DOMAINS=$($COMPOSE exec -T app bin/rails runner \
   "CustomDomain.needs_ssl_certificate.pluck(:domain).each { |d| puts d }")
@@ -39,8 +40,19 @@ for DOMAIN in $DOMAINS; do
 
   if [ "$RESULT" -eq 0 ]; then
     echo "Certificate issued for $DOMAIN"
+
+    cat > "$NGINX_DOMAINS/$DOMAIN.conf" << NGINX_EOF
+server {
+    listen 443 ssl;
+    server_name $DOMAIN;
+    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    include server-common.conf;
+}
+NGINX_EOF
+
     $COMPOSE exec -T app bin/rails runner \
-      "CustomDomain.find_by(domain: '$DOMAIN').mark_ssl_issued!"
+      "CustomDomain.find_by(domain: '$DOMAIN').tap { |cd| cd.mark_ssl_issued!; cd.mark_active! }"
     CERTS_ISSUED=$((CERTS_ISSUED + 1))
   else
     echo "Certificate failed for $DOMAIN: $OUTPUT"

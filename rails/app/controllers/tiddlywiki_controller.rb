@@ -248,8 +248,11 @@ class TiddlywikiController < ApplicationController
   end
 
   def find_site
-    site_name = request.subdomain
-    @site = Site.find_by_name(site_name)
+    if request.domain == Settings.main_site_host
+      @site = Site.find_by_name(request.subdomain)
+    else
+      @site = CustomDomain.find_by(domain: request.host)&.site
+    end
   end
 
   def tiddler_data_to_tid_text(tiddler_data)
