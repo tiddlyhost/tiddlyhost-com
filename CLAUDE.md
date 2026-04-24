@@ -52,6 +52,13 @@ make haml-lint-with-todo  # HAML linting
 make rubocop              # Ruby linting
 ```
 
+### Nginx Configuration
+The local dev nginx configs in `docker/nginx-conf/` are **generated** from the ansible Jinja2 templates in `ansible/playbooks/templates/docker/nginx-conf/`. Always edit the `.j2` templates, then run:
+```bash
+make local-nginx   # Regenerates docker/nginx-conf/ from templates
+```
+The dev files are gitignored — the templates are the source of truth.
+
 ### Development Tools
 ```bash
 # Shell into running container
