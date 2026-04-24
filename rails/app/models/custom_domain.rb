@@ -10,6 +10,7 @@ class CustomDomain < ApplicationRecord
 
   scope :expiring_soon, -> { where(ssl_status: :issued).where('ssl_expires_at < ?', 30.days.from_now) }
   scope :fully_active, -> { where(status: :active, ssl_status: :issued) }
+  scope :needs_ssl_certificate, -> { where(status: :verified).where(ssl_status: [:pending, :failed]) }
 
   before_validation :normalize_domain
   before_create :generate_verification_token
@@ -46,6 +47,24 @@ class CustomDomain < ApplicationRecord
       After adding the record, click "Verify Domain" to continue.
       DNS changes can take a few minutes to propagate.
     INSTRUCTIONS
+  end
+
+  def mark_ssl_issued!
+    update!(
+      ssl_status: :issued,
+      ssl_issued_at: Time.current,
+      ssl_expires_at: 90.days.from_now,
+      certificate_renewal_attempted_at: Time.current,
+      last_error: nil
+    )
+  end
+
+  def mark_ssl_failed!(error_message)
+    update!(
+      ssl_status: :failed,
+      certificate_renewal_attempted_at: Time.current,
+      last_error: error_message
+    )
   end
 
   def verify_now!

@@ -91,4 +91,19 @@ http {
         server_name *.{{ primary_host }};
         include server-common.conf;
     }
+
+    server {
+        # Catch-all for custom domains on port 80
+        # Serves ACME challenges for SSL cert issuance, redirects everything else
+        listen 80 default_server;
+        server_name _;
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/acme;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
 }

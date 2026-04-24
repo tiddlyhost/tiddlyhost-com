@@ -12,6 +12,7 @@ location ~ /wp-admin/ { return 404; access_log off; }
 location ~ /wp-includes/ { return 404; access_log off; }
 location ~ /wp-content/ { return 404; access_log off; }
 location ~ /wp-plugins/ { return 404; access_log off; }
+location /.well-known/acme-challenge/ { root /var/www/acme; }
 location ~ /\.well-known/ { return 404; access_log off; }
 location ~ ^/core/modules/ { return 404; access_log off; }
 location ~ ^/plugins/ { return 404; access_log off; }

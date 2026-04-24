@@ -289,4 +289,59 @@ class CustomDomainTest < ActiveSupport::TestCase
       CustomDomain.check_all_pending
     end
   end
+
+  test 'mark_ssl_issued! sets ssl attributes' do
+    @custom_domain.save!
+    @custom_domain.verified!
+    @custom_domain.mark_ssl_issued!
+    @custom_domain.reload
+
+    assert @custom_domain.ssl_issued?
+    assert_not_nil @custom_domain.ssl_issued_at
+    assert_not_nil @custom_domain.ssl_expires_at
+    assert_not_nil @custom_domain.certificate_renewal_attempted_at
+    assert_nil @custom_domain.last_error
+    assert_in_delta 90.days.from_now, @custom_domain.ssl_expires_at, 5.seconds
+  end
+
+  test 'mark_ssl_issued! clears previous error' do
+    @custom_domain.save!
+    @custom_domain.update!(status: :verified, last_error: 'previous error')
+    @custom_domain.mark_ssl_issued!
+    @custom_domain.reload
+
+    assert_nil @custom_domain.last_error
+  end
+
+  test 'mark_ssl_failed! stores error message' do
+    @custom_domain.save!
+    @custom_domain.verified!
+    @custom_domain.mark_ssl_failed!('certbot timeout')
+    @custom_domain.reload
+
+    assert @custom_domain.ssl_failed?
+    assert_equal 'certbot timeout', @custom_domain.last_error
+    assert_not_nil @custom_domain.certificate_renewal_attempted_at
+  end
+
+  test 'needs_ssl_certificate scope returns verified domains with pending or failed ssl' do
+    @custom_domain.save!
+
+    pending_ssl_site = Site.create!(name: 'pending-ssl', user: @site.user, empty: @site.empty)
+    failed_ssl_site = Site.create!(name: 'failed-ssl', user: @site.user, empty: @site.empty)
+    issued_ssl_site = Site.create!(name: 'issued-ssl', user: @site.user, empty: @site.empty)
+    unverified_site = Site.create!(name: 'unverified', user: @site.user, empty: @site.empty)
+
+    pending_ssl = CustomDomain.create!(site: pending_ssl_site, domain: 'pending-ssl.com', status: :verified, ssl_status: :pending)
+    failed_ssl = CustomDomain.create!(site: failed_ssl_site, domain: 'failed-ssl.com', status: :verified, ssl_status: :failed)
+    issued_ssl = CustomDomain.create!(site: issued_ssl_site, domain: 'issued-ssl.com', status: :verified, ssl_status: :issued)
+    unverified = CustomDomain.create!(site: unverified_site, domain: 'unverified.com', status: :pending_verification, ssl_status: :pending)
+
+    needs_cert = CustomDomain.needs_ssl_certificate
+    assert_includes needs_cert, pending_ssl
+    assert_includes needs_cert, failed_ssl
+    refute_includes needs_cert, issued_ssl
+    refute_includes needs_cert, unverified
+    refute_includes needs_cert, @custom_domain
+  end
 end

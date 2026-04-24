@@ -54,7 +54,7 @@ build-push-base: cleanup build-base push-base
 # To set up your environment right after doing a git clone
 # Beware: This command runs `rails db:setup` which will clear out your local database
 DB_VOL_MOUNT=docker/postgresql-data/data16
-APP_VOL_MOUNTS=docker/bundle docker/node_modules docker/log docker/config docker/secrets docker/dotcache
+APP_VOL_MOUNTS=docker/bundle docker/node_modules docker/log docker/config docker/secrets docker/dotcache docker/acme-challenge
 rails-init: build-info js-math download-empty-prerelease gzip-core-js-files
 	mkdir -p $(DB_VOL_MOUNT) $(APP_VOL_MOUNTS)
 	$(DC) run --rm app bash -c "bin/bundle install && bin/rails yarn:install && bin/rails db:setup"

@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# Issue SSL certificates for verified custom domains using HTTP-01 challenge.
+# Intended to be run periodically via cron on the host.
+#
+
+set -uo pipefail
+
+COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
+ACME_WEBROOT="{{ docker_dir }}/acme-challenge"
+CERTBOT_CONFIG="{{ certbot_dir_config }}"
+CERTBOT_WORK="{{ certbot_dir_work }}"
+CERTBOT_LOGS="{{ certbot_dir_logs }}"
+EMAIL="{{ certbot_notification_email }}"
+
+mkdir -p "$ACME_WEBROOT"
+
+DOMAINS=$($COMPOSE exec -T app bin/rails runner \
+  "CustomDomain.needs_ssl_certificate.pluck(:domain).each { |d| puts d }")
+
+if [ -z "$DOMAINS" ]; then
+  exit 0
+fi
+
+CERTS_ISSUED=0
+
+for DOMAIN in $DOMAINS; do
+  echo "Requesting certificate for $DOMAIN..."
+
+  OUTPUT=$(certbot certonly \
+    --webroot \
+    -w "$ACME_WEBROOT" \
+    -d "$DOMAIN" \
+    --config-dir "$CERTBOT_CONFIG" \
+    --work-dir "$CERTBOT_WORK" \
+    --logs-dir "$CERTBOT_LOGS" \
+    -n --agree-tos -m "$EMAIL" \
+    2>&1) && RESULT=0 || RESULT=$?
+
+  if [ "$RESULT" -eq 0 ]; then
+    echo "Certificate issued for $DOMAIN"
+    $COMPOSE exec -T app bin/rails runner \
+      "CustomDomain.find_by(domain: '$DOMAIN').mark_ssl_issued!"
+    CERTS_ISSUED=$((CERTS_ISSUED + 1))
+  else
+    echo "Certificate failed for $DOMAIN: $OUTPUT"
+    ESCAPED_ERROR=$(echo "$OUTPUT" | sed "s/'/\\\\'/g")
+    $COMPOSE exec -T app bin/rails runner \
+      "CustomDomain.find_by(domain: '$DOMAIN').mark_ssl_failed!('$ESCAPED_ERROR')"
+  fi
+done
+
+if [ "$CERTS_ISSUED" -gt 0 ]; then
+  $COMPOSE exec -T web nginx -s reload
+  echo "Nginx reloaded"
+fi
