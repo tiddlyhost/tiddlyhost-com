@@ -48,6 +48,14 @@ class CustomDomain < ApplicationRecord
     INSTRUCTIONS
   end
 
+  def verify_now!
+    VerifyCustomDomainJob.perform_later(id)
+  end
+
+  def self.check_all_pending
+    CheckPendingDomainsJob.perform_later
+  end
+
   private
 
   def normalize_domain

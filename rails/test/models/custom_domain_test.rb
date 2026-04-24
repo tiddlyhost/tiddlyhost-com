@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class CustomDomainTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   setup do
     @site = sites(:mysite)
     @custom_domain = CustomDomain.new(
@@ -272,6 +274,19 @@ class CustomDomainTest < ActiveSupport::TestCase
     @custom_domain.save!
     assert_difference 'CustomDomain.count', -1 do
       @site.destroy
+    end
+  end
+
+  test 'verify_now! enqueues verification job' do
+    @custom_domain.save!
+    assert_enqueued_with(job: VerifyCustomDomainJob, args: [@custom_domain.id]) do
+      @custom_domain.verify_now!
+    end
+  end
+
+  test 'check_all_pending enqueues sweep job' do
+    assert_enqueued_with(job: CheckPendingDomainsJob) do
+      CustomDomain.check_all_pending
     end
   end
 end
