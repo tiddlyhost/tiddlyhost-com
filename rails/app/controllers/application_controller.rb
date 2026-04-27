@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :set_session_cookie_domain
   before_action :redirect_www_requests
   before_action :permit_devise_params, if: :devise_controller?
 
@@ -84,6 +85,30 @@ class ApplicationController < ActionController::Base
 
   def th_log(msg)
     ThostLogger.thost_logger.info(msg, request)
+  end
+
+  def on_custom_domain?
+    return false if request.host == Settings.main_site_host ||
+                    request.host.end_with?(".#{Settings.main_site_host}")
+
+    return false if Settings.tiddlyspot_host.present? &&
+                    (request.host == Settings.tiddlyspot_host ||
+                     request.host.end_with?(".#{Settings.tiddlyspot_host}"))
+
+    true
+  end
+  helper_method :on_custom_domain?
+
+  # Override the session cookie domain for custom domains.
+  # The default domain is Settings.main_site_host, set in config/application.rb,
+  # which allows session sharing across *.tiddlyhost.com subdomains.
+  def set_session_cookie_domain
+    return unless on_custom_domain?
+
+    # nil omits the domain attribute entirely, creating a host-only cookie.
+    # Using request.host would set domain=randomibis.com which per RFC 6265
+    # also allows subdomains to share the session.
+    request.session_options[:domain] = nil
   end
 
   def navbar_prod

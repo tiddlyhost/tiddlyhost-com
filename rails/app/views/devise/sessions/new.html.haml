@@ -1,6 +1,7 @@
 
 = render layout: 'form_wrapper', locals: { heading: 'Log in',
-  intro_text: "Need an account? Go to #{link_to 'sign up', new_user_registration_path}." } do
+  intro_text: "Need an account? Go to #{link_to 'sign up',
+    new_user_registration_url(host: Settings.main_site_host)}." } do
 
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
 

@@ -1,15 +1,33 @@
 Rails.application.routes.draw do
   #
   # Devise for user signups and authentication
-  # (but exclude it for Tiddlyspot routes)
+  # (full Devise on main site only)
   #
   constraints(lambda { |req|
-    req.domain != Settings.tiddlyspot_host
+    req.domain == Settings.main_site_host
   }) do
     devise_for :users, controllers: {
       registrations: :registrations,
       sessions: :sessions,
     }
+  end
+
+  #
+  # Login/logout only on custom domains
+  # (no registration, password reset, or confirmation)
+  #
+  constraints(lambda { |req|
+    req.domain != Settings.main_site_host &&
+      req.domain != Settings.tiddlyspot_host &&
+      CustomDomain.fully_active.exists?(domain: req.host)
+  }) do
+    # as: nil avoids duplicate named route errors since devise_for already
+    # defined the named helpers (e.g. new_user_session_path)
+    devise_scope :user do
+      get 'users/sign_in', to: 'sessions#new', as: nil
+      post 'users/sign_in', to: 'sessions#create', as: nil
+      delete 'users/sign_out', to: 'sessions#destroy', as: nil
+    end
   end
 
   #
