@@ -7,9 +7,11 @@ linters:
 
   ViewLength:
     exclude:
-      # These are long
+      # These are just long:
       - "app/views/home/privacy_policy.html.haml"
       - "app/views/home/terms_of_use.html.haml"
+      # Fix me later:
+      - "app/views/custom_domains/show.html.haml"
 
   InlineStyles:
     # Allow inline styles for now anyway

@@ -6,7 +6,7 @@ class CheckPendingDomainsJob < ApplicationJob
 
   def perform
     CustomDomain.
-      pending_verification.
+      where(status: [:pending_verification, :verification_requested]).
       where(created_at: ABANDON_AFTER.ago..).
       where(last_verified_check_at: [nil, ..RECHECK_INTERVAL.ago]).
       find_each do |custom_domain|

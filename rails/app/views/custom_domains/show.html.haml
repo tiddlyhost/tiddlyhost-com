@@ -1,0 +1,165 @@
+= render layout: 'form_wrapper', locals: { heading: "Custom domain for '#{@site.name}'" } do
+
+  - if @custom_domain.new_record?
+    -#
+      **************************
+       No domain configured yet
+      **************************
+
+    = form_for @custom_domain, url: site_custom_domain_path(@site) do |f|
+
+      - if @custom_domain.errors.any?
+        = render layout: 'field_wrapper' do
+          .alert.alert-danger
+            %ul.mb-0
+              - @custom_domain.errors.full_messages.each do |message|
+                %li= message
+
+      = render layout: 'field_wrapper' do
+        %p.mt-4.enable-tooltips
+          Add a custom domain to serve your site at your own URL.
+          This requires that you already own the domain name that you wish to use.
+          = render 'popover_help',
+            html_content: "You can purchase a domain from a                                  |
+              <a href='https://en.wikipedia.org/wiki/Domain_name_registrar'>domain           |
+              name registrar</a> such as <a href='https://www.namecheap.com/'>Namecheap</a>, |
+              <a href='https://porkbun.com/'>Porkbun</a> or                                  |
+              <a href='https://www.cloudflare.com/products/registrar/'>Cloudflare</a>."      |
+
+
+      = render layout: 'field_wrapper' do
+        = f.label :default, 'Default domain name'
+        .form-text.m-2.mb-4
+          %tt= @site.host
+
+      = render layout: 'field_wrapper' do
+        = f.label :domain, 'Custom domain name'
+        = f.text_field :domain, class: 'form-control mt-2 mb-2'
+        %small.form-text.text-muted
+          Enter the domain you want to use. You'll need to verify ownership via a DNS record.
+
+      = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
+        = f.submit 'Add Domain', class: 'btn btn-primary'
+        = link_to 'Cancel', edit_site_path(@site), class: 'mx-4'
+
+  - elsif @custom_domain.pending_verification? || @custom_domain.verification_requested? || @custom_domain.failed?
+    -#
+      ***************************
+       Verification instructions
+      ***************************
+
+    = render layout: 'field_wrapper', locals: { pt: 'pt-4' } do
+      = label :domain, 'Custom domain name:'
+      .m-2.mb-4
+        %tt.fw-bold= @custom_domain.domain
+
+    = render layout: 'field_wrapper' do
+      %p To verify ownership of your domain, add this DNS TXT record:
+
+      -# Adding a trailing . to the name makes it more likely to work IIUC
+      = render 'dns_record', name: "#{@custom_domain.verification_record_name}.",
+        type: 'TXT', value: @custom_domain.verification_record_value
+
+    = render layout: 'field_wrapper' do
+      %p
+        - if @custom_domain.apex_domain?
+          Create
+        - else
+          If your custom domain is a root domain then create
+        an A record at the apex of your domain.
+
+      = render 'dns_record', name: '@',
+        type: 'A', value: Settings.prod_server_ip
+
+      %p.small.text-muted
+        The
+        %tt.fw-bold @
+        name is a common way to represent an apex A record, but you may need to
+        leave it blank or use the full domain name,
+        %tt.fw-bold #{@custom_domain.domain}.
+
+      - unless @custom_domain.apex_domain?
+        %p.mt-5
+          If your custom domain is a subdomain of your root domain then
+          it's better to create a CNAME record instead of an A record:
+
+        = render 'dns_record', name: "#{@custom_domain.domain}.",
+          type: 'CNAME', value: Settings.main_site_host
+
+    - if @custom_domain.verified?
+      = render layout: 'field_wrapper' do
+        .alert.alert-success.small
+          Domain ownership verified. SSL certificate provisioning will begin shortly.
+
+    - elsif @custom_domain.last_error.present?
+      = render layout: 'field_wrapper' do
+        .alert.alert-danger.small
+          %strong Verification failed:
+          = @custom_domain.last_error
+
+    - elsif @custom_domain.verification_requested?
+      = render layout: 'field_wrapper' do
+        .alert.alert-info.small
+          Verification check requested.
+          = link_to "Reload this page", site_custom_domain_path(@site)
+          in a moment to see the result.
+
+    - else
+      = render layout: 'field_wrapper' do
+        %p
+          Once you've created the TXT record and either an A or a CNAME record as
+          described above, click "Verify domain".
+
+    = render layout: 'field_wrapper', locals: { pt: 'pt-4' } do
+      .d-flex.align-items-center
+        = button_to 'Verify domain', verify_site_custom_domain_path(@site), class: 'btn btn-primary'
+        = button_to 'Remove', site_custom_domain_path(@site), method: :delete,
+          class: 'btn btn-outline-danger mx-3',
+          data: { confirm: 'Are you sure you want to remove this custom domain?' }
+
+  - else
+    -#
+      ********************
+       Verified or active
+      ********************
+
+    = render layout: 'field_wrapper' do
+      %p
+        %strong Domain:
+        %tt= @custom_domain.domain
+
+      %p
+        %strong Status:
+        - if @custom_domain.fully_active?
+          %span.badge.bg-success Active
+        - elsif @custom_domain.active?
+          %span.badge.bg-info SSL pending
+        - else
+          %span.badge.bg-secondary= @custom_domain.status.humanize
+
+      %p
+        %strong SSL:
+        - if @custom_domain.ssl_issued?
+          %span.badge.bg-success Issued
+          - if @custom_domain.ssl_expires_at
+            %span.text-muted.small
+              (expires #{@custom_domain.ssl_expires_at.strftime('%B %d, %Y')})
+        - elsif @custom_domain.ssl_failed?
+          %span.badge.bg-danger Failed
+          - if @custom_domain.last_error.present?
+            %br
+            %small.text-danger= @custom_domain.last_error
+        - else
+          %span.badge.bg-warning.text-dark Pending
+
+      - if @custom_domain.fully_active?
+        %p
+          Your site is live at
+          = succeed '.' do
+            = link_to "https://#{@custom_domain.domain}", "https://#{@custom_domain.domain}"
+
+    = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
+      = button_to 'Remove', site_custom_domain_path(@site), method: :delete,
+        class: 'btn btn-outline-danger',
+        data: { confirm: 'Are you sure you want to remove this custom domain?' }
+      = link_to 'Back to site settings', edit_site_path(@site), class: 'mx-4'

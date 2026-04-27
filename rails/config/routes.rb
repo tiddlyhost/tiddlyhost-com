@@ -114,6 +114,10 @@ Rails.application.routes.draw do
     get 'subscription/success', to: 'subscription#success'
 
     resources :sites do
+      resource :custom_domain, only: [:show, :create, :destroy] do
+        post :verify
+      end
+
       collection do
         get :view_toggle
         get :download_all

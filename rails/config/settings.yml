@@ -8,6 +8,7 @@ defaults:
   faq_url: https://github.com/tiddlyhost/tiddlyhost-com/wiki/FAQ
   create_issue_url: https://github.com/tiddlyhost/tiddlyhost-com/issues/new
   prod_main_site_url: https://tiddlyhost.com
+  prod_server_ip: 45.79.184.152
   tiddlyhost_account_email: tiddlyhost@gmail.com
   devise_mailer_sender: '"Tiddlyhost" <tiddlyhost@gmail.com>'
   stripe_support_email: '"Tiddlyhost" <tiddlyhost@gmail.com>'

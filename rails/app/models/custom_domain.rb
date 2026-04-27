@@ -5,7 +5,7 @@ class CustomDomain < ApplicationRecord
   validates :domain, presence: true, uniqueness: true, format: { with: /\A[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+\z/ }
   validate :not_reserved_domain
 
-  enum :status, { pending_verification: 0, verified: 1, active: 2, failed: 3 }, default: :pending_verification
+  enum :status, { pending_verification: 0, verification_requested: 1, verified: 2, active: 3, failed: 4 }, default: :pending_verification
   enum :ssl_status, { pending: 0, issued: 1, expired: 2, failed: 3 }, prefix: :ssl, default: :pending
 
   scope :expiring_soon, -> { where(ssl_status: :issued).where('ssl_expires_at < ?', 30.days.from_now) }
@@ -18,6 +18,10 @@ class CustomDomain < ApplicationRecord
   # Check if domain is fully active (verified and has valid SSL)
   def fully_active?
     active? && ssl_issued?
+  end
+
+  def apex_domain?
+    domain.count('.') == 1
   end
 
   VERIFICATION_SUBDOMAIN = '_tiddlyhost-verification'
@@ -72,6 +76,7 @@ class CustomDomain < ApplicationRecord
   end
 
   def verify_now!
+    update!(status: :verification_requested, last_error: nil, last_verified_check_at: nil)
     VerifyCustomDomainJob.perform_later(id)
   end
 

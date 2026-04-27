@@ -1,15 +1,20 @@
--#
-  In future this will be a form (or maybe a whole separate
-  page). For now it's read only.
-
-- if feature_enabled?(:custom_domains)
+- if feature_enabled?(:custom_domains) && site.persisted?
   = render layout: 'field_wrapper' do
     .form-text
       %h5.mt-4 Custom Domain
-  .ms-3
-    = render layout: 'field_wrapper' do
-      = f.label :domain, 'Domain:'
-      = site.custom_domain&.domain || 'none'
-    = render layout: 'field_wrapper' do
-      = f.label :active, 'Status:'
-      = site.custom_domain&.status
+    .ms-3.nice-buttons
+      = render layout: 'field_wrapper' do
+        - if site.custom_domain
+          %code= site.custom_domain.domain
+          - if site.custom_domain.fully_active?
+            %span.badge.bg-success.ms-2 Active
+          - else
+            %span.badge.bg-warning.text-dark.ms-2= site.custom_domain.status.humanize
+        - else
+          .form-text
+            No custom domain configured.
+      = render layout: 'field_wrapper' do
+        - if site.custom_domain.present?
+          = link_to 'Manage custom domain', site_custom_domain_path(site), class: 'btn'
+        - else
+          = link_to 'Add custom domain', site_custom_domain_path(site), class: 'btn'
