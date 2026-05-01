@@ -47,9 +47,9 @@ TOKEN=$($CURL $SIGN_IN | grep '"csrf-token"' | cut -d'"' -f4)
 
 # Log in
 $CURL -X POST $SIGN_IN \
-  -d "authenticity_token=$TOKEN" \
-  -d "user[email]=$EMAIL" \
-  -d "user[password]=$PASSWD" \
+  --data-urlencode "authenticity_token=$TOKEN" \
+  --data-urlencode "user[email]=$EMAIL" \
+  --data-urlencode "user[password]=$PASSWD" \
   -o /dev/null
 
 # Check we logged in succesfully
