@@ -5,7 +5,7 @@
     .ms-3.nice-buttons
       = render layout: 'field_wrapper' do
         - if site.custom_domain
-          %code= site.custom_domain.domain
+          %tt= site.custom_domain.domain
           - if site.custom_domain.fully_active?
             %span.badge.bg-success.ms-2 Active
           - else
