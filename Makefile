@@ -514,10 +514,11 @@ push-prod:
 	$(D) --config etc/credentials/docker push $(DOCKER_PUSH_REPO)
 
 # Fixme: There are too many options here...
-build-push:            delint tests build-prod push-prod
-build-full-deploy:     build-push full-deploy
-build-deploy:          build-push deploy-app
-fast-build-deploy:     fast-build-prod push-prod fast-deploy-app
+build-push:                     delint tests build-prod push-prod
+build-full-deploy:              build-push full-deploy
+build-full-deploy-and-restart:  build-push full-deploy-with-full-restart
+build-deploy:                   build-push deploy-app
+fast-build-deploy:              fast-build-prod push-prod fast-deploy-app
 
 PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
 
@@ -528,6 +529,9 @@ FETCH_LOGS=$(PLAY) ansible/playbooks/fetch-logs.yml --limit prod
 
 full-deploy:
 	$(DEPLOY)
+
+full-deploy-with-full-restart:
+	$(DEPLOY) --tags=app,full-restart
 
 deploy-deps:
 	$(DEPLOY) --tags=deps

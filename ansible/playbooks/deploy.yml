@@ -399,13 +399,20 @@
     - fast-upgrade
     - refresh-prerelease
 
-  - name: Start/restart service
+  - name: Fast restart app and jobs containers
+    ansible.builtin.command:
+      cmd: /etc/init.d/{{ service_name }} fast-restart
+    tags:
+    - app
+    - fast-upgrade
+
+  - name: Full restart all containers
     ansible.builtin.systemd:
       name: "{{ service_name }}"
       state: restarted
     tags:
-    - app
-    - fast-upgrade
+    - full-restart
+    - never
 
     # Only for bootstrapping a new server
   - name: Create db

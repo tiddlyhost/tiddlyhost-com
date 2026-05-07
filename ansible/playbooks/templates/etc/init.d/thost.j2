@@ -14,6 +14,16 @@ stop() {
     docker compose down --volumes
 }
 
+# Recreate app, jobs, and web containers, leaving db and cache running.
+# Web must be stopped too so the rails-static volume can be removed
+# and recreated with fresh static assets from the new app image.
+fast_restart() {
+    docker compose stop app jobs web
+    docker compose rm -f app jobs web
+    docker volume rm th_rails_static 2>/dev/null || true
+    docker compose up -d --no-deps app jobs web
+}
+
 cd $START_DIR
 
 case "$1" in
@@ -25,10 +35,13 @@ case "$1" in
         stop
         ;;
 
-    # Todo: I suspect this is not needed for systemd
     restart)
         stop
         start
+        ;;
+
+    fast-restart)
+        fast_restart
         ;;
 
 esac
