@@ -190,6 +190,15 @@
     tags:
     - scripts
 
+  - name: Cron job for custom domain SSL certificate issuance
+    ansible.builtin.cron:
+      name: custom domain cert issuance
+      user: root
+      job: "{{ bin_dir }}/certbot-custom-domains"
+      minute: "*/10"
+    tags:
+    - scripts
+
   - name: Cron job to check pending custom domain verifications
     ansible.builtin.cron:
       name: check pending custom domains
