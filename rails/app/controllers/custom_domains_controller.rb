@@ -18,7 +18,7 @@ class CustomDomainsController < ApplicationController
 
   def destroy
     @site.custom_domain&.destroy
-    redirect_to site_custom_domain_path(@site)
+    redirect_to edit_site_path(@site)
   end
 
   def verify

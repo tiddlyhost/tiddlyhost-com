@@ -56,9 +56,13 @@
     = render layout: 'field_wrapper' do
       %p To verify ownership of your domain, add this DNS TXT record:
 
-      -# Adding a trailing . to the name makes it more likely to work IIUC
-      = render 'dns_record', name: "#{@custom_domain.verification_record_name}.",
+      = render 'dns_record', name: CustomDomain::VERIFICATION_SUBDOMAIN,
         type: 'TXT', value: @custom_domain.verification_record_value
+
+      %p.small.text-muted
+        Most DNS providers automatically append your domain name.
+        If yours requires the full name, use
+        %tt.fw-bold #{@custom_domain.verification_record_name}.
 
     = render layout: 'field_wrapper' do
       %p
@@ -90,6 +94,9 @@
       = render layout: 'field_wrapper' do
         .alert.alert-success.small
           Domain ownership verified. SSL certificate provisioning will begin shortly.
+          Please wait a few minutes and
+          = link_to "reload this page", site_custom_domain_path(@site)
+          to check progress.
 
     - elsif @custom_domain.last_error.present?
       = render layout: 'field_wrapper' do
@@ -110,7 +117,11 @@
     - else
       = render layout: 'field_wrapper' do
         %p
-          Once you've created the TXT record and either an A or a CNAME record as
+          Once you've created the TXT record and the
+          - if @custom_domain.apex_domain?
+            the A record
+          - else
+            either the A or CNAME record
           described above, click "Verify domain".
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-4' } do
