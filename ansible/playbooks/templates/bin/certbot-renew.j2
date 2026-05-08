@@ -1,9 +1,15 @@
 #!/bin/bash
+#
+# Renew SSL certificates. Run periodically via cron.
+# The deploy-hook updates the Rails model when a custom domain cert is renewed.
+# The post-hook reloads nginx after all renewals complete.
+#
 
-# TODO: The post-hook is untested, not sure if it will work
+COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
 
 certbot renew \
   --config-dir {{ certbot_dir_config }} \
   --work-dir {{ certbot_dir_work }} \
   --logs-dir {{ certbot_dir_logs }} \
-  --post-hook "sudo docker compose restart web"
+  --deploy-hook "$COMPOSE exec -T app bin/rails runner \"CustomDomain.find_by(domain: ENV['RENEWED_DOMAINS'])&.mark_ssl_issued!\"" \
+  --post-hook "$COMPOSE restart web"

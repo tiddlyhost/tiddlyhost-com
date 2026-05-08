@@ -190,6 +190,16 @@
     tags:
     - scripts
 
+  - name: Cron job for SSL certificate renewal
+    ansible.builtin.cron:
+      name: certbot renewal
+      user: root
+      job: "{{ bin_dir }}/certbot-renew"
+      minute: "17"
+      hour: "3,15"
+    tags:
+    - scripts
+
   - name: Cron job for custom domain SSL certificate issuance
     ansible.builtin.cron:
       name: custom domain cert issuance
@@ -234,6 +244,7 @@
     tags:
     - certs
 
+  # Could be removed since certs are now renewed twice daily via cron job
   - name: Renew certs maybe
     become: false
     ansible.builtin.command:
