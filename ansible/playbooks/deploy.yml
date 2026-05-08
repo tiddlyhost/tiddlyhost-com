@@ -129,6 +129,7 @@
     - bin/db-backup-to-s3
     - bin/fetch-prerelease-empty
     - bin/certbot-custom-domains
+    - bin/check-pending-domains
     - .bashrc.d/setup.sh
     tags:
     - scripts
@@ -186,6 +187,15 @@
       job: "/usr/bin/docker compose -f {{ home_dir }}/docker-compose.yml restart jobs"
       minute: "10"
       hour: "*/8"
+    tags:
+    - scripts
+
+  - name: Cron job to check pending custom domain verifications
+    ansible.builtin.cron:
+      name: check pending custom domains
+      user: root
+      job: "{{ bin_dir }}/check-pending-domains"
+      minute: "*/10"
     tags:
     - scripts
 

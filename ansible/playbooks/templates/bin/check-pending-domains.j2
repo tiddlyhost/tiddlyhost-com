@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Enqueue background job to check DNS verification for pending custom domains.
+# Intended to be run periodically via cron on the host.
+#
+COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
+$COMPOSE exec -T app bin/rails runner "CheckPendingDomainsJob.perform_later"
