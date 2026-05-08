@@ -144,9 +144,6 @@
       .m-2.mb-4
         - if @custom_domain.ssl_issued?
           %span.badge.bg-success Issued
-          - if @custom_domain.ssl_expires_at
-            %span.text-muted.small
-              (expires #{@custom_domain.ssl_expires_at.strftime('%B %d, %Y')})
         - elsif @custom_domain.ssl_failed?
           %span.badge.bg-danger Failed
           - if @custom_domain.last_error.present?
