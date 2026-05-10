@@ -110,7 +110,7 @@ class TiddlywikiController < ApplicationController
         render plain: "0 - OK\n"
       else
         # Give a 200 status no matter what so the user sees the message in a browser alert
-        render plain: "If this is your site please log in at\n#{main_site_url} and try again.\n"
+        render plain: "If this is your site please log in at\n#{save_login_url} and try again.\n"
       end
     rescue StandardError => e
       # Todo: Should probably give a generic "Save failed!" message, and log the real problem
@@ -152,7 +152,7 @@ class TiddlywikiController < ApplicationController
 
       else
         # Maybe login is needed
-        err_message = "If this is your site please log in at #{main_site_url} and try again."
+        err_message = "If this is your site please log in at #{save_login_url} and try again."
         render status: 403, plain: err_message
       end
     rescue StandardError => e
@@ -262,6 +262,14 @@ class TiddlywikiController < ApplicationController
       tiddler_data['text'],
       "\n",
     ].join
+  end
+
+  def save_login_url
+    if on_custom_domain?
+      "#{request.base_url}/login"
+    else
+      main_site_url
+    end
   end
 
   # So browsers are permitted to do fetches from different domains

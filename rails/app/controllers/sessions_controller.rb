@@ -8,6 +8,9 @@ class SessionsController < Devise::SessionsController
   end
 
   def after_sign_in_path_for(resource)
+    # On custom domains, redirect to the site served at this domain
+    return "/" if on_custom_domain?
+
     # If the user was trying to view their private site then redirect
     # to that site after login succeeds
     return @site.url if request.post? && params[:user] &&

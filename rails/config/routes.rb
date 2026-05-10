@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       post 'users/sign_in', to: 'sessions#create', as: nil
       delete 'users/sign_out', to: 'sessions#destroy', as: nil
     end
+    get 'login', to: redirect('users/sign_in')
   end
 
   #

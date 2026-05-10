@@ -5,8 +5,12 @@
   %p.big
     You don't have permission to view this site!
   %p
-    If this is your site then login at
-    = link_to 'Tiddlyhost', Settings.login_url + "?s=#{@site.name}"
+    If this is your site then
+    - if on_custom_domain?
+      = link_to 'sign in', new_user_session_path
+    - else
+      login at
+      = link_to 'Tiddlyhost', Settings.login_url + "?s=#{@site.name}"
     to access it.
 
 - when 403
