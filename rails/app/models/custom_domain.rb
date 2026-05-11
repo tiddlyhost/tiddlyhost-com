@@ -26,9 +26,23 @@ class CustomDomain < ApplicationRecord
 
   VERIFICATION_SUBDOMAIN = '_tiddlyhost-verification'
 
-  # DNS TXT record name for verification
+  # DNS TXT record name for verification (fully qualified)
   def verification_record_name
     "#{VERIFICATION_SUBDOMAIN}.#{domain}"
+  end
+
+  # Short TXT record name for DNS providers that auto-append the root domain.
+  # Assumes the apex is the last two labels (e.g. somedomain.com). This is
+  # wrong for multi-part TLDs like .co.uk. Hopefully the more savvy users will
+  # figure out what is needed. (To handle this robustly we could try using the
+  # public_suffix gem.
+  #
+  def verification_record_short_name
+    if apex_domain?
+      VERIFICATION_SUBDOMAIN
+    else
+      "#{VERIFICATION_SUBDOMAIN}.#{domain.sub(/\.[^.]+\.[^.]+\z/, '')}"
+    end
   end
 
   # DNS TXT record value for verification

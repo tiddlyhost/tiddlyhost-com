@@ -56,7 +56,7 @@
     = render layout: 'field_wrapper' do
       %p To verify ownership of your domain, add this DNS TXT record:
 
-      = render 'dns_record', name: CustomDomain::VERIFICATION_SUBDOMAIN,
+      = render 'dns_record', name: @custom_domain.verification_record_short_name,
         type: 'TXT', value: @custom_domain.verification_record_value
 
       %p.small.text-muted
