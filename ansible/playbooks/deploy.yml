@@ -205,7 +205,7 @@
       name: custom domain cert issuance
       user: root
       job: "{{ bin_dir }}/certbot-custom-domains"
-      minute: "*/10"
+      minute: "*/5"
     tags:
     - scripts
 
