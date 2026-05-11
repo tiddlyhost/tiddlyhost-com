@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Remove orphaned nginx configs for custom domains that no longer exist.
+# Intended to be run periodically via cron on the host.
+#
+
+set -uo pipefail
+
+COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
+NGINX_DOMAINS="{{ nginx_domains_dir }}"
+
+ACTIVE_DOMAINS=$($COMPOSE exec -T app bin/rails runner \
+  "CustomDomain.fully_active.pluck(:domain).each { |d| puts d }")
+
+REMOVED=0
+
+for CONF in "$NGINX_DOMAINS"/*.conf; do
+  [ -f "$CONF" ] || continue
+  DOMAIN=$(basename "$CONF" .conf)
+
+  if ! echo "$ACTIVE_DOMAINS" | grep -qx "$DOMAIN"; then
+    echo "Removing orphaned config for $DOMAIN"
+    rm "$CONF"
+    REMOVED=$((REMOVED + 1))
+  fi
+done
+
+if [ "$REMOVED" -gt 0 ]; then
+  $COMPOSE exec -T web nginx -s reload
+  echo "Nginx reloaded, removed $REMOVED orphaned config(s)"
+fi

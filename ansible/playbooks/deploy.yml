@@ -130,6 +130,7 @@
     - bin/fetch-prerelease-empty
     - bin/certbot-custom-domains
     - bin/check-pending-domains
+    - bin/cleanup-custom-domains
     - .bashrc.d/setup.sh
     tags:
     - scripts
@@ -215,6 +216,16 @@
       user: root
       job: "{{ bin_dir }}/check-pending-domains"
       minute: "*/10"
+    tags:
+    - scripts
+
+  - name: Cron job to clean up orphaned custom domain nginx configs
+    ansible.builtin.cron:
+      name: cleanup custom domains
+      user: root
+      job: "{{ bin_dir }}/cleanup-custom-domains"
+      minute: "12"
+      hour: "*/8"
     tags:
     - scripts
 
