@@ -90,15 +90,7 @@
         = render 'dns_record', name: "#{@custom_domain.domain}.",
           type: 'CNAME', value: Settings.main_site_host
 
-    - if @custom_domain.verified?
-      = render layout: 'field_wrapper' do
-        .alert.alert-success.small
-          Domain ownership verified. SSL certificate provisioning will begin shortly.
-          Please wait a few minutes and
-          = link_to "reload this page", site_custom_domain_path(@site)
-          to check progress.
-
-    - elsif @custom_domain.last_error.present?
+    - if @custom_domain.last_error.present?
       = render layout: 'field_wrapper' do
         .alert.alert-danger.p-4{ style: "font-size: 120%;" }
           %strong Verification failed:
@@ -162,6 +154,11 @@
             %small.text-danger= @custom_domain.last_error
         - else
           %span.badge.bg-warning.text-dark Pending
+          %p.small.text-muted.mt-2
+            SSL certificate provisioning will begin shortly.
+            This takes up to five minutes.
+            = link_to "Reload this page", site_custom_domain_path(@site)
+            to check progress.
 
       - if @custom_domain.fully_active?
         %p
