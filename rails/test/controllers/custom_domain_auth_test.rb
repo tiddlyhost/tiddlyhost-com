@@ -85,4 +85,60 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     # The session options should have been set for the custom domain
     assert_response :success
   end
+
+  # -- /login redirect --
+
+  test 'login shortcut redirects to sign in on custom domain' do
+    host! 'customtest.example.com'
+    get '/login'
+    assert_redirected_to '/users/sign_in'
+  end
+
+  test 'login shortcut is not routed on main site' do
+    assert_raises(ActionController::RoutingError) { get '/login' }
+  end
+
+  # -- After sign-in redirect --
+
+  test 'after sign in on custom domain redirects to root' do
+    host! 'customtest.example.com'
+    sign_in @user
+    get '/'
+    assert_response :success
+  end
+
+  # -- 401 page on custom domain --
+
+  test '401 page on custom domain links to /login' do
+    @site.update!(is_private: true)
+    host! 'customtest.example.com'
+    get '/'
+    assert_response :unauthorized
+    assert_select "a[href='/users/sign_in']", text: 'sign in'
+  end
+
+  test '401 page on main site links to tiddlyhost' do
+    @site.update!(is_private: true)
+    host! "#{@site.name}.#{Settings.main_site_host}"
+    get '/'
+    assert_response :unauthorized
+    assert_select "a[href*='#{Settings.main_site_host}']", text: 'Tiddlyhost'
+  end
+
+  # -- Save error messages --
+
+  test 'put save error on custom domain mentions custom domain login url' do
+    host! 'customtest.example.com'
+    put '/', params: 'content', headers: { 'CONTENT_TYPE' => 'text/html' }
+    assert_response :forbidden
+    assert_match %r{customtest\.example\.com/login}, response.body
+  end
+
+  test 'put save error on main site mentions main site url' do
+    host! "#{@site.name}.#{Settings.main_site_host}"
+    put '/', params: 'content', headers: { 'CONTENT_TYPE' => 'text/html' }
+    assert_response :forbidden
+    assert_match Settings.main_site_host, response.body
+    refute_match %r{/login}, response.body
+  end
 end
