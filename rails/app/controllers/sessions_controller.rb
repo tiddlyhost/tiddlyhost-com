@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+  layout :choose_layout
   before_action :configure_sign_in_params, only: [:create]
 
   def logout_via_get
@@ -7,6 +8,10 @@ class SessionsController < Devise::SessionsController
   end
 
   private
+
+  def choose_layout
+    on_custom_domain? ? 'simple' : 'application'
+  end
 
   def configure_sign_in_params
     devise_parameter_sanitizer.permit(:sign_in, keys: [:redir_to_site])
