@@ -29,6 +29,9 @@ Rails.application.routes.draw do
       delete 'users/sign_out', to: 'sessions#destroy', as: nil
     end
     get 'login', to: redirect('users/sign_in')
+    devise_scope :user do
+      get 'logout', to: 'sessions#logout_via_get'
+    end
   end
 
   #
