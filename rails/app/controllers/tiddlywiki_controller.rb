@@ -5,6 +5,11 @@ class TiddlywikiController < ApplicationController
 
   before_action :find_site
 
+  # Save actions are excluded from the redirect but in practice it's unlikely
+  # it will matter. saves won't hit the subdomain since the wiki loads on the
+  # custom domain and saves to document.location.
+  before_action :redirect_to_custom_domain, except: [:upload_save, :put_save]
+
   # TiddlyWiki can't provide the token for saving so we need to skip it
   skip_before_action :verify_authenticity_token, only: [:upload_save, :put_save]
 
@@ -163,6 +168,14 @@ class TiddlywikiController < ApplicationController
   end
 
   private
+
+  def redirect_to_custom_domain
+    return unless @site&.custom_domain&.fully_active?
+    return if on_custom_domain?
+
+    redirect_to "https://#{@site.custom_domain.domain}#{request.fullpath}",
+      status: 302, allow_other_host: true
+  end
 
   def update_view_count_and_access_timestamp
     # Don't count admin clicks on other users' sites

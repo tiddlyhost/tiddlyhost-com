@@ -163,11 +163,19 @@ class Site < ApplicationRecord
   end
 
   def url
-    Settings.subdomain_site_url(name)
+    if custom_domain&.fully_active?
+      "https://#{custom_domain.domain}"
+    else
+      Settings.subdomain_site_url(name)
+    end
   end
 
   def host
-    Settings.subdomain_site_host(name)
+    if custom_domain&.fully_active?
+      custom_domain.domain
+    else
+      Settings.subdomain_site_host(name)
+    end
   end
 
   def favicon_asset_name

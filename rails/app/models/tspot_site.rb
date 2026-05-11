@@ -158,4 +158,8 @@ class TspotSite < ApplicationRecord
   def keep_count
     Settings.keep_counts[:tiddlyspot]
   end
+
+  def custom_domain
+    nil
+  end
 end

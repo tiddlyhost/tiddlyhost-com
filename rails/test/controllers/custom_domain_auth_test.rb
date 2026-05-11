@@ -117,8 +117,16 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     assert_select "a[href='/users/sign_in']", text: 'sign in'
   end
 
+  test 'tiddlyhost subdomain redirects to custom domain' do
+    host! "#{@site.name}.#{Settings.main_site_host}"
+    get '/'
+    assert_response :found
+    assert_redirected_to "https://#{@custom_domain.domain}/"
+  end
+
   test '401 page on main site links to tiddlyhost' do
     @site.update!(is_private: true)
+    @custom_domain.destroy!
     host! "#{@site.name}.#{Settings.main_site_host}"
     get '/'
     assert_response :unauthorized

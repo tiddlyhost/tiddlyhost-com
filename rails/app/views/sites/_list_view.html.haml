@@ -16,7 +16,11 @@
       - is_tspot = site.is_a?(TspotSite)
       %tr
         %td.small
-          .sitelink= site_pretty_link(site, name: site.name, target: site.long_name)
+          .sitelink
+            = site_pretty_link(site, name: site.name, target: site.long_name)
+            - if site.custom_domain&.fully_active?
+              %br
+              %span.small.text-muted Domain: #{site.custom_domain.domain}
           - if site.description.present?
             .description= span_with_title(site.description)
           - unless site.tag_list.empty?

@@ -43,7 +43,7 @@
     %div{ style: "margin-bottom: 0.2em;" }
 
   .name{ title: site.long_name }
-    = site_link site, target: site.long_name
+    = site_link site, target: site.long_name, link_title: (site.custom_domain&.fully_active? ? site.long_name : nil)
 
   - if mode == "home"
     -# Show the actions menu
