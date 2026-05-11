@@ -29,3 +29,24 @@ if [ "$REMOVED" -gt 0 ]; then
   $COMPOSE exec -T web nginx -s reload
   echo "Nginx reloaded, removed $REMOVED orphaned config(s)"
 fi
+
+# Clean up letsencrypt cert files for domains that no longer have nginx configs.
+# This catches certs that were issued but whose domain was later removed.
+CERTBOT_LIVE="{{ certbot_dir_config }}/live"
+
+for CERT_DIR in "$CERTBOT_LIVE"/*/; do
+  [ -d "$CERT_DIR" ] || continue
+  DOMAIN=$(basename "$CERT_DIR")
+
+  # Skip the primary tiddlyhost cert
+  [ "$DOMAIN" = "{{ primary_host }}" ] && continue
+
+  if [ ! -f "$NGINX_DOMAINS/$DOMAIN.conf" ] && ! echo "$ACTIVE_DOMAINS" | grep -qx "$DOMAIN"; then
+    echo "Deleting orphaned cert for $DOMAIN"
+    certbot delete --cert-name "$DOMAIN" \
+      --config-dir {{ certbot_dir_config }} \
+      --work-dir {{ certbot_dir_work }} \
+      --logs-dir {{ certbot_dir_logs }} \
+      --non-interactive
+  fi
+done
