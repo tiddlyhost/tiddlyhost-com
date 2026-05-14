@@ -200,7 +200,7 @@ module WithSavedContent
     saved_content_files_newest_first.
       includes(:blob).
       map(&:blob).
-      compact.select { WithSavedContent.blob_exists_in_storage?(_1) }.
+      compact.select { WithSavedContent.blob_exists_in_storage?(it) }.
       first
   end
 
