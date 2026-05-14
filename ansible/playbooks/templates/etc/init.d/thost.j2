@@ -21,7 +21,7 @@ fast_restart() {
     docker compose stop app jobs web
     docker compose rm -f app jobs web
     docker volume rm th_rails_static 2>/dev/null || true
-    docker compose up -d --no-deps app jobs web
+    docker compose up -d app jobs web
 }
 
 cd $START_DIR
