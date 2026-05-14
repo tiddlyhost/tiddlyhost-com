@@ -27,7 +27,7 @@ DOCKER_PUSH_REPO_BASE ?= $(DOCKER_PUSH_REPO)-base
 # for reproducibility but also have an easy way to keep it updated when
 # a new version is available.
 #
-RUBY_VER=3.4
+RUBY_VER=4.0
 RUBY_TAG=$(RUBY_VER)-slim
 
 # Set it to plain for detailed build output
