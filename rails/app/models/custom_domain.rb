@@ -8,6 +8,9 @@ class CustomDomain < ApplicationRecord
   enum :status, { pending_verification: 0, verification_requested: 1, verified: 2, active: 3, failed: 4 }, default: :pending_verification
   enum :ssl_status, { pending: 0, issued: 1, expired: 2, failed: 3 }, prefix: :ssl, default: :pending
 
+  scope :search_for, ->(text) { where('custom_domains.domain ILIKE ?', "%#{text}%") }
+  include AdminSearchable
+
   scope :expiring_soon, -> { where(ssl_status: :issued).where('ssl_expires_at < ?', 30.days.from_now) }
   scope :fully_active, -> { where(status: :active, ssl_status: :issued) }
   scope :needs_ssl_certificate, -> { where(status: :verified).where(ssl_status: [:pending, :failed]) }

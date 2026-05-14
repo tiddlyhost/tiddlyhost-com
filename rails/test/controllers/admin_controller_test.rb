@@ -27,6 +27,7 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
       /admin/users
       /admin/sites
       /admin/tspot_sites
+      /admin/custom_domains
       /admin/storage
       /admin/etc
 

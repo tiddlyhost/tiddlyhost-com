@@ -99,6 +99,7 @@ Rails.application.routes.draw do
     get 'admin/users'
     get 'admin/sites'
     get 'admin/tspot_sites'
+    get 'admin/custom_domains'
     get 'admin/etc'
 
     get 'admin/raw_download'

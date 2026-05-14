@@ -51,6 +51,7 @@ class AdminController < ApplicationController
 
   SORT_OPTIONS = {
     accesses: 'access_count',
+    certificate: 'ssl_status',
     clone: 'cloned_from_id',
     clones: 'clone_count',
     created: 'created_at',
@@ -58,6 +59,7 @@ class AdminController < ApplicationController
     createdip: 'created_ip',
     currentsignin: 'current_sign_in_at',
     description: "NULLIF(sites.description, '')",
+    domain: 'custom_domains.domain',
     email: 'email',
     # Fixme: this one doesn't work
     #empty: 'empties.name',
@@ -80,6 +82,7 @@ class AdminController < ApplicationController
     saves: 'save_count',
     hub: 'is_searchable',
     raw: 'raw_byte_size',
+    sslexpires: 'ssl_expires_at',
     sites: 'COUNT(sites.id)',
     storage: 'storage_service',
     template: 'allow_public_clone',
@@ -179,6 +182,10 @@ class AdminController < ApplicationController
     render_records TspotSite.left_joins(:user).with_blobs_for_query.group(:id)
   end
 
+  def custom_domains
+    render_records CustomDomain.joins(site: :user).group('custom_domains.id')
+  end
+
   def etc
   end
 
@@ -242,6 +249,9 @@ class AdminController < ApplicationController
       when 'users'
         @records = @records.where(id: @user.id)
         @title = "#{@user.username_or_email}'s Details"
+      when 'custom_domains'
+        @records = @records.where(sites: { user: @user })
+        @title = "#{@user.username_or_email}'s #{@title}"
       else
         @records = @records.where(user: @user)
         @title = "#{@user.username_or_email}'s #{@title}"

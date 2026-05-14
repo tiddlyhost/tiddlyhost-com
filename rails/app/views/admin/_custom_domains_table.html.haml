@@ -1,0 +1,46 @@
+
+%thead
+  %tr
+    %th= sort_link 'Id', :asc
+    %th= sort_link 'Domain', :asc
+    %th= sort_link 'Name', :asc
+    %th= sort_link 'Owner'
+    %th Status
+    %th Certificate
+    %th= sort_link 'SslExpires'
+    %th Error
+    %th= sort_link 'Created'
+
+%tbody
+  - records.each do |cd|
+    %tr
+      %td= cd.id
+      %td
+        - if cd.fully_active?
+          = link_to cd.domain, "https://#{cd.domain}", target: '_blank'
+        - else
+          = cd.domain
+      %td= admin_site_link cd.site
+      %td= link_to_user_sites(cd.site.user.username_or_email, cd.site.user)
+      %td
+        - if cd.fully_active?
+          %span.badge.bg-success Active
+        - elsif cd.active?
+          %span.badge.bg-info SSL pending
+        - elsif cd.failed?
+          %span.badge.bg-danger Failed
+        - else
+          %span.badge.bg-secondary= cd.status.humanize
+      %td
+        - if cd.ssl_issued?
+          %span.badge.bg-success Issued
+        - elsif cd.ssl_failed?
+          %span.badge.bg-danger Failed
+        - elsif cd.active? || cd.verified?
+          %span.badge.bg-warning.text-dark Pending
+        - else
+          %span.text-muted —
+      %td= nice_timestamp cd.ssl_expires_at
+      %td.nowrap.text-truncated{ style: 'max-width: 12em;' }
+        = span_with_title cd.last_error
+      %td= nice_timestamp cd.created_at
