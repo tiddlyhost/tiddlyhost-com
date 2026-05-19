@@ -11,7 +11,7 @@
       = link_to(edit_site_path(site), class: 'btn btn-light', title: 'Settings') { bi_icon('sliders', height: '1em') }
       - if show_history_link?(site) && !local_assigns[:history_mode]
         = link_to(history_site_path(site), class: 'btn btn-light', title: 'Save history') { bi_icon('clock-history', height: '1em') }
-      = link_to(site.url, class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
+      = link_to(site_view_url(site), class: 'btn btn-light', target: site.long_name, title: 'View') { bi_icon('box-arrow-up-right', height: '1em') }
       = link_to(download_site_path(site), class: 'btn btn-light', title: 'Download') { bi_icon('download', height: '1em') }
 
   %button.btn.btn-light{ type: "button",
@@ -62,9 +62,9 @@
           "Click okay then wait a few moments and reload the page.") }) { bi_icon('camera') + 'Create thumbnail' }
         .dropdown-divider
 
-      = link_to(site.url, class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
+      = link_to(site_view_url(site), class: 'dropdown-item', target: site.long_name) { bi_icon('box-arrow-up-right') + 'View' }
 
-      - if safe_mode_url = site.safe_mode_url
+      - if (safe_mode_url = site.safe_mode_url)
         = link_to(safe_mode_url, class: 'dropdown-item', target: '_blank') { bi_icon('life-preserver') + 'View in safe mode' }
 
       .dropdown-divider

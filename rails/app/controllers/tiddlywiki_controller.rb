@@ -279,7 +279,7 @@ class TiddlywikiController < ApplicationController
 
   def save_login_url
     if on_custom_domain?
-      "#{request.base_url}/login"
+      "#{request.base_url}/sso/init"
     else
       main_site_url
     end
