@@ -1,13 +1,21 @@
 module SitesHelper
+  def site_view_url(site)
+    if site.custom_domain&.fully_active?
+      "/sso/authorize?domain=#{site.custom_domain.domain}"
+    else
+      site.url
+    end
+  end
+
   def site_link(site, opts = {})
     link_title = opts.delete(:link_title)
-    link_to site.url, { target: '_blank' }.merge(opts) do
+    link_to site_view_url(site), { target: '_blank' }.merge(opts) do
       link_title || site.name
     end
   end
 
   def site_long_link(site, opts = {})
-    link_to site.url, { target: '_blank' }.merge(opts) do
+    link_to site_view_url(site), { target: '_blank' }.merge(opts) do
       (yield if block_given?).to_s + (opts.delete(:name) || site.long_name)
     end
   end
