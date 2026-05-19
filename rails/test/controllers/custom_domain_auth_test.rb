@@ -12,13 +12,11 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     )
   end
 
-  # -- Devise route availability on custom domains --
+  # -- Devise routes are NOT available on custom domains --
 
-  test 'sign in page is available on custom domain' do
+  test 'sign in is not routed on custom domain' do
     host! 'customtest.example.com'
-    get '/users/sign_in'
-    assert_response :success
-    assert_select 'input[type=submit][value="Log in"]'
+    assert_raises(ActionController::RoutingError) { get '/users/sign_in' }
   end
 
   test 'sign up is not routed on custom domain' do
@@ -31,9 +29,9 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     assert_raises(ActionController::RoutingError) { get '/users/password/new' }
   end
 
-  test 'confirmation is not routed on custom domain' do
+  test 'login shortcut is not routed on custom domain' do
     host! 'customtest.example.com'
-    assert_raises(ActionController::RoutingError) { get '/users/confirmation/new' }
+    assert_raises(ActionController::RoutingError) { get '/login' }
   end
 
   # -- Devise routes still work on main site --
@@ -53,75 +51,115 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # -- Links in login form point to main site --
+  # -- SSO routes on custom domain --
 
-  test 'sign up link on custom domain points to main site' do
+  test 'sso init redirects to main site authorize' do
     host! 'customtest.example.com'
-    get '/users/sign_in'
-    assert_select "a[href*='#{Settings.main_site_host}/users/sign_up']"
+    get '/sso/init'
+    assert_response :redirect
+    assert_match %r{#{Settings.main_site_host}/sso/authorize\?domain=customtest\.example\.com}, response.location
   end
 
-  test 'forgot password link on custom domain points to main site' do
+  test 'sso callback with valid token signs in user' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
     host! 'customtest.example.com'
-    get '/users/sign_in'
-    assert_select "a[href*='#{Settings.main_site_host}/users/password/new']"
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    assert_response :redirect
+    assert_redirected_to '/'
+    # Verify user is signed in
+    get '/'
+    assert_response :success
   end
 
-  # -- Devise routes are not available on inactive custom domains --
-
-  test 'sign in is blocked on inactive custom domain' do
-    @custom_domain.update!(status: :verified)
+  test 'sso callback with invalid token returns forbidden' do
     host! 'customtest.example.com'
-    get '/users/sign_in'
-    # Host authorization blocks requests to non-active custom domains
+    get '/sso/callback?token=bogus'
     assert_response :forbidden
   end
 
-  # -- Session cookie domain --
-
-  test 'session cookie domain is overridden for custom domains' do
+  test 'sso callback with wrong domain returns forbidden' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'other.example.com')
     host! 'customtest.example.com'
-    get '/users/sign_in'
-    # The session options should have been set for the custom domain
-    assert_response :success
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    assert_response :forbidden
   end
 
-  # -- /login redirect --
-
-  test 'login shortcut redirects to sign in on custom domain' do
+  test 'sso callback with expired token returns forbidden' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
     host! 'customtest.example.com'
-    get '/login'
-    assert_redirected_to '/users/sign_in'
+    travel 6.minutes do
+      get "/sso/callback?token=#{CGI.escape(token)}"
+      assert_response :forbidden
+    end
   end
 
-  test 'login shortcut is not routed on main site' do
-    assert_raises(ActionController::RoutingError) { get '/login' }
+  test 'sso callback respects return_to' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com', return_to: '/download')
+    host! 'customtest.example.com'
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    assert_redirected_to '/download'
   end
 
-  # -- After sign-in redirect --
-
-  test 'after sign in on custom domain redirects to root' do
+  test 'logout on custom domain signs out' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
     host! 'customtest.example.com'
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    get '/logout'
+    assert_redirected_to '/'
+  end
+
+  # -- SSO authorize on main site --
+
+  test 'sso authorize redirects to custom domain callback when signed in' do
     sign_in @user
-    get '/'
-    assert_response :success
+    get '/sso/authorize', params: { domain: 'customtest.example.com' }
+    assert_response :redirect
+    assert_match %r{https://customtest\.example\.com/sso/callback\?token=}, response.location
   end
 
-  # -- 401 page on custom domain --
-
-  test '401 page on custom domain links to /login' do
-    @site.update!(is_private: true)
-    host! 'customtest.example.com'
-    get '/'
-    assert_response :unauthorized
-    assert_select "a[href='/users/sign_in']", text: 'sign in'
+  test 'sso authorize redirects to login when not signed in' do
+    get '/sso/authorize', params: { domain: 'customtest.example.com' }
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
   end
+
+  test 'sso authorize returns forbidden for non-owner' do
+    other_user = users(:mary)
+    sign_in other_user
+    get '/sso/authorize', params: { domain: 'customtest.example.com' }
+    assert_response :forbidden
+  end
+
+  test 'sso authorize returns not found for unknown domain' do
+    sign_in @user
+    get '/sso/authorize', params: { domain: 'nonexistent.example.com' }
+    assert_response :not_found
+  end
+
+  test 'sso authorize returns not found for inactive domain' do
+    @custom_domain.update!(status: :verified)
+    sign_in @user
+    get '/sso/authorize', params: { domain: 'customtest.example.com' }
+    assert_response :not_found
+  end
+
+  # -- Subdomain redirect --
 
   test 'tiddlyhost subdomain redirects to custom domain' do
     host! "#{@site.name}.#{Settings.main_site_host}"
     get '/'
     assert_response :found
     assert_redirected_to "https://#{@custom_domain.domain}/"
+  end
+
+  # -- 401 page --
+
+  test '401 page on custom domain links to sso init' do
+    @site.update!(is_private: true)
+    host! 'customtest.example.com'
+    get '/'
+    assert_response :unauthorized
+    assert_select "a[href='/sso/init']", text: 'sign in'
   end
 
   test '401 page on main site links to tiddlyhost' do
@@ -135,11 +173,11 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
 
   # -- Save error messages --
 
-  test 'put save error on custom domain mentions custom domain login url' do
+  test 'put save error on custom domain mentions sso init url' do
     host! 'customtest.example.com'
     put '/', params: 'content', headers: { 'CONTENT_TYPE' => 'text/html' }
     assert_response :forbidden
-    assert_match %r{customtest\.example\.com/login}, response.body
+    assert_match %r{customtest\.example\.com/sso/init}, response.body
   end
 
   test 'put save error on main site mentions main site url' do
@@ -147,6 +185,6 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     put '/', params: 'content', headers: { 'CONTENT_TYPE' => 'text/html' }
     assert_response :forbidden
     assert_match Settings.main_site_host, response.body
-    refute_match %r{/login}, response.body
+    refute_match %r{/sso/}, response.body
   end
 end
