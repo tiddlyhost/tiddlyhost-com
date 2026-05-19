@@ -13,35 +13,16 @@ Rails.application.routes.draw do
   end
 
   #
-  # Login/logout only on custom domains
-  # (no registration, password reset, or confirmation)
+  # SSO and site serving on custom domains
   #
   constraints(lambda { |req|
     req.domain != Settings.main_site_host &&
       req.domain != Settings.tiddlyspot_host &&
       CustomDomain.fully_active.exists?(domain: req.host)
   }) do
-    # as: nil avoids duplicate named route errors since devise_for already
-    # defined the named helpers (e.g. new_user_session_path)
-    devise_scope :user do
-      get 'users/sign_in', to: 'sessions#new', as: nil
-      post 'users/sign_in', to: 'sessions#create', as: nil
-      delete 'users/sign_out', to: 'sessions#destroy', as: nil
-    end
-    get 'login', to: redirect('users/sign_in')
-    devise_scope :user do
-      get 'logout', to: 'sessions#logout_via_get'
-    end
-  end
-
-  #
-  # Individual sites on custom domains
-  #
-  constraints(lambda { |req|
-    req.domain != Settings.main_site_host &&
-      req.domain != Settings.tiddlyspot_host &&
-      CustomDomain.fully_active.exists?(domain: req.host)
-  }) do
+    get 'sso/callback', to: 'sso#callback'
+    get 'sso/init', to: 'sso#init'
+    get 'logout', to: 'sso#logout'
     match '/', to: 'tiddlywiki#serve', via: [:get, :options]
     match '/tiddlers.json', to: 'tiddlywiki#json_content', via: [:get, :options]
     match '/text/:title.tid', to: 'tiddlywiki#tid_content', via: [:get, :options]
@@ -91,6 +72,8 @@ Rails.application.routes.draw do
     get 'privacy-policy', to: 'home#privacy_policy'
     get 'terms-of-use', to: 'home#terms_of_use'
     get 'favicon.ico', to: 'home#favicon'
+
+    get 'sso/authorize', to: 'sso#authorize'
 
     get 'admin', to: 'admin#index'
 
