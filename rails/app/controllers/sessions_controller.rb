@@ -1,6 +1,11 @@
 class SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: [:create]
 
+  def destroy
+    current_user&.invalidate_all_sessions! if current_user&.logout_everywhere_pref == 'on'
+    super
+  end
+
   private
 
   def configure_sign_in_params

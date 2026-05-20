@@ -2,6 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
   include Recaptcha::Adapters::ControllerMethods
 
   prepend_before_action :check_recaptcha, only: [:create]
+  after_action :update_logout_everywhere_pref, only: [:update]
 
   def destroy
     th_log("Account #{resource.id} #{resource.email} deletion")
@@ -44,5 +45,14 @@ class RegistrationsController < Devise::RegistrationsController
 
   def log_recaptcha_detail(email, ok, detail)
     th_log "Recaptcha #{ok ? 'pass' : 'fail'} for '#{email}'#{" #{detail.inspect}" if detail}"
+  end
+
+  # Handled separately from Devise's update because it's stored in the
+  # preferences JSON column, not a regular attribute.
+  def update_logout_everywhere_pref
+    return unless params[:user]
+
+    value = params[:user][:logout_everywhere] == '1' ? 'on' : 'off'
+    current_user.logout_everywhere_pref = value
   end
 end

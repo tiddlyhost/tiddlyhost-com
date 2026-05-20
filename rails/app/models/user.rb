@@ -5,6 +5,7 @@ class User < ApplicationRecord
   PREFERENCES = {
     list_mode: %w[list grid],
     theme_mode: ThemeModeHelper::MODES,
+    logout_everywhere: %w[off on],
   }
   include WithPreferences
 
@@ -143,6 +144,14 @@ class User < ApplicationRecord
 
   def feature_enabled?(feature_name)
     Settings.feature_enabled?(feature_name, self)
+  end
+
+  def authenticatable_salt
+    "#{super}#{session_version}"
+  end
+
+  def invalidate_all_sessions!
+    increment!(:session_version)
   end
 
   # The default is set in config/initializers/devise

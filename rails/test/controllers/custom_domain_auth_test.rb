@@ -152,6 +152,27 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     assert_redirected_to "https://#{@custom_domain.domain}/"
   end
 
+  # -- Session invalidation --
+
+  test 'invalidate_all_sessions invalidates custom domain session' do
+    @site.update!(is_private: true)
+
+    # SSO into custom domain
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
+    host! 'customtest.example.com'
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    get '/'
+    assert_response :success
+
+    # Simulate "logout everywhere"
+    @user.invalidate_all_sessions!
+
+    # Custom domain session should now be invalid
+    host! 'customtest.example.com'
+    get '/'
+    assert_response :unauthorized
+  end
+
   # -- 401 page --
 
   test '401 page on custom domain links to sso init' do

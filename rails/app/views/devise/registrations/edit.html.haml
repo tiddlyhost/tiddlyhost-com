@@ -46,6 +46,16 @@
               .form-check-label Use #{link_to('Libravatar', 'https://libravatar.org/', target: '_blank')}
 
     = render layout: 'field_wrapper' do
+      = f.label 'Options'
+      %div.form-check
+        = check_box_tag('user[logout_everywhere]', '1',
+          resource.logout_everywhere_pref == 'on', class: 'form-check-input', id: 'logout_everywhere')
+        = label_tag 'logout_everywhere', 'Log out everywhere', class: 'form-check-label'
+        .form-text
+          Signing out of Tiddlyhost signs you out everywhere, including other browsers, devices,
+          and custom domain sessions.
+
+    = render layout: 'field_wrapper' do
       = f.label :current_password, 'Current password. Required to make changes.'
       = f.password_field :current_password, autocomplete: 'current-password', class: 'form-control'
       .form-text Enter your current password to confirm the changes
