@@ -415,10 +415,27 @@
     tags:
     - app
 
+  - name: Create systemd override directory
+    ansible.builtin.file:
+      path: /etc/systemd/system/{{ service_name }}.service.d
+      state: directory
+      mode: "0755"
+    tags:
+    - app
+
+  - name: Copy systemd override for mount dependency
+    ansible.builtin.template:
+      src: templates/etc/systemd/system/{{ service_name }}.service.d/override.conf.j2
+      dest: /etc/systemd/system/{{ service_name }}.service.d/override.conf
+      mode: "0644"
+    register: systemd_override
+    tags:
+    - app
+
   - name: Run systemctl daemon-reload if required
     ansible.builtin.systemd_service:
       daemon_reload: true
-    when: init_script.changed
+    when: init_script.changed or systemd_override.changed
     tags:
     - app
 

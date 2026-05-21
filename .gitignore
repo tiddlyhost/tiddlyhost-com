@@ -28,5 +28,5 @@ docker/config
 docker/bundle
 docker/node_modules
 docker/dotcache
-etc/
+/etc/
 *.log
