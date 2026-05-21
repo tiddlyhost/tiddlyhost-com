@@ -106,7 +106,14 @@ module ApplicationHelper
     return '-' unless timestamp
 
     content_tag :span, title: timestamp.to_s do
-      brief ? brief_time_ago_in_words(timestamp) : "#{time_ago_in_words(timestamp)} ago"
+      words = time_ago_in_words(timestamp)
+      if brief
+        brief_time_ago_in_words(timestamp)
+      elsif timestamp > Time.current
+        "in #{words}"
+      else
+        "#{words} ago"
+      end
     end
   end
 
