@@ -1,20 +1,30 @@
-- if feature_enabled?(:custom_domains) && site.persisted?
+- if site.persisted?
   = render layout: 'field_wrapper' do
     .form-text
       %h5.mt-4 Custom Domain
     .ms-3.nice-buttons
-      = render layout: 'field_wrapper' do
-        - if site.custom_domain
-          %tt= site.custom_domain.domain
-          - if site.custom_domain.fully_active?
-            %span.badge.bg-success.ms-2 Active
+      - if feature_enabled?(:custom_domains)
+        = render layout: 'field_wrapper' do
+          - if site.custom_domain
+            %tt= site.custom_domain.domain
+            - if site.custom_domain.fully_active?
+              %span.badge.bg-success.ms-2 Active
+            - else
+              %span.badge.bg-warning.text-dark.ms-2= site.custom_domain.status.humanize
           - else
-            %span.badge.bg-warning.text-dark.ms-2= site.custom_domain.status.humanize
-        - else
-          .form-text
-            No custom domain configured.
-      = render layout: 'field_wrapper' do
-        - if site.custom_domain.present?
-          = link_to 'Manage custom domain', site_custom_domain_path(site), class: 'btn'
-        - else
-          = link_to 'Add custom domain', site_custom_domain_path(site), class: 'btn'
+            .form-text
+              No custom domain configured.
+        = render layout: 'field_wrapper' do
+          - if site.custom_domain.present?
+            = link_to 'Manage custom domain', site_custom_domain_path(site), class: 'btn'
+          - else
+            = link_to 'Add custom domain', site_custom_domain_path(site), class: 'btn'
+      - else
+        = render layout: 'field_wrapper' do
+          %p
+            If you have a domain name that you own, e.g. <tt>somedomain.com</tt>, Tiddlyhost
+            can use it (or a subdomain such as <tt>mysite.somedomain.com</tt>) to serve this
+            site. Subscribe to the
+            = link_to('Tiddlyhost Standard Plan', '/subscription')
+            to access this feature.
+          = link_to 'Add custom domain', '/subscription', class: 'btn'
