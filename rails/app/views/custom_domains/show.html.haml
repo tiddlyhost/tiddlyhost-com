@@ -90,6 +90,11 @@
         = render 'dns_record', name: "#{@custom_domain.domain}.",
           type: 'CNAME', value: Settings.main_site_host
 
+        %p.small.text-muted
+          Similar to the TXT record, most DNS providers will automatically append
+          your domain name. If yours requires the full name, use
+          %tt.fw-bold #{@custom_domain.domain}.
+
     - if @custom_domain.last_error.present?
       = render layout: 'field_wrapper' do
         .alert.alert-danger.p-4{ style: "font-size: 120%;" }
@@ -109,12 +114,12 @@
     - else
       = render layout: 'field_wrapper' do
         %p
-          Once you've created the TXT record and the
+          Once you've created the TXT record and
           - if @custom_domain.apex_domain?
             the A record
           - else
-            either the A or CNAME record
-          described above, click "Verify domain".
+            either an A record or a CNAME record (you only need one)
+          as described above, click "Verify domain".
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-4' } do
       .d-flex.align-items-center

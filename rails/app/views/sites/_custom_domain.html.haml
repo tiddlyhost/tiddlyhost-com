@@ -8,8 +8,15 @@
         - else
           %span.badge.bg-warning.text-dark.ms-2= site.custom_domain.status.humanize
       - else
-        .form-text
-          No custom domain configured.
+        .form-text.enable-tooltips
+          If you own your own domain, Tiddlyhost can serve this site using that domain, or one
+          of its subdomains.
+          = render 'popover_help',
+            html_content: "Requires that you are able to create domain records using your |
+              <a href='https://en.wikipedia.org/wiki/Domain_name_registrar'>domain |
+              name registrar</a>'s admin page to verify ownership." |
+        .form-text.mt-3
+          %i No custom domain currently configured.
     = render layout: 'field_wrapper' do
       - if site.custom_domain.present?
         = link_to 'Manage custom domain', site_custom_domain_path(site), class: 'btn'
@@ -17,10 +24,15 @@
         = link_to 'Add custom domain', site_custom_domain_path(site), class: 'btn'
   - else
     = render layout: 'field_wrapper' do
-      %p
-        If you have a domain name that you own, e.g. <tt>somedomain.com</tt>, Tiddlyhost
-        can use it (or a subdomain such as <tt>mysite.somedomain.com</tt>) to serve this
-        site. Subscribe to the
+      .enable-tooltips.small
+        If you own your own domain, Tiddlyhost can serve this site using that domain, or one
+        of its subdomains. Subscribe to the
         = link_to('Tiddlyhost Standard Plan', '/subscription')
         to access this feature.
-      = link_to 'Add custom domain', '/subscription', class: 'btn'
+        = render 'popover_help',
+          html_content: "Requires that you are able to create domain records using your |
+            <a href='https://en.wikipedia.org/wiki/Domain_name_registrar'>domain |
+            name registrar</a>'s admin page to verify ownership." |
+
+      .mt-3
+        = link_to 'Add custom domain', '/subscription', class: 'btn'
