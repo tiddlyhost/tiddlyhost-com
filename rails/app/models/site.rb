@@ -157,7 +157,6 @@ class Site < ApplicationRecord
     return true if allow_in_iframe?
     return true if skip_etag_check?
     return true if disable_download_url?
-    return true if custom_domain.present?
 
     false
   end

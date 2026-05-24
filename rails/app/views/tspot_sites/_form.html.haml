@@ -28,7 +28,8 @@
       = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       %small.form-text.text-muted Optional. A comma delimited list of tags.
 
-    = render layout: 'advanced_wrapper' do
+    = render layout: 'collapsible_section', locals: { title: 'Advanced Settings',
+        expanded: @site.has_advanced_settings? } do
 
       = render layout: 'field_wrapper' do
         = f.label :redirect_to_site_id, 'Redirect to one of your Tiddlyhost sites'

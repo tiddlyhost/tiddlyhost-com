@@ -1,0 +1,15 @@
+- id ||= title.parameterize
+- expanded ||= false
+
+.pt-4
+  = render layout: 'field_wrapper' do
+    .form-text
+      %h5.mb-0
+        %a.text-decoration-none.text-reset.collapsible-heading{ "data-bs-toggle" => "collapse",
+          href: "##{id}", "aria-expanded" => expanded.to_s, "aria-controls" => id }
+          = bi_icon('chevron-right', class: 'collapsible-chevron',
+            height: '0.8em', width: '0.8em', style: 'margin-right: 0px;')
+          = title
+
+  .collapse{ id: id, class: ('show' if expanded) }
+    = yield

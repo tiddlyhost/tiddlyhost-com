@@ -46,13 +46,20 @@
       = f.text_field :tag_list, class: 'form-control', value: @site.tag_list.to_s
       .form-text Optional. A comma delimited list of tags, visible on the Explore page for searchable sites.
 
-    = render layout: 'advanced_wrapper' do
-      = render 'public_clone', f:
-      = render 'disable_download_url', site: @site, f:
-      = render 'site_common/allow_in_iframe', f:
-      = render 'save_method_prefs', f:
-      = render 'skip_etag_check', f:
-      = render 'custom_domain', site: @site, f:
+    - if @site.persisted?
+      = render layout: 'collapsible_section', locals: { title: 'Custom Domain',
+          expanded: @site.custom_domain.present? } do
+        .ms-2
+          = render 'custom_domain', site: @site, f:
+
+    = render layout: 'collapsible_section', locals: { title: 'Advanced Settings',
+        expanded: @site.has_advanced_settings? } do
+      .ms-3
+        = render 'public_clone', f:
+        = render 'disable_download_url', site: @site, f:
+        = render 'site_common/allow_in_iframe', f:
+        = render 'save_method_prefs', f:
+        = render 'skip_etag_check', f:
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       = f.submit @site.new_record? ? 'Create' : 'Update', class: 'btn btn-primary'
