@@ -42,9 +42,9 @@ defaults:
       :features:
       - Redirect claimed Tiddlyspot sites to any url
       - View and recover previous versions of your sites with the <b>save history</b> feature
+      - BYO custom domains <span class="text-success fw-bold">(NEW!)🌷</span>
     :premium:
       :features:
-      - Custom domain names
       - Externally hosted images and PDFs
 
   # How many versions of a site to keep
