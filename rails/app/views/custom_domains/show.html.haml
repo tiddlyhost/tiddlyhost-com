@@ -87,12 +87,12 @@
           If your custom domain is a subdomain of your root domain then
           it's better to create a CNAME record instead of an A record:
 
-        = render 'dns_record', name: "#{@custom_domain.domain}.",
+        = render 'dns_record', name: @custom_domain.cname_record_short_name,
           type: 'CNAME', value: Settings.main_site_host
 
         %p.small.text-muted
-          Similar to the TXT record, most DNS providers will automatically append
-          your domain name. If yours requires the full name, use
+          Most DNS providers automatically append your domain name.
+          If yours requires the full name, use
           %tt.fw-bold #{@custom_domain.domain}.
 
     - if @custom_domain.last_error.present?

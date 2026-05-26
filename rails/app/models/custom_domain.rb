@@ -48,6 +48,12 @@ class CustomDomain < ApplicationRecord
     end
   end
 
+  # Short CNAME name for DNS providers that auto-append the root domain.
+  # Same assumption as verification_record_short_name.
+  def cname_record_short_name
+    domain.sub(/\.[^.]+\.[^.]+\z/, '')
+  end
+
   # DNS TXT record value for verification
   def verification_record_value
     verification_token
