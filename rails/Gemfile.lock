@@ -133,7 +133,7 @@ GEM
       addressable
     csv (3.3.5)
     daemons (1.4.1)
-    dalli (5.0.4)
+    dalli (5.0.5)
       logger
     date (3.5.1)
     delayed_job (4.2.0)
