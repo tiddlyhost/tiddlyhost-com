@@ -143,6 +143,24 @@ class CustomDomainAuthTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test 'sso callback when already signed in as correct user stays signed in' do
+    token = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
+    host! 'customtest.example.com'
+
+    # First SSO callback to establish session
+    get "/sso/callback?token=#{CGI.escape(token)}"
+    assert_response :redirect
+
+    # Second SSO callback should not disrupt existing session
+    token2 = SsoToken.generate(user_id: @user.id, domain: 'customtest.example.com')
+    get "/sso/callback?token=#{CGI.escape(token2)}"
+    assert_redirected_to '/'
+
+    # User should still be signed in
+    get '/'
+    assert_response :success
+  end
+
   # -- Subdomain redirect --
 
   test 'tiddlyhost subdomain redirects to custom domain' do

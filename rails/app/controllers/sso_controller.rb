@@ -25,8 +25,6 @@ class SsoController < ApplicationController
   # GET /sso/callback?token=xyz
   # Runs on custom domain. Verifies token, creates session, redirects.
   def callback
-    # Clear any stale session before creating a new one (also prevents session fixation)
-    reset_session
     data = SsoToken.verify(params[:token], domain: request.host)
     unless data
       render plain: "Invalid or expired token", status: :forbidden
@@ -39,7 +37,12 @@ class SsoController < ApplicationController
       return
     end
 
-    sign_in(:user, user)
+    unless current_user == user
+      # Clear any stale session before creating a new one (also prevents session fixation)
+      reset_session
+      sign_in(:user, user)
+    end
+
     redirect_to safe_return_to(data[:return_to]) || "/"
   end
 
