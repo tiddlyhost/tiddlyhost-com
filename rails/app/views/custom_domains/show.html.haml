@@ -36,7 +36,7 @@
         = f.label :domain, 'Custom domain name'
         = f.text_field :domain, class: 'form-control mt-2 mb-2'
         %small.form-text.text-muted
-          Enter the domain you want to use. You'll need to verify ownership via a DNS record.
+          Enter the domain you want to use. You'll need to verify ownership by creating a DNS record.
 
       = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
         = f.submit 'Add Domain', class: 'btn btn-primary'
@@ -97,19 +97,21 @@
 
     - if @custom_domain.last_error.present?
       = render layout: 'field_wrapper' do
-        .alert.alert-danger.p-4{ style: "font-size: 120%;" }
-          %strong Verification failed:
-          = @custom_domain.last_error
+        .alert.alert-danger.p-3
+          %strong Verification failed
+          %br
+          #{@custom_domain.last_error}.
           %br
 
           Double check the TXT record and try again.
 
     - elsif @custom_domain.verification_requested?
       = render layout: 'field_wrapper' do
-        .alert.alert-info.p-4{ style: "font-size: 120%;" }
-          Verification check requested.
+        .alert.alert-info.p-3
+          %strong Verification check requested
+          %br
           = link_to "Reload this page", site_custom_domain_path(@site)
-          in a moment to see the result.
+          in a few moments to see the result.
 
     - else
       = render layout: 'field_wrapper' do
@@ -154,14 +156,16 @@
           %span.badge.bg-success Issued
         - elsif @custom_domain.ssl_failed?
           %span.badge.bg-danger Failed
-          - if @custom_domain.last_error.present?
+          .alert.alert-warning.p-3.m-2
+            %strong Certificate provisioning failed
             %br
-            %small.text-danger= @custom_domain.last_error
+            - if @custom_domain.last_error.present?
+              = @custom_domain.last_error
         - else
           %span.badge.bg-warning.text-dark Pending
-          %p.small.text-muted.mt-2
+          .alert.alert-info.p-3.m-2
             SSL certificate provisioning will begin shortly.
-            This takes up to five minutes.
+            Note that it may take up to five minutes.
             = link_to "Reload this page", site_custom_domain_path(@site)
             to check progress.
 
@@ -169,7 +173,23 @@
         %p
           Your site is live at
           = succeed '.' do
-            = link_to "https://#{@custom_domain.domain}", "https://#{@custom_domain.domain}"
+            = link_to("https://#{@custom_domain.domain}",
+              "/sso/authorize?domain=#{@custom_domain.domain}", target: @site.long_name)
+          - if @custom_domain.updated_at > 1.day.ago
+            .alert.alert-info.p-3.m-2
+              Note that it may still take some time for the A or CNAME record to propagate.
+              To check, run
+              %tt nslookup #{@custom_domain.domain}
+              in a terminal and look for
+              - if @custom_domain.apex_domain?
+                an address matching
+                %tt.fw-bold= Settings.prod_server_ip
+              - else
+                %tt.fw-bold= Settings.main_site_host
+                (CNAME) or
+                %tt.fw-bold= Settings.prod_server_ip
+                (A record)
+              in the output.
 
     = render layout: 'field_wrapper', locals: { pt: 'pt-5' } do
       .d-flex.align-items-center
