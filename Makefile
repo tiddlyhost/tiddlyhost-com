@@ -677,6 +677,7 @@ JS_MATH_FONTS_ZIP_PATH=$(TOP_DIR)/etc/$(JS_MATH_FONTS_ZIP)
 JS_MATH_DOWNLOADS=https://master.dl.sourceforge.net/project/jsmath
 
 $(JS_MATH_ZIP_PATH):
+	@mkdir -p $(TOP_DIR)/etc
 	curl -sL $(JS_MATH_DOWNLOADS)/jsMath/3.3g/$(JS_MATH_ZIP) -o $@
 
 $(JS_MATH_FONTS_ZIP_PATH):
