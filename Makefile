@@ -530,6 +530,12 @@ fast-build-deploy:              fast-build-prod push-prod fast-deploy-app
 
 PLAY=ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory.yml $(V)
 
+ansible-collection-install:
+	ansible-galaxy collection install -r ansible/requirements.yml
+
+ansible-collection-upgrade:
+	ansible-galaxy collection install -r ansible/requirements.yml --upgrade
+
 DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit prod
 RESTART=$(PLAY) ansible/playbooks/restart.yml --limit prod
 BACKUP=$(PLAY) ansible/playbooks/backup.yml --limit prod
