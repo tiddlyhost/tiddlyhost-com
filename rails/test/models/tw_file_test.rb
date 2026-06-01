@@ -133,7 +133,7 @@ class TwFileTest < ActiveSupport::TestCase
   test 'light get version' do
     # Test with real empty files
     for_all_empties do |empty_file, tw_kind, tw_version|
-      assert_equal [tw_kind, tw_version], TwFile.light_get_kind_and_version(File.read(empty_file))
+      assert_equal [tw_kind, tw_version], TwFile.light_get_kind_and_version(File.read(empty_file)), "for #{empty_file}"
     end
 
     # Test with the minimal test html files too I guess

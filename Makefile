@@ -319,10 +319,13 @@ EMPTY_URL_tw5x=https://tiddlywiki.com/empty-external-core.html
 EMPTY_URL_classic=https://classic.tiddlywiki.com/empty.html
 EMPTY_URL_prerelease=https://tiddlywiki.com/prerelease/empty.html
 
-EMPTY_URL_feather=https://feather.wiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html
-EMPTY_URL_featherx=https://feather.wiki/builds/v1.8.x/FeatherWiki-bones$(FEATHER_BIRD).html
-EMPTY_URL_feather_plumage=https://feather.wiki/builds/v1.8.x/FeatherWiki-plumage_$(FEATHER_BIRD).css
-EMPTY_URL_feather_bones=https://feather.wiki/builds/v1.8.x/FeatherWiki-bones_$(FEATHER_BIRD).js
+# Self-contained, all-in-one
+EMPTY_URL_feather=https://feather.wiki/builds/v1.9.x/FeatherWiki_$(FEATHER_BIRD).html
+
+# Split up, "bones/plumage/muscles" = html/css/js
+EMPTY_URL_featherx=https://feather.wiki/builds/v1.9.x/FeatherWiki-bones_$(FEATHER_BIRD).html
+EMPTY_URL_feather_plumage=https://feather.wiki/builds/v1.9.x/FeatherWiki-plumage_$(FEATHER_BIRD).css
+EMPTY_URL_feather_muscles=https://feather.wiki/builds/v1.9.x/FeatherWiki-muscles_$(FEATHER_BIRD).js
 
 CURL_FETCH=curl -sL $(EMPTY_URL_$1) -o $(EMPTY_DIR)/$1.html
 
@@ -340,31 +343,25 @@ download-core-js-prerelease:
 	  cd rails/public && \
 	  curl -sL $${CORE_JS_PRERELEASE_URL} -O
 
-# (No download-empty-featherx yet since I'm building it locally)
-download-empties: download-empty-tw5 download-empty-tw5x download-empty-feather download-empty-classic download-empty-prerelease download-core-js download-core-js-prerelease
+download-empties: \
+  download-empty-tw5 \
+  download-empty-tw5x \
+  download-empty-feather \
+  download-empty-featherx \
+  download-empty-classic \
+  download-empty-prerelease \
+  download-core-js \
+  download-core-js-prerelease
 
 # For Feather Wiki js and css
-# (Actually I'm building the "bones" locally also since it requires the
-# changes from https://codeberg.org/Alamantus/FeatherWiki/pulls/208 )
-download-plumage-and-bones:
-	cd rails/public && curl -sLO $(EMPTY_URL_feather_bones) && curl -sLO $(EMPTY_URL_feather_plumage)
+download-plumage-and-muscles:
+	cd rails/public && curl -sLO $(EMPTY_URL_feather_muscles) && curl -sLO $(EMPTY_URL_feather_plumage)
 
 PROD_PRERELEASE=docker/config/prerelease.html
 $(PROD_PRERELEASE): $(EMPTY_DIR)/prerelease.html
 	cp $< $@
 
 prod-prerelease: $(PROD_PRERELEASE)
-
-# Usually this is downloaded using download-empties, but this can be used
-# to copy in locally built Feather Wiki empty
-FEATHER_EMPTY=$(EMPTY_DIR)/feather.html
-$(FEATHER_EMPTY):
-	cp ../FeatherWiki/builds/v1.8.x/FeatherWiki_$(FEATHER_BIRD).html $@
-
-# Built locally with https://codeberg.org/Alamantus/FeatherWiki/pulls/208
-FEATHERX_EMPTY=$(EMPTY_DIR)/featherx.html
-$(FEATHERX_EMPTY):
-	cp ../FeatherWiki/builds/v1.8.x/FeatherWiki-bare_$(FEATHER_BIRD).html $@
 
 feather-empty: $(FEATHER_EMPTY) $(FEATHERX_EMPTY)
 
@@ -419,12 +416,23 @@ tw5-update: ver-set
 # You must specify the version manually here too:
 #   VER=1.7.0 make feather-update
 #
-FEATHER_BIRD=Woodlark
-feather-update: ver-set download-empty-feather
+# Note: We're not actually versioning every plumage/muscles file. This might
+# lead to compatibility problems if newer plumage/muscles files are not backwards
+# compatible with older bones, i.e. featherx. There's # some risk, but let's
+# accept it for now since I think the solution would require some Feather Wiki
+# changes.
+#
+FEATHER_BIRD=Greenfinch
+feather-update: ver-set download-empty-feather download-empty-featherx download-plumage-and-muscles
 	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/$(VER).html
+	cp $(EMPTIES_DIR)/featherx.html $(EMPTIES_DIR)/featherx/$(VER).html
 	git add \
 	  $(EMPTIES_DIR)/feather.html \
-	  $(EMPTIES_DIR)/feather/$(VER).html
+	  $(EMPTIES_DIR)/featherx.html \
+	  $(EMPTIES_DIR)/feather/$(VER).html \
+	  $(EMPTIES_DIR)/featherx/$(VER).html \
+	  rails/public/FeatherWiki-plumage_$(FEATHER_BIRD).css \
+	  rails/public/FeatherWiki-muscles_$(FEATHER_BIRD).js
 	git commit -m 'chore: Upgrade Feather Wiki empties to version $(VER)' \
 	  -m 'Commit created with `VER=$(VER) make feather-update`'
 
