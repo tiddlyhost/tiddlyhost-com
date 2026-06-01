@@ -114,7 +114,7 @@ class Site < ApplicationRecord
 
   def use_put_saver?
     # These always use put saver
-    return true if is_feather? || is_sitelet?
+    return true if is_feather? || is_featherx? || is_sitelet?
 
     # Classic always uses upload saver
     return false if is_classic?
