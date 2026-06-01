@@ -4,7 +4,7 @@
 ---
 - id: 1
   name: tw5
-  title: TiddlyWiki (self-contained)
+  title: TiddlyWiki
   description: The famous customizable personal wiki and non-linear notebook, with
     internal core javascript.
   enabled: true
