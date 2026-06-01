@@ -9,6 +9,7 @@ rails/public/assets/
 rails/app/assets/builds/
 rails/public/tiddlywikicore-*-prerelease.js
 rails/public/tiddlywikicore-*.gz
+rails/public/FeatherWiki-*.gz
 rails/public/packs/
 rails/public/packs-test/
 rails/public/jsMath/

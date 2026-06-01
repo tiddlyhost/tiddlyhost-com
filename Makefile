@@ -378,7 +378,7 @@ empty-versions:
 
 # Run this at build time since I don't want to check in the gzipped files
 gzip-core-js-files:
-	@for f in $$( ls rails/public/tiddlywikicore-*.js ); do \
+	@for f in $$( ls rails/public/tiddlywikicore-*.js rails/public/FeatherWiki-*.js rails/public/FeatherWiki-*.css ); do \
 	  gzip -c $$f > $$f.gz; \
 	  echo Created $$f.gz; \
 	done
