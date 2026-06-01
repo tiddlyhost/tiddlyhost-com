@@ -69,14 +69,14 @@
 - id: 20
   name: featherx
   title: Feather Wiki (external core)
-  description: Feathers & Bones version of Feather Wiki. Experimental tech-preview.
-    Use with caution.
+  description: The super-light Feather Wiki build with external Javascript and
+    CSS. Less self-contained, but very fast to load and save.
   enabled: true
   display_order: 21
-  primary: false
+  primary: true
   info_link: https://feather.wiki/
-  tooltip: With external javascript the initial html file is just 616 bytes. Currently
-    requires a custom build of Feather Wiki.
+  tooltip: For the "bones, plumage and muscles" build of Feather Wiki, the initial
+    empty file is around 700 bytes.
 - id: 21
   name: sitelet
   title: siteleteer
