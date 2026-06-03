@@ -103,7 +103,7 @@ GEM
     bigdecimal (4.1.2)
     bindata (2.5.1)
     bindex (0.8.1)
-    bootsnap (1.24.5)
+    bootsnap (1.24.6)
       msgpack (~> 1.2)
     bootstrap-email (1.8.1)
       htmlbeautifier (~> 1.3)
