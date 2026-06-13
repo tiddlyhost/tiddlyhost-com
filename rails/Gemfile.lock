@@ -111,7 +111,7 @@ GEM
       ostruct (~> 0.6)
       premailer (~> 1.7)
       sass-embedded (~> 1.55)
-    brakeman (8.0.4)
+    brakeman (8.0.5)
       racc
     builder (3.3.0)
     byebug (13.0.0)
