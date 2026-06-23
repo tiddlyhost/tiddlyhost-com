@@ -94,6 +94,19 @@ local-rails: docker/config/settings_local.yml
 
 local-config: local-nginx local-rails
 
+DEV_HOST_NAMES=aaa bbb ccc ddd foo bar baz quux simon
+
+setup-dev-hosts:
+	@for name in '' $(DEV_HOST_NAMES); do \
+	  host=$${name:+$$name.}tiddlyhost.local; \
+	  if grep -q "$$host" /etc/hosts; then \
+	    echo "Already in /etc/hosts: $$host"; \
+	  else \
+	    echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts > /dev/null; \
+	    echo "Added to /etc/hosts: $$host"; \
+	  fi; \
+	done
+
 #----------------------------------------------------------
 
 # Brings up the web container only and runs bash in it

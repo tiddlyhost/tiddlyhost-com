@@ -60,11 +60,7 @@ Run the test suite. Hopefully it's all passing:
 Tiddlyhost uses wildcard subdomains. To simulate this for local development,
 add some entries to your /etc/hosts:
 
-    127.0.0.1 tiddlyhost.local
-    127.0.0.1 aaa.tiddlyhost.local
-    127.0.0.1 bbb.tiddlyhost.local
-    127.0.0.1 foo.tiddlyhost.local
-    127.0.0.1 bar.tiddlyhost.local
+    make setup-dev-hosts
 
 You should now be able to start rails like this:
 
