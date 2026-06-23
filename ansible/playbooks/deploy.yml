@@ -3,30 +3,7 @@
   become: true
   become_user: root
 
-  vars:
-    certbot_dns_credentials: "{{ local_root }}/etc/credentials/aws/certbot-dns-user.yml"
-    docker_config_json: "{{ local_root }}/etc/credentials/docker/config-pull.json"
-    docker_compose_file: "{{ local_root }}/docker-compose-prod.yml"
-    master_key_file: "{{ local_root }}/rails/config/master.key"
-    credentials_file: "{{ local_root }}/rails/config/credentials.yml.enc"
-
-    certbot_dir_config: "{{ docker_dir }}/letsencrypt"
-    certbot_dir_work: "{{ home_dir }}/.certbot/work"
-    certbot_dir_logs: "{{ home_dir }}/.certbot/logs"
-    certbot_dir_live: "{{ certbot_dir_config }}/live/{{ primary_host }}"
-    certbot_notification_email: simon.baird@gmail.com
-
-    thost_log_dir: "{{ docker_dir }}/log"
-    nginx_conf_dir: "{{ docker_dir }}/nginx-conf"
-    nginx_html_dir: "{{ docker_dir }}/nginx-html"
-    nginx_domains_dir: "{{ docker_dir }}/nginx-domains"
-    acme_challenge_dir: "{{ docker_dir }}/acme-challenge"
-    rails_conf_dir: "{{ docker_dir }}/config"
-    secrets_dir: "{{ docker_dir }}/secrets"
-
-    service_name: thost
-    db_name: app_production
-    db_user: postgres
+  # (Vars are in inventory.yml)
 
   tasks:
 

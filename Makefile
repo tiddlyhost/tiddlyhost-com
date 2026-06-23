@@ -553,6 +553,7 @@ DEPLOY=$(PLAY) ansible/playbooks/deploy.yml --limit prod
 RESTART=$(PLAY) ansible/playbooks/restart.yml --limit prod
 BACKUP=$(PLAY) ansible/playbooks/backup.yml --limit prod
 FETCH_LOGS=$(PLAY) ansible/playbooks/fetch-logs.yml --limit prod
+FETCH_PROD_SECRETS=$(PLAY) ansible/playbooks/fetch-prod-secrets.yml --limit prod
 
 full-deploy:
 	$(DEPLOY)
@@ -665,6 +666,9 @@ LOGS_DIR=../logs
 
 fetch-logs:
 	$(FETCH_LOGS)
+
+fetch-prod-secrets:
+	$(FETCH_PROD_SECRETS)
 
 extract-save-times:
 	cat $(LOGS_DIR)/web-*.log | hack/nginx-log-parser.rb csv > $(LOGS_DIR)/save-times-$(TIMESTAMP).csv
