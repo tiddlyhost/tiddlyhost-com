@@ -19,7 +19,7 @@
           = "/mo"
       %ul.list-unstyled.mt-3.mb-4
         - features.each do |f|
-          %li!= f
+          %li= sanitize(f)
 
       - if subscribed
         .mt-auto.w-100.border.mb-2.shadow-sm.p-2.rounded{ class: "plan-#{product.name}-fg" }

@@ -22,6 +22,6 @@
 
     - if local_assigns.has_key?(:intro_text)
       %p.small.text-muted.px-2<
-        != intro_text
+        = sanitize(intro_text)
 
     = yield
