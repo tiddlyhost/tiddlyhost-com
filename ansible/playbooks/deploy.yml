@@ -437,6 +437,7 @@
   - name: Fast restart app and jobs containers
     ansible.builtin.command:
       cmd: /etc/init.d/{{ service_name }} fast-restart
+    changed_when: true
     tags:
     - app
     - fast-upgrade
