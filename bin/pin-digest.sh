@@ -5,9 +5,10 @@ IMAGE_REF=$1
 DOCKER_FILE=$2
 MESSAGE=${3:-""}
 
+DOCKER_AUTH=${DOCKER_AUTH:-"etc/credentials/docker/config.json"}
 NO_COMMIT=${NO_COMMIT:-""}
 
-IMAGE_DIGEST="$(skopeo inspect --no-tags docker://${IMAGE_REF} --format '{{.Digest}}')"
+IMAGE_DIGEST="$(skopeo inspect --no-tags --authfile "$DOCKER_AUTH" docker://${IMAGE_REF} --format '{{.Digest}}')"
 
 REQUIRED="FROM ${IMAGE_REF}@${IMAGE_DIGEST}"
 CURRENT=$( grep -E "^FROM ${IMAGE_REF}" "${DOCKER_FILE}" )
