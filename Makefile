@@ -435,7 +435,7 @@ tw5-update: ver-set
 # accept it for now since I think the solution would require some Feather Wiki
 # changes.
 #
-FEATHER_BIRD=Greenfinch
+FEATHER_BIRD=Goldfinch
 feather-update: ver-set download-empty-feather download-empty-featherx download-plumage-and-muscles
 	cp $(EMPTIES_DIR)/feather.html $(EMPTIES_DIR)/feather/$(VER).html
 	cp $(EMPTIES_DIR)/featherx.html $(EMPTIES_DIR)/featherx/$(VER).html
