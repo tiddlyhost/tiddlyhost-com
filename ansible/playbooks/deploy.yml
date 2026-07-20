@@ -513,6 +513,6 @@
       cmd: docker compose rm
     register: docker_rm
     changed_when: |-
-      not "No stopped containers" in docker_rm.stdout
+      not "No stopped containers" in docker_rm.stderr
     tags:
     - cleanup
