@@ -26,7 +26,7 @@ class RegistrationsController < Devise::RegistrationsController
     # resource_class.new(sign_up_param) below.
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :username])
 
-    ok = verify_recaptcha(action: 'signup')
+    ok = verify_recaptcha(action: 'signup', minimum_score: dotty_gmail?(sign_up_params['email']) ? 0.29 : 0)
     log_recaptcha_detail(sign_up_params['email'], ok, recaptcha_reply)
     return if ok
 
@@ -41,6 +41,11 @@ class RegistrationsController < Devise::RegistrationsController
       flash.discard(:recaptcha_error) # We need to discard flash to avoid showing it on the next page reload
       render :new
     end
+  end
+
+  def dotty_gmail?(email)
+    local, domain = email.to_s.split('@', 2)
+    domain&.downcase == 'gmail.com' && local.count('.') >= 3
   end
 
   def log_recaptcha_detail(email, ok, detail)

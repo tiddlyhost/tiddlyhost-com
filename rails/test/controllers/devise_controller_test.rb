@@ -34,6 +34,31 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'dotty gmail detection' do
+    c = RegistrationsController.new
+
+    # Not dotty enough
+    refute c.send(:dotty_gmail?, 'user@gmail.com')
+    refute c.send(:dotty_gmail?, 'first.last@gmail.com')
+    refute c.send(:dotty_gmail?, 'a.b.c@gmail.com')
+
+    # Dotty enough
+    assert c.send(:dotty_gmail?, 'a.b.c.d@gmail.com')
+    assert c.send(:dotty_gmail?, 'a.c.def.g.h.i.123@gmail.com')
+
+    # Not gmail
+    refute c.send(:dotty_gmail?, 'a.b.c.d@hotmail.com')
+    refute c.send(:dotty_gmail?, 'a.b.c.d.e@example.com')
+
+    # Case insensitive domain
+    assert c.send(:dotty_gmail?, 'a.b.c.d@Gmail.com')
+    assert c.send(:dotty_gmail?, 'a.b.c.d@GMAIL.COM')
+
+    # Edge cases
+    refute c.send(:dotty_gmail?, '')
+    refute c.send(:dotty_gmail?, nil)
+  end
+
   test 'account save changes' do
     user = User.create!(email: 'barry@tables.com', name: 'Barry', username: 'Baz', password: 'Abcd1234')
     user.confirm
