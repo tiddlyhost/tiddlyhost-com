@@ -776,7 +776,6 @@ pretty-colors: gource-image
 	@SDL_VIDEODRIVER=x11 gource \
 	  --user-image-dir /tmp \
 	  --seconds-per-day 0.07 \
-	  --key \
 	  --title 'Tiddlyhost Development' \
 	  --fullscreen \
 	  --frameless \
@@ -786,9 +785,10 @@ pretty-colors: gource-image
 	  --font-size 6 \
 	  --dir-font-size 5 \
 	  --user-font-size 5 \
-	  --file-font-size 5 \
+	  --file-font-size 3 \
 	  --bloom-multiplier 0.2 \
 	  --bloom-intensity 0.2 \
-	  --filename-colour 555555 \
-	  --dir-colour 555555 \
+	  --filename-colour 777777 \
+	  --dir-colour aaaaaa \
+	  --hide progress \
 	  ;
