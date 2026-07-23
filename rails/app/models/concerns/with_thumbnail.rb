@@ -70,7 +70,11 @@ module WithThumbnail
 
     # Similar to inject_external_core_url_prefix but probably uses less memory
     use_html = file_download.
-      sub(/(<script src=")(tiddlywikicore-[\d.]+.js")/, "\\1#{core_url_prefix}/\\2")
+      # For tw5x
+      sub(/(<script src=")(tiddlywikicore-[\d.]+.js")/, "\\1#{core_url_prefix}/\\2").
+      # For featherx
+      sub(/(<script id="?a"? src="?)(FeatherWiki-(muscles|bones)_\w+\.js)/, "\\1#{core_url_prefix}/\\2").
+      sub(/(<link id="?s"? href="?)(FeatherWiki-plumage_\w+\.css)/, "\\1#{core_url_prefix}/\\2")
 
     grover = Grover.new(use_html, **grover_opts)
 
@@ -103,12 +107,16 @@ module WithThumbnail
   #
   def grover_opts
     case tw_kind
-    when 'feather'
+    when 'feather', 'featherx'
       {
         style_tag_options: [
           # Hide Feather Wiki "can't save to server" notification
           { content: 'html > body > div.notis { display:none; }' }
-        ]
+        ],
+        # Wait for JS to render the page before taking the screenshot
+        # (The page renders quickly so we maybe don't need this, but it
+        # should do no harm either way.)
+        wait_for_selector: 'main',
       }
 
     else
