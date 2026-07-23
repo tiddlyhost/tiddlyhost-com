@@ -40,10 +40,22 @@ logf:
 # application_controller.rb and application_record.rb.
 # Currently contains account captcha, confirmations and deletions
 applog:
-	more docker/log/app.log
+	more {{ thost_log_dir }}/app.log
 
 applogf:
-	tail -f docker/log/app.log
+	tail -f {{ thost_log_dir }}/app.log
+
+recaptcha-log:
+	@grep 'Recaptcha' {{ thost_log_dir }}/app.log | awk '\
+	  match($$0, /Recaptcha (pass|fail) for '\''([^'\'']+)'\''/, a) && match($$0, /"score" => ([0-9.]+)/, b) { \
+	    print a[1], a[2], b[1] \
+	  }' OFS='\t'
+
+recaptcha-score-counts:
+	@grep 'Recaptcha' {{ thost_log_dir }}/app.log | awk '\
+	  match($$0, /Recaptcha (pass|fail) for '\''([^'\'']+)'\''/, a) && match($$0, /"score" => ([0-9.]+)/, b) { \
+	    print a[1], b[1] \
+	  }' OFS='\t' | sort | uniq -c | sort -rn
 
 dwatch:
 	@sudo watch -n1 docker ps -a
