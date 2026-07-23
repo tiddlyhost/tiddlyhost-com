@@ -79,7 +79,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1271.0)
+    aws-partitions (1.1272.0)
     aws-sdk-core (3.254.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -327,7 +327,7 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (3.4.1)
-    sass-embedded (1.101.0-x86_64-linux-gnu)
+    sass-embedded (1.101.6-x86_64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -446,4 +446,4 @@ RUBY VERSION
   ruby 4.0.4
 
 BUNDLED WITH
-  4.0.16
+  4.0.17
