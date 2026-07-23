@@ -83,8 +83,8 @@ gem 'grover'
 gem 'spicy-proton'
 
 # For payments
-gem 'pay', '~> 11.6.1'
-gem 'stripe', '~> 19.1.0'
+gem 'pay', '~> 11.6.2'
+gem 'stripe', '~> 19.3.0'
 
 # Needed after ruby 3.1 upgrade
 gem 'net-imap', require: false
