@@ -766,29 +766,24 @@ git-update-main: git-push
 
 #----------------------------------------------------------
 
-/tmp/Simon\ Baird.png:
-	@curl -s -o '$@' \
-	  https://www.gravatar.com/avatar/bfaba91f41f0c01aba1ef0751458b537
-
-gource-image: /tmp/Simon\ Baird.png
-
 # Built with https://github.com/acaudwell/Gource/pull/351
 GOURCE=../Gource/gource
 
-pretty-colors: gource-image
+pretty-colors: gource-images
 	@SDL_VIDEODRIVER=x11 $(GOURCE) \
 	  --user-image-dir /tmp \
-	  --seconds-per-day 0.07 \
+	  --seconds-per-day 0.05 \
 	  --title 'Tiddlyhost Development' \
 	  --fullscreen \
 	  --frameless \
-	  --auto-skip-seconds 0.3 \
+	  --auto-skip-seconds 0.2 \
 	  --elasticity 0.1 \
-	  --font-scale 5 \
+	  --font-scale 6 \
 	  --font-size 6 \
-	  --dir-font-size 5 \
-	  --user-font-size 5 \
-	  --file-font-size 3 \
+	  --dir-font-size 9 \
+	  --user-scale 4.0 \
+	  --user-font-size 12 \
+	  --file-font-size 5 \
 	  --bloom-multiplier 0.2 \
 	  --bloom-intensity 0.2 \
 	  --filename-colour 777777 \
@@ -796,3 +791,21 @@ pretty-colors: gource-image
 	  --hide progress \
 	  --scale-by-file-size \
 	  ;
+
+gource-images: \
+  /tmp/Simon\ Baird.png \
+  /tmp/Yakov\ Litvin.png \
+  /tmp/rppowellemail.png \
+  /tmp/renovate[bot].png
+
+/tmp/Simon\ Baird.png:
+	@curl -s -o '$@' https://www.gravatar.com/avatar/bfaba91f41f0c01aba1ef0751458b537
+
+/tmp/Yakov\ Litvin.png:
+	@curl -s -o '$@' https://avatars.githubusercontent.com/u/1131924?v=4
+
+/tmp/rppowellemail.png:
+	@curl -s -o '$@' https://avatars.githubusercontent.com/u/19859492?v=4
+
+/tmp/renovate[bot].png:
+	@curl -s -o '$@' https://avatars.githubusercontent.com/ml/287?s=82&v=4
