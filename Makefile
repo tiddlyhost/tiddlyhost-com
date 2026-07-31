@@ -772,8 +772,11 @@ git-update-main: git-push
 
 gource-image: /tmp/Simon\ Baird.png
 
+# Built with https://github.com/acaudwell/Gource/pull/351
+GOURCE=../Gource/gource
+
 pretty-colors: gource-image
-	@SDL_VIDEODRIVER=x11 gource \
+	@SDL_VIDEODRIVER=x11 $(GOURCE) \
 	  --user-image-dir /tmp \
 	  --seconds-per-day 0.07 \
 	  --title 'Tiddlyhost Development' \
@@ -791,4 +794,5 @@ pretty-colors: gource-image
 	  --filename-colour 777777 \
 	  --dir-colour aaaaaa \
 	  --hide progress \
+	  --scale-by-file-size \
 	  ;
