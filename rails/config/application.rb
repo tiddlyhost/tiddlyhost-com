@@ -96,6 +96,9 @@ module App
     # Deprecated in Rails 7 so let's not use it
     #config.active_storage.replace_on_assign_to_many = false
 
+    # Avoid "Generating image variants require the image_processing gem" warning
+    config.active_storage.variant_processor = :disabled
+
     # Delayed job for background jobs
     config.active_job.queue_adapter = :delayed_job
   end
