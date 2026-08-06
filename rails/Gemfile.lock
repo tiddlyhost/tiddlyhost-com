@@ -137,7 +137,7 @@ GEM
       ssrf_filter (~> 1.5)
     csv (3.3.6)
     daemons (1.4.1)
-    dalli (5.0.5)
+    dalli (5.0.6)
       logger
     date (3.5.1)
     delayed_job (4.2.0)
@@ -156,7 +156,7 @@ GEM
     devise-security (0.18.0)
       devise (>= 4.3.0)
     drb (2.2.3)
-    erb (6.0.6)
+    erb (6.0.7)
     erubi (1.13.1)
     exception_notification (5.0.1)
       actionmailer (>= 7.1, < 9)
@@ -295,7 +295,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rbs (4.1.1)
+    rbs (4.1.2)
       logger
       prism (>= 1.6.0)
       tsort
@@ -313,7 +313,7 @@ GEM
       actionpack (>= 7.0)
       railties (>= 7.0)
     rexml (3.4.4)
-    rubocop (1.88.2)
+    rubocop (1.89.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -394,7 +394,7 @@ GEM
     will_paginate (4.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.8.2)
+    zeitwerk (2.8.3)
 
 PLATFORMS
   x86_64-linux
@@ -449,4 +449,4 @@ RUBY VERSION
   ruby 4.0.6
 
 BUNDLED WITH
-  4.0.17
+  4.0.18
