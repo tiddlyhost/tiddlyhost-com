@@ -169,7 +169,8 @@ GEM
       rake (~> 13.3)
     grover (1.2.10)
       nokogiri (~> 1)
-    haml (7.2.2)
+    haml (7.3.0)
+      prism (>= 1.1.0)
       temple (>= 0.8.2)
       thor
       tilt
@@ -178,7 +179,7 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
-    haml_lint (0.76.0)
+    haml_lint (0.77.0)
       haml (>= 5.0)
       parallel (>= 1.10)
       rainbow
@@ -365,7 +366,7 @@ GEM
       bigdecimal
       logger
     sysexits (1.2.0)
-    temple (0.10.4)
+    temple (0.10.6)
     thor (1.5.0)
     tilt (2.8.0)
     timeout (0.6.1)
