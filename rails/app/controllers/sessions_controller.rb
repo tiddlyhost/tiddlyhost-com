@@ -20,6 +20,13 @@ class SessionsController < Devise::SessionsController
       (@site = Site.find_by_name(@site_redir)) &&
       @site.user == current_user
 
-    super
+    path = super
+
+    if request.host != Settings.main_site_host &&
+        request.host.end_with?(".#{Settings.main_site_host}")
+      "#{Settings.main_site_url}#{path}"
+    else
+      path
+    end
   end
 end

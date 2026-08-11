@@ -59,6 +59,18 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
     refute c.send(:dotty_gmail?, nil)
   end
 
+  test 'login from subdomain redirects to main site' do
+    user = User.create!(email: 'subtest@tables.com', name: 'Sub Test', username: 'subtest', password: 'Abcd1234')
+    user.confirm
+
+    host! "mysite.#{Settings.main_site_host}"
+    post '/users/sign_in', params: { user: { email: 'subtest@tables.com', password: 'Abcd1234' } }
+
+    assert_response :redirect
+    assert response.location.start_with?(Settings.main_site_url),
+      "Expected redirect to main site, got: #{response.location}"
+  end
+
   test 'account save changes' do
     user = User.create!(email: 'barry@tables.com', name: 'Barry', username: 'Baz', password: 'Abcd1234')
     user.confirm
