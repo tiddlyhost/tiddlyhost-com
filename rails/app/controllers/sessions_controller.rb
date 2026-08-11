@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+  skip_before_action :verify_authenticity_token, only: [:destroy]
   before_action :configure_sign_in_params, only: [:create]
 
   def destroy
