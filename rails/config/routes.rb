@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
     get '/thumb.png', to: 'tiddlywiki#thumb_png'
+    get '/info', to: 'tiddlywiki#info'
 
     post '/', to: 'tiddlywiki#upload_save'
     put '/', to: 'tiddlywiki#put_save'
@@ -48,6 +49,7 @@ Rails.application.routes.draw do
     get '/favicon.ico', to: 'tiddlywiki#favicon'
     get '/download', to: 'tiddlywiki#download'
     get '/thumb.png', to: 'tiddlywiki#thumb_png'
+    get '/info', to: 'tiddlywiki#info'
 
     post '/', to: 'tiddlywiki#upload_save'
     put '/', to: 'tiddlywiki#put_save'

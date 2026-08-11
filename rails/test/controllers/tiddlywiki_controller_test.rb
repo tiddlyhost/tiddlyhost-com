@@ -401,6 +401,26 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_response expected_status
   end
 
+  test 'info endpoint returns can_save true for site owner' do
+    sign_in @user
+    get '/info'
+    assert_response :success
+    assert_equal({ 'can_save' => true }, JSON.parse(response.body))
+  end
+
+  test 'info endpoint returns can_save false for other user' do
+    sign_in users(:mary)
+    get '/info'
+    assert_response :success
+    assert_equal({ 'can_save' => false }, JSON.parse(response.body))
+  end
+
+  test 'info endpoint returns can_save false when not signed in' do
+    get '/info'
+    assert_response :success
+    assert_equal({ 'can_save' => false }, JSON.parse(response.body))
+  end
+
   # The header used by TiddlyWiki for the head request in the put saver is
   # actually not a valid mime type. This confirms that we handle it anyway.
   test 'invalid accept header' do

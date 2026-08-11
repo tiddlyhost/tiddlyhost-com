@@ -96,6 +96,10 @@ class TiddlywikiController < ApplicationController
     send_data @site.thumbnail.download, type: 'image/png', disposition: 'inline'
   end
 
+  def info
+    render json: { can_save: site_saveable? }
+  end
+
   def download
     return site_not_available unless site_downloadable?
 
