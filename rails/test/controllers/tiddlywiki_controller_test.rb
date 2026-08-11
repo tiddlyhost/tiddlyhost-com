@@ -401,21 +401,23 @@ class TiddlywikiControllerTest < ActionDispatch::IntegrationTest
     assert_response expected_status
   end
 
-  test 'info endpoint returns can_save true for site owner' do
+  test 'info endpoint returns can_save true with last_saved for site owner' do
     sign_in @user
     get '/info'
     assert_response :success
-    assert_equal({ 'can_save' => true }, JSON.parse(response.body))
+    json = JSON.parse(response.body)
+    assert_equal true, json['can_save']
+    assert json['last_saved'].present?
   end
 
-  test 'info endpoint returns can_save false for other user' do
+  test 'info endpoint returns can_save false without last_saved for other user' do
     sign_in users(:mary)
     get '/info'
     assert_response :success
     assert_equal({ 'can_save' => false }, JSON.parse(response.body))
   end
 
-  test 'info endpoint returns can_save false when not signed in' do
+  test 'info endpoint returns can_save false without last_saved when not signed in' do
     get '/info'
     assert_response :success
     assert_equal({ 'can_save' => false }, JSON.parse(response.body))

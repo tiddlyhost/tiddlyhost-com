@@ -97,7 +97,9 @@ class TiddlywikiController < ApplicationController
   end
 
   def info
-    render json: { can_save: site_saveable? }
+    info = { can_save: site_saveable? }
+    info[:last_saved] = @site.blob_created_at if site_saveable?
+    render json: info
   end
 
   def download
