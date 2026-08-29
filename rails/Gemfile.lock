@@ -243,7 +243,7 @@ GEM
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
-    pay (11.7.2)
+    pay (11.8.0)
       rails (>= 7.0.0)
     pg (1.6.3-x86_64-linux)
     pp (0.6.4)
@@ -364,7 +364,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.6.0)
-    stripe (19.5.0)
+    stripe (19.6.2)
       bigdecimal
       logger
     sysexits (1.2.0)
@@ -431,7 +431,7 @@ DEPENDENCIES
   net-pop
   net-smtp
   ostruct
-  pay (~> 11.7.2)
+  pay (~> 11.8.0)
   pg (~> 1.1)
   puma (~> 8.0)
   rails (~> 8.1.0)
@@ -443,7 +443,7 @@ DEPENDENCIES
   selenium-webdriver (~> 4.2)
   simplecov
   spicy-proton
-  stripe (~> 19.5.0)
+  stripe (~> 19.6.2)
   tzinfo-data
   validate_url
   web-console (>= 4.1.0)
