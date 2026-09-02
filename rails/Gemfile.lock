@@ -362,7 +362,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.5.0)
-    stripe (19.5.0)
+    stripe (19.6.1)
       bigdecimal
       logger
     sysexits (1.2.0)
@@ -440,7 +440,7 @@ DEPENDENCIES
   selenium-webdriver (~> 4.2)
   simplecov
   spicy-proton
-  stripe (~> 19.5.0)
+  stripe (~> 19.6.0)
   tzinfo-data
   validate_url
   web-console (>= 4.1.0)
