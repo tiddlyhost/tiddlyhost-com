@@ -25,6 +25,13 @@ gem 'logger'
 # (Removed from stdlib starting Ruby 3.5)
 gem 'ostruct'
 
+# Pin json to 2.x. json 3.0 changed JSON.parse to take options as keywords
+# only, but activesupport 8.1.3.1's ActiveSupport::JSON.decode still calls
+# ::JSON.parse(json, options) with a positional hash, which raises
+# "wrong number of arguments (given 2, expected 1)" on every json column read.
+# Remove once activesupport is fixed to call parse with keyword options.
+gem 'json', '~> 2.21'
+
 # Background jobs
 gem 'daemons'
 gem 'delayed_job_active_record'
