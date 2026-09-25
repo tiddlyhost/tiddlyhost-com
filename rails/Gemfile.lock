@@ -352,7 +352,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    simplecov (1.3.0)
+    simplecov (1.3.1)
     spicy-proton (2.1.15)
       bindata (~> 2.3)
     sprockets (4.4.1)
@@ -450,7 +450,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-  ruby 4.0.6
+  ruby 4.0.7
 
 BUNDLED WITH
   4.0.21
