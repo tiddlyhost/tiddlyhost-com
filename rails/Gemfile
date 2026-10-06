@@ -30,7 +30,7 @@ gem 'ostruct'
 # ::JSON.parse(json, options) with a positional hash, which raises
 # "wrong number of arguments (given 2, expected 1)" on every json column read.
 # Remove once activesupport is fixed to call parse with keyword options.
-gem 'json', '~> 2.21'
+gem 'json', '~> 3.0'
 
 # Background jobs
 gem 'daemons'
