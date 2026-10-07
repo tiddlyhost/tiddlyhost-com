@@ -243,7 +243,7 @@ GEM
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
-    pay (11.8.0)
+    pay (12.3.0)
       rails (>= 7.0.0)
     pg (1.7.0-x86_64-linux)
     pp (0.6.4)
@@ -430,7 +430,7 @@ DEPENDENCIES
   net-pop
   net-smtp
   ostruct
-  pay (~> 11.8.0)
+  pay (~> 12.3.0)
   pg (~> 1.1)
   puma (~> 8.0)
   rails (~> 8.1.0)
