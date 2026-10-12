@@ -4,7 +4,7 @@ class PayBootstrapUserMailer < Pay::UserMailer
 
   #
   # The methods are from here:
-  # https://github.com/pay-rails/pay/blob/v6.3.1/app/mailers/pay/user_mailer.rb
+  # https://github.com/pay-rails/pay/blob/v12.3.0/app/mailers/pay/user_mailer.rb
   # but with make_bootstrap_mail instead of mail.
   #
   # This might need updating in future if there are changes to that file.
@@ -12,7 +12,7 @@ class PayBootstrapUserMailer < Pay::UserMailer
   #
   def receipt
     if params[:pay_charge].respond_to? :receipt
-      attachments[params[:pay_charge].filename] = params[:pay_charge].receipt
+      attachments[params[:pay_charge].receipt_filename] = params[:pay_charge].receipt
     end
 
     @email_title = 'Payment receipt'

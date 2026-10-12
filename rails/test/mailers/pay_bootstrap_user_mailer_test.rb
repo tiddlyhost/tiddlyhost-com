@@ -39,4 +39,20 @@ class PayBootstrapUserMailerTest < ActionMailer::TestCase
       assert_match(/Tiddlyhost/, email.text_part.body.decoded)
     end
   end
+
+  test 'receipt attaches the pdf using receipt_filename' do
+    # The receipt/receipt_filename methods come from Pay::Receipts, which is
+    # only mixed into Pay::Charge when the optional receipts gem is loaded, so
+    # stub them to exercise the attachment branch in PayBootstrapUserMailer#receipt.
+    pdf = 'fake-receipt-pdf-bytes'
+    filename = 'receipt-2023-02-15.pdf'
+    @charge.stubs(:receipt).returns(pdf)
+    @charge.stubs(:receipt_filename).returns(filename)
+
+    email = Pay.mailer.with(@email_params).receipt
+
+    assert_equal 1, email.attachments.size
+    assert_equal filename, email.attachments.first.filename
+    assert_equal pdf, email.attachments.first.body.decoded
+  end
 end
