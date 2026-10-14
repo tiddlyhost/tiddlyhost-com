@@ -18,7 +18,9 @@ Grover.configure do |config|
     wait_until: 'networkidle2',
 
     # Take the screenshot after 20 seconds no matter what even if
-    # networkidle2 was never reached, (I think??).
-    wait_for_timeout: 20_000,
+    # networkidle2 is never reached. (Previously used wait_for_timeout
+    # but the underlying method is no longer supported by puppeteer even
+    # though grover tries to call it.)
+    execute_script: 'new Promise(resolve => setTimeout(resolve, 20000))',
   }
 end
