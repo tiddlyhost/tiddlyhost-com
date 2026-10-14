@@ -66,7 +66,9 @@ RUN \
     # For puppeteer.
     # (Even though it doesn't use the system chrome, this is the
     # easiest way to get all the required dependencies installed.)
-    google-chrome-stable chromium-sandbox libxss1 \
+    # unzip is needed because @puppeteer/browsers (puppeteer 22+) extracts
+    # its downloaded Chrome from a zip using the system unzip binary.
+    google-chrome-stable chromium-sandbox libxss1 unzip \
     fonts-noto-core fonts-noto-cjk fonts-noto-color-emoji fonts-freefont-ttf && \
   #
   # Tidy up
