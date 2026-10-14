@@ -34,5 +34,13 @@
       "matchFileNames": ["docker/Dockerfile.prod"],
       "enabled": false
     },
+    {
+      "matchManagers": ["docker"],
+      // Generally a major postgres upgrade requires a dump/import
+      // migration plan, we can't just merge a PR
+      "matchDepNames": ["postgres"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
   ]
 }
