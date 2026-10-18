@@ -69,7 +69,7 @@ module WithThumbnail
     core_url_prefix = Rails.env.development? ? Settings.prod_main_site_url : Settings.main_site_url
 
     # Similar to inject_external_core_url_prefix but probably uses less memory
-    use_html = file_download.
+    use_html = utf8_file_download.
       # For tw5x
       sub(/(<script src=")(tiddlywikicore-[\d.]+.js")/, "\\1#{core_url_prefix}/\\2").
       # For featherx
@@ -87,6 +87,18 @@ module WithThumbnail
     png = grover.to_png
 
     thumbnail_attach(png)
+  end
+
+  # Grover hands the html to its node process by serializing it with JSON.dump,
+  # and the json gem won't encode an ASCII-8BIT string that contains non-ASCII
+  # bytes. Site content is ASCII-8BIT because that's what Zlib::Inflate returns,
+  # so relabel it as UTF-8, which is what TiddlyWiki files actually use.
+  #
+  def utf8_file_download
+    html = file_download.dup.force_encoding(Encoding::UTF_8)
+
+    # Don't let a site containing unexpected bytes break thumbnail generation
+    html.valid_encoding? ? html : html.scrub
   end
 
   def thumbnail_attach(png)

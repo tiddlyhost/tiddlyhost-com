@@ -216,6 +216,26 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal 'image/png', @site.thumbnail.blob.content_type
   end
 
+  # Site content is ASCII-8BIT since that's what Zlib::Inflate returns, and the
+  # json gem won't serialize non-ASCII bytes in a binary string. Grover uses
+  # JSON.dump to pass the html to its node process, so without the encoding fix
+  # in WithThumbnail#utf8_file_download these raise a JSON::GeneratorError.
+  #
+  test 'thumbnail generation with non-ascii content' do
+    @site.content_upload('<p>Em dash — and “smart quotes”</p>')
+    GenerateThumbnailJob.perform_now('Site', @site.id)
+    assert @site.reload.thumbnail.present?
+    assert_equal 'image/png', @site.thumbnail.blob.content_type
+  end
+
+  test 'thumbnail generation with content that is not valid utf-8' do
+    # Latin-1 rather than UTF-8, so it needs scrubbing, not just relabelling
+    @site.content_upload("<p>caf\xE9</p>".b)
+    GenerateThumbnailJob.perform_now('Site', @site.id)
+    assert @site.reload.thumbnail.present?
+    assert_equal 'image/png', @site.thumbnail.blob.content_type
+  end
+
   test 'thumbnail storage service' do
     [
       [true, 'test1'],
