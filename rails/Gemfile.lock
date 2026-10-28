@@ -363,7 +363,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.6.0)
-    stripe (20.0.0)
+    stripe (20.0.1)
       bigdecimal
       logger
     sysexits (1.2.0)
