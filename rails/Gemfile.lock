@@ -137,7 +137,7 @@ GEM
       addressable
       base64
       ssrf_filter (~> 1.5)
-    csv (3.3.6)
+    csv (3.3.7)
     daemons (1.4.1)
     dalli (5.2.2)
       logger
