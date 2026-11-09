@@ -39,6 +39,18 @@ pull-ruby:
 	$(D) pull ruby:$(RUBY_TAG)
 	NO_COMMIT=1 bin/pin-digest.sh docker.io/library/ruby:$(RUBY_TAG) docker/Dockerfile.base "Newer ruby base image pulled from docker hub"
 
+# Run after pull-ruby to keep CI on the exact Ruby version in the pinned image.
+sync-ruby-version:
+	@image=$$(awk '$$1 == "FROM" {print $$2; exit}' docker/Dockerfile.base); \
+	  test -n "$$image" || { echo "No base image in docker/Dockerfile.base" >&2; exit 1; }; \
+	  output=$$($(D) run --rm --entrypoint ruby "$$image" --version) || exit 1; \
+	  version=$$(printf '%s\n' "$$output" | awk '$$1 == "ruby" && $$2 ~ /^[0-9]+\.[0-9]+\.[0-9]+$$/ {print $$2; exit}'); \
+	  test -n "$$version" || { echo "Could not parse Ruby version: $$output" >&2; exit 1; }; \
+	  grep -Eq "^[[:space:]]*ruby-version: '[^']+'$$" .github/workflows/test.yml || \
+	    { echo "No quoted ruby-version in .github/workflows/test.yml" >&2; exit 1; }; \
+	  sed -i -E "s/^([[:space:]]*ruby-version: ')[^']+(')$$/\\1$$version\\2/" .github/workflows/test.yml; \
+	  echo "Set CI ruby-version to $$version"
+
 # Build base docker image
 # (The build args are important here, the build will fail without them)
 build-base:
@@ -187,6 +199,9 @@ bundle-install:
 bundle-update:
 	$(DR) "bin/bundle update --all --quiet"
 
+ruby-update:
+	$(DRF) "bin/bundle update --ruby"
+
 # Run bundle-clean
 bundle-clean:
 	$(DR) "bin/bundle clean"
@@ -218,8 +233,8 @@ bootstrap-email-sass-precompile:
 
 # Update deps, make a commit, run tests
 LOCK_FILES=rails/Gemfile.lock rails/yarn.lock
-deps-update: pull-ruby build-push-base bundle-update yarn-upgrade
-	git add $(LOCK_FILES)
+deps-update: pull-ruby build-push-base bundle-update yarn-upgrade sync-ruby-version ruby-update
+	git add $(LOCK_FILES) .github/workflows/test.yml
 	git commit -m 'chore: Refresh base images and update dependencies' \
 	  -m 'Commit created with `make deps-update`' --no-gpg-sign
 	$(MAKE) bootstrap-email-sass-precompile test delint
