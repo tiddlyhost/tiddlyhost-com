@@ -85,7 +85,7 @@ gem 'grover'
 gem 'spicy-proton'
 
 # For payments
-gem 'pay', '~> 12.3.0'
+gem 'pay', '~> 12.5.0'
 gem 'stripe', '~> 20.0.0'
 
 # Needed after ruby 3.1 upgrade
