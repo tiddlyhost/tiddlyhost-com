@@ -15,6 +15,12 @@
 
   "packageRules": [
     {
+      // Pay depends on stripe, so update them together in one PR
+      "matchManagers": ["bundler"],
+      "matchPackageNames": ["pay", "stripe"],
+      "groupName": "pay and stripe"
+    },
+    {
       "matchManagers": ["bundler"],
       // Seems there's always a new version of this. Let's update
       // it now and again rather than generate an endless PR stream.
