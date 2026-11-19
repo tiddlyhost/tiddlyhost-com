@@ -6,6 +6,8 @@
 #
 
 COMPOSE="docker compose -f {{ home_dir }}/docker-compose.yml"
+# Cron and deploy both run as root; Route53 credentials are installed for the deploy user.
+export AWS_SHARED_CREDENTIALS_FILE="{{ home_dir }}/.aws/credentials"
 
 certbot renew \
   --config-dir {{ certbot_dir_config }} \

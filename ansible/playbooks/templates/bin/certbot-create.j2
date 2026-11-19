@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run as root, using the Route53 credentials installed for the deploy user.
+export AWS_SHARED_CREDENTIALS_FILE="{{ home_dir }}/.aws/credentials"
+
 certbot certonly \
   --config-dir {{ certbot_dir_config }} \
   --work-dir {{ certbot_dir_work }} \

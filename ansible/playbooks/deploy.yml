@@ -225,7 +225,6 @@
     - certs
 
   - name: Create a cert if it doesn't exist
-    become: false
     ansible.builtin.command:
       cmd: "{{ bin_dir }}/certbot-create"
       creates: "{{ certbot_dir_live }}/fullchain.pem"
@@ -234,7 +233,6 @@
 
   # Could be removed since certs are now renewed twice daily via cron job
   - name: Renew certs maybe
-    become: false
     ansible.builtin.command:
       cmd: "{{ bin_dir }}/certbot-renew"
     register: certbot_renew
