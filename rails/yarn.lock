@@ -252,9 +252,9 @@ get-east-asian-width@^1.0.0, get-east-asian-width@^1.5.0:
   integrity sha512-XjH1AECxf0giL2V1aU8vKyRR2ppRUb5c0EvT7zuJTokQ74bNo52zOtghqdWIqrhUD79fo3x0WfKZdOqxF6LG1Q==
 
 jquery@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-4.0.0.tgz#95c33ac29005ff72ec444c5ba1cf457e61404fbb"
-  integrity sha512-TXCHVR3Lb6TZdtw1l3RTLf8RBWVGexdxL6AC8/e0xZKEpBflBsjh9/8LXw+dkNFuOyW9B7iB3O1sP7hS0Kiacg==
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-4.1.0.tgz#b15839cd1ea0e555ee3dce856dd9568e1b81f504"
+  integrity sha512-tnN2N83S+xD3yhmdBP4nnJ1XOO0Fl586rG23FA5h/JAe8XN3W9a1zGwDMltBptn+UpcqEKicnO61+jQ0EiF2fw==
 
 lilconfig@^3.1.4:
   version "3.1.5"
@@ -271,10 +271,10 @@ modern-tar@^0.8.6:
   resolved "https://registry.yarnpkg.com/modern-tar/-/modern-tar-0.8.6.tgz#dc67de5954b4b679d55ba703d5263dbd328c1e4c"
   integrity sha512-LYSks0tNVqbtez/9OB0YFP6qLRSqkdAxJWOQpVaR67lNTbj2zNLyYpowkRMia5lXLCZKzxwoxkxH2MbbBR2aEg==
 
-puppeteer-core@25.17.0:
-  version "25.17.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-25.17.0.tgz#388eaf302871ee97a1f11d1b4fa19cb2a28f8112"
-  integrity sha512-YAgBitkd+K9gxRt+wzBAFTTkGjkC8aC2o4OxofsU8JUy2nnK/RflTCJ9bRCvCMNbq9TPhqFk4Phz98otN9FrGg==
+puppeteer-core@25.18.1:
+  version "25.18.1"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-25.18.1.tgz#447b2c8ea7abd8072c348a9367df9033052372d0"
+  integrity sha512-C0wHOJHDfAggGBtN5uUfsJGpeSKtPL5jzhgQYDuz4XKeOG1FUkxeZI2M5yK7AUyrdHO+RgDuiCfjmOpcw3PYTA==
   dependencies:
     "@puppeteer/browsers" "3.2.7"
     chromium-bidi "157.0.8090-0"
@@ -284,15 +284,15 @@ puppeteer-core@25.17.0:
     ws "^8.22.1"
 
 puppeteer@^25.0.0:
-  version "25.17.0"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-25.17.0.tgz#a28f2fe2fe3817d849b3eebd87bf60780a59eff2"
-  integrity sha512-J+OQNlI7I6ZjHhF6Q8M+LgiUGldF7meer5EqMJBZMHgnFN3zcehOhpz/x0bYDEEvbEiXzKzmqSRP3QT+5accjQ==
+  version "25.18.1"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-25.18.1.tgz#a0e702e2a063bf96c6558029d7c53f590ea68d49"
+  integrity sha512-fCsfwERKluvC84jsVyhDoBZMNuI8t5FFnWXcTdH1vn3NhMk6clZcrF0Da2se6/Hj6CBJ+2PRPpqeV0qPIETeJA==
   dependencies:
     "@puppeteer/browsers" "3.2.7"
     chromium-bidi "157.0.8090-0"
     devtools-protocol "0.0.1717327"
     lilconfig "^3.1.4"
-    puppeteer-core "25.17.0"
+    puppeteer-core "25.18.1"
     typed-query-selector "^2.12.3"
 
 spark-md5@^3.0.1:
