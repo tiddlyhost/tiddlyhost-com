@@ -26,12 +26,15 @@ class RegistrationsController < Devise::RegistrationsController
     # resource_class.new(sign_up_param) below.
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :username])
 
-    ok = verify_recaptcha(action: 'signup', minimum_score: dotty_gmail?(sign_up_params['email']) ? 0.29 : 0)
-    log_recaptcha_detail(sign_up_params['email'], ok, recaptcha_reply)
+    email = sign_up_params['email']
+    blocked_domain = email_domain_blocked?(email)
+    ok = !blocked_domain && verify_recaptcha(action: 'signup', minimum_score: dotty_gmail?(email) ? 0.29 : 0)
+    flash[:recaptcha_error] = 'reCAPTCHA verification failed.' if blocked_domain
+    log_recaptcha_detail(email, ok, blocked_domain ? 'Blocked email domain' : recaptcha_reply)
     return if ok
 
     # Help a real user being rejected with "error-codes"=>["browser-error"]
-    return if Settings.secrets(:recaptcha, :email_allow_list)&.include?(sign_up_params['email'])
+    return if !blocked_domain && Settings.secrets(:recaptcha, :email_allow_list)&.include?(email)
 
     self.resource = resource_class.new(sign_up_params)
     resource.validate # Look for any other validation errors besides reCAPTCHA
@@ -41,6 +44,11 @@ class RegistrationsController < Devise::RegistrationsController
       flash.discard(:recaptcha_error) # We need to discard flash to avoid showing it on the next page reload
       render :new
     end
+  end
+
+  def email_domain_blocked?(email)
+    domain = email.to_s.strip.split('@', 2)[1]&.downcase
+    Array(Settings.secrets(:recaptcha, :email_blocked_domains)).any? { |blocked| blocked.downcase == domain }
   end
 
   def dotty_gmail?(email)

@@ -34,6 +34,52 @@ class DeviseControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'blocked email domain detection' do
+    Settings.stubs(:secrets).with(:recaptcha, :email_blocked_domains).returns(['blocked.example', 'OTHER.EXAMPLE'])
+    c = RegistrationsController.new
+
+    assert c.send(:email_domain_blocked?, 'user@blocked.example')
+    assert c.send(:email_domain_blocked?, 'user@BLOCKED.EXAMPLE')
+    assert c.send(:email_domain_blocked?, 'user@other.example')
+    refute c.send(:email_domain_blocked?, 'user@allowed.example')
+    refute c.send(:email_domain_blocked?, 'user@notblocked.example')
+    refute c.send(:email_domain_blocked?, 'user@blocked.example.com')
+    refute c.send(:email_domain_blocked?, '')
+    refute c.send(:email_domain_blocked?, nil)
+  end
+
+  test 'missing email domain block list allows all domains' do
+    Settings.stubs(:secrets).with(:recaptcha, :email_blocked_domains).returns(nil)
+
+    refute RegistrationsController.new.send(:email_domain_blocked?, 'user@example.com')
+  end
+
+  test 'blocked email domains fail recaptcha even when the email is allow listed' do
+    Settings.stubs(:recaptcha_enabled?).returns(true)
+    Settings.stubs(:secrets).with(:recaptcha, :email_blocked_domains).returns(['blocked.example'])
+    Settings.stubs(:secrets).with(:recaptcha, :email_allow_list).returns(['user@blocked.example'])
+    RegistrationsController.any_instance.expects(:verify_recaptcha).never
+
+    assert_no_difference('User.count') do
+      post '/users', params: { user: { email: 'user@blocked.example', password: 'Abcd1234', name: 'Test' } }
+    end
+
+    assert_response :success
+    assert_select '.alert', text: 'reCAPTCHA verification failed.'
+  end
+
+  test 'unblocked email domains can pass recaptcha' do
+    Settings.stubs(:recaptcha_enabled?).returns(true)
+    Settings.stubs(:secrets).with(:recaptcha, :email_blocked_domains).returns(['blocked.example'])
+    RegistrationsController.any_instance.expects(:verify_recaptcha).with(action: 'signup', minimum_score: 0).returns(true)
+
+    assert_difference('User.count', 1) do
+      post '/users', params: { user: { email: 'newuser@example.com', password: 'Abcd1234', name: 'Test' } }
+    end
+
+    assert_response :redirect
+  end
+
   test 'dotty gmail detection' do
     c = RegistrationsController.new
 
